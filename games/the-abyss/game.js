@@ -123,6 +123,13 @@
     let lastAutoSave = 0;
     
     // ============================================
+    // PHASE 2: BIOME & ENVIRONMENT
+    // ============================================
+    let currentBiome = null;
+    let biomeEntities = [];
+    let environmentalHazards = [];
+    
+    // ============================================
     // INITIALIZATION
     // ============================================
     document.addEventListener('DOMContentLoaded', initGame);
@@ -168,6 +175,25 @@
         // Initialize game modes
         if (typeof GameModes !== 'undefined') {
             GameModes.init();
+        }
+        
+        // Initialize resource system
+        if (typeof ResourceSystem !== 'undefined') {
+            ResourceSystem.init();
+        }
+        
+        // Initialize event system
+        if (typeof EventSystem !== 'undefined') {
+            EventSystem.init();
+            
+            // Listen for events
+            EventSystem.on('event_start', (data) => {
+                handleEventStart(data.event);
+            });
+            
+            EventSystem.on('poi_spawned', (data) => {
+                handlePOISpawned(data.poi);
+            });
         }
         
         setupEventListeners();
@@ -1266,6 +1292,10 @@
             togglePhotoMode();
         }
         
+        if (e.code === 'KeyI') {
+            openInventory();
+        }
+        
         // Track for tutorial
         if (TutorialSystem.isActive && TutorialSystem.isActive()) {
             if (['KeyW', 'KeyA', 'KeyS', 'KeyD'].includes(e.code)) {
@@ -1457,6 +1487,21 @@
     }
 
     function throwFlare() {
+        // Try to use flare from inventory first (Phase 2)
+        if (typeof ResourceSystem !== 'undefined') {
+            if (ResourceSystem.hasItem('flare')) {
+                ResourceSystem.useItem('flare', player);
+                SaveSystem.updateSessionStat('flaresUsed', 1);
+                updateHUD();
+                
+                // Achievement progress
+                const progress = SaveSystem.getAchievementProgress('flare_master');
+                SaveSystem.updateAchievementProgress('flare_master', (progress.current || 0) + 1, 10);
+                return;
+            }
+        }
+        
+        // Fallback to old system
         if (player.flares > 0) {
             player.flares--;
             SaveSystem.updateSessionStat('flaresUsed', 1);
@@ -1465,6 +1510,257 @@
             // Achievement progress
             const progress = SaveSystem.getAchievementProgress('flare_master');
             SaveSystem.updateAchievementProgress('flare_master', (progress.current || 0) + 1, 10);
+        }
+    }
+
+    // ============================================
+    // PHASE 2: INVENTORY & CRAFTING
+    // ============================================
+    function openInventory() {
+        if (currentState !== GAME_STATE.PLAYING) return;
+        
+        let inventoryModal = document.getElementById('inventory-modal');
+        if (!inventoryModal) {
+            inventoryModal = document.createElement('div');
+            inventoryModal.id = 'inventory-modal';
+            inventoryModal.className = 'inventory-overlay';
+            document.body.appendChild(inventoryModal);
+            
+            // Add styles
+            const style = document.createElement('style');
+            style.id = 'inventory-styles';
+            style.textContent = `
+                .inventory-overlay {
+                    position: fixed;
+                    inset: 0;
+                    background: rgba(5, 10, 20, 0.95);
+                    display: none;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 1000;
+                    backdrop-filter: blur(10px);
+                }
+                .inventory-overlay.active {
+                    display: flex;
+                }
+                .inventory-content {
+                    background: rgba(10, 20, 40, 0.95);
+                    border: 1px solid rgba(100, 150, 200, 0.3);
+                    border-radius: 12px;
+                    padding: 30px;
+                    max-width: 800px;
+                    width: 90%;
+                    max-height: 80vh;
+                    overflow-y: auto;
+                }
+                .inventory-grid {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+                    gap: 10px;
+                    margin-bottom: 20px;
+                }
+                .inventory-slot {
+                    aspect-ratio: 1;
+                    background: rgba(0, 0, 0, 0.3);
+                    border: 1px solid rgba(100, 150, 200, 0.2);
+                    border-radius: 8px;
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    justify-content: center;
+                    cursor: pointer;
+                    transition: all 0.2s;
+                    position: relative;
+                }
+                .inventory-slot:hover {
+                    border-color: #00aaff;
+                    background: rgba(0, 100, 200, 0.1);
+                }
+                .inventory-slot .item-icon {
+                    font-size: 2rem;
+                }
+                .inventory-slot .item-count {
+                    position: absolute;
+                    bottom: 5px;
+                    right: 5px;
+                    background: rgba(0, 0, 0, 0.8);
+                    color: #fff;
+                    padding: 2px 6px;
+                    border-radius: 4px;
+                    font-size: 0.8rem;
+                }
+                .crafting-panel {
+                    border-top: 1px solid rgba(100, 150, 200, 0.2);
+                    padding-top: 20px;
+                }
+                .recipe-list {
+                    display: grid;
+                    gap: 10px;
+                }
+                .recipe-item {
+                    background: rgba(0, 0, 0, 0.3);
+                    border: 1px solid rgba(100, 150, 200, 0.2);
+                    border-radius: 8px;
+                    padding: 15px;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                }
+                .recipe-item.can-craft {
+                    border-color: #00ff88;
+                }
+                .recipe-info h4 {
+                    margin: 0 0 5px 0;
+                    color: #fff;
+                }
+                .recipe-info p {
+                    margin: 0;
+                    color: #88aacc;
+                    font-size: 0.85rem;
+                }
+                .recipe-ingredients {
+                    display: flex;
+                    gap: 10px;
+                    font-size: 0.8rem;
+                    color: #6688aa;
+                }
+                .craft-btn {
+                    background: linear-gradient(135deg, #0066aa, #0088cc);
+                    border: none;
+                    color: #fff;
+                    padding: 8px 16px;
+                    border-radius: 6px;
+                    cursor: pointer;
+                }
+                .craft-btn:disabled {
+                    background: rgba(100, 100, 100, 0.3);
+                    cursor: not-allowed;
+                }
+            `;
+            document.head.appendChild(style);
+        }
+        
+        // Build inventory content
+        const inventory = ResourceSystem.getInventory();
+        const recipes = ResourceSystem.getAvailableRecipes();
+        
+        let html = `
+            <div class="inventory-content">
+                <h2>Inventory</h2>
+                <div class="inventory-grid">
+        `;
+        
+        // Show items
+        for (const [itemId, count] of Object.entries(inventory)) {
+            const resource = ResourceSystem.RESOURCES[itemId.toUpperCase()];
+            if (resource) {
+                html += `
+                    <div class="inventory-slot" onclick="useItemFromInventory('${itemId}')">
+                        <span class="item-icon">${resource.icon}</span>
+                        <span class="item-count">${count}</span>
+                    </div>
+                `;
+            }
+        }
+        
+        // Empty slots
+        const filledSlots = Object.keys(inventory).length;
+        const maxSlots = ResourceSystem.maxInventorySlots;
+        for (let i = filledSlots; i < maxSlots; i++) {
+            html += `<div class="inventory-slot"></div>`;
+        }
+        
+        html += `
+                </div>
+                <div class="crafting-panel">
+                    <h3>Crafting</h3>
+                    <div class="recipe-list">
+        `;
+        
+        // Show recipes
+        for (const recipe of recipes) {
+            const canCraft = recipe.canCraft;
+            html += `
+                <div class="recipe-item ${canCraft ? 'can-craft' : ''}">
+                    <div class="recipe-info">
+                        <h4>${recipe.name}</h4>
+                        <p>${recipe.description}</p>
+                        <div class="recipe-ingredients">
+                            ${recipe.hasIngredients.map(ing => `
+                                <span style="color: ${ing.have >= ing.need ? '#00ff88' : '#ff4444'}">
+                                    ${ing.item}: ${ing.have}/${ing.need}
+                                </span>
+                            `).join('')}
+                        </div>
+                    </div>
+                    <button class="craft-btn" onclick="craftItem('${recipe.id}')" ${!canCraft ? 'disabled' : ''}>
+                        Craft
+                    </button>
+                </div>
+            `;
+        }
+        
+        html += `
+                    </div>
+                </div>
+                <button class="back-btn" onclick="closeInventory()" style="margin-top: 20px;">← Back</button>
+            </div>
+        `;
+        
+        inventoryModal.innerHTML = html;
+        inventoryModal.style.display = 'flex';
+        inventoryModal.classList.add('active');
+        
+        // Pause game
+        pauseGame();
+    }
+
+    window.useItemFromInventory = function(itemId) {
+        if (ResourceSystem.useItem(itemId, player)) {
+            closeInventory();
+            updateHUD();
+        }
+    };
+
+    window.craftItem = function(recipeId) {
+        const result = ResourceSystem.craft(recipeId);
+        if (result.success) {
+            showNotification(`Crafted: ${result.recipe.name}`, 'success');
+            openInventory(); // Refresh
+        }
+    };
+
+    window.closeInventory = function() {
+        const modal = document.getElementById('inventory-modal');
+        if (modal) {
+            modal.style.display = 'none';
+            modal.classList.remove('active');
+        }
+        resumeGame();
+    };
+
+    // ============================================
+    // RESOURCE PICKUP
+    // ============================================
+    function pickupResource(resourceId, count = 1) {
+        if (typeof ResourceSystem !== 'undefined') {
+            const added = ResourceSystem.addItem(resourceId, count);
+            if (added > 0) {
+                // Check for resource-related achievements
+                checkResourceAchievements();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    function checkResourceAchievements() {
+        const inventory = ResourceSystem.getInventory();
+        
+        // Check for crystal collector
+        const crystalCount = (inventory['crystal_shard'] || 0) + (inventory['pure_crystal'] || 0);
+        if (crystalCount >= 20) {
+            SaveSystem.unlockAchievement('crystal_collector');
         }
     }
 
@@ -1496,18 +1792,207 @@
     }
 
     // ============================================
-    // MAIN GAME LOOP (Placeholder)
+    // BIOME & ENVIRONMENT UPDATE
+    // ============================================
+    function updateBiomeAndEnvironment(dt) {
+        if (!player) return;
+        
+        // Update biome based on depth
+        if (typeof BiomeSystem !== 'undefined') {
+            const newBiome = BiomeSystem.update(player.depth, dt);
+            
+            if (newBiome && newBiome !== currentBiome) {
+                currentBiome = newBiome;
+                onBiomeChanged(newBiome);
+            }
+            
+            // Apply pressure damage in hadal zone
+            if (BiomeSystem.shouldApplyPressureDamage()) {
+                const damage = BiomeSystem.getPressureDamageRate() * dt;
+                player.health -= damage;
+                
+                if (Math.random() < 0.1) {
+                    showNotification('⚠️ CRUSHING PRESSURE!', 'danger');
+                }
+            }
+            
+            // Get POIs near player
+            if (BiomeSystem.getPOIManager) {
+                const poiManager = BiomeSystem.getPOIManager();
+                const nearbyPOIs = poiManager.getNearbyPOIs(player.position, 30);
+                
+                for (const poi of nearbyPOIs) {
+                    if (!poi.visited) {
+                        showPOIDiscovery(poi);
+                    }
+                }
+            }
+        }
+        
+        // Update event system
+        if (typeof EventSystem !== 'undefined') {
+            const gameState = {
+                depth: player.depth,
+                dangerLevel: currentBiome ? currentBiome.dangerLevel : 0,
+                oxygen: player.oxygen,
+                playerX: player.position.x,
+                playerY: player.position.y,
+                playerZ: player.position.z,
+                isPaused: currentState === GAME_STATE.PAUSED,
+                isInMenu: false,
+                isInSafeZone: false,
+                isInCave: false,
+                flashlightBattery: player.flashlightBattery
+            };
+            
+            EventSystem.update(dt, gameState);
+            
+            // Apply event effects
+            const eventEffects = EventSystem.getActiveEventEffects();
+            
+            // Apply current forces
+            if (eventEffects.forceDirections.length > 0) {
+                for (const force of eventEffects.forceDirections) {
+                    player.velocity.x += Math.cos(force.angle) * force.strength * dt;
+                    player.velocity.z += Math.sin(force.angle) * force.strength * dt;
+                }
+            }
+        }
+    }
+
+    function onBiomeChanged(biome) {
+        console.log(`Biome changed to: ${biome.name}`);
+        
+        // Update fog
+        if (scene && scene.fog) {
+            scene.fog.color.setHex(biome.fogColor);
+            scene.fog.density = biome.fogDensity;
+        }
+        
+        // Update ambient light
+        // Update water color
+        // Spawn biome-specific entities
+        
+        // Achievement check
+        if (biome.id === 'abyss' && typeof SaveSystem !== 'undefined') {
+            SaveSystem.unlockAchievement('deep_diver');
+        }
+    }
+
+    function showPOIDiscovery(poi) {
+        if (!poi.discoveryShown) {
+            poi.discoveryShown = true;
+            showNotification(`📍 Discovered: ${poi.name}`, 'success');
+            
+            // Mark as visited when player gets closer
+            setTimeout(() => {
+                if (BiomeSystem.getPOIManager) {
+                    BiomeSystem.getPOIManager().markPOIVisited(poi.id);
+                }
+            }, 5000);
+        }
+    }
+
+    function handleEventStart(event) {
+        console.log('Event started:', event.name);
+        
+        switch(event.id) {
+            case 'creature_ambush':
+                // Spawn ambush creatures
+                spawnAmbushCreatures(event.data.creatures);
+                break;
+                
+            case 'sinking_debris':
+                // Spawn lootable debris
+                spawnDebris(event.data.position, event.data.loot);
+                break;
+                
+            case 'leviathan_passing':
+                // Trigger leviathan sighting
+                triggerLeviathanSighting();
+                break;
+                
+            case 'oxygen_rich_vent':
+                // Create oxygen vent effect
+                createOxygenVent(player.position);
+                break;
+                
+            case 'whale_fall':
+                // Spawn whale fall POI
+                if (BiomeSystem.getPOIManager) {
+                    BiomeSystem.getPOIManager().spawnPOI('whale_fall', currentBiome);
+                }
+                break;
+        }
+    }
+
+    function handlePOISpawned(poi) {
+        // Create visual representation of POI
+        createPOIVisuals(poi);
+    }
+
+    function spawnAmbushCreatures(creatureData) {
+        // Implementation would spawn creatures
+        showNotification('👹 Ambush! Creatures detected!', 'danger');
+    }
+
+    function spawnDebris(position, loot) {
+        // Create debris entity
+        console.log('Spawning debris at', position, 'with loot:', loot);
+    }
+
+    function triggerLeviathanSighting() {
+        showNotification('🐋 The Leviathan passes in the distance...', 'warning');
+        
+        // Unlock achievement if survived
+        setTimeout(() => {
+            if (player.health > 0 && typeof SaveSystem !== 'undefined') {
+                SaveSystem.unlockAchievement('leviathan_witness');
+            }
+        }, 30000);
+    }
+
+    function createOxygenVent(position) {
+        // Create visual and gameplay effect
+        showNotification('💨 Oxygen-rich vent detected!', 'success');
+        
+        // Temporarily boost oxygen
+        const originalMax = player.maxOxygen;
+        player.maxOxygen = 150;
+        player.oxygen = Math.min(player.oxygen + 30, player.maxOxygen);
+        
+        // Reset after event
+        setTimeout(() => {
+            player.maxOxygen = originalMax;
+            player.oxygen = Math.min(player.oxygen, player.maxOxygen);
+        }, 30000);
+    }
+
+    function createPOIVisuals(poi) {
+        // Create 3D representation of POI based on type
+        // This would integrate with Three.js scene
+    }
+
+    // ============================================
+    // MAIN GAME LOOP (Phase 2 Enhanced)
     // ============================================
     function animate() {
-        if (!gameActive) return;
+        if (!gameActive && currentState !== GAME_STATE.PAUSED) return;
         requestAnimationFrame(animate);
+        
+        const dt = clock.getDelta();
         
         // Update session stats
         if (gameActive) {
-            SaveSystem.updateSessionStat('distanceSwum', player.currentSpeed * 0.016);
+            SaveSystem.updateSessionStat('distanceSwum', player.currentSpeed * dt);
             if (player.depth > SaveSystem.getSessionStats().deepestPoint) {
                 SaveSystem.updateSessionStat('deepestPoint', player.depth);
             }
+        }
+        
+        // Phase 2: Update biome and environment
+        if (gameActive) {
+            updateBiomeAndEnvironment(dt);
         }
         
         // Auto-save check
