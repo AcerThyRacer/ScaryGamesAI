@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zombie Horde — ScaryGamesAI</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #0a0a00;
+        }
+
+        #game-canvas {
+            display: block;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="game-page">
+        <a href="/games.html" class="back-link" id="back-link">← Back to Games</a>
+        <div class="start-screen" id="start-screen">
+            <h1>Zombie Horde</h1>
+            <p class="game-desc">Waves of undead swarm from all sides. Place turrets and barricades to survive. Upgrade
+                between waves.</p>
+            <button class="start-btn" id="start-btn">START GAME</button>
+        </div>
+        <div class="controls-overlay" id="controls-overlay" style="display:none;">
+            <div class="controls-content">
+                <h2>Controls</h2>
+                <div class="control-item"><span class="control-key">Click</span> Place Turret/Barricade</div>
+                <div class="control-item"><span class="control-key">1</span> Turret ($50)</div>
+                <div class="control-item"><span class="control-key">2</span> Barricade ($25)</div>
+                <div class="control-item"><span class="control-key">3</span> Flame Tower ($100)</div>
+                <div class="control-item"><span class="control-key">ESC</span> Pause</div>
+                <p class="controls-start-hint">They're coming...</p>
+            </div>
+        </div>
+        <div class="game-container" id="game-container">
+            <canvas id="game-canvas"></canvas>
+            <div class="game-hud" id="game-hud" style="display:none;">
+                <div class="hud-score" id="hud-wave">Wave: 1</div>
+                <div class="hud-score" id="hud-gold">Gold: 100</div>
+                <div class="hud-score" id="hud-hp">Base HP: 100</div>
+            </div>
+        </div>
+        <div class="game-end-screen game-over" id="game-over-screen" style="display:none;">
+            <h1>OVERRUN</h1>
+            <p id="final-wave">Survived 0 waves</p>
+            <button class="play-btn">▶ Try Again</button>
+            <a href="/games.html" style="display:block;margin-top:16px;color:#888;">← Back to Games</a>
+        </div>
+    </div>
+    <script src="/js/game-utils.js"></script>
+    <script src="/js/audio.js"></script>
+    <script src="game.js"></script>
+</body>
+
+</html>

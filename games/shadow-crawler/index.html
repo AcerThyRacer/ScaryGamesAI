@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shadow Crawler — ScaryGamesAI</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #000;
+        }
+
+        #game-canvas {
+            display: block;
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="game-page">
+        <a href="/games.html" class="back-link" id="back-link">← Back to Games</a>
+
+        <div class="start-screen" id="start-screen">
+            <h1>Shadow Crawler</h1>
+            <p class="game-desc">Your torch is dying. Navigate the dungeon, collect keys, and escape before the shadows
+                consume you.</p>
+            <button class="start-btn" id="start-btn">START GAME</button>
+        </div>
+
+        <div class="controls-overlay" id="controls-overlay" style="display:none;">
+            <div class="controls-content">
+                <h2>Controls</h2>
+                <div class="control-item"><span class="control-key">W A S D</span> Move</div>
+                <div class="control-item"><span class="control-key">Arrow Keys</span> Also Move</div>
+                <div class="control-item"><span class="control-key">Shift</span> Sprint (drains torch)</div>
+                <p class="controls-start-hint">Starting in a moment...</p>
+            </div>
+        </div>
+
+        <div class="game-container" id="game-container">
+            <canvas id="game-canvas"></canvas>
+            <div class="game-hud" id="game-hud" style="display:none;">
+                <div>
+                    <div class="hud-score" id="hud-keys">🔑 Keys: 0 / 0</div>
+                    <div class="hud-score" id="hud-torch" style="font-size:1rem;color:#ffaa00;">🔥 Torch: 100%</div>
+                </div>
+                <div class="hud-controls">
+                    <div class="hud-score" id="hud-level" style="font-size:1rem;">Level 1</div>
+                    <button class="hud-btn" id="fullscreen-btn">⛶ Fullscreen</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-end-screen game-over" id="game-over-screen" style="display:none;">
+            <h1>CONSUMED</h1>
+            <p>The shadows took you...</p>
+            <button class="play-btn" onclick="location.reload()">▶ Try Again</button>
+            <a href="/games.html" style="display:block;margin-top:16px;color:#888;">← Back to Games</a>
+        </div>
+
+        <div class="game-end-screen game-win" id="game-win-screen" style="display:none;">
+            <h1>ESCAPED!</h1>
+            <p id="win-msg">You escaped the dungeon!</p>
+            <button class="play-btn" id="next-level-btn">▶ Next Level</button>
+            <a href="/games.html" style="display:block;margin-top:16px;color:#888;">← Back to Games</a>
+        </div>
+    </div>
+
+    <script src="/js/game-utils.js"></script>
+    <script src="/js/audio.js"></script>
+    <script src="game.js"></script>
+</body>
+
+</html>

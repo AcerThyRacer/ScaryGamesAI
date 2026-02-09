@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Achievements — ScaryGamesAI</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+    <div class="bg-fog"></div>
+    <nav class="navbar">
+        <a href="/" class="logo">Scary<span>Games</span>AI</a>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/games.html">Games</a>
+            <a href="/achievements.html" class="active">Achievements</a>
+            <a href="/leaderboards.html">Leaderboards</a>
+        </div>
+    </nav>
+    <main class="page-content" style="padding-top:100px;max-width:900px;margin:0 auto;">
+        <div id="achievement-gallery"></div>
+    </main>
+    <script src="/js/profiles.js"></script>
+    <script src="/js/achievements.js"></script>
+    <script src="/js/customizer.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var gallery = document.getElementById('achievement-gallery');
+            if (gallery && window.Achievements) Achievements.renderGallery(gallery);
+        });
+    </script>
+</body>
+
+</html>

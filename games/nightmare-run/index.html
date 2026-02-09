@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nightmare Run — ScaryGamesAI</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #000;
+        }
+
+        #game-canvas {
+            display: block;
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="game-page">
+        <a href="/games.html" class="back-link" id="back-link">← Back to Games</a>
+
+        <div class="start-screen" id="start-screen">
+            <h1>Nightmare Run</h1>
+            <p class="game-desc">An endless nightmare you can't wake from. Run through twisted landscapes and survive as
+                long as you can.</p>
+            <button class="start-btn" id="start-btn">START GAME</button>
+        </div>
+
+        <div class="controls-overlay" id="controls-overlay" style="display:none;">
+            <div class="controls-content">
+                <h2>Controls</h2>
+                <div class="control-item"><span class="control-key">Space / ↑</span> Jump</div>
+                <div class="control-item"><span class="control-key">↓ / S</span> Slide</div>
+                <div class="control-item"><span class="control-key">Shift</span> Slow Motion</div>
+                <p class="controls-start-hint">Starting in a moment...</p>
+            </div>
+        </div>
+
+        <div class="game-container" id="game-container">
+            <canvas id="game-canvas"></canvas>
+            <div class="game-hud" id="game-hud" style="display:none;">
+                <div>
+                    <div class="hud-score" id="hud-score">Score: 0</div>
+                    <div class="hud-score" id="hud-best" style="font-size:1rem;color:#ff6b35;">Best: 0</div>
+                </div>
+                <div class="hud-controls">
+                    <div class="hud-score" id="hud-speed" style="font-size:0.9rem;color:#888;">Speed: 1.0x</div>
+                    <button class="hud-btn" id="fullscreen-btn">⛶ Fullscreen</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-end-screen game-over" id="game-over-screen" style="display:none;">
+            <h1>NIGHTMARE</h1>
+            <p id="death-msg">You couldn't escape the nightmare...</p>
+            <p id="final-score"
+                style="font-family:var(--font-display);font-size:2rem;color:var(--accent-orange);margin-bottom:20px;">
+                Score: 0</p>
+            <button class="play-btn" onclick="location.reload()">▶ Try Again</button>
+            <a href="/games.html" style="display:block;margin-top:16px;color:#888;">← Back to Games</a>
+        </div>
+    </div>
+
+    <script src="/js/game-utils.js"></script>
+    <script src="/js/audio.js"></script>
+    <script src="game.js"></script>
+</body>
+
+</html>

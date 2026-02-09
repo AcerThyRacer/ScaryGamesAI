@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Séance — ScaryGamesAI</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #0a0510;
+        }
+
+        #game-canvas {
+            display: block;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="game-page">
+        <a href="/games.html" class="back-link" id="back-link">← Back to Games</a>
+        <div class="start-screen" id="start-screen">
+            <h1>Séance</h1>
+            <p class="game-desc">Use the planchette to communicate with restless spirits. Spell their names to free them
+                — but anger them and face the consequences.</p>
+            <button class="start-btn" id="start-btn">START GAME</button>
+        </div>
+        <div class="controls-overlay" id="controls-overlay" style="display:none;">
+            <div class="controls-content">
+                <h2>Controls</h2>
+                <div class="control-item"><span class="control-key">Mouse</span> Guide planchette</div>
+                <div class="control-item"><span class="control-key">Click</span> Select letter</div>
+                <div class="control-item"><span class="control-key">ESC</span> Pause</div>
+                <p class="controls-start-hint">The spirits are waiting...</p>
+            </div>
+        </div>
+        <div class="game-container" id="game-container">
+            <canvas id="game-canvas"></canvas>
+            <div class="game-hud" id="game-hud" style="display:none;">
+                <div class="hud-score" id="hud-spirits">Spirits Freed: 0/5</div>
+                <div class="hud-score" id="hud-anger">Anger: ●●●○○</div>
+            </div>
+        </div>
+        <div class="game-end-screen game-over" id="game-over-screen" style="display:none;">
+            <h1>THE SPIRITS CONSUMED YOU</h1>
+            <p>You angered them too many times...</p>
+            <button class="play-btn">▶ Try Again</button>
+            <a href="/games.html" style="display:block;margin-top:16px;color:#888;">← Back to Games</a>
+        </div>
+        <div class="game-end-screen game-win" id="game-win-screen" style="display:none;">
+            <h1>SPIRITS FREED</h1>
+            <p>You've released the trapped souls. For now...</p>
+            <button class="play-btn">▶ Play Again</button>
+            <a href="/games.html" style="display:block;margin-top:16px;color:#888;">← Back to Games</a>
+        </div>
+    </div>
+    <script src="/js/game-utils.js"></script>
+    <script src="/js/audio.js"></script>
+    <script src="game.js"></script>
+</body>
+
+</html>

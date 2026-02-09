@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backrooms: Pac-Man — ScaryGamesAI</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #000;
+        }
+
+        #game-canvas {
+            display: block;
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="game-page">
+        <a href="/games.html" class="back-link" id="back-link">← Back to Games</a>
+
+        <!-- Start Screen -->
+        <div class="start-screen" id="start-screen">
+            <h1>Backrooms: Pac-Man</h1>
+            <p class="game-desc">You're trapped in the backrooms. A giant Pac-Man is hunting you. Collect all the
+                pellets to find your way out.</p>
+            <button class="start-btn" id="start-btn">START GAME</button>
+        </div>
+
+        <!-- Controls Overlay -->
+        <div class="controls-overlay" id="controls-overlay" style="display:none;">
+            <div class="controls-content">
+                <h2>Controls</h2>
+                <div class="control-item"><span class="control-key">W A S D</span> Move</div>
+                <div class="control-item"><span class="control-key">Mouse</span> Look Around</div>
+                <div class="control-item"><span class="control-key">Shift</span> Run</div>
+                <div class="control-item"><span class="control-key">ESC</span> Pause / Release Mouse</div>
+                <p class="controls-start-hint">Starting in a moment...</p>
+            </div>
+        </div>
+
+        <!-- Game Container -->
+        <div class="game-container" id="game-container">
+            <canvas id="game-canvas"></canvas>
+
+            <!-- HUD -->
+            <div class="game-hud" id="game-hud" style="display:none;">
+                <div class="hud-score" id="hud-score">Pellets: 0 / 0</div>
+                <div id="hud-pacman-count"
+                    style="color:#ff4444;font-family:Creepster,cursive;font-size:1.2rem;text-shadow:0 0 10px #ff0000;margin-left:16px;">
+                </div>
+                <div id="stamina-bar-container"
+                    style="display:none;position:fixed;bottom:20px;left:50%;transform:translateX(-50%);width:200px;z-index:70;">
+                    <div style="color:#aaa;font-size:0.7rem;font-family:monospace;text-align:center;margin-bottom:4px;">
+                        SPRINT</div>
+                    <div
+                        style="background:rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.15);border-radius:4px;height:8px;overflow:hidden;">
+                        <div id="stamina-bar-fill"
+                            style="height:100%;width:100%;background:#00cc66;transition:width 0.1s,background 0.3s;border-radius:4px;">
+                        </div>
+                    </div>
+                </div>
+                <div class="hud-controls">
+                    <button class="hud-btn" id="fullscreen-btn">⛶ Fullscreen</button>
+                </div>
+            </div>
+
+            <!-- Minimap -->
+            <div class="minimap-container" id="minimap-container" style="display:none;">
+                <canvas id="minimap-canvas" width="180" height="180"></canvas>
+            </div>
+        </div>
+
+        <!-- Game Over -->
+        <div class="game-end-screen game-over" id="game-over-screen" style="display:none;">
+            <h1>GAME OVER</h1>
+            <p>Pac-Man consumed you...</p>
+            <button class="play-btn" onclick="location.reload()">▶ Try Again</button>
+            <a href="/games.html" style="display:block;margin-top:16px;color:#888;">← Back to Games</a>
+        </div>
+
+        <!-- Win Screen -->
+        <div class="game-end-screen game-win" id="game-win-screen" style="display:none;">
+            <h1>YOU ESCAPED!</h1>
+            <p>All pellets collected. You found the way out!</p>
+            <button class="play-btn" onclick="location.reload()">▶ Play Again</button>
+            <a href="/games.html" style="display:block;margin-top:16px;color:#888;">← Back to Games</a>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="/js/game-utils.js"></script>
+    <script src="/js/audio.js"></script>
+    <script src="game.js"></script>
+</body>
+
+</html>

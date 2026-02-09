@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaderboards — ScaryGamesAI</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+    <div class="bg-fog"></div>
+    <nav class="navbar">
+        <a href="/" class="logo">Scary<span>Games</span>AI</a>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/games.html">Games</a>
+            <a href="/achievements.html">Achievements</a>
+            <a href="/leaderboards.html" class="active">Leaderboards</a>
+        </div>
+    </nav>
+    <main class="page-content" style="padding-top:100px;max-width:1000px;margin:0 auto;">
+        <h1
+            style="font-family:var(--font-display);text-align:center;font-size:2.5rem;margin-bottom:8px;color:var(--accent-red);">
+            Leaderboards</h1>
+        <p style="text-align:center;color:var(--text-secondary);margin-bottom:32px;">Top scores across all games</p>
+        <div class="lb-tabs" id="lb-tabs"></div>
+        <div id="leaderboard-container"></div>
+    </main>
+    <script src="/js/profiles.js"></script>
+    <script src="/js/leaderboards.js"></script>
+    <script src="/js/customizer.js"></script>
+    <script>
+        const GAME_NAMES = {
+            'backrooms-pacman': 'Backrooms: Pac-Man',
+            'shadow-crawler': 'Shadow Crawler',
+            'the-abyss': 'The Abyss',
+            'nightmare-run': 'Nightmare Run',
+            'yeti-run': 'Yeti Run',
+            'blood-tetris': 'Blood Tetris',
+            'seance': 'Séance',
+            'dollhouse': 'The Dollhouse',
+            'zombie-horde': 'Zombie Horde',
+            'the-elevator': 'The Elevator',
+            'graveyard-shift': 'Graveyard Shift',
+            'web-of-terror': 'Web of Terror',
+        };
+        document.addEventListener('DOMContentLoaded', function () {
+            var container = document.getElementById('leaderboard-container');
+            var tabs = document.getElementById('lb-tabs');
+            var gameIds = Object.keys(GAME_NAMES);
+            var activeGame = new URLSearchParams(window.location.search).get('game') || gameIds[0];
+
+            // Build tabs
+            gameIds.forEach(function (gid) {
+                var btn = document.createElement('button');
+                btn.className = 'filter-btn' + (gid === activeGame ? ' active' : '');
+                btn.textContent = GAME_NAMES[gid];
+                btn.addEventListener('click', function () {
+                    tabs.querySelectorAll('.filter-btn').forEach(function (b) { b.classList.remove('active'); });
+                    btn.classList.add('active');
+                    showBoard(gid);
+                });
+                tabs.appendChild(btn);
+            });
+
+            function showBoard(gid) {
+                container.innerHTML = '';
+                Leaderboards.renderBoard(container, gid, GAME_NAMES[gid]);
+            }
+            showBoard(activeGame);
+        });
+    </script>
+</body>
+
+</html>

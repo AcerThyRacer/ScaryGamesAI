@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Yeti Run — ScaryGamesAI</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #000;
+        }
+
+        #game-canvas {
+            display: block;
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="game-page">
+        <a href="/games.html" class="back-link" id="back-link">← Back to Games</a>
+
+        <div class="game-container">
+            <canvas id="game-canvas"></canvas>
+
+            <!-- Start Screen -->
+            <div class="start-screen" id="start-screen">
+                <h1>Yeti Run</h1>
+                <p class="game-desc">
+                    A terrifying Yeti is chasing you through the frozen mountains.
+                    Run, dodge, and survive as long as you can. Don't look back.
+                </p>
+                <button class="start-btn" id="start-btn">▶ ENTER THE STORM</button>
+            </div>
+
+            <!-- Controls Overlay -->
+            <div class="controls-overlay" id="controls-overlay" style="display:none;">
+                <div class="controls-content">
+                    <h2>Controls</h2>
+                    <div class="control-item"><span class="control-key">A / D</span> Dodge Left / Right</div>
+                    <div class="control-item"><span class="control-key">SPACE</span> Jump</div>
+                    <div class="control-item"><span class="control-key">SHIFT</span> Sprint</div>
+                    <p class="controls-start-hint">Starting in a moment...</p>
+                </div>
+            </div>
+
+            <!-- HUD -->
+            <div class="game-hud" id="game-hud" style="display:none;">
+                <div>
+                    <div class="hud-score" id="hud-distance">Distance: 0m</div>
+                    <div class="hud-score" id="hud-best" style="font-size:1rem;opacity:0.7;">Best: 0m</div>
+                </div>
+                <div class="hud-controls">
+                    <div class="hud-score" id="hud-speed" style="font-size:1rem;">Speed: x1.0</div>
+                    <button class="hud-btn" id="fullscreen-btn">⛶ Fullscreen</button>
+                </div>
+            </div>
+
+            <!-- Game Over -->
+            <div class="game-end-screen game-over" id="game-over-screen" style="display:none;">
+                <h1>CAUGHT</h1>
+                <p>The Yeti got you...</p>
+                <p id="final-distance">Distance: 0m</p>
+                <button class="play-btn" onclick="location.reload()">▶ Try Again</button>
+                <br><br>
+                <a href="/games.html" class="play-btn" style="background:rgba(255,255,255,0.1);">← Back to Games</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="/js/game-utils.js"></script>
+    <script src="/js/audio.js"></script>
+    <script src="game.js"></script>
+</body>
+
+</html>
