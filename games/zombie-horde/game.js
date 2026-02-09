@@ -86,6 +86,7 @@
 
     function startWave() {
         wave++;
+        if (window.ChallengeManager) ChallengeManager.notify('zombie-horde', 'wave', wave);
         var count = 5 + wave * 3;
         zombiesLeft = count;
         waveTimer = 0;
@@ -155,6 +156,7 @@
             angle: 0,
         });
         HorrorAudio.playClick();
+        if (window.ChallengeManager) ChallengeManager.notify('zombie-horde', 'towers', 1);
         updateHUD();
     }
 
@@ -204,6 +206,7 @@
             // Dead?
             if (z.hp <= 0) {
                 kills++;
+                if (window.ChallengeManager) ChallengeManager.notify('zombie-horde', 'kills', 1);
                 gold += z.type === 'big' ? 15 : (z.type === 'fast' ? 8 : 10);
                 spawnParticles(z.x, z.y, '#448844', 8);
                 HorrorAudio.playCollect();

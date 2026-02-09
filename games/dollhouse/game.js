@@ -166,6 +166,7 @@
                 currentRoom = obj.leadsTo;
                 showMsg('Entered: ' + ROOMS[currentRoom].name);
                 shakeTimer = 0.2;
+                if (window.ChallengeManager) ChallengeManager.notify('dollhouse', 'rooms_visited', 1);
             }
         } else if (obj.type === 'container') {
             if (obj.opened) { showMsg('Already searched.'); return; }
@@ -175,6 +176,7 @@
                 addItem(obj.contains);
                 var item = ITEMS[obj.contains];
                 showMsg('Found: ' + item.icon + ' ' + item.name);
+                if (window.ChallengeManager) ChallengeManager.notify('dollhouse', 'items_found', 1);
             } else {
                 showMsg('Empty...');
             }

@@ -68,13 +68,22 @@
     });
 
     function dodgeLeft() {
-        if (currentLane > 0) { currentLane--; targetX = lanes[currentLane]; }
+        if (currentLane > 0) {
+            currentLane--; targetX = lanes[currentLane];
+            if (window.ChallengeManager) ChallengeManager.notify('yeti-run', 'dodges', 1);
+        }
     }
     function dodgeRight() {
-        if (currentLane < 2) { currentLane++; targetX = lanes[currentLane]; }
+        if (currentLane < 2) {
+            currentLane++; targetX = lanes[currentLane];
+            if (window.ChallengeManager) ChallengeManager.notify('yeti-run', 'dodges', 1);
+        }
     }
     function jump() {
-        if (isGrounded) { playerVY = 14; isGrounded = false; HorrorAudio.playJump(); }
+        if (isGrounded) {
+            playerVY = 14; isGrounded = false; HorrorAudio.playJump();
+            if (window.ChallengeManager) ChallengeManager.notify('yeti-run', 'jumps', 1);
+        }
     }
 
     function init() {
@@ -592,6 +601,7 @@
         // Move forward
         player.position.z -= speed * dt;
         distance = Math.abs(Math.round(player.position.z));
+        if (window.ChallengeManager) ChallengeManager.notify('yeti-run', 'dist_session', distance);
 
         // Lane movement (smooth)
         player.position.x += (targetX - player.position.x) * 10 * dt;

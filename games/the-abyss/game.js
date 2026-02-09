@@ -1440,6 +1440,11 @@
     function gameWin() {
         gameActive = false;
         currentState = GAME_STATE.WIN;
+
+        if (window.ChallengeManager) {
+            ChallengeManager.notify('the-abyss', 'artifacts_collected', player.artifactsCollected);
+            ChallengeManager.notify('the-abyss', 'oxygen', player.oxygen);
+        }
         
         const completionTime = (Date.now() - player.startTime) / 1000;
         
@@ -1985,6 +1990,7 @@
         // Update session stats
         if (gameActive) {
             SaveSystem.updateSessionStat('distanceSwum', player.currentSpeed * dt);
+            if (window.ChallengeManager) ChallengeManager.notify('the-abyss', 'depth', player.depth);
             if (player.depth > SaveSystem.getSessionStats().deepestPoint) {
                 SaveSystem.updateSessionStat('deepestPoint', player.depth);
             }

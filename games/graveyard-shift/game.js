@@ -266,6 +266,7 @@
         // Time progresses — 360 seconds = 6 hours (midnight to 6AM)
         var timeSpeed = 1 / GameUtils.getMultiplier(); // harder = slower time
         gameTime += dt * timeSpeed;
+        if (window.ChallengeManager) ChallengeManager.notify('graveyard-shift', 'survival_time', gameTime);
         if (gameTime >= 360 && disturbancesChecked >= totalDisturbances) { gameWin(); return; }
 
         // Movement
@@ -323,6 +324,10 @@
 
             if (dist < playerNoise && g.state !== 'chase') {
                 g.state = 'chase'; g.alertTimer = 5;
+                if (!g.spotted) {
+                    g.spotted = true;
+                    if (window.ChallengeManager) ChallengeManager.notify('graveyard-shift', 'ghosts_spotted', 1);
+                }
             }
             if (g.state === 'chase') {
                 g.alertTimer -= dt;
