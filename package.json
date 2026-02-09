@@ -2,6 +2,7 @@
   "name": "scarygamesai",
   "version": "1.0.0",
   "description": "Horror Gaming Website",
+  "license": "GPL-3.0-or-later",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
