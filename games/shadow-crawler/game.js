@@ -29,6 +29,7 @@
     var exitPos = { x: 0, y: 0 };
     var cameraOffset = { x: 0, y: 0 };
     var flickerTimer = 0;
+    var survivalTime = 0;
 
     function resize() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
     resize();
@@ -59,6 +60,7 @@
         keys_collected = 0;
         total_keys = 0;
         torchLevel = 100;
+        survivalTime = 0;
         for (var r = 0; r < maze.length; r++) {
             for (var c = 0; c < maze[r].length; c++) {
                 if (maze[r][c] === 3) { player.x = c * TILE + TILE / 2; player.y = r * TILE + TILE / 2; }
@@ -90,6 +92,8 @@
 
     function update(dt) {
         if (!gameActive) return;
+        survivalTime += dt;
+        if (window.ChallengeManager) ChallengeManager.notify('shadow-crawler', 'survival_time', survivalTime);
         var sprinting = keysPressed['ShiftLeft'] || keysPressed['ShiftRight'];
         var speed = (sprinting ? player.speed * 1.8 : player.speed) * TILE;
         var mx = 0, my = 0;
@@ -110,6 +114,7 @@
         if (pr >= 0 && pr < maze.length && pc >= 0 && pc < maze[0].length && maze[pr][pc] === 2) {
             maze[pr][pc] = 0; keys_collected++; torchLevel = Math.min(100, torchLevel + 15);
             HorrorAudio.playCollect();
+            if (window.ChallengeManager) ChallengeManager.notify('shadow-crawler', 'keys_found', 1);
             updateHUD();
         }
         if (keys_collected >= total_keys) {
@@ -210,6 +215,7 @@
     function levelComplete() {
         gameActive = false;
         HorrorAudio.playWin();
+        if (window.ChallengeManager) ChallengeManager.notify('shadow-crawler', 'levels_cleared', 1);
         currentLevel++;
         if (currentLevel >= LEVELS.length) {
             document.getElementById('win-msg').textContent = 'You escaped all dungeons! You are free!';

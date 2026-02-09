@@ -203,6 +203,10 @@
         if (player.speedBoost) { player.speedTimer -= sDt; if (player.speedTimer <= 0) player.speedBoost = false; }
 
         distanceTraveled += baseSpeed * sDt;
+        if (window.ChallengeManager) {
+            ChallengeManager.notify('nightmare-run', 'dist_session', distanceTraveled);
+            ChallengeManager.notify('nightmare-run', 'dist_total', baseSpeed * sDt);
+        }
         speedMultiplier = 1 + distanceTraveled / 10000;
         score = Math.floor(distanceTraveled / 10);
 
@@ -229,6 +233,7 @@
                 else if (p.type === 'speed') { player.speedBoost = true; player.speedTimer = 4; }
                 else if (p.type === 'double_jump') { player.maxJumps = 2; setTimeout(function () { player.maxJumps = 1; }, 8000); }
                 HorrorAudio.playPowerup();
+                if (window.ChallengeManager) ChallengeManager.notify('nightmare-run', 'powerups_collected', 1);
                 for (var j = 0; j < 8; j++) particles.push({ x: p.x, y: p.y, vx: (Math.random() - 0.5) * 5, vy: (Math.random() - 0.5) * 5, life: 0.6, color: p.color });
                 powerups.splice(i, 1);
             }

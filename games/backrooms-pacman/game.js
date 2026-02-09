@@ -875,6 +875,10 @@
             if (Math.sqrt(dx * dx + dz * dz) < 1.2) {
                 p.userData.collected = true; scene.remove(p); collectedPellets++;
                 HorrorAudio.playCollect(); updateHUD();
+                if (window.ChallengeManager) {
+                    ChallengeManager.notify('backrooms-pacman', 'pellets', 1);
+                    ChallengeManager.notify('backrooms-pacman', 'score', collectedPellets * 100);
+                }
                 if (collectedPellets >= totalPellets) gameWin();
             }
         }
@@ -1148,6 +1152,11 @@
         if (!time) time = performance.now();
         var dt = Math.min((time - lastTime) / 1000, 0.05);
         lastTime = time; if (dt <= 0) return;
+
+        if (window.ChallengeManager) {
+            ChallengeManager.notify('backrooms-pacman', 'time', gameElapsed);
+        }
+
         updatePlayer(dt);
         updatePacman(dt);
         updatePellets();

@@ -2202,3 +2202,238 @@ button {
 .dare-banner.visible {
   transform: translateY(0);
 }
+/* ============ CHALLENGES V2 ============ */
+.challenges-header {
+    text-align: center;
+    margin-bottom: 40px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.02);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.rank-display {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.rank-icon {
+    font-size: 3rem;
+    animation: pulse 2s infinite;
+}
+
+.rank-title {
+    font-family: var(--font-display);
+    font-size: 2rem;
+    color: var(--accent-red);
+    text-shadow: 0 0 20px var(--accent-red-glow);
+}
+
+.rank-cp {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.cp-bar-container {
+    width: 100%;
+    max-width: 400px;
+    height: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 5px;
+    margin-top: 10px;
+    overflow: hidden;
+    position: relative;
+}
+
+.cp-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #cc1122, #ff4444);
+    width: 0%;
+    transition: width 0.5s ease;
+}
+
+.challenge-section-title {
+    font-family: var(--font-display);
+    font-size: 1.8rem;
+    color: var(--text-primary);
+    margin: 40px 0 20px;
+    padding-left: 20px;
+    border-left: 4px solid var(--accent-red);
+}
+
+.challenge-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.challenge-card {
+    background: rgba(20, 20, 25, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 20px;
+    position: relative;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.challenge-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--accent-red);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.challenge-card.completed {
+    border-color: var(--accent-green);
+    background: rgba(0, 20, 10, 0.6);
+}
+
+.challenge-card.claimed {
+    opacity: 0.6;
+    filter: grayscale(0.8);
+}
+
+.chal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.chal-game {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+}
+
+.chal-title {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    color: var(--text-primary);
+    line-height: 1.2;
+}
+
+.chal-desc {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.4;
+    flex-grow: 1;
+}
+
+.chal-progress-wrap {
+    margin-top: 8px;
+}
+
+.chal-progress-text {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+}
+
+.chal-progress-bar {
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.chal-progress-fill {
+    height: 100%;
+    background: var(--accent-red);
+    width: 0%;
+    transition: width 0.3s ease;
+}
+
+.completed .chal-progress-fill {
+    background: var(--accent-green);
+}
+
+.chal-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding-top: 12px;
+}
+
+.chal-reward {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #ffaa00;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.chal-btn {
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all 0.2s;
+}
+
+.chal-btn-reroll {
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-secondary);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.chal-btn-reroll:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #fff;
+}
+
+.chal-btn-claim {
+    background: linear-gradient(135deg, var(--accent-green), #00aa66);
+    color: #000;
+    box-shadow: 0 0 10px var(--accent-green-glow);
+}
+
+.chal-btn-claim:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px var(--accent-green-glow);
+}
+
+.chal-btn-play {
+    background: rgba(204, 17, 34, 0.2);
+    color: var(--accent-red);
+    border: 1px solid rgba(204, 17, 34, 0.4);
+}
+
+.chal-btn-play:hover {
+    background: rgba(204, 17, 34, 0.4);
+    color: #fff;
+}
+
+.weekly-card {
+    border: 1px solid var(--accent-purple);
+    background: linear-gradient(135deg, rgba(20, 20, 30, 0.9), rgba(40, 20, 60, 0.4));
+}
+
+.weekly-card:hover {
+    border-color: #aa66ff;
+    box-shadow: 0 0 30px rgba(139, 92, 246, 0.2);
+}
+
+.weekly-card .chal-progress-fill {
+    background: var(--accent-purple);
+}
+
+.rerolls-left {
+    text-align: right;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-bottom: 10px;
+}

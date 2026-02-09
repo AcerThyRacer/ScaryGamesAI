@@ -38,6 +38,7 @@
     var ghostAlpha = 0, ghostX = 0, ghostY = 0;
     var planchetteMoving = false, planchetteTimer = 0;
     var revealedClue = false, clueTimer = 0;
+    var currentCalmTime = 0;
 
     GameUtils.injectDifficultySelector('start-screen');
     GameUtils.initPause({
@@ -162,6 +163,7 @@
             if (selectedLetters === target) {
                 // Correct! Spirit freed
                 spiritsFreed++;
+                if (window.ChallengeManager) ChallengeManager.notify('seance', 'spirits_freed', 1);
                 spiritMessage = '💀 ' + target + ' has been freed...';
                 msgTimer = 3; msgFade = 1;
                 boardShake = 0.5;
@@ -349,6 +351,13 @@
         if (!time) time = performance.now();
         var dt = Math.min((time - lastTime) / 1000, 0.1);
         lastTime = time;
+
+        if (angerLevel < 2) {
+            currentCalmTime += dt;
+            if (window.ChallengeManager) ChallengeManager.notify('seance', 'calm_time', currentCalmTime);
+        } else {
+            currentCalmTime = 0;
+        }
 
         // Planchette follows mouse smoothly
         planchette.x += (mouseX - planchette.x) * 6 * dt;

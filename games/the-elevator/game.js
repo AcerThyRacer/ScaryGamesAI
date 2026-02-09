@@ -146,6 +146,7 @@
     }
 
     function buildFloorRoom(themeIdx) {
+        if (window.ChallengeManager) ChallengeManager.notify('the-elevator', 'floors_visited', 1);
         if (floorRoom) scene.remove(floorRoom);
         var group = new THREE.Group();
         group.position.set(0, 0, 5); // room is in front of elevator
@@ -301,6 +302,7 @@
 
     function gameWin() {
         gameActive = false; GameUtils.setState(GameUtils.STATE.WIN);
+        if (window.ChallengeManager) ChallengeManager.notify('the-elevator', 'sanity', sanity);
         document.exitPointerLock();
         HorrorAudio.playWin(); HorrorAudio.stopDrone();
         document.getElementById('game-win-screen').style.display = 'flex';

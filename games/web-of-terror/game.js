@@ -335,6 +335,7 @@
                 k.collected = true; keysCollected++;
                 scene.remove(k.mesh); scene.remove(k.light);
                 HorrorAudio.playCollect();
+                if (window.ChallengeManager) ChallengeManager.notify('web-of-terror', 'keys_found', 1);
                 if (keysCollected >= totalKeys) {
                     setTimeout(function () { gameWin(); }, 1000);
                 }
@@ -351,6 +352,7 @@
                 w.active = false;
                 scene.remove(w.mesh);
                 HorrorAudio.playHit();
+                if (window.ChallengeManager) ChallengeManager.notify('web-of-terror', 'webs', 1);
                 // Replenish a bit of torch
                 torch = Math.min(100, torch + 5);
             } else if (dist < 1.2) {

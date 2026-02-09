@@ -149,6 +149,11 @@
             var points = [0, 100, 300, 500, 800];
             score += (points[cleared] || 800) * level;
             lines += cleared;
+            if (window.ChallengeManager) {
+                ChallengeManager.notify('blood-tetris', 'lines_cleared', cleared);
+                ChallengeManager.notify('blood-tetris', 'lines_session', lines);
+                ChallengeManager.notify('blood-tetris', 'score', score);
+            }
             level = Math.floor(lines / 10) + 1;
             dropInterval = Math.max(80, 800 - (level - 1) * 70);
             bloodLevel = Math.min(ROWS * 0.4, bloodLevel + cleared * 0.5);
