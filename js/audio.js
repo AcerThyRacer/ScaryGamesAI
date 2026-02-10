@@ -464,6 +464,106 @@ var HorrorAudio = (function () {
         startDrone(40, 'underwater');
     }
 
+    // ============ 3D AUDIO ============
+    function updateListener(x, y, z, fx, fy, fz, ux, uy, uz) {
+        ensureContext();
+        if (ctx.listener.positionX) {
+            var t = ctx.currentTime;
+            ctx.listener.positionX.setTargetAtTime(x, t, 0.1);
+            ctx.listener.positionY.setTargetAtTime(y, t, 0.1);
+            ctx.listener.positionZ.setTargetAtTime(z, t, 0.1);
+            ctx.listener.forwardX.setTargetAtTime(fx, t, 0.1);
+            ctx.listener.forwardY.setTargetAtTime(fy, t, 0.1);
+            ctx.listener.forwardZ.setTargetAtTime(fz, t, 0.1);
+            ctx.listener.upX.setTargetAtTime(ux, t, 0.1);
+            ctx.listener.upY.setTargetAtTime(uy, t, 0.1);
+            ctx.listener.upZ.setTargetAtTime(uz, t, 0.1);
+        } else {
+            ctx.listener.setPosition(x, y, z);
+            ctx.listener.setOrientation(fx, fy, fz, ux, uy, uz);
+        }
+    }
+
+    function create3DSound(type) {
+        ensureContext();
+        var panner = ctx.createPanner();
+        panner.panningModel = 'HRTF';
+        panner.distanceModel = 'exponential';
+        panner.refDistance = 2;
+        panner.maxDistance = 25;
+        panner.rolloffFactor = 1.5;
+        panner.connect(sfxGain);
+
+        var source = null, lfo = null, gain = null;
+        var alive = true;
+
+        if (type === 'monster_breath') {
+            // heavy breathing / static hybrid
+            var buffer = createNoiseBuffer(4, 'pink');
+            source = ctx.createBufferSource();
+            source.buffer = buffer;
+            source.loop = true;
+
+            var filter = ctx.createBiquadFilter();
+            filter.type = 'lowpass';
+            filter.frequency.value = 500;
+
+            lfo = ctx.createOscillator();
+            lfo.frequency.value = 0.3; // breath speed
+
+            gain = ctx.createGain();
+            gain.gain.value = 0; // base
+
+            // LFO modulation
+            var lfoGain = ctx.createGain();
+            lfoGain.gain.value = 0.8;
+
+            lfo.connect(lfoGain);
+            lfoGain.connect(gain.gain);
+
+            // Bias gain up so it breathes 0.2 to 1.0
+            var constant = ctx.createConstantSource ? ctx.createConstantSource() : ctx.createOscillator();
+            if (ctx.createConstantSource) {
+                 constant.offset.value = 0.4;
+                 constant.connect(gain.gain);
+                 constant.start();
+            } else {
+                // Fallback for no ConstantSource (rare now, but safe)
+                gain.gain.value = 0.4;
+            }
+
+            source.connect(filter);
+            filter.connect(gain);
+            gain.connect(panner);
+
+            source.start();
+            lfo.start();
+
+            // Store nodes for cleanup
+            source.onended = function() { alive = false; };
+        }
+
+        return {
+            setPosition: function(x, y, z) {
+                if (!alive) return;
+                if (panner.positionX) {
+                    var t = ctx.currentTime;
+                    panner.positionX.setTargetAtTime(x, t, 0.1);
+                    panner.positionY.setTargetAtTime(y, t, 0.1);
+                    panner.positionZ.setTargetAtTime(z, t, 0.1);
+                } else {
+                    panner.setPosition(x, y, z);
+                }
+            },
+            stop: function() {
+                alive = false;
+                try { if (source) source.stop(); } catch(e){}
+                try { if (lfo) lfo.stop(); } catch(e){}
+                setTimeout(function(){ panner.disconnect(); }, 500);
+            }
+        };
+    }
+
     // ============ STOP ALL ============
     function stopAll() {
         stopHeartbeat();
@@ -496,6 +596,10 @@ var HorrorAudio = (function () {
         playJumpScare: playJumpScare,
         playWin: playWin,
         playHit: playHit,
+
+        // 3D Audio
+        updateListener: updateListener,
+        create3DSound: create3DSound,
 
         // Ambience
         startHeartbeat: startHeartbeat,

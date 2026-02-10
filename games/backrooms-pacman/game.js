@@ -43,6 +43,11 @@
     let corridorLights = [], dustParticles = null, footstepTimer = 0;
     let distortionOverlay = null, camShake = 0;
     let pacmanAnimTime = 0;
+
+    // Post-processing (Motion Blur)
+    let blurTarget, blurScene, blurCamera, blurMaterial;
+    let lastYaw = 0, lastPitch = 0;
+
     // Sprint velocity system
     let playerVelocity = { x: 0, z: 0 };
     let currentSpeed = 0;
@@ -68,9 +73,14 @@
     document.addEventListener('keyup', function (e) { keys[e.code] = false; if (e.code === 'ShiftLeft' || e.code === 'ShiftRight') isRunning = false; });
     document.addEventListener('mousemove', function (e) {
         if (!pointerLocked || !gameActive) return;
-        yaw -= e.movementX * 0.002;
-        pitch -= e.movementY * 0.002;
+        // Fix camera flick: Clamp movement delta to avoid massive jumps
+        var mx = Math.max(-100, Math.min(100, e.movementX));
+        var my = Math.max(-100, Math.min(100, e.movementY));
+        yaw -= mx * 0.002;
+        pitch -= my * 0.002;
         pitch = Math.max(-1.2, Math.min(1.2, pitch));
+        // Normalize yaw to prevent float precision loss over time
+        yaw = yaw % (Math.PI * 2);
     });
     document.addEventListener('pointerlockchange', function () { pointerLocked = !!document.pointerLockElement; });
     document.addEventListener('keydown', function (e) { if (e.code === 'Escape' && gameActive) { gameActive = false; GameUtils.pauseGame(); } });
@@ -165,10 +175,13 @@
         renderer.setPixelRatio(1);
         console.log('[Backrooms] renderer created');
 
+        initPostProcessing(); // Init blur buffers
+
         window.addEventListener('resize', function () {
             camera.aspect = window.innerWidth / window.innerHeight;
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
+            if (blurTarget) blurTarget.setSize(window.innerWidth, window.innerHeight);
         });
         renderer.domElement.addEventListener('click', function () { if (gameActive && !pointerLocked) renderer.domElement.requestPointerLock(); });
 
@@ -188,6 +201,53 @@
         if (window.QualityFX) {
             QualityFX.injectThreeJS(renderer, scene, camera);
         }
+    }
+
+    // ---- POST PROCESSING ----
+    function initPostProcessing() {
+        blurTarget = new THREE.WebGLRenderTarget(window.innerWidth, window.innerHeight);
+        blurScene = new THREE.Scene();
+        blurCamera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+
+        var vert = `
+            varying vec2 vUv;
+            void main() { vUv = uv; gl_Position = vec4(position, 1.0); }
+        `;
+
+        // Rotational motion blur shader
+        var frag = `
+            uniform sampler2D tDiffuse;
+            uniform vec2 uVelocity;
+            varying vec2 vUv;
+            void main() {
+                vec4 color = texture2D(tDiffuse, vUv);
+                if (length(uVelocity) < 0.0001) {
+                    gl_FragColor = color;
+                    return;
+                }
+                float samples = 8.0;
+                for (float i = 1.0; i < 8.0; i++) {
+                    float t = i / (samples - 1.0);
+                    color += texture2D(tDiffuse, vUv - uVelocity * t);
+                }
+                gl_FragColor = color / samples;
+            }
+        `;
+
+        blurMaterial = new THREE.ShaderMaterial({
+            uniforms: {
+                tDiffuse: { value: null },
+                uVelocity: { value: new THREE.Vector2(0, 0) }
+            },
+            vertexShader: vert,
+            fragmentShader: frag,
+            depthTest: false,
+            depthWrite: false
+        });
+
+        var plane = new THREE.PlaneGeometry(2, 2);
+        var quad = new THREE.Mesh(plane, blurMaterial);
+        blurScene.add(quad);
     }
 
     // ---- BUILD MAZE ----
@@ -474,8 +534,26 @@
             }
         }
         var diffMult = GameUtils.getMultiplier();
-        var baseSpeed = 3.4 * (0.7 + diffMult * 0.4); // Scales with difficulty
-        group.userData = { speed: baseSpeed, pathTimer: 0, path: [], mode: 'patrol', patrolTarget: null, rageMode: false, lastPlayerRow: -1, lastPlayerCol: -1, ambushTimer: 0, hearingRange: 18 + diffMult * 3 };
+        // Increased base speed to force sprinting (Player Walk=5, Sprint=11)
+        var baseSpeed = 5.2 * (0.8 + diffMult * 0.3);
+
+        // 3D Sound
+        var sound = HorrorAudio.create3DSound('monster_breath');
+        if (sound) sound.setPosition(spawnPos ? spawnPos.x : 0, 1.3, spawnPos ? spawnPos.z : 0);
+
+        group.userData = {
+            speed: baseSpeed,
+            pathTimer: 0,
+            path: [],
+            mode: 'patrol',
+            patrolTarget: null,
+            rageMode: false,
+            lastPlayerRow: -1,
+            lastPlayerCol: -1,
+            ambushTimer: 0,
+            hearingRange: 18 + diffMult * 3,
+            sound: sound
+        };
         scene.add(group);
         if (isExtra) {
             extraPacmans.push(group);
@@ -563,10 +641,20 @@
     function restartGame() {
         cloneMaze();
         pellets.forEach(function (p) { scene.remove(p); }); pellets = []; totalPellets = 0; collectedPellets = 0;
-        yaw = 0; pitch = 0; keys = {}; isRunning = false; camShake = 0;
-        if (pacman) scene.remove(pacman); pacman = null;
-        for (var i = 0; i < extraPacmans.length; i++) scene.remove(extraPacmans[i]);
+        yaw = 0; pitch = 0; lastYaw = 0; lastPitch = 0; keys = {}; isRunning = false; camShake = 0;
+
+        // Cleanup sounds
+        if (pacman) {
+            if (pacman.userData.sound) pacman.userData.sound.stop();
+            scene.remove(pacman);
+        }
+        pacman = null;
+        for (var i = 0; i < extraPacmans.length; i++) {
+            if (extraPacmans[i].userData.sound) extraPacmans[i].userData.sound.stop();
+            scene.remove(extraPacmans[i]);
+        }
         extraPacmans = [];
+
         stamina = maxStamina; staminaDrained = false;
         gameElapsed = 0; extraSpawnTimers = [];
         setupExtraSpawnTimers();
@@ -675,6 +763,22 @@
         camera.rotation.order = 'YXZ';
         camera.rotation.y = yaw + headTilt;
         camera.rotation.x = pitch;
+
+        // Update 3D Audio Listener
+        var cx = Math.sin(yaw);
+        var cz = Math.cos(yaw); // camera direction (approx based on yaw)
+        // actually standard calculation:
+        // forward vector: (-sin(yaw)cos(pitch), sin(pitch), -cos(yaw)cos(pitch))?
+        // simple Y-rotation forward is: x = -sin(yaw), z = -cos(yaw) (OpenGL convention)
+        // But ThreeJS defaults -Z forward.
+        // We can just use ThreeJS method:
+        var dir = new THREE.Vector3();
+        camera.getWorldDirection(dir);
+        HorrorAudio.updateListener(
+            camera.position.x, camera.position.y, camera.position.z,
+            dir.x, dir.y, dir.z,
+            0, 1, 0
+        );
     }
 
     // ---- PAC-MAN AI ----
@@ -717,7 +821,8 @@
         // Path update
         ud.pathTimer -= dt;
         if (ud.pathTimer <= 0) {
-            ud.pathTimer = ud.rageMode ? 0.2 : 0.35;
+            // Faster reaction time
+            ud.pathTimer = ud.rageMode ? 0.15 : 0.25;
             if (ud.mode === 'chase') {
                 ud.path = findPath(pacRow, pacCol, playerRow, playerCol);
             } else if (ud.mode === 'ambush') {
@@ -754,6 +859,11 @@
                 pac.position.z += (dz / dist) * spd;
                 pac.rotation.y = Math.atan2(dx, dz);
             }
+        }
+
+        // Update 3D Sound Position
+        if (ud.sound) {
+            ud.sound.setPosition(pac.position.x, pac.position.y, pac.position.z);
         }
 
         // ---- ANIMATE PAC-MAN ----
@@ -1180,6 +1290,29 @@
         updateDust(dt);
         updateHUD();
         drawMinimap();
-        renderer.render(scene, camera);
+
+        // Render with Motion Blur
+        var dy = yaw - lastYaw;
+        var dp = pitch - lastPitch;
+        // Handle wrap-around for yaw
+        if (Math.abs(dy) > Math.PI) dy = dy > 0 ? dy - Math.PI * 2 : dy + Math.PI * 2;
+
+        if (blurMaterial) {
+            // Strength multiplier
+            var s = 0.5;
+            blurMaterial.uniforms.uVelocity.value.set(dy * s, dp * s);
+        }
+        lastYaw = yaw;
+        lastPitch = pitch;
+
+        if (blurTarget) {
+            renderer.setRenderTarget(blurTarget);
+            renderer.render(scene, camera);
+            renderer.setRenderTarget(null);
+            blurMaterial.uniforms.tDiffuse.value = blurTarget.texture;
+            renderer.render(blurScene, blurCamera);
+        } else {
+            renderer.render(scene, camera);
+        }
     }
 })();
