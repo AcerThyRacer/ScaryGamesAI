@@ -87,6 +87,8 @@
         var ctrl = document.getElementById('controls-overlay'); ctrl.style.display = 'flex';
         HorrorAudio.startDrone(35, 'dark');
 
+        if (window.QualityFX) QualityFX.init2D(canvas, ctx);
+
         setTimeout(function () {
             ctrl.classList.add('hiding');
             setTimeout(function () {
@@ -335,6 +337,14 @@
             ctx.shadowBlur = 0;
             // Candle body
             ctx.fillStyle = '#ddd'; ctx.fillRect(cp[0] - 3, cp[1] - 3, 6, 14);
+
+            // QualityFX Light
+            if (window.QualityFX) QualityFX.addLight2D(cp[0], cp[1]-8, 100, 'rgba(255, 140, 40, 0.2)', 0.5 + candleGlowBase*0.5);
+        }
+
+        // Planchette Light
+        if (window.QualityFX) {
+            QualityFX.addLight2D(planchette.x, planchette.y, 80, 'rgba(200, 255, 255, 0.1)', 0.4);
         }
 
         ctx.restore();

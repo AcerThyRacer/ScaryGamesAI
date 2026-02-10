@@ -1265,6 +1265,10 @@ function gameLoop() {
     // Player
     drawPlayer(ctx, cam.x, cam.y);
 
+    if (window.QualityFX) {
+        QualityFX.addLight2D(player.x - cam.x + player.w/2, player.y - cam.y + player.h/2, 180, 'rgba(255, 255, 200, 0.2)', 0.6);
+    }
+
     // Particles
     for (const p of particles) {
         ctx.globalAlpha = p.life / p.maxLife;
@@ -1407,6 +1411,8 @@ function startGame(opts = {}) {
 
     // Init world arrays
     initWorld();
+
+    if (window.QualityFX) QualityFX.init2D(canvas, ctx);
 
     // ===== LOADING SCREEN =====
     const loadingScreen = document.getElementById('loading-screen');

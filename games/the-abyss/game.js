@@ -177,13 +177,24 @@
         sunLight.shadow.mapSize.height = 2048;
         scene.add(sunLight);
 
-        // Player light (flashlight)
-        const flashLight = new THREE.SpotLight(0xffffff, 1, 50, Math.PI / 4, 0.5, 1);
+        // Player light (flashlight) - Volumetric feel
+        const flashLight = new THREE.SpotLight(0xaaccff, 2, 60, Math.PI / 5, 0.3, 1);
         flashLight.position.set(0, 0, 0);
         flashLight.target.position.set(0, 0, -1);
+        flashLight.castShadow = true;
         camera.add(flashLight);
         camera.add(flashLight.target);
         scene.add(camera);
+
+        // Caustics Simulation (Fake) - Moving lights
+        const causticGroup = new THREE.Group();
+        for(let i=0; i<3; i++) {
+            const l = new THREE.PointLight(0x00ffff, 0.5, 30);
+            l.position.set(Math.random()*10, 10, Math.random()*10);
+            causticGroup.add(l);
+        }
+        scene.add(causticGroup);
+        window.causticLights = causticGroup;
 
         // Initial environment
         createInitialEnvironment();
@@ -2339,6 +2350,17 @@
             if (player.depth > SaveSystem.getSessionStats().deepestPoint) {
                 SaveSystem.updateSessionStat('deepestPoint', player.depth);
             }
+        }
+
+        // Animate Caustics
+        if (window.causticLights) {
+            const time = Date.now() * 0.001;
+            window.causticLights.children.forEach((l, i) => {
+                l.position.x = player.position.x + Math.sin(time + i) * 10;
+                l.position.z = player.position.z + Math.cos(time * 0.8 + i) * 10;
+                l.position.y = player.position.y + 10;
+                l.intensity = 0.3 + Math.sin(time * 2 + i) * 0.2;
+            });
         }
         
         // Phase 2: Update biome and environment

@@ -133,6 +133,9 @@
         var ctrl = document.getElementById('controls-overlay');
         ctrl.style.display = 'flex';
         HorrorAudio.startDrone(65, 'dark');
+
+        if (window.QualityFX) QualityFX.init2D(canvas, ctx);
+
         setTimeout(function () {
             ctrl.classList.add('hiding');
             setTimeout(function () {
@@ -280,6 +283,12 @@
             ctx.shadowBlur = 10;
             ctx.fillRect(o.x, o.y, o.w, o.h);
             ctx.shadowBlur = 0;
+
+            // QualityFX Light for enemies
+            if (window.QualityFX && (o.type === 'eye' || o.type === 'bat')) {
+                QualityFX.addLight2D(o.x + o.w/2, o.y + o.h/2, 60, 'rgba(255, 0, 0, 0.4)', 0.8);
+            }
+
             if (o.type === 'skull') {
                 ctx.fillStyle = '#000';
                 ctx.fillRect(o.x + 6, o.y + 8, 6, 6);
@@ -312,6 +321,13 @@
         ctx.shadowColor = player.invincible ? '#00ffff' : '#ff0044';
         ctx.shadowBlur = player.invincible ? 20 : 8;
         ctx.fillRect(player.x, player.y, player.w, player.h);
+
+        // QualityFX Player Light
+        if (window.QualityFX) {
+            var col = player.invincible ? 'rgba(0, 255, 255, 0.4)' : 'rgba(255, 50, 50, 0.3)';
+            QualityFX.addLight2D(player.x + player.w/2, player.y + player.h/2, 150, col, 0.6);
+        }
+
         ctx.shadowBlur = 0;
         ctx.fillStyle = '#fff';
         ctx.fillRect(player.x + 8, player.y + 8, 5, 5);

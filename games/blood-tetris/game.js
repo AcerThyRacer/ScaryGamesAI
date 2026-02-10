@@ -179,6 +179,8 @@
 
         HorrorAudio.startDrone(40, 'dark');
 
+        if (window.QualityFX) QualityFX.init2D(canvas, ctx);
+
         setTimeout(function () {
             ctrl.classList.add('hiding');
             setTimeout(function () {
@@ -303,7 +305,14 @@
         // Board
         for (var r = 0; r < ROWS; r++) {
             for (var c = 0; c < COLS; c++) {
-                if (board[r][c]) drawBlock(c, r, board[r][c], false);
+                if (board[r][c]) {
+                    drawBlock(c, r, board[r][c], false);
+                    // Light from static blocks
+                    if (window.QualityFX && Math.random() < 0.1) { // Optimize: flickering random blocks
+                        var col = COLORS[board[r][c]-1];
+                        QualityFX.addLight2D(c * BLOCK + BLOCK/2, r * BLOCK + BLOCK/2, 60, col, 0.4);
+                    }
+                }
             }
         }
 
@@ -321,7 +330,14 @@
         if (current) {
             for (var r = 0; r < current.length; r++) {
                 for (var c = 0; c < current[r].length; c++) {
-                    if (current[r][c]) drawBlock(currentX + c, currentY + r, currentColor, false);
+                    if (current[r][c]) {
+                        drawBlock(currentX + c, currentY + r, currentColor, false);
+                        // Active piece light
+                        if (window.QualityFX) {
+                            var col = COLORS[currentColor-1];
+                            QualityFX.addLight2D((currentX + c) * BLOCK + BLOCK/2, (currentY + r) * BLOCK + BLOCK/2, 100, col, 0.6);
+                        }
+                    }
                 }
             }
         }

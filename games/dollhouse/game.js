@@ -95,6 +95,8 @@
         HorrorAudio.startDrone(30, 'dark');
         HorrorAudio.startHeartbeat(50);
 
+        if (window.QualityFX) QualityFX.init2D(canvas, ctx);
+
         setTimeout(function () {
             ctrl.classList.add('hiding');
             setTimeout(function () {
@@ -312,6 +314,14 @@
         }
 
         ctx.restore();
+
+        // QualityFX Light - Mouse Cursor
+        if (window.QualityFX) {
+            var hasCandle = hasItem('candle') || (selectedItem >= 0 && inventory[selectedItem] === 'candle');
+            var r = hasCandle ? 150 : 80;
+            var col = hasCandle ? 'rgba(255, 200, 100, 0.4)' : 'rgba(255, 255, 255, 0.15)';
+            QualityFX.addLight2D(mouseX, mouseY, r, col, 0.8);
+        }
 
         // Vignette
         var vig = ctx.createRadialGradient(W / 2, H / 2, W * 0.2, W / 2, H / 2, W * 0.65);
