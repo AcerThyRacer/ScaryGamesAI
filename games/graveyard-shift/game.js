@@ -84,15 +84,18 @@
         ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true;
         scene.add(ground);
 
-        // Moonlight
-        var moon = new THREE.DirectionalLight(0x334466, 0.15);
+        // Moonlight - Blue tint for atmosphere
+        var moon = new THREE.DirectionalLight(0x223355, 0.4);
         moon.position.set(20, 30, 10); moon.castShadow = true;
+        moon.shadow.bias = -0.001;
         scene.add(moon);
-        scene.add(new THREE.AmbientLight(0x111122, 0.08));
+        scene.add(new THREE.AmbientLight(0x050510, 0.2));
 
-        // Player flashlight
-        flashlight = new THREE.SpotLight(0xffffcc, 1.5, 20, Math.PI / 6, 0.3, 1);
+        // Player flashlight - Volumetric Style
+        flashlight = new THREE.SpotLight(0xffffee, 3.0, 40, Math.PI / 5, 0.5, 1);
         flashlight.castShadow = true;
+        flashlight.shadow.mapSize.width = 1024;
+        flashlight.shadow.mapSize.height = 1024;
         camera.add(flashlight);
         camera.add(flashlight.target);
         flashlight.target.position.set(0, 0, -5);
@@ -376,6 +379,9 @@
         var r = 0.02 + dawnPct * 0.2, g = 0.02 + dawnPct * 0.1, b = 0.06 + dawnPct * 0.15;
         scene.background.setRGB(r, g, b);
         scene.fog.color.setRGB(r, g, b);
+
+        // Dynamic Fog Density (Ground fog simulation)
+        scene.fog.density = 0.04 + Math.sin(gameTime * 0.5) * 0.01;
 
         // HUD
         var hours = Math.floor(gameTime / 60);

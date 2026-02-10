@@ -196,35 +196,45 @@
         var floorTex = createFloorTexture();
         var ceilTex = createCeilingTexture();
 
-        // Floor — MeshBasicMaterial for guaranteed visibility
+        // Floor — Standard Material for lighting
         var floorGeo = new THREE.PlaneGeometry(COLS * CELL, ROWS * CELL);
-        var floorMat = new THREE.MeshBasicMaterial({ map: floorTex, color: 0x4A3A28 });
+        var floorMat = new THREE.MeshStandardMaterial({ map: floorTex, color: 0x4A3A28, roughness: 0.9, metalness: 0.1 });
         var floor = new THREE.Mesh(floorGeo, floorMat);
         floor.rotation.x = -Math.PI / 2;
         floor.position.set((COLS * CELL) / 2, 0, (ROWS * CELL) / 2);
+        floor.receiveShadow = true;
         scene.add(floor);
 
-        // Ceiling — MeshBasicMaterial, dark
-        var ceilMat = new THREE.MeshBasicMaterial({ map: ceilTex, color: 0x2A1E14 });
+        // Ceiling — Standard Material, dark
+        var ceilMat = new THREE.MeshStandardMaterial({ map: ceilTex, color: 0x2A1E14, roughness: 0.95 });
         var ceil = new THREE.Mesh(floorGeo.clone(), ceilMat);
         ceil.rotation.x = Math.PI / 2;
         ceil.position.set((COLS * CELL) / 2, WALL_H, (ROWS * CELL) / 2);
+        ceil.receiveShadow = true;
         scene.add(ceil);
 
-        // Walls — MeshBasicMaterial ignores lighting, GUARANTEED visible
+        // Walls — Standard Material for shadows and light interaction
         var wallGeo = new THREE.BoxGeometry(CELL, WALL_H, CELL);
-        var wallMat = new THREE.MeshBasicMaterial({ map: wallTex, color: 0xB5A44C });
+        var wallMat = new THREE.MeshStandardMaterial({ map: wallTex, color: 0xB5A44C, roughness: 0.85, metalness: 0.05 });
         var wallCount = 0;
         for (var r = 0; r < ROWS; r++) {
             for (var c = 0; c < COLS; c++) {
                 if (MAZE[r][c] === 1) {
                     var wall = new THREE.Mesh(wallGeo, wallMat);
                     wall.position.set(c * CELL + CELL / 2, WALL_H / 2, r * CELL + CELL / 2);
+                    wall.castShadow = true;
+                    wall.receiveShadow = true;
                     scene.add(wall);
                     wallCount++;
                 }
             }
         }
+
+        // Force update scene for QualityFX if loaded
+        if (window.QualityFX && window.QualityFX.updateScene) {
+            QualityFX.updateScene();
+        }
+
         console.log('[Backrooms] buildMaze complete — walls added:', wallCount, 'floor:', !!floor, 'scene children:', scene.children.length);
     }
 

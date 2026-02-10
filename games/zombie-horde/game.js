@@ -54,6 +54,8 @@
         var ctrl = document.getElementById('controls-overlay'); ctrl.style.display = 'flex';
         HorrorAudio.startDrone(45, 'dark');
 
+        if (window.QualityFX) QualityFX.init2D(canvas, ctx);
+
         setTimeout(function () {
             ctrl.classList.add('hiding');
             setTimeout(function () {
@@ -346,6 +348,13 @@
         for (var i = 0; i < turrets.length; i++) {
             var t = turrets[i];
             ctx.fillStyle = t.color;
+
+            // Add light for turrets
+            if (window.QualityFX && t.type !== 2) {
+                var col = t.type === 3 ? 'rgba(255, 100, 0, 0.3)' : 'rgba(100, 200, 255, 0.2)';
+                QualityFX.addLight2D(t.x, t.y, t.range * 0.8, col, 0.5);
+            }
+
             if (t.type === 2) {
                 // Barricade
                 ctx.fillRect(t.x - t.r, t.y - t.r, t.r * 2, t.r * 2);

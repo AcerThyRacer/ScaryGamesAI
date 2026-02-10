@@ -248,6 +248,40 @@
         }
         ground.geometry.computeVertexNormals(); scene.add(ground);
         groundPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
+
+        // Fake Cloud Shadows
+        var cloudGeo = new THREE.PlaneGeometry(MAP_SIZE*1.5, MAP_SIZE*1.5);
+        var cloudMat = new THREE.MeshBasicMaterial({ color: 0x000000, transparent: true, opacity: 0.2 });
+        // Generate noise texture for clouds would be best, but we'll use simple large circles
+        var cCanvas = document.createElement('canvas');
+        cCanvas.width = 512; cCanvas.height = 512;
+        var cCtx = cCanvas.getContext('2d');
+        cCtx.fillStyle = '#000000'; cCtx.fillRect(0,0,512,512);
+        for(let i=0; i<30; i++) {
+            cCtx.fillStyle = `rgba(255,255,255,${0.1+Math.random()*0.2})`;
+            cCtx.beginPath(); cCtx.arc(Math.random()*512, Math.random()*512, 50+Math.random()*100, 0, Math.PI*2); cCtx.fill();
+        }
+        var cloudTex = new THREE.CanvasTexture(cCanvas);
+        // Invert for shadow map (white is transparent, black is shadow) - wait, standard blending.
+        // Actually, we want black blobs on transparent.
+        cCtx.clearRect(0,0,512,512);
+        for(let i=0; i<20; i++) {
+            cCtx.fillStyle = 'rgba(0,0,0,0.4)';
+            cCtx.filter = 'blur(20px)';
+            cCtx.beginPath(); cCtx.arc(Math.random()*512, Math.random()*512, 60+Math.random()*120, 0, Math.PI*2); cCtx.fill();
+        }
+        cloudTex = new THREE.CanvasTexture(cCanvas);
+        cloudMat.map = cloudTex;
+        cloudMat.alphaMap = cloudTex; // Use same for alpha
+        cloudMat.transparent = true;
+        cloudMat.opacity = 0.5;
+
+        var cloudMesh = new THREE.Mesh(cloudGeo, cloudMat);
+        cloudMesh.rotation.x = -Math.PI/2;
+        cloudMesh.position.y = 15;
+        scene.add(cloudMesh);
+        window.cloudMesh = cloudMesh;
+
         // Lighting
         var sun = new THREE.DirectionalLight(lv.sunColor, lv.sunIntensity);
         sun.position.set(30, 50, 20); sun.castShadow = true;
@@ -891,6 +925,15 @@
             if (capturePoints.length) updateCapturePoints(dt);
         }
         updateUnits(dt); updateParticles(dt);
+
+        // Animate clouds
+        if (window.cloudMesh) {
+            window.cloudMesh.position.x += dt * 1.5;
+            window.cloudMesh.position.z += dt * 0.5;
+            if (window.cloudMesh.position.x > MAP_SIZE/2) window.cloudMesh.position.x -= MAP_SIZE;
+            if (window.cloudMesh.position.z > MAP_SIZE/2) window.cloudMesh.position.z -= MAP_SIZE;
+        }
+
         // Animate territory line during setup
         if (setupPhase && territoryLine) {
             territoryLine.material.opacity = 0.5 + Math.sin(gameTime * 3) * 0.3;

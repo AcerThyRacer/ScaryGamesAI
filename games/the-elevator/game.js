@@ -90,8 +90,8 @@
     function buildElevator() {
         // Elevator car
         var elevGroup = new THREE.Group();
-        var wallMat = new THREE.MeshStandardMaterial({ color: 0x888888, roughness: 0.3, metalness: 0.6 });
-        var floorMat = new THREE.MeshStandardMaterial({ color: 0x444444, roughness: 0.8 });
+        var wallMat = new THREE.MeshStandardMaterial({ color: 0x888888, roughness: 0.2, metalness: 0.8 });
+        var floorMat = new THREE.MeshStandardMaterial({ color: 0x222222, roughness: 0.1, metalness: 0.5 }); // Polished metal floor
 
         // Floor
         var fl = new THREE.Mesh(new THREE.PlaneGeometry(3, 3), floorMat);

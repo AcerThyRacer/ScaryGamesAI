@@ -185,19 +185,33 @@
             ctx.shadowBlur = 0;
         }
         ctx.fillStyle = '#aaaacc'; ctx.beginPath(); ctx.arc(player.x, player.y, 8, 0, Math.PI * 2); ctx.fill();
+
+        // QualityFX Lighting Injection
+        if (window.QualityFX && QualityFX.isRT()) {
+            var cx = player.x - cameraOffset.x, cy = player.y - cameraOffset.y;
+            var lightR = LIGHT_RADIUS * (torchLevel / 100);
+            var flicker = Math.sin(flickerTimer * 15) * 3 + Math.sin(flickerTimer * 23) * 2;
+            var finalR = Math.max(20, lightR + flicker);
+
+            // Add Player Torch
+            QualityFX.addLight2D(cx, cy, finalR, 'rgba(255, 180, 50, 0.4)', 1.0);
+        } else {
+            ctx.restore();
+            var lightR = LIGHT_RADIUS * (torchLevel / 100);
+            var flicker = Math.sin(flickerTimer * 15) * 3 + Math.sin(flickerTimer * 23) * 2;
+            var finalR = Math.max(20, lightR + flicker);
+            ctx.save();
+            ctx.fillStyle = 'rgba(0,0,0,0.97)';
+            ctx.beginPath(); ctx.rect(0, 0, w, h);
+            var cx = player.x - cameraOffset.x, cy = player.y - cameraOffset.y;
+            ctx.moveTo(cx + finalR, cy); ctx.arc(cx, cy, finalR, 0, Math.PI * 2, true); ctx.fill();
+            ctx.restore();
+            var grd = ctx.createRadialGradient(cx, cy, finalR * 0.1, cx, cy, finalR);
+            grd.addColorStop(0, 'rgba(255,200,100,0.08)'); grd.addColorStop(0.5, 'rgba(255,150,50,0.04)'); grd.addColorStop(1, 'transparent');
+            ctx.fillStyle = grd; ctx.fillRect(0, 0, w, h);
+            return;
+        }
         ctx.restore();
-        var lightR = LIGHT_RADIUS * (torchLevel / 100);
-        var flicker = Math.sin(flickerTimer * 15) * 3 + Math.sin(flickerTimer * 23) * 2;
-        var finalR = Math.max(20, lightR + flicker);
-        ctx.save();
-        ctx.fillStyle = 'rgba(0,0,0,0.97)';
-        ctx.beginPath(); ctx.rect(0, 0, w, h);
-        var cx = player.x - cameraOffset.x, cy = player.y - cameraOffset.y;
-        ctx.moveTo(cx + finalR, cy); ctx.arc(cx, cy, finalR, 0, Math.PI * 2, true); ctx.fill();
-        ctx.restore();
-        var grd = ctx.createRadialGradient(cx, cy, finalR * 0.1, cx, cy, finalR);
-        grd.addColorStop(0, 'rgba(255,200,100,0.08)'); grd.addColorStop(0.5, 'rgba(255,150,50,0.04)'); grd.addColorStop(1, 'transparent');
-        ctx.fillStyle = grd; ctx.fillRect(0, 0, w, h);
     }
 
     function gameOver() {
@@ -248,6 +262,9 @@
         ctrlOverlay.style.display = 'flex';
         HorrorAudio.startDrone(45, 'dark');
         HorrorAudio.startHeartbeat(55);
+
+        if (window.QualityFX) QualityFX.init2D(canvas, ctx);
+
         setTimeout(function () {
             ctrlOverlay.classList.add('hiding');
             setTimeout(function () {
