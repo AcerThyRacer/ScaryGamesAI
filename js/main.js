@@ -2,6 +2,30 @@
    ScaryGamesAI — Main JavaScript
    ============================================ */
 
+// Tier hierarchy: none < lite < pro < max
+const TIER_LEVELS = { none: 0, lite: 1, pro: 2, max: 3 };
+const TIER_NAMES = { lite: 'Lite 🥉', pro: 'Pro 🥈', max: 'Max 🥇' };
+const QUALITY_INFO = {
+    none: { label: 'Standard', icon: '🎮', cls: 'quality-standard' },
+    lite: { label: 'Standard', icon: '🎮', cls: 'quality-standard' },
+    pro: { label: 'Ray Tracing', icon: '💠', cls: 'quality-rt' },
+    max: { label: 'Path Tracing', icon: '✨', cls: 'quality-pt' },
+};
+
+function getUserTier() {
+    return localStorage.getItem('sgai-sub-tier') || 'none';
+}
+
+function getQualityForTier() {
+    return QUALITY_INFO[getUserTier()] || QUALITY_INFO.none;
+}
+
+function canAccessGame(game) {
+    const userLevel = TIER_LEVELS[getUserTier()] || 0;
+    const reqLevel = TIER_LEVELS[game.requiredTier || 'none'] || 0;
+    return userLevel >= reqLevel;
+}
+
 const GAMES = [
     {
         id: 'backrooms-pacman',
@@ -12,7 +36,7 @@ const GAMES = [
         url: '/games/backrooms-pacman/',
         color: '#ccaa00',
         bgColor: '#2a2400',
-        difficulty: 3, category: 'action',
+        difficulty: 3, category: 'action', requiredTier: 'none',
     },
     {
         id: 'shadow-crawler',
@@ -23,7 +47,7 @@ const GAMES = [
         url: '/games/shadow-crawler/',
         color: '#8b5cf6',
         bgColor: '#1a1030',
-        difficulty: 2, category: 'action',
+        difficulty: 2, category: 'action', requiredTier: 'none',
     },
     {
         id: 'the-abyss',
@@ -34,7 +58,7 @@ const GAMES = [
         url: '/games/the-abyss/',
         color: '#06b6d4',
         bgColor: '#0a1a2a',
-        difficulty: 3, category: 'action',
+        difficulty: 3, category: 'action', requiredTier: 'none',
     },
     {
         id: 'nightmare-run',
@@ -45,7 +69,7 @@ const GAMES = [
         url: '/games/nightmare-run/',
         color: '#ff6b35',
         bgColor: '#2a1400',
-        difficulty: 2, category: 'action',
+        difficulty: 2, category: 'action', requiredTier: 'pro',
     },
     {
         id: 'yeti-run',
@@ -56,7 +80,7 @@ const GAMES = [
         url: '/games/yeti-run/',
         color: '#88ccff',
         bgColor: '#0a1520',
-        difficulty: 3, category: 'action',
+        difficulty: 3, category: 'action', requiredTier: 'pro',
     },
     // ===== PHASE 2 — NEW GAMES =====
     {
@@ -68,7 +92,7 @@ const GAMES = [
         url: '/games/blood-tetris/',
         color: '#cc2222',
         bgColor: '#1a0505',
-        difficulty: 2, category: 'puzzle', isNew: true,
+        difficulty: 2, category: 'puzzle', isNew: true, requiredTier: 'pro',
     },
     {
         id: 'seance',
@@ -79,7 +103,7 @@ const GAMES = [
         url: '/games/seance/',
         color: '#cc8833',
         bgColor: '#1a0e05',
-        difficulty: 2, category: 'puzzle', isNew: true,
+        difficulty: 2, category: 'puzzle', isNew: true, requiredTier: 'pro',
     },
     {
         id: 'dollhouse',
@@ -90,7 +114,7 @@ const GAMES = [
         url: '/games/dollhouse/',
         color: '#cc7788',
         bgColor: '#1a0a0a',
-        difficulty: 3, category: 'puzzle', isNew: true,
+        difficulty: 3, category: 'puzzle', isNew: true, requiredTier: 'pro',
     },
     {
         id: 'zombie-horde',
@@ -101,7 +125,7 @@ const GAMES = [
         url: '/games/zombie-horde/',
         color: '#44aa44',
         bgColor: '#0a1a0a',
-        difficulty: 3, category: 'strategy', isNew: true,
+        difficulty: 3, category: 'strategy', isNew: true, requiredTier: 'max',
     },
     {
         id: 'the-elevator',
@@ -112,7 +136,7 @@ const GAMES = [
         url: '/games/the-elevator/',
         color: '#8888cc',
         bgColor: '#0a0a15',
-        difficulty: 4, category: 'action', isNew: true,
+        difficulty: 4, category: 'action', isNew: true, requiredTier: 'max',
     },
     {
         id: 'graveyard-shift',
@@ -123,7 +147,7 @@ const GAMES = [
         url: '/games/graveyard-shift/',
         color: '#446688',
         bgColor: '#050510',
-        difficulty: 4, category: 'stealth', isNew: true,
+        difficulty: 4, category: 'stealth', isNew: true, requiredTier: 'max',
     },
     {
         id: 'web-of-terror',
@@ -134,7 +158,7 @@ const GAMES = [
         url: '/games/web-of-terror/',
         color: '#aa6633',
         bgColor: '#0a0800',
-        difficulty: 5, category: 'action', isNew: true,
+        difficulty: 5, category: 'action', isNew: true, requiredTier: 'max',
     },
     {
         id: 'total-zombies-medieval',
@@ -145,7 +169,18 @@ const GAMES = [
         url: '/games/total-zombies-medieval/',
         color: '#cc6622',
         bgColor: '#1a0e05',
-        difficulty: 4, category: 'strategy', isNew: true,
+        difficulty: 4, category: 'strategy', isNew: true, requiredTier: 'max',
+    },
+    {
+        id: 'cursed-depths',
+        title: 'Cursed Depths',
+        desc: 'A Terraria-style 2D sandbox horror game. Dig into cursed earth, mine ores, craft weapons, fight demons, and survive 5 terrifying biomes. How deep can you go?',
+        tags: ['2D', 'Sandbox', 'Horror'],
+        tagClasses: ['tag-2d', 'tag-survival', 'tag-horror'],
+        url: '/games/cursed-depths/',
+        color: '#CC1133',
+        bgColor: '#0a0008',
+        difficulty: 4, category: 'action', isNew: true, requiredTier: 'none',
     },
 ];
 
@@ -399,6 +434,37 @@ function drawCardThumb(canvas, game) {
         ctx.fillStyle = 'rgba(200,50,50,0.5)'; ctx.fillRect(w * 0.75, h * 0.2, 12, 8);
         ctx.fillStyle = 'rgba(150,150,150,0.3)'; ctx.fillRect(w * 0.16, h * 0.2, 2, 18);
         ctx.fillRect(w * 0.76, h * 0.2, 2, 18);
+    } else if (game.id === 'cursed-depths') {
+        // Terraria-style underground scene
+        const grd = ctx.createLinearGradient(0, 0, 0, h);
+        grd.addColorStop(0, 'rgba(20,10,30,0.9)'); grd.addColorStop(0.3, 'rgba(40,20,15,0.9)');
+        grd.addColorStop(0.7, 'rgba(60,20,20,0.9)'); grd.addColorStop(1, 'rgba(80,15,5,0.95)');
+        ctx.fillStyle = grd; ctx.fillRect(0, 0, w, h);
+        // Dirt/stone layers
+        ctx.fillStyle = 'rgba(92,58,30,0.4)';
+        for (let bx = 0; bx < w; bx += 12) for (let by = h * 0.35; by < h; by += 12) {
+            if (Math.random() > 0.3) ctx.fillRect(bx, by, 11, 11);
+        }
+        // Ores
+        ctx.fillStyle = 'rgba(255,215,0,0.5)';
+        ctx.fillRect(w * 0.6, h * 0.5, 8, 8); ctx.fillRect(w * 0.62, h * 0.58, 8, 8);
+        ctx.fillStyle = 'rgba(204,17,51,0.5)';
+        ctx.fillRect(w * 0.3, h * 0.7, 8, 8); ctx.fillRect(w * 0.32, h * 0.78, 8, 8);
+        // Cave opening
+        ctx.fillStyle = 'rgba(0,0,0,0.6)';
+        ctx.beginPath(); ctx.ellipse(w * 0.5, h * 0.6, 30, 20, 0, 0, Math.PI * 2); ctx.fill();
+        // Player silhouette
+        ctx.fillStyle = 'rgba(68,136,204,0.6)';
+        ctx.fillRect(w * 0.45, h * 0.48, 8, 16);
+        ctx.fillStyle = 'rgba(221,187,136,0.6)';
+        ctx.fillRect(w * 0.45, h * 0.44, 8, 6);
+        // Torch glow
+        const tg = ctx.createRadialGradient(w * 0.45 + 12, h * 0.48, 3, w * 0.45 + 12, h * 0.48, 40);
+        tg.addColorStop(0, 'rgba(255,170,50,0.3)'); tg.addColorStop(1, 'transparent');
+        ctx.fillStyle = tg; ctx.fillRect(0, 0, w, h);
+        // Surface grass
+        ctx.fillStyle = 'rgba(45,90,30,0.5)';
+        ctx.fillRect(0, h * 0.32, w, 4);
     }
 
     // Vignette
@@ -430,25 +496,76 @@ function createGameCards(filter) {
         filtered.forEach(game => {
             const skulls = '💀'.repeat(game.difficulty || 1) + '🖤'.repeat(5 - (game.difficulty || 1));
             const newBadge = game.isNew ? '<span class="new-badge">NEW</span>' : '';
+            const locked = !canAccessGame(game);
+            const tierLabel = TIER_NAMES[game.requiredTier] || 'Free';
+            const lockOverlay = locked ? `<div class="game-lock-overlay"><div class="game-lock-icon">🔒</div><div class="game-lock-text">Requires ${tierLabel}</div></div>` : '';
+            // Quality badge based on user tier
+            const quality = getQualityForTier();
+            const qualityBadge = !locked ? `<span class="quality-badge ${quality.cls}">${quality.icon} ${quality.label}</span>` : '';
             const card = document.createElement('div');
-            card.className = 'game-card';
+            card.className = 'game-card' + (locked ? ' game-card-locked' : '');
             card.setAttribute('data-category', game.category || '');
             card.innerHTML = `
-        <div class="game-card-image"><canvas></canvas>${newBadge}</div>
+        <div class="game-card-image"><canvas></canvas>${newBadge}${lockOverlay}</div>
         <div class="game-card-body">
           <div class="game-card-tags">
             ${game.tags.map((t, i) => `<span class="tag ${game.tagClasses[i]}">${t}</span>`).join('')}
+            ${qualityBadge}
           </div>
           <h3 class="game-card-title">${game.title}</h3>
           <div class="game-card-difficulty" title="Difficulty">${skulls}</div>
           <p class="game-card-desc">${game.desc}</p>
-          <a href="${game.url}" class="play-btn">▶ Play Now</a>
+          ${locked ? `<button class="play-btn game-upgrade-btn" data-tier="${game.requiredTier}">🔒 Upgrade to Play</button>` : `<a href="${game.url}" class="play-btn">▶ Play Now</a>`}
         </div>
       `;
             grid.appendChild(card);
             const canvas = card.querySelector('canvas');
             setTimeout(() => drawCardThumb(canvas, game), 50);
+            // Upgrade button click => show modal
+            const upgradeBtn = card.querySelector('.game-upgrade-btn');
+            if (upgradeBtn) {
+                upgradeBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    showUpgradeModal(game.requiredTier);
+                });
+            }
         });
+    });
+}
+
+function showUpgradeModal(tier) {
+    // Remove existing modal
+    const old = document.getElementById('upgrade-modal');
+    if (old) old.remove();
+    const tierInfo = {
+        lite: { name: 'Lite', icon: '🥉', color: '#cd7f32', price: '$2/mo' },
+        pro: { name: 'Pro', icon: '🥈', color: '#c0c0c0', price: '$5/mo' },
+        max: { name: 'Max', icon: '🥇', color: '#ffd700', price: '$8/mo' },
+    };
+    const info = tierInfo[tier] || tierInfo.lite;
+    const modal = document.createElement('div');
+    modal.id = 'upgrade-modal';
+    modal.className = 'upgrade-modal-backdrop';
+    modal.innerHTML = `
+        <div class="upgrade-modal">
+            <button class="upgrade-modal-close" id="upgrade-modal-close">✕</button>
+            <div class="upgrade-modal-icon">${info.icon}</div>
+            <h3 class="upgrade-modal-title" style="color:${info.color}">Upgrade to ${info.name}</h3>
+            <p class="upgrade-modal-desc">This game requires the <strong style="color:${info.color}">${info.name}</strong> tier (${info.price}) to play. Upgrade now to unlock this and more games!</p>
+            <a href="/subscription.html" class="upgrade-modal-btn" style="background:linear-gradient(135deg, ${info.color}, ${info.color}cc);">View Plans</a>
+        </div>
+    `;
+    document.body.appendChild(modal);
+    requestAnimationFrame(() => modal.classList.add('visible'));
+    modal.querySelector('#upgrade-modal-close').addEventListener('click', () => {
+        modal.classList.remove('visible');
+        setTimeout(() => modal.remove(), 300);
+    });
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            modal.classList.remove('visible');
+            setTimeout(() => modal.remove(), 300);
+        }
     });
 }
 

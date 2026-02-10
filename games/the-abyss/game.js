@@ -130,12 +130,162 @@
     let environmentalHazards = [];
     
     // ============================================
+    // THREE.JS INITIALIZATION
+    // ============================================
+    function initThreeJS() {
+        const canvas = document.getElementById('game-canvas');
+        if (!canvas) {
+            console.error('Game canvas not found!');
+            return false;
+        }
+
+        // Scene
+        scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x020510);
+        scene.fog = new THREE.FogExp2(0x020510, 0.025);
+
+        // Camera
+        camera = new THREE.PerspectiveCamera(
+            75,
+            window.innerWidth / window.innerHeight,
+            0.1,
+            1000
+        );
+        camera.position.copy(player.position);
+
+        // Renderer
+        renderer = new THREE.WebGLRenderer({
+            canvas: canvas,
+            antialias: true,
+            alpha: false
+        });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+        // QualityFX Integration
+        const useRT = window.QualityFX && window.QualityFX.isRT();
+        renderer.shadowMap.enabled = useRT;
+        renderer.shadowMap.type = (window.QualityFX && window.QualityFX.isPT()) ? THREE.PCFSoftShadowMap : THREE.BasicShadowMap;
+
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = 1.0;
+
+        // Lighting
+        const ambientLight = new THREE.AmbientLight(0x404080, 0.5);
+        scene.add(ambientLight);
+
+        const sunLight = new THREE.DirectionalLight(0x66aaff, 0.8);
+        sunLight.position.set(0, 100, 0);
+        if (useRT) {
+            sunLight.castShadow = true;
+            sunLight.shadow.mapSize.width = 2048;
+            sunLight.shadow.mapSize.height = 2048;
+        }
+        scene.add(sunLight);
+
+        // Player light (flashlight)
+        const flashLight = new THREE.SpotLight(0xffffff, 1, 50, Math.PI / 4, 0.5, 1);
+        flashLight.position.set(0, 0, 0);
+        flashLight.target.position.set(0, 0, -1);
+        if (useRT) {
+            flashLight.castShadow = true;
+            flashLight.shadow.mapSize.width = 1024;
+            flashLight.shadow.mapSize.height = 1024;
+        }
+        camera.add(flashLight);
+        camera.add(flashLight.target);
+        scene.add(camera);
+
+        // Initial environment
+        createInitialEnvironment();
+
+        // Start render loop
+        animate();
+
+        console.log('✅ Three.js initialized');
+        return true;
+    }
+
+    function createInitialEnvironment() {
+        // Ocean floor
+        const floorGeometry = new THREE.PlaneGeometry(500, 500, 50, 50);
+        const floorMaterial = new THREE.MeshStandardMaterial({
+            color: 0x0a1520,
+            roughness: 0.9,
+            metalness: 0.1
+        });
+
+        // Add some noise to floor vertices
+        const positions = floorGeometry.attributes.position.array;
+        for (let i = 0; i < positions.length; i += 3) {
+            positions[i + 2] = Math.random() * 2; // Z becomes Y after rotation
+        }
+        floorGeometry.computeVertexNormals();
+
+        const floor = new THREE.Mesh(floorGeometry, floorMaterial);
+        floor.rotation.x = -Math.PI / 2;
+        floor.position.y = -50;
+        if (window.QualityFX && window.QualityFX.isRT()) floor.receiveShadow = true;
+        scene.add(floor);
+
+        // Water surface
+        const surfaceGeometry = new THREE.PlaneGeometry(500, 500);
+        const surfaceMaterial = new THREE.MeshBasicMaterial({
+            color: 0x1a4080,
+            transparent: true,
+            opacity: 0.3,
+            side: THREE.DoubleSide
+        });
+        const surface = new THREE.Mesh(surfaceGeometry, surfaceMaterial);
+        surface.rotation.x = -Math.PI / 2;
+        surface.position.y = 0;
+        scene.add(surface);
+
+        // Initial particles
+        createParticleSystem();
+    }
+
+    function createParticleSystem() {
+        // Marine snow
+        const particleCount = 1000;
+        const geometry = new THREE.BufferGeometry();
+        const positions = new Float32Array(particleCount * 3);
+
+        for (let i = 0; i < particleCount * 3; i += 3) {
+            positions[i] = (Math.random() - 0.5) * 100;
+            positions[i + 1] = -Math.random() * 100;
+            positions[i + 2] = (Math.random() - 0.5) * 100;
+        }
+
+        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+        const material = new THREE.PointsMaterial({
+            color: 0xaaccff,
+            size: 0.1,
+            transparent: true,
+            opacity: 0.6
+        });
+
+        const particleSystem = new THREE.Points(geometry, material);
+        scene.add(particleSystem);
+
+        // Store for animation
+        window.marineSnow = particleSystem;
+    }
+
+    // ============================================
     // INITIALIZATION
     // ============================================
     document.addEventListener('DOMContentLoaded', initGame);
     
     function initGame() {
-        // Load settings first
+        // Initialize Three.js first
+        if (!initThreeJS()) {
+            console.error('Failed to initialize Three.js');
+            return;
+        }
+
+        // Load settings
         if (typeof SaveSystem !== 'undefined') {
             settings = SaveSystem.loadSettings();
             SaveSystem.resetSessionStats();
@@ -196,9 +346,43 @@
             });
         }
         
+        // ============================================
+        // PHASE 1: Initialize New Engine Systems
+        // ============================================
+        initPhase1Systems();
+
         setupEventListeners();
         setupUI();
         loadMenuData();
+    }
+
+    // ============================================
+    // PHASE 1 SYSTEMS INITIALIZATION
+    // ============================================
+    async function initPhase1Systems() {
+        console.log('🚀 Initializing Phase 1 Technical Foundation...');
+
+        try {
+            // Get canvas
+            const canvas = document.getElementById('game-canvas');
+            if (!canvas) return;
+
+            // Wait for Three.js to be ready
+            if (typeof THREE === 'undefined') {
+                console.warn('Three.js not loaded yet, delaying Phase 1 init');
+                setTimeout(initPhase1Systems, 100);
+                return;
+            }
+
+            // Initialize Phase 1 Integration
+            if (typeof Phase1Integration !== 'undefined') {
+                // We'll initialize after scene setup in startGame
+                window.phase1Ready = true;
+                console.log('✅ Phase 1 systems ready for activation');
+            }
+        } catch (e) {
+            console.error('Phase 1 initialization error:', e);
+        }
     }
 
     function loadMenuData() {
@@ -1268,11 +1452,23 @@
         
         if (e.code === 'ShiftLeft' || e.code === 'ShiftRight') {
             player.isSprinting = true;
+            inputState.sprint = true;
             if (TutorialSystem.isActive && TutorialSystem.onSprint) {
                 TutorialSystem.onSprint();
             }
         }
         
+        // Update input state for Phase 1 physics
+        switch(e.code) {
+            case 'KeyW': inputState.moveForward = true; break;
+            case 'KeyS': inputState.moveBackward = true; break;
+            case 'KeyA': inputState.moveLeft = true; break;
+            case 'KeyD': inputState.moveRight = true; break;
+            case 'Space': inputState.moveUp = true; break;
+            case 'ControlLeft':
+            case 'ControlRight': inputState.moveDown = true; break;
+        }
+
         if (e.code === 'KeyF') {
             throwFlare();
             if (TutorialSystem.isActive && TutorialSystem.onFlareUse) {
@@ -1309,8 +1505,21 @@
 
     function handleKeyUp(e) {
         keys[e.code] = false;
+
         if (e.code === 'ShiftLeft' || e.code === 'ShiftRight') {
             player.isSprinting = false;
+            inputState.sprint = false;
+        }
+
+        // Update input state for Phase 1 physics
+        switch(e.code) {
+            case 'KeyW': inputState.moveForward = false; break;
+            case 'KeyS': inputState.moveBackward = false; break;
+            case 'KeyA': inputState.moveLeft = false; break;
+            case 'KeyD': inputState.moveRight = false; break;
+            case 'Space': inputState.moveUp = false; break;
+            case 'ControlLeft':
+            case 'ControlRight': inputState.moveDown = false; break;
         }
     }
 
@@ -1375,6 +1584,80 @@
         if (!isNewGame) {
             SaveSystem.unlockAchievement('first_dive');
         }
+
+        // ============================================
+        // PHASE 1: Activate Advanced Systems
+        // ============================================
+        activatePhase1Systems();
+    }
+
+    async function activatePhase1Systems() {
+        if (!scene || !camera || !renderer) return;
+
+        try {
+            console.log('🎮 Activating Phase 1 systems...');
+
+            const canvas = document.getElementById('game-canvas');
+
+            // Initialize Phase 1 Integration
+            if (typeof Phase1Integration !== 'undefined') {
+                await Phase1Integration.init(canvas, scene, camera, renderer);
+
+                // Setup player object for physics
+                if (player) {
+                    if (!player.object3D) {
+                        player.object3D = new THREE.Object3D();
+                        player.object3D.position.copy(player.position);
+                        scene.add(player.object3D);
+                    }
+                    Phase1Integration.setupPlayerPhysics(player.object3D);
+                }
+
+                if (settings.graphics.quality) {
+                    Phase1Integration.setPostProcessQuality(settings.graphics.quality);
+                }
+            }
+
+            // Start procedural ambient audio
+            if (typeof ProceduralSound !== 'undefined') {
+                const ambientMusic = ProceduralSound.createAdaptiveMusic();
+                ambientMusic.start();
+                window.adaptiveMusic = ambientMusic;
+            }
+
+            // ============================================
+            // PHASE 2: Initialize Content Systems
+            // ============================================
+            activatePhase2Systems();
+
+            console.log('✅ All systems active');
+            showNotification('🌊 All systems online', 'success');
+
+        } catch (e) {
+            console.error('System activation failed:', e);
+        }
+    }
+
+    function activatePhase2Systems() {
+        console.log('🎮 Activating Phase 2 content systems...');
+
+        // Initialize resource system
+        if (typeof ResourceSystem !== 'undefined') {
+            ResourceSystem.init();
+        }
+
+        // Initialize narrative system
+        if (typeof NarrativeSystem !== 'undefined') {
+            NarrativeSystem.init();
+        }
+
+        // Spawn initial content
+        if (typeof ExpandedBiomeSystem !== 'undefined') {
+            const startingBiome = ExpandedBiomeSystem.getBiomeForDepth(5);
+            spawnBiomeContent(startingBiome);
+        }
+
+        console.log('✅ Phase 2 systems active');
     }
 
     function pauseGame() {
@@ -1783,6 +2066,27 @@
         if (hudDepth) hudDepth.textContent = `⬇ ${Math.round(player.depth)}m`;
         if (hudFlares) hudFlares.textContent = `🔥 ${player.flares}`;
         if (hudLogs) hudLogs.textContent = `📄 ${player.logsCollected}/4`;
+
+        // Phase 2: Update wrist display
+        const wristOxygen = document.getElementById('wrist-oxygen');
+        const wristDepth = document.getElementById('wrist-depth');
+        const wristTime = document.getElementById('wrist-time');
+        const wristDistance = document.getElementById('wrist-distance');
+
+        if (wristOxygen) {
+            const pressure = Math.max(1, 1 + player.depth / 10).toFixed(0);
+            wristOxygen.textContent = `${pressure} bar`;
+        }
+        if (wristDepth) wristDepth.textContent = `${player.depth.toFixed(1)} m`;
+        if (wristTime && player.startTime) {
+            const elapsed = Math.floor((Date.now() - player.startTime) / 1000);
+            const mins = Math.floor(elapsed / 60).toString().padStart(2, '0');
+            const secs = (elapsed % 60).toString().padStart(2, '0');
+            wristTime.textContent = `${mins}:${secs}`;
+        }
+        if (wristDistance) {
+            wristDistance.textContent = `${Math.floor(player.distanceTraveled)} m`;
+        }
     }
 
     function togglePhotoMode() {
@@ -1802,36 +2106,59 @@
     function updateBiomeAndEnvironment(dt) {
         if (!player) return;
         
-        // Update biome based on depth
-        if (typeof BiomeSystem !== 'undefined') {
-            const newBiome = BiomeSystem.update(player.depth, dt);
+        // ============================================
+        // PHASE 2: Content Systems Update
+        // ============================================
+
+        // Update expanded biome system
+        if (typeof ExpandedBiomeSystem !== 'undefined') {
+            const newBiome = ExpandedBiomeSystem.update(player.depth, dt);
             
             if (newBiome && newBiome !== currentBiome) {
                 currentBiome = newBiome;
                 onBiomeChanged(newBiome);
+
+                // Spawn content for new biome
+                spawnBiomeContent(newBiome);
             }
             
-            // Apply pressure damage in hadal zone
-            if (BiomeSystem.shouldApplyPressureDamage()) {
-                const damage = BiomeSystem.getPressureDamageRate() * dt;
+            // Apply pressure damage
+            if (ExpandedBiomeSystem.shouldApplyPressureDamage()) {
+                const damage = ExpandedBiomeSystem.getPressureDamageRate() * dt;
                 player.health -= damage;
-                
-                if (Math.random() < 0.1) {
-                    showNotification('⚠️ CRUSHING PRESSURE!', 'danger');
+            }
+        }
+
+        // Update legacy biome system
+        if (typeof BiomeSystem !== 'undefined') {
+            BiomeSystem.update(player.depth, dt);
+        }
+
+        // Update creature ecosystem
+        if (typeof CreatureEcosystem !== 'undefined' && player.object3D) {
+            CreatureEcosystem.update(dt, player.object3D);
+        }
+
+        // Update narrative system
+        if (typeof NarrativeSystem !== 'undefined') {
+            NarrativeSystem.update({
+                depth: player.depth,
+                artifacts: player.artifactsCollected,
+                discoveredRuins: player.discoveredRuins
+            });
+        }
+
+        // Check for nearby POIs
+        if (typeof POISystem !== 'undefined') {
+            const nearbyPOIs = POISystem.getNearbyPOIs(player.position, 30);
+            for (const poi of nearbyPOIs) {
+                if (!poi.visited) {
+                    showPOIDiscovery(poi);
                 }
             }
-            
-            // Get POIs near player
-            if (BiomeSystem.getPOIManager) {
-                const poiManager = BiomeSystem.getPOIManager();
-                const nearbyPOIs = poiManager.getNearbyPOIs(player.position, 30);
-                
-                for (const poi of nearbyPOIs) {
-                    if (!poi.visited) {
-                        showPOIDiscovery(poi);
-                    }
-                }
-            }
+
+            // Cleanup distant POIs
+            POISystem.cleanupDistantPOIs(player.position, 200);
         }
         
         // Update event system
@@ -1874,27 +2201,44 @@
             scene.fog.density = biome.fogDensity;
         }
         
-        // Update ambient light
-        // Update water color
-        // Spawn biome-specific entities
-        
         // Achievement check
         if (biome.id === 'abyss' && typeof SaveSystem !== 'undefined') {
             SaveSystem.unlockAchievement('deep_diver');
         }
     }
 
+    function spawnBiomeContent(biome) {
+        // Spawn POIs
+        if (typeof POISystem !== 'undefined') {
+            POISystem.spawnForBiome(biome);
+        }
+
+        // Spawn resources
+        if (typeof ResourceSystem !== 'undefined') {
+            ResourceSystem.spawnForBiome(biome);
+        }
+
+        // Spawn creatures
+        if (typeof CreatureEcosystem !== 'undefined') {
+            CreatureEcosystem.spawnForBiome(biome);
+        }
+
+        // Spawn data log
+        if (typeof NarrativeSystem !== 'undefined') {
+            const log = NarrativeSystem.getLogForBiome(biome.id);
+            if (log && Math.random() < 0.3) {
+                console.log('Data log available in this biome:', log.title);
+            }
+        }
+    }
+
     function showPOIDiscovery(poi) {
         if (!poi.discoveryShown) {
             poi.discoveryShown = true;
-            showNotification(`📍 Discovered: ${poi.name}`, 'success');
+            showNotification(`📍 Discovered: ${poi.config.name}`, 'success');
             
-            // Mark as visited when player gets closer
-            setTimeout(() => {
-                if (BiomeSystem.getPOIManager) {
-                    BiomeSystem.getPOIManager().markPOIVisited(poi.id);
-                }
-            }, 5000);
+            // Mark as visited
+            POISystem.visitPOI(poi.id);
         }
     }
 
@@ -1979,7 +2323,7 @@
     }
 
     // ============================================
-    // MAIN GAME LOOP (Phase 2 Enhanced)
+    // MAIN GAME LOOP (Phase 2 Enhanced + Phase 1 Physics)
     // ============================================
     function animate() {
         if (!gameActive && currentState !== GAME_STATE.PAUSED) return;
@@ -1987,6 +2331,13 @@
         
         const dt = clock.getDelta();
         
+        // ============================================
+        // PHASE 1: Physics-Based Movement
+        // ============================================
+        if (gameActive && Phase1Integration?.isInitialized()) {
+            Phase1Integration.applyPlayerInput(inputState, dt);
+        }
+
         // Update session stats
         if (gameActive) {
             SaveSystem.updateSessionStat('distanceSwum', player.currentSpeed * dt);

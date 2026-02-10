@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="ScaryGamesAI Subscriptions — Choose your nightmare tier. Unlock cheats, exclusive games, and more.">
+    <title>Subscribe — ScaryGamesAI</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+    <div class="bg-fog"></div>
+    <div class="bg-grain"></div>
+
+    <nav class="navbar">
+        <div class="nav-inner">
+            <a href="/" class="nav-logo">ScaryGames</a>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/games.html">Games</a></li>
+                <li><a href="/achievements.html">Achievements</a></li>
+                <li><a href="/leaderboards.html">Leaderboards</a></li>
+                <li><a href="/subscription.html" class="active">Subscribe</a></li>
+                <li><a href="/#about">About</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <!-- Promo Banner -->
+        <div class="promo-banner" id="promo-banner">
+            <div class="promo-inner">
+                <span class="promo-fire">🔥</span>
+                <span class="promo-text"><strong>Launch Sale</strong> — 30% off all tiers for the first month!</span>
+                <span class="promo-countdown" id="promo-countdown"></span>
+                <button class="promo-dismiss" id="promo-dismiss">✕</button>
+            </div>
+        </div>
+
+        <!-- Subscription Hero -->
+        <section class="sub-hero">
+            <div class="sub-hero-particles" id="sub-particles"></div>
+            <h1 class="sub-hero-title">Choose Your Nightmare</h1>
+            <p class="sub-hero-subtitle">UNLOCK THE DARKNESS</p>
+            <p class="sub-hero-desc">
+                Pick a tier. Get more games, exclusive cheats, rare themes, and VIP perks.
+                The deeper you go, the more power you unlock.
+            </p>
+            <!-- Subscriber Counter -->
+            <div class="subscriber-counter" id="subscriber-counter">
+                <span class="counter-text">Join</span>
+                <span class="counter-number" id="counter-number">0</span>
+                <span class="counter-text">+ survivors who chose their fate</span>
+            </div>
+        </section>
+
+        <!-- Billing Toggle -->
+        <section class="container">
+            <div class="billing-toggle-wrap">
+                <span class="billing-label billing-label-active" id="label-monthly">Monthly</span>
+                <button class="billing-toggle" id="billing-toggle" aria-label="Toggle annual billing">
+                    <span class="billing-toggle-thumb"></span>
+                </button>
+                <span class="billing-label" id="label-annual">Annual</span>
+                <span class="billing-save-badge">Save 2 months!</span>
+            </div>
+        </section>
+
+        <!-- Pricing Cards -->
+        <section class="container" style="padding-bottom: 60px;">
+            <div class="pricing-grid">
+
+                <!-- LITE — Bronze -->
+                <div class="pricing-card bronze" data-tilt>
+                    <div class="pricing-card-inner">
+                        <div class="card-canvas-wrap"><canvas class="card-canvas" id="canvas-bronze"></canvas></div>
+                        <div class="pricing-tier-icon">🥉</div>
+                        <h3 class="pricing-tier-name bronze-text">Lite</h3>
+                        <p class="pricing-tier-label">Bronze Tier</p>
+                        <div class="pricing-price">
+                            <span class="pricing-currency">$</span>
+                            <span class="pricing-amount" data-monthly="2" data-annual="20">2</span>
+                            <span class="pricing-period" data-monthly="/mo" data-annual="/yr">/mo</span>
+                        </div>
+                        <div class="pricing-annual-note" style="display:none;">~$1.67/mo — billed annually</div>
+                        <ul class="pricing-features">
+                            <li class="feature-yes"><span class="feature-icon">✦</span> 3 free games (for everyone)</li>
+                            <li class="feature-yes"><span class="feature-icon">✦</span> Standard rendering quality</li>
+                            <li class="feature-yes"><span class="feature-icon">✦</span> 2 website themes</li>
+                            <li class="feature-yes"><span class="feature-icon">✦</span> Bronze skull badge</li>
+                            <li class="feature-yes"><span class="feature-icon">✦</span> View leaderboards</li>
+                            <li class="feature-yes"><span class="feature-icon">✦</span> Community support</li>
+                            <li class="feature-no"><span class="feature-icon">✗</span> No ray/path tracing</li>
+                            <li class="feature-no"><span class="feature-icon">✗</span> No cheats or hints</li>
+                        </ul>
+                        <button class="sub-btn sub-btn-bronze" data-tier="lite">
+                            <span class="sub-btn-text">Subscribe</span>
+                            <span class="sub-btn-glow"></span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- PRO — Silver -->
+                <div class="pricing-card silver" data-tilt>
+                    <div class="pricing-card-inner">
+                        <div class="card-canvas-wrap"><canvas class="card-canvas" id="canvas-silver"></canvas></div>
+                        <div class="pricing-tier-icon">🥈</div>
+                        <h3 class="pricing-tier-name silver-text">Pro</h3>
+                        <p class="pricing-tier-label">Silver Tier</p>
+                        <div class="pricing-price">
+                            <span class="pricing-currency">$</span>
+                            <span class="pricing-amount" data-monthly="5" data-annual="50">5</span>
+                            <span class="pricing-period" data-monthly="/mo" data-annual="/yr">/mo</span>
+                        </div>
+                        <div class="pricing-annual-note" style="display:none;">~$4.17/mo — billed annually</div>
+                        <ul class="pricing-features">
+                            <li class="feature-yes"><span class="feature-icon">✦</span> Access to 8 games</li>
+                            <li class="feature-yes"><span class="feature-icon">💠</span> Ray Tracing on ALL games</li>
+                            <li class="feature-yes"><span class="feature-icon">✦</span> Early access to new games</li>
+                            <li class="feature-yes"><span class="feature-icon">✦</span> 5 themes + 3 effects</li>
+                            <li class="feature-yes"><span class="feature-icon">✦</span> Silver skull badge</li>
+                            <li class="feature-yes"><span class="feature-icon">✦</span> Submit leaderboard scores</li>
+                            <li class="feature-yes"><span class="feature-icon">✦</span> Basic hints & tips</li>
+                            <li class="feature-yes"><span class="feature-icon">✦</span> Priority email support</li>
+                        </ul>
+                        <button class="sub-btn sub-btn-silver" data-tier="pro">
+                            <span class="sub-btn-text">Subscribe</span>
+                            <span class="sub-btn-glow"></span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- MAX — Gold -->
+                <div class="pricing-card gold featured" data-tilt>
+                    <div class="pricing-badge">🔥 BEST VALUE</div>
+                    <div class="pricing-card-inner">
+                        <div class="card-canvas-wrap"><canvas class="card-canvas" id="canvas-gold"></canvas></div>
+                        <div class="pricing-tier-icon">🥇</div>
+                        <h3 class="pricing-tier-name gold-text">Max</h3>
+                        <p class="pricing-tier-label">Gold Tier</p>
+                        <div class="pricing-price">
+                            <span class="pricing-currency">$</span>
+                            <span class="pricing-amount" data-monthly="8" data-annual="80">8</span>
+                            <span class="pricing-period" data-monthly="/mo" data-annual="/yr">/mo</span>
+                        </div>
+                        <div class="pricing-annual-note" style="display:none;">~$6.67/mo — billed annually</div>
+                        <ul class="pricing-features">
+                            <li class="feature-yes"><span class="feature-icon">★</span> All games + all modes</li>
+                            <li class="feature-yes"><span class="feature-icon">✨</span> Path Tracing on ALL games</li>
+                            <li class="feature-yes"><span class="feature-icon">★</span> Exclusive beta games</li>
+                            <li class="feature-yes"><span class="feature-icon">★</span> All themes & all effects</li>
+                            <li class="feature-yes"><span class="feature-icon">★</span> Gold skull badge + profile glow
+                            </li>
+                            <li class="feature-yes"><span class="feature-icon">★</span> Full cheats & trainers</li>
+                            <li class="feature-yes"><span class="feature-icon">★</span> Custom avatars</li>
+                            <li class="feature-yes"><span class="feature-icon">★</span> 24/7 VIP support + Discord role
+                            </li>
+                        </ul>
+                        <button class="sub-btn sub-btn-gold" data-tier="max">
+                            <span class="sub-btn-text">Subscribe</span>
+                            <span class="sub-btn-glow"></span>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Comparison Table -->
+        <section class="container" style="padding-bottom: 60px;">
+            <div class="comparison-section">
+                <h2 class="comparison-title">Full Comparison</h2>
+                <div class="comparison-table-wrap">
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th class="bronze-text">🥉 Lite</th>
+                                <th class="silver-text">🥈 Pro</th>
+                                <th class="gold-text">🥇 Max</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Price</td>
+                                <td>$2/mo</td>
+                                <td>$5/mo</td>
+                                <td>$8/mo</td>
+                            </tr>
+                            <tr>
+                                <td>Game Access</td>
+                                <td>3 free games</td>
+                                <td>8 games</td>
+                                <td>All games</td>
+                            </tr>
+                            <tr>
+                                <td>Rendering Quality</td>
+                                <td>Standard</td>
+                                <td class="feature-yes">💠 Ray Tracing</td>
+                                <td class="feature-yes">✨ Path Tracing</td>
+                            </tr>
+                            <tr>
+                                <td>Early / Beta Access</td>
+                                <td class="feature-no">✗</td>
+                                <td class="feature-yes">Early Access</td>
+                                <td class="feature-yes">Early + Beta</td>
+                            </tr>
+                            <tr>
+                                <td>Cheats & Trainers</td>
+                                <td class="feature-no">✗</td>
+                                <td>Basic hints</td>
+                                <td class="feature-yes">Full cheats</td>
+                            </tr>
+                            <tr>
+                                <td>Themes / Effects</td>
+                                <td>2 themes</td>
+                                <td>5 themes, 3 effects</td>
+                                <td>All unlocked</td>
+                            </tr>
+                            <tr>
+                                <td>Leaderboards</td>
+                                <td>View only</td>
+                                <td>Submit scores</td>
+                                <td>Private + custom</td>
+                            </tr>
+                            <tr>
+                                <td>Profile Badge</td>
+                                <td>Bronze skull</td>
+                                <td>Silver skull</td>
+                                <td>Gold skull + glow</td>
+                            </tr>
+                            <tr>
+                                <td>Support</td>
+                                <td>Community</td>
+                                <td>Priority email</td>
+                                <td>24/7 VIP + Discord</td>
+                            </tr>
+                            <tr>
+                                <td>Extras</td>
+                                <td>—</td>
+                                <td>Monthly wallpaper</td>
+                                <td>Custom avatars, exclusives</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials -->
+        <section class="container" style="padding-bottom: 60px;">
+            <h2 class="comparison-title">What Survivors Say</h2>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-quote">"The full cheats on Max tier literally saved my soul in Web of
+                        Terror.
+                        I couldn't have escaped those spider tunnels without god mode."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar testimonial-avatar-gold">👤</div>
+                        <div>
+                            <span class="testimonial-name">DarkPlayer99</span>
+                            <span class="testimonial-tier gold-text">🥇 Max</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-quote">"Early access to new games is worth every penny. I played Graveyard
+                        Shift a week before everyone else. The Silver badge looks sick on my profile."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar testimonial-avatar-silver">👤</div>
+                        <div>
+                            <span class="testimonial-name">NightCrawl</span>
+                            <span class="testimonial-tier silver-text">🥈 Pro</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">★★★★☆</div>
+                    <p class="testimonial-quote">"For just $2 a month, I get access to 3 solid horror games and the
+                        Bronze badge. Perfect for casual scares without breaking the bank."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar testimonial-avatar-bronze">👤</div>
+                        <div>
+                            <span class="testimonial-name">CasualFright</span>
+                            <span class="testimonial-tier bronze-text">🥉 Lite</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Accordion -->
+        <section class="container" style="padding-bottom: 100px;">
+            <h2 class="comparison-title">Frequently Asked Questions</h2>
+            <div class="faq-list">
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>Can I upgrade or downgrade my tier anytime?</span>
+                        <span class="faq-chevron">▾</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Yes! You can upgrade or downgrade at any time. When upgrading, you'll get immediate
+                            access to
+                            all new perks. When downgrading, your current benefits stay active until the end of your
+                            billing cycle.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>How do cheats and trainers work?</span>
+                        <span class="faq-chevron">▾</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Max tier subscribers get access to in-game cheat menus for every game. This includes god
+                            mode, infinite stamina, speed hacks, wall hacks, and more. Pro tier gets basic hints
+                            like
+                            enemy locations and puzzle solutions. Cheats don't affect leaderboard scores — fair play
+                            is
+                            preserved.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>Can I cancel anytime?</span>
+                        <span class="faq-chevron">▾</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Absolutely. No contracts, no hidden fees. Cancel with one click and your benefits stay
+                            active
+                            until the end of your current billing period. You can re-subscribe anytime.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>What's included in "exclusive beta games"?</span>
+                        <span class="faq-chevron">▾</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Max tier members get access to games still in development. You'll play them before anyone
+                            else, submit feedback, and help shape the final releases. New beta games drop monthly.
+                        </p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>Do I save money with annual billing?</span>
+                        <span class="faq-chevron">▾</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Yes — annual billing gives you 2 months free on every tier. That's a ~17% discount. For
+                            example, Max goes from $96/year (monthly) to just $80/year (annual).</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <button class="faq-question">
+                        <span>What's the 24/7 VIP support & Discord role?</span>
+                        <span class="faq-chevron">▾</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Max tier gets a special gold "VIP" role in our Discord server with access to exclusive
+                            channels, direct support from the dev team, and priority bug reports. You also get a
+                            glowing
+                            gold profile badge on the website.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-inner">
+            <p>&copy; 2026 ScaryGamesAI — Enter at your own risk. 💀</p>
+        </div>
+    </footer>
+
+    <script src="/js/main.js"></script>
+    <script src="/js/profiles.js"></script>
+    <script src="/js/achievements.js"></script>
+    <script src="/js/leaderboards.js"></script>
+    <script src="/js/daily.js"></script>
+    <script src="/js/social.js"></script>
+    <script src="/js/customizer.js"></script>
+    <script>
+        (function () {
+            /* ========== Floating Embers ========== */
+            const pc = document.getElementById('sub-particles');
+            if (pc) {
+                for (let i = 0; i < 40; i++) {
+                    const p = document.createElement('div');
+                    p.className = 'particle';
+                    p.style.left = Math.random() * 100 + '%';
+                    p.style.animationDelay = Math.random() * 6 + 's';
+                    p.style.animationDuration = (4 + Math.random() * 4) + 's';
+                    const colors = ['#cd7f32', '#c0c0c0', '#ffd700', '#cc1122'];
+                    p.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    pc.appendChild(p);
+                }
+            }
+
+            /* ========== Billing Toggle ========== */
+            const toggle = document.getElementById('billing-toggle');
+            const lblM = document.getElementById('label-monthly');
+            const lblA = document.getElementById('label-annual');
+            let isAnnual = false;
+
+            toggle.addEventListener('click', () => {
+                isAnnual = !isAnnual;
+                toggle.classList.toggle('active', isAnnual);
+                lblM.classList.toggle('billing-label-active', !isAnnual);
+                lblA.classList.toggle('billing-label-active', isAnnual);
+
+                document.querySelectorAll('.pricing-amount').forEach(el => {
+                    const v = isAnnual ? el.dataset.annual : el.dataset.monthly;
+                    el.classList.add('price-flip');
+                    setTimeout(() => { el.textContent = v; el.classList.remove('price-flip'); }, 200);
+                });
+                document.querySelectorAll('.pricing-period').forEach(el => {
+                    el.textContent = isAnnual ? el.dataset.annual : el.dataset.monthly;
+                });
+                document.querySelectorAll('.pricing-annual-note').forEach(el => {
+                    el.style.display = isAnnual ? 'block' : 'none';
+                });
+            });
+
+            /* ========== FAQ Accordion ========== */
+            document.querySelectorAll('.faq-question').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const item = btn.parentElement;
+                    const wasOpen = item.classList.contains('open');
+                    // close all
+                    document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+                    if (!wasOpen) item.classList.add('open');
+                });
+            });
+
+            /* ========== 3D Card Tilt ========== */
+            document.querySelectorAll('[data-tilt]').forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = (e.clientX - rect.left) / rect.width;
+                    const y = (e.clientY - rect.top) / rect.height;
+                    const tiltX = (y - 0.5) * -12;
+                    const tiltY = (x - 0.5) * 12;
+                    const baseScale = card.classList.contains('featured') ? 'scale(1.05)' : '';
+                    card.style.transform = `${baseScale} perspective(800px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) translateY(-6px)`;
+                });
+                card.addEventListener('mouseleave', () => {
+                    const baseScale = card.classList.contains('featured') ? 'scale(1.05)' : '';
+                    card.style.transform = baseScale;
+                });
+            });
+
+            /* ========== Animated Card Canvases ========== */
+            function animateBronze(canvas) {
+                const ctx = canvas.getContext('2d');
+                let t = 0;
+                const embers = [];
+                for (let i = 0; i < 25; i++) embers.push({ x: Math.random(), y: Math.random(), s: Math.random() * 2 + 1, v: Math.random() * 0.004 + 0.002, d: Math.random() * 0.002 - 0.001, o: Math.random() });
+                function draw() {
+                    const w = canvas.width = canvas.parentElement.offsetWidth;
+                    const h = canvas.height = canvas.parentElement.offsetHeight;
+                    ctx.clearRect(0, 0, w, h);
+
+                    // Torch glow
+                    const flicker = 0.6 + Math.sin(t * 6) * 0.15 + Math.sin(t * 13) * 0.08;
+                    const grd = ctx.createRadialGradient(w / 2, h * 0.85, 4, w / 2, h * 0.85, h * 0.7 * flicker);
+                    grd.addColorStop(0, 'rgba(255, 150, 50, 0.25)');
+                    grd.addColorStop(0.4, 'rgba(205, 127, 50, 0.1)');
+                    grd.addColorStop(1, 'transparent');
+                    ctx.fillStyle = grd;
+                    ctx.fillRect(0, 0, w, h);
+
+                    // Torch flame
+                    ctx.fillStyle = `rgba(255, 120, 20, ${0.4 + Math.sin(t * 8) * 0.15})`;
+                    ctx.beginPath();
+                    ctx.ellipse(w / 2, h * 0.82, 6 + Math.sin(t * 5) * 2, 12 + Math.sin(t * 7) * 4, 0, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.fillStyle = `rgba(255, 200, 80, ${0.5 + Math.sin(t * 10) * 0.2})`;
+                    ctx.beginPath();
+                    ctx.ellipse(w / 2, h * 0.84, 3, 6, 0, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    // Embers
+                    embers.forEach(e => {
+                        e.y -= e.v;
+                        e.x += e.d + Math.sin(t * 3 + e.o * 10) * 0.001;
+                        if (e.y < -0.05) { e.y = 1.05; e.x = 0.3 + Math.random() * 0.4; }
+                        const fade = e.y < 0.3 ? e.y / 0.3 : 1;
+                        ctx.fillStyle = `rgba(255, ${100 + Math.floor(e.o * 100)}, 20, ${0.7 * fade})`;
+                        ctx.shadowColor = '#ff8800';
+                        ctx.shadowBlur = 4;
+                        ctx.beginPath();
+                        ctx.arc(e.x * w, e.y * h, e.s, 0, Math.PI * 2);
+                        ctx.fill();
+                    });
+                    ctx.shadowBlur = 0;
+                    t += 0.016;
+                    requestAnimationFrame(draw);
+                }
+                draw();
+            }
+
+            function animateSilver(canvas) {
+                const ctx = canvas.getContext('2d');
+                let t = 0;
+                const wisps = [];
+                for (let i = 0; i < 8; i++) wisps.push({ x: Math.random(), y: Math.random(), r: 20 + Math.random() * 30, sx: Math.random() * 0.3 + 0.1, sy: Math.random() * 0.2 + 0.1 });
+                function draw() {
+                    const w = canvas.width = canvas.parentElement.offsetWidth;
+                    const h = canvas.height = canvas.parentElement.offsetHeight;
+                    ctx.clearRect(0, 0, w, h);
+
+                    // Moonlight
+                    const grd = ctx.createRadialGradient(w * 0.6, h * 0.15, 5, w * 0.6, h * 0.15, h * 0.6);
+                    grd.addColorStop(0, 'rgba(200, 210, 230, 0.15)');
+                    grd.addColorStop(0.5, 'rgba(192, 192, 192, 0.05)');
+                    grd.addColorStop(1, 'transparent');
+                    ctx.fillStyle = grd;
+                    ctx.fillRect(0, 0, w, h);
+
+                    // Moon disc
+                    ctx.fillStyle = 'rgba(220, 225, 240, 0.12)';
+                    ctx.beginPath();
+                    ctx.arc(w * 0.6, h * 0.15, 12, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    // Fog wisps
+                    wisps.forEach(ws => {
+                        const cx = ws.x * w + Math.sin(t * ws.sx) * 30;
+                        const cy = ws.y * h + Math.cos(t * ws.sy) * 15;
+                        const fgrd = ctx.createRadialGradient(cx, cy, 0, cx, cy, ws.r);
+                        fgrd.addColorStop(0, `rgba(192, 192, 192, ${0.08 + Math.sin(t + ws.x * 5) * 0.03})`);
+                        fgrd.addColorStop(1, 'transparent');
+                        ctx.fillStyle = fgrd;
+                        ctx.beginPath();
+                        ctx.arc(cx, cy, ws.r, 0, Math.PI * 2);
+                        ctx.fill();
+                    });
+
+                    t += 0.016;
+                    requestAnimationFrame(draw);
+                }
+                draw();
+            }
+
+            function animateGold(canvas) {
+                const ctx = canvas.getContext('2d');
+                let t = 0;
+                const sparks = [];
+                for (let i = 0; i < 20; i++) sparks.push({ a: (i / 20) * Math.PI * 2, r: 30 + Math.random() * 10, s: Math.random() * 1.5 + 0.5, v: Math.random() * 0.5 + 0.5 });
+                function draw() {
+                    const w = canvas.width = canvas.parentElement.offsetWidth;
+                    const h = canvas.height = canvas.parentElement.offsetHeight;
+                    const cx = w / 2, cy = h * 0.45;
+                    ctx.clearRect(0, 0, w, h);
+
+                    // Crown glow
+                    const grd = ctx.createRadialGradient(cx, cy, 5, cx, cy, 60);
+                    grd.addColorStop(0, 'rgba(255, 215, 0, 0.2)');
+                    grd.addColorStop(0.5, 'rgba(255, 180, 0, 0.08)');
+                    grd.addColorStop(1, 'transparent');
+                    ctx.fillStyle = grd;
+                    ctx.fillRect(0, 0, w, h);
+
+                    // Rotating flame ring
+                    const ringR = 28 + Math.sin(t * 2) * 4;
+                    for (let i = 0; i < 12; i++) {
+                        const angle = (i / 12) * Math.PI * 2 + t * 0.8;
+                        const fx = cx + Math.cos(angle) * ringR;
+                        const fy = cy + Math.sin(angle) * ringR;
+                        const size = 4 + Math.sin(t * 5 + i) * 2;
+                        const fgrd = ctx.createRadialGradient(fx, fy, 0, fx, fy, size);
+                        fgrd.addColorStop(0, 'rgba(255, 215, 0, 0.5)');
+                        fgrd.addColorStop(0.6, 'rgba(255, 150, 0, 0.2)');
+                        fgrd.addColorStop(1, 'transparent');
+                        ctx.fillStyle = fgrd;
+                        ctx.beginPath();
+                        ctx.arc(fx, fy, size, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+
+                    // Golden sparks
+                    sparks.forEach(sp => {
+                        sp.a += 0.008 * sp.v;
+                        const dist = sp.r + Math.sin(t * 2 + sp.a * 3) * 8;
+                        const sx = cx + Math.cos(sp.a) * dist;
+                        const sy = cy + Math.sin(sp.a) * dist;
+                        const fade = 0.5 + Math.sin(t * 4 + sp.a * 7) * 0.3;
+                        ctx.fillStyle = `rgba(255, 215, 0, ${fade})`;
+                        ctx.shadowColor = '#ffd700';
+                        ctx.shadowBlur = 6;
+                        ctx.beginPath();
+                        ctx.arc(sx, sy, sp.s, 0, Math.PI * 2);
+                        ctx.fill();
+                    });
+                    ctx.shadowBlur = 0;
+
+                    t += 0.016;
+                    requestAnimationFrame(draw);
+                }
+                draw();
+            }
+
+            // Init canvases
+            const cb = document.getElementById('canvas-bronze');
+            const cs = document.getElementById('canvas-silver');
+            const cg = document.getElementById('canvas-gold');
+            if (cb) animateBronze(cb);
+            if (cs) animateSilver(cs);
+            if (cg) animateGold(cg);
+
+            /* ========== PHASE 2: LocalStorage Subscription ========== */
+            const TIER_KEY = 'sgai-sub-tier';
+            const currentTier = localStorage.getItem(TIER_KEY) || 'none';
+
+            function updateButtonStates() {
+                const tier = localStorage.getItem(TIER_KEY) || 'none';
+                document.querySelectorAll('.sub-btn[data-tier]').forEach(btn => {
+                    const btnTier = btn.getAttribute('data-tier');
+                    const txt = btn.querySelector('.sub-btn-text');
+                    if (btnTier === tier) {
+                        txt.textContent = '✓ Subscribed';
+                        btn.classList.add('sub-btn-active');
+                        btn.closest('.pricing-card').classList.add('pricing-card-subscribed');
+                    } else {
+                        txt.textContent = 'Subscribe';
+                        btn.classList.remove('sub-btn-active');
+                        btn.closest('.pricing-card').classList.remove('pricing-card-subscribed');
+                    }
+                });
+            }
+            updateButtonStates();
+
+            document.querySelectorAll('.sub-btn[data-tier]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const tier = btn.getAttribute('data-tier');
+                    const current = localStorage.getItem(TIER_KEY);
+                    if (current === tier) {
+                        // Unsubscribe
+                        localStorage.removeItem(TIER_KEY);
+                    } else {
+                        localStorage.setItem(TIER_KEY, tier);
+                    }
+                    updateButtonStates();
+                    // Pulse animation
+                    btn.classList.add('sub-btn-pulse');
+                    setTimeout(() => btn.classList.remove('sub-btn-pulse'), 600);
+                });
+            });
+
+            /* ========== PHASE 2: Animated Subscriber Counter ========== */
+            const counterEl = document.getElementById('counter-number');
+            const targetCount = 1247;
+            let counted = false;
+
+            function animateCounter() {
+                if (counted) return;
+                counted = true;
+                const duration = 2000;
+                const start = performance.now();
+                function step(now) {
+                    const elapsed = now - start;
+                    const progress = Math.min(elapsed / duration, 1);
+                    // Ease out quad
+                    const eased = 1 - (1 - progress) * (1 - progress);
+                    counterEl.textContent = Math.floor(eased * targetCount).toLocaleString();
+                    if (progress < 1) requestAnimationFrame(step);
+                    else counterEl.textContent = targetCount.toLocaleString();
+                }
+                requestAnimationFrame(step);
+            }
+
+            // IntersectionObserver to trigger counter on scroll
+            const counterSection = document.getElementById('subscriber-counter');
+            if (counterSection && 'IntersectionObserver' in window) {
+                const obs = new IntersectionObserver((entries) => {
+                    entries.forEach(e => { if (e.isIntersecting) { animateCounter(); obs.disconnect(); } });
+                }, { threshold: 0.5 });
+                obs.observe(counterSection);
+            } else {
+                animateCounter();
+            }
+
+            /* ========== PHASE 2: Promo Banner with Countdown ========== */
+            const promoBanner = document.getElementById('promo-banner');
+            const promoDismiss = document.getElementById('promo-dismiss');
+            const promoCountdown = document.getElementById('promo-countdown');
+            const PROMO_DISMISSED_KEY = 'sgai-promo-dismissed';
+            const PROMO_END_KEY = 'sgai-promo-end';
+
+            // Set promo end to 48 hours from first visit (persisted)
+            let promoEnd = localStorage.getItem(PROMO_END_KEY);
+            if (!promoEnd) {
+                promoEnd = Date.now() + 48 * 60 * 60 * 1000;
+                localStorage.setItem(PROMO_END_KEY, promoEnd);
+            }
+            promoEnd = parseInt(promoEnd);
+
+            const wasPromoDismissed = localStorage.getItem(PROMO_DISMISSED_KEY);
+            const promoExpired = Date.now() > promoEnd;
+
+            if (!wasPromoDismissed && !promoExpired) {
+                promoBanner.style.display = 'block';
+                function updateCountdown() {
+                    const remaining = promoEnd - Date.now();
+                    if (remaining <= 0) {
+                        promoCountdown.textContent = 'Expired!';
+                        return;
+                    }
+                    const hrs = Math.floor(remaining / 3600000);
+                    const mins = Math.floor((remaining % 3600000) / 60000);
+                    const secs = Math.floor((remaining % 60000) / 1000);
+                    promoCountdown.textContent = `${hrs}h ${mins}m ${secs}s`;
+                    requestAnimationFrame(updateCountdown);
+                }
+                updateCountdown();
+            }
+
+            promoDismiss.addEventListener('click', () => {
+                promoBanner.style.display = 'none';
+                localStorage.setItem(PROMO_DISMISSED_KEY, 'true');
+            });
+        })();
+    </script>
+</body>
+
+</html>

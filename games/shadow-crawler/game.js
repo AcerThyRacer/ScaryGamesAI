@@ -13,7 +13,7 @@
 
     var LEVELS = [
         [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 3, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 1], [1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1], [1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1], [1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1], [1, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 2, 0, 1], [1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0, 1], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 1], [1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1], [1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 1], [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]],
-        [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 3, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1], [1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1], [1, 0, 1, 0, 0, 0, 0, 5, 1, 0, 0, 0, 0, 0, 1, 0, 1], [1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], [1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1], [1, 2, 0, 0, 1, 0, 0, 0, 5, 0, 0, 0, 1, 0, 0, 2, 1], [1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1], [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1], [1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1], [1, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 1], [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]],
+        [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 3, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1], [1, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1], [1, 0, 1, 0, 0, 0, 0, 5, 1, 0, 0, 0, 0, 0, 1, 0, 1], [1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], [1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1], [1, 2, 0, 0, 1, 0, 0, 0, 5, 0, 0, 0, 1, 0, 0, 2, 1], [1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1], [1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1], [1, 1, 0, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 1], [1, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 1], [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]],
         [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], [1, 3, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1], [1, 0, 1, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 0, 1], [1, 0, 0, 1, 0, 0, 0, 5, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 1], [1, 1, 0, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1], [1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 1], [1, 0, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 0, 1], [1, 0, 0, 0, 5, 0, 0, 0, 0, 5, 0, 0, 0, 0, 5, 0, 0, 0, 1], [1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1], [1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 1], [1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1, 1, 1, 0, 1], [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, 0, 0, 0, 0, 0, 4, 1], [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]
     ];
 
@@ -146,16 +146,43 @@
         updateHUD();
     }
 
+    // Raycasting Helper
+    function castRays(cx, cy, radius) {
+        var points = [];
+        var rays = 120; // Resolution
+        var settings = window.QualityFX && window.QualityFX.getSettings ? window.QualityFX.getSettings() : { rayCount: 30 };
+        if (window.QualityFX && window.QualityFX.isRT()) rays = Math.max(60, settings.rayCount * 3);
+
+        for (var i = 0; i < rays; i++) {
+            var angle = (i / rays) * Math.PI * 2;
+            var dx = Math.cos(angle), dy = Math.sin(angle);
+            var hitX = cx + dx * radius, hitY = cy + dy * radius;
+            // Raymarch
+            for (var d = 0; d < radius; d += 8) { // Step size
+                var tx = cx + dx * d, ty = cy + dy * d;
+                if (isWall(tx, ty)) {
+                    hitX = tx; hitY = ty;
+                    break;
+                }
+            }
+            points.push({ x: hitX, y: hitY });
+        }
+        return points;
+    }
+
     function render() {
         var w = canvas.width, h = canvas.height;
         ctx.fillStyle = '#000'; ctx.fillRect(0, 0, w, h);
         if (!maze.length) return;
         ctx.save();
         ctx.translate(-cameraOffset.x, -cameraOffset.y);
+
+        // Draw floor/walls first
         var startCol = Math.max(0, Math.floor(cameraOffset.x / TILE));
         var endCol = Math.min(maze[0].length, Math.ceil((cameraOffset.x + w) / TILE) + 1);
         var startRow = Math.max(0, Math.floor(cameraOffset.y / TILE));
         var endRow = Math.min(maze.length, Math.ceil((cameraOffset.y + h) / TILE) + 1);
+
         for (var r = startRow; r < endRow; r++) {
             for (var c = startCol; c < endCol; c++) {
                 var x = c * TILE, y = r * TILE, cell = maze[r][c];
@@ -175,6 +202,8 @@
                 }
             }
         }
+
+        // Enemies
         for (var i = 0; i < enemies.length; i++) {
             var e = enemies[i];
             ctx.fillStyle = e.chasing ? 'rgba(180,0,0,0.8)' : 'rgba(60,0,80,0.6)';
@@ -184,20 +213,90 @@
             if (e.chasing) { ctx.fillStyle = '#ff3333'; ctx.shadowBlur = 8; ctx.beginPath(); ctx.arc(e.x - 4, e.y - 2, 2, 0, Math.PI * 2); ctx.arc(e.x + 4, e.y - 2, 2, 0, Math.PI * 2); ctx.fill(); }
             ctx.shadowBlur = 0;
         }
+
+        // Player
         ctx.fillStyle = '#aaaacc'; ctx.beginPath(); ctx.arc(player.x, player.y, 8, 0, Math.PI * 2); ctx.fill();
         ctx.restore();
+
+        // LIGHTING & SHADOWS
         var lightR = LIGHT_RADIUS * (torchLevel / 100);
         var flicker = Math.sin(flickerTimer * 15) * 3 + Math.sin(flickerTimer * 23) * 2;
         var finalR = Math.max(20, lightR + flicker);
-        ctx.save();
-        ctx.fillStyle = 'rgba(0,0,0,0.97)';
-        ctx.beginPath(); ctx.rect(0, 0, w, h);
         var cx = player.x - cameraOffset.x, cy = player.y - cameraOffset.y;
-        ctx.moveTo(cx + finalR, cy); ctx.arc(cx, cy, finalR, 0, Math.PI * 2, true); ctx.fill();
-        ctx.restore();
-        var grd = ctx.createRadialGradient(cx, cy, finalR * 0.1, cx, cy, finalR);
-        grd.addColorStop(0, 'rgba(255,200,100,0.08)'); grd.addColorStop(0.5, 'rgba(255,150,50,0.04)'); grd.addColorStop(1, 'transparent');
-        ctx.fillStyle = grd; ctx.fillRect(0, 0, w, h);
+
+        // REAL RAYTRACING CHECK
+        if (window.QualityFX && window.QualityFX.isRT()) {
+            // Hard shadows using raycasting polygon
+            var poly = castRays(player.x, player.y, finalR);
+
+            ctx.save();
+            ctx.beginPath();
+            if (poly.length > 0) {
+                var start = poly[0];
+                ctx.moveTo(start.x - cameraOffset.x, start.y - cameraOffset.y);
+                for (var i = 1; i < poly.length; i++) {
+                    ctx.lineTo(poly[i].x - cameraOffset.x, poly[i].y - cameraOffset.y);
+                }
+            }
+            ctx.closePath();
+            ctx.clip(); // Only draw inside the light polygon
+
+            // Light gradient
+            var grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, finalR);
+            grd.addColorStop(0, 'rgba(255,220,150,0.4)');
+            grd.addColorStop(1, 'transparent');
+            ctx.fillStyle = grd;
+            ctx.fillRect(0, 0, w, h);
+
+            // Path Tracing extra glow (Max Tier)
+            if (window.QualityFX.isPT()) {
+                ctx.globalCompositeOperation = 'overlay';
+                var ptGrd = ctx.createRadialGradient(cx, cy, 0, cx, cy, finalR * 0.8);
+                ptGrd.addColorStop(0, 'rgba(255,200,100,0.3)');
+                ptGrd.addColorStop(1, 'transparent');
+                ctx.fillStyle = ptGrd;
+                ctx.fillRect(0, 0, w, h);
+                ctx.globalCompositeOperation = 'source-over';
+            }
+
+            ctx.restore();
+
+            // Draw darkness everywhere NOT in the polygon?
+            // Actually, simplest way for darkness:
+            // 1. Fill screen with black
+            // 2. Cut out the polygon (destination-out)
+            // But we already drew the game world. So we need to draw semi-transparent black on top, *except* in the polygon.
+
+            ctx.save();
+            ctx.fillStyle = 'rgba(0,0,0,0.98)';
+            ctx.beginPath();
+            ctx.rect(0, 0, w, h); // Full screen
+
+            // Cut out light
+            if (poly.length > 0) {
+                var start = poly[0];
+                ctx.moveTo(start.x - cameraOffset.x, start.y - cameraOffset.y);
+                for (var i = 1; i < poly.length; i++) {
+                    ctx.lineTo(poly[i].x - cameraOffset.x, poly[i].y - cameraOffset.y);
+                }
+            }
+            ctx.closePath();
+            ctx.clip('evenodd'); // Holes in the black rect
+            ctx.fill();
+            ctx.restore();
+
+        } else {
+            // STANDARD LIGHTING (Radial Gradient Cutout)
+            ctx.save();
+            ctx.fillStyle = 'rgba(0,0,0,0.97)';
+            ctx.beginPath(); ctx.rect(0, 0, w, h);
+            ctx.moveTo(cx + finalR, cy); ctx.arc(cx, cy, finalR, 0, Math.PI * 2, true); ctx.fill();
+            ctx.restore();
+
+            var grd = ctx.createRadialGradient(cx, cy, finalR * 0.1, cx, cy, finalR);
+            grd.addColorStop(0, 'rgba(255,200,100,0.08)'); grd.addColorStop(0.5, 'rgba(255,150,50,0.04)'); grd.addColorStop(1, 'transparent');
+            ctx.fillStyle = grd; ctx.fillRect(0, 0, w, h);
+        }
     }
 
     function gameOver() {

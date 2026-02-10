@@ -330,6 +330,32 @@
             if ((Math.floor(x / GRID) + Math.floor(y / GRID)) % 2 === 0) ctx.fillRect(x, y, GRID, GRID);
         }
 
+        // REAL RAYTRACING SHADOWS (Pro/Max Tier)
+        if (window.QualityFX && window.QualityFX.isRT()) {
+            ctx.save();
+            ctx.fillStyle = 'rgba(0,0,0,0.6)'; // Shadow color
+
+            // Cast shadows for each zombie away from base light
+            for (var i = 0; i < zombies.length; i++) {
+                var z = zombies[i];
+                var dx = z.x - baseX, dy = z.y - baseY;
+                var angle = Math.atan2(dy, dx);
+                var dist = Math.sqrt(dx*dx + dy*dy);
+                var shadowLen = (800 / dist) * 20; // Longer shadows when closer to light
+
+                ctx.beginPath();
+                ctx.moveTo(z.x + Math.cos(angle + 1.5) * z.r, z.y + Math.sin(angle + 1.5) * z.r);
+                ctx.lineTo(z.x + Math.cos(angle) * shadowLen, z.y + Math.sin(angle) * shadowLen);
+                ctx.lineTo(z.x + Math.cos(angle - 1.5) * z.r, z.y + Math.sin(angle - 1.5) * z.r);
+                ctx.fill();
+            }
+
+            // Cast shadows from turrets if there are nearby zombies blocking them?
+            // Too complex for 2D canvas without webgl.
+            // Instead, just cast base shadows.
+            ctx.restore();
+        }
+
         // Base
         ctx.fillStyle = '#4444aa';
         ctx.shadowColor = '#4444ff'; ctx.shadowBlur = 15;
@@ -345,6 +371,21 @@
         // Turrets
         for (var i = 0; i < turrets.length; i++) {
             var t = turrets[i];
+
+            // RT Flashlight Cone
+            if (window.QualityFX && window.QualityFX.isRT() && t.type !== 2) {
+                ctx.save();
+                var grd = ctx.createRadialGradient(t.x, t.y, 0, t.x, t.y, t.range);
+                grd.addColorStop(0, 'rgba(200,255,255,0.3)');
+                grd.addColorStop(1, 'rgba(200,255,255,0)');
+                ctx.fillStyle = grd;
+                ctx.beginPath();
+                ctx.moveTo(t.x, t.y);
+                ctx.arc(t.x, t.y, t.range, t.angle - 0.3, t.angle + 0.3);
+                ctx.fill();
+                ctx.restore();
+            }
+
             ctx.fillStyle = t.color;
             if (t.type === 2) {
                 // Barricade

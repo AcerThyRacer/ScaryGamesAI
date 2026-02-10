@@ -1109,8 +1109,28 @@
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+    <!-- SSAO -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/SSAOShader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/SSAOPass.js"></script>
     
-    <!-- Phase 1 Systems -->
+    <!-- PHASE 1: Technical Foundation (NEW) -->
+    <!-- Core Engine -->
+    <script src="js/engine/core.js"></script>
+    <script src="js/engine/integration.js"></script>
+
+    <!-- Graphics -->
+    <script src="js/graphics/volumetric.js"></script>
+    <script src="js/graphics/postprocessing.js"></script>
+
+    <!-- Physics -->
+    <script src="js/physics/buoyancy.js"></script>
+    <script src="js/physics/ik.js"></script>
+
+    <!-- Audio -->
+    <script src="js/audio/spatial.js"></script>
+    <script src="js/audio/procedural.js"></script>
+
+    <!-- Phase 1 Systems (Original) -->
     <script src="js/saveSystem.js"></script>
     <script src="js/gameModes.js"></script>
     <script src="js/tutorialSystem.js"></script>
@@ -1120,9 +1140,22 @@
     <script src="js/resourceSystem.js"></script>
     <script src="js/eventSystem.js"></script>
     
+    <!-- Phase 2 Content Expansion (NEW) -->
+    <script src="js/world/biomes.js"></script>
+    <script src="js/world/pois.js"></script>
+    <script src="js/world/resources.js"></script>
+    <script src="js/world/narrative.js"></script>
+    <script src="js/creatures/ecosystem.js"></script>
+
+    <!-- Phase 3 Systems -->
+    <script src="js/aiSystem.js"></script>
+    <script src="js/stealthSystem.js"></script>
+    <script src="js/hazardSystem.js"></script>
+    <script src="js/bossSystem.js"></script>
+
     <script src="/js/game-utils.js"></script>
     <script src="/js/audio.js"></script>
-    <script src="/js/challenges.js"></script>
+    <script src="/js/quality-fx.js"></script>
     <script src="game.js"></script>
 </body>
 

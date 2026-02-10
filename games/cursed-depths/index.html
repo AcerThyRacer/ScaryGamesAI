@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cursed Depths — ScaryGamesAI</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #0a0008;
+            font-family: 'Inter', sans-serif;
+        }
+
+        #game-canvas {
+            display: block;
+            width: 100vw;
+            height: 100vh;
+            image-rendering: pixelated;
+            image-rendering: crisp-edges;
+            cursor: crosshair;
+        }
+
+        /* ===== LOADING SCREEN ===== */
+        #loading-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(ellipse at center, #1a0010 0%, #050003 100%);
+            color: #cc1122;
+            font-family: 'Creepster', cursive;
+        }
+
+        #loading-screen.active {
+            display: flex;
+        }
+
+        #loading-title {
+            font-size: 3.5rem;
+            text-shadow: 0 0 40px rgba(204, 17, 34, 0.5);
+            animation: titlePulse 2s ease-in-out infinite;
+            margin-bottom: 20px;
+        }
+
+        #loading-skull {
+            font-size: 4rem;
+            animation: spin 3s linear infinite;
+            margin-bottom: 30px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg)
+            }
+
+            100% {
+                transform: rotate(360deg)
+            }
+        }
+
+        #loading-bar-container {
+            width: 320px;
+            height: 18px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(204, 17, 34, 0.4);
+            border-radius: 9px;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+
+        #loading-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #cc1122, #ff3344, #cc1122);
+            box-shadow: 0 0 15px rgba(204, 17, 34, 0.6);
+            border-radius: 7px;
+            transition: width 0.3s ease;
+        }
+
+        #loading-status {
+            font-family: 'Inter', monospace;
+            font-size: 0.85rem;
+            color: rgba(200, 150, 160, 0.7);
+            letter-spacing: 1px;
+        }
+
+        #loading-tip {
+            margin-top: 30px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            color: rgba(200, 150, 160, 0.4);
+            max-width: 400px;
+            text-align: center;
+            font-style: italic;
+        }
+
+        .game-page {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .back-link {
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            z-index: 9999;
+            color: #cc1122;
+            font-size: 0.9rem;
+            text-decoration: none;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 8px 16px;
+            border-radius: 8px;
+            border: 1px solid rgba(204, 17, 34, 0.3);
+            transition: all 0.2s;
+        }
+
+        .back-link:hover {
+            background: rgba(204, 17, 34, 0.2);
+        }
+
+        .start-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 5000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(ellipse at center, rgba(30, 0, 15, 0.95) 0%, rgba(5, 0, 3, 0.99) 100%);
+            text-align: center;
+        }
+
+        .start-screen h1 {
+            font-family: 'Creepster', cursive;
+            font-size: 4rem;
+            color: #cc1122;
+            text-shadow: 0 0 40px rgba(204, 17, 34, 0.6), 0 0 80px rgba(204, 17, 34, 0.3);
+            margin-bottom: 12px;
+            animation: titlePulse 3s ease-in-out infinite;
+        }
+
+        .start-screen .game-subtitle {
+            font-family: 'Creepster', cursive;
+            font-size: 1.3rem;
+            color: #8a5cf6;
+            letter-spacing: 4px;
+            margin-bottom: 24px;
+        }
+
+        .start-screen .game-desc {
+            color: #8a8a9a;
+            max-width: 500px;
+            line-height: 1.7;
+            margin-bottom: 32px;
+            font-size: 0.95rem;
+        }
+
+        .start-btn {
+            padding: 16px 48px;
+            background: linear-gradient(135deg, #cc1122, #991122);
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 4px 30px rgba(204, 17, 34, 0.5);
+            transition: all 0.3s;
+        }
+
+        .start-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 40px rgba(204, 17, 34, 0.7);
+        }
+
+        .controls-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 5000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(5, 0, 3, 0.92);
+        }
+
+        .controls-content {
+            text-align: center;
+        }
+
+        .controls-content h2 {
+            font-family: 'Creepster', cursive;
+            font-size: 2.5rem;
+            color: #cc1122;
+            margin-bottom: 24px;
+        }
+
+        .control-item {
+            color: #ccc;
+            margin: 10px 0;
+            font-size: 1rem;
+        }
+
+        .control-key {
+            display: inline-block;
+            min-width: 60px;
+            padding: 4px 12px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 6px;
+            color: #ff6b35;
+            font-weight: 700;
+            margin-right: 12px;
+            font-family: monospace;
+        }
+
+        .controls-start-hint {
+            color: #555;
+            margin-top: 20px;
+            font-style: italic;
+        }
+
+        @keyframes titlePulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.8;
+            }
+        }
+
+        /* Phase 3: Start screen options */
+        .world-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+            max-width: 500px;
+            margin: 0 auto 20px;
+        }
+
+        .world-options label {
+            color: #aaa;
+            font-size: 0.85rem;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            align-items: flex-start;
+        }
+
+        .world-options input,
+        .world-options select {
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #fff;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            width: 140px;
+        }
+
+        .world-options input[type=checkbox] {
+            width: auto;
+            accent-color: #cc1122;
+        }
+
+        .option-row {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+        }
+
+        .option-row label {
+            flex-direction: row;
+            gap: 6px;
+            color: #aaa;
+            font-size: 0.85rem;
+            cursor: pointer;
+        }
+
+        .skin-preview {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-left: 4px;
+            vertical-align: middle;
+        }
+
+        .continue-btn {
+            padding: 10px 32px;
+            background: rgba(255, 255, 255, 0.08);
+            color: #8a8a9a;
+            font-size: 0.9rem;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 10px;
+            cursor: pointer;
+            margin-top: 10px;
+            transition: all 0.3s;
+        }
+
+        .continue-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            color: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="game-page">
+        <a href="/games.html" class="back-link" id="back-link">← Back to Games</a>
+
+        <div class="start-screen" id="start-screen">
+            <h1>Cursed Depths</h1>
+            <p class="game-subtitle">DIG · CRAFT · SURVIVE</p>
+            <p class="game-desc">
+                Descend into a cursed underworld filled with horrifying creatures, ancient bones, and demonic
+                corruption. Mine resources, craft weapons, build shelters, and survive the darkness below.
+            </p>
+
+            <!-- Phase 3: World options -->
+            <div class="world-options">
+                <label>World Seed
+                    <input type="text" id="seed-input" placeholder="Random">
+                </label>
+                <label>World Size
+                    <select id="size-select">
+                        <option value="small">Small (400×200)</option>
+                        <option value="medium" selected>Medium (800×400)</option>
+                        <option value="large">Large (1600×600)</option>
+                    </select>
+                </label>
+                <label>Character
+                    <select id="skin-select">
+                        <option value="default">Default</option>
+                        <option value="skeleton">Skeleton 💀</option>
+                        <option value="demon">Demon 👹</option>
+                        <option value="ghost">Ghost 👻</option>
+                        <option value="vampire">Vampire 🧛</option>
+                    </select>
+                </label>
+            </div>
+            <div class="option-row">
+                <label><input type="checkbox" id="hardcore-check"> ☠ Hardcore</label>
+                <label><input type="checkbox" id="speedrun-check"> ⏱ Speedrun Timer</label>
+            </div>
+
+            <button class="start-btn" id="start-btn">ENTER THE DEPTHS</button>
+            <button class="continue-btn" id="continue-btn" style="display:none;">CONTINUE GAME</button>
+
+            <!-- Phase 4: Endgame mode buttons -->
+            <div class="option-row" style="margin-top: 16px;">
+                <button class="continue-btn" id="boss-rush-btn"
+                    style="display:inline-block;font-size:0.8rem;padding:8px 18px;">⚔ Boss Rush</button>
+                <button class="continue-btn" id="endless-btn"
+                    style="display:inline-block;font-size:0.8rem;padding:8px 18px;">∞ Endless Dungeon</button>
+                <button class="continue-btn" id="daily-btn"
+                    style="display:inline-block;font-size:0.8rem;padding:8px 18px;">📅 Daily Challenge</button>
+            </div>
+        </div>
+
+        <div class="controls-overlay" id="controls-overlay" style="display:none;">
+            <div class="controls-content">
+                <h2>Controls</h2>
+                <div class="control-item"><span class="control-key">A / D</span> Move Left / Right</div>
+                <div class="control-item"><span class="control-key">Space</span> Jump</div>
+                <div class="control-item"><span class="control-key">LMB</span> Mine / Attack</div>
+                <div class="control-item"><span class="control-key">RMB</span> Place Block</div>
+                <div class="control-item"><span class="control-key">1-0</span> Hotbar Slots</div>
+                <div class="control-item"><span class="control-key">E</span> Inventory</div>
+                <div class="control-item"><span class="control-key">C</span> Crafting</div>
+                <div class="control-item"><span class="control-key">F5</span> Save Game</div>
+                <div class="control-item"><span class="control-key">F9</span> Load Game</div>
+                <div class="control-item"><span class="control-key">F2</span> Split-Screen Co-op</div>
+                <div class="control-item"><span class="control-key">ESC</span> Pause / Settings</div>
+                <div class="control-item"><span class="control-key">🎮</span> Gamepad Supported</div>
+                <p class="controls-start-hint">Starting in a moment...</p>
+            </div>
+        </div>
+
+        <!-- LOADING SCREEN -->
+        <div id="loading-screen">
+            <div id="loading-title">Cursed Depths</div>
+            <div id="loading-skull">💀</div>
+            <div id="loading-bar-container">
+                <div id="loading-bar"></div>
+            </div>
+            <div id="loading-status">Initializing...</div>
+            <div id="loading-tip">"The deeper you dig, the darker things get..."</div>
+        </div>
+
+        <canvas id="game-canvas"></canvas>
+    </div>
+
+    <script src="/js/achievements.js"></script>
+    <script src="/js/leaderboards.js"></script>
+    <script src="/js/quality-fx.js"></script>
+    <script src="engine.js"></script>
+    <script src="player.js"></script>
+    <script src="entities.js"></script>
+    <script src="ui.js"></script>
+    <script src="game.js"></script>
+</body>
+
+</html>

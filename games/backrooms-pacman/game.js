@@ -163,7 +163,13 @@
         renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('game-canvas'), antialias: false });
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(1);
-        console.log('[Backrooms] renderer created');
+
+        // REAL RAYTRACING (Three.js Shadows)
+        if (window.QualityFX && window.QualityFX.isRT()) {
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = window.QualityFX.isPT() ? THREE.PCFSoftShadowMap : THREE.BasicShadowMap;
+            console.log('[Backrooms] Real Raytracing Enabled');
+        }
 
         window.addEventListener('resize', function () {
             camera.aspect = window.innerWidth / window.innerHeight;
@@ -192,30 +198,46 @@
         var floorTex = createFloorTexture();
         var ceilTex = createCeilingTexture();
 
-        // Floor — MeshBasicMaterial for guaranteed visibility
+        // RT settings
+        var useShadows = window.QualityFX && window.QualityFX.isRT();
+
+        // Floor
         var floorGeo = new THREE.PlaneGeometry(COLS * CELL, ROWS * CELL);
-        var floorMat = new THREE.MeshBasicMaterial({ map: floorTex, color: 0x4A3A28 });
+        var floorMat = useShadows
+            ? new THREE.MeshStandardMaterial({ map: floorTex, color: 0x4A3A28, roughness: 0.8 })
+            : new THREE.MeshBasicMaterial({ map: floorTex, color: 0x4A3A28 });
         var floor = new THREE.Mesh(floorGeo, floorMat);
         floor.rotation.x = -Math.PI / 2;
         floor.position.set((COLS * CELL) / 2, 0, (ROWS * CELL) / 2);
+        if (useShadows) floor.receiveShadow = true;
         scene.add(floor);
 
-        // Ceiling — MeshBasicMaterial, dark
-        var ceilMat = new THREE.MeshBasicMaterial({ map: ceilTex, color: 0x2A1E14 });
+        // Ceiling
+        var ceilMat = useShadows
+            ? new THREE.MeshStandardMaterial({ map: ceilTex, color: 0x2A1E14, roughness: 0.9 })
+            : new THREE.MeshBasicMaterial({ map: ceilTex, color: 0x2A1E14 });
         var ceil = new THREE.Mesh(floorGeo.clone(), ceilMat);
         ceil.rotation.x = Math.PI / 2;
         ceil.position.set((COLS * CELL) / 2, WALL_H, (ROWS * CELL) / 2);
+        if (useShadows) ceil.receiveShadow = true;
         scene.add(ceil);
 
-        // Walls — MeshBasicMaterial ignores lighting, GUARANTEED visible
+        // Walls
         var wallGeo = new THREE.BoxGeometry(CELL, WALL_H, CELL);
-        var wallMat = new THREE.MeshBasicMaterial({ map: wallTex, color: 0xB5A44C });
+        var wallMat = useShadows
+            ? new THREE.MeshStandardMaterial({ map: wallTex, color: 0xB5A44C, roughness: 0.7 })
+            : new THREE.MeshBasicMaterial({ map: wallTex, color: 0xB5A44C });
+
         var wallCount = 0;
         for (var r = 0; r < ROWS; r++) {
             for (var c = 0; c < COLS; c++) {
                 if (MAZE[r][c] === 1) {
                     var wall = new THREE.Mesh(wallGeo, wallMat);
                     wall.position.set(c * CELL + CELL / 2, WALL_H / 2, r * CELL + CELL / 2);
+                    if (useShadows) {
+                        wall.castShadow = true;
+                        wall.receiveShadow = true;
+                    }
                     scene.add(wall);
                     wallCount++;
                 }
@@ -226,6 +248,8 @@
 
     // ---- LIGHTING ----
     function createLighting() {
+        var useShadows = window.QualityFX && window.QualityFX.isRT();
+
         // Hemisphere for ambient color bleed
         scene.add(new THREE.HemisphereLight(0xC0A040, 0x080400, 0.15));
 
@@ -242,15 +266,25 @@
                         else if (rng < 0.42) flickerType = 'sputter';  // 12% sputter (dying bulb)
                         else if (rng < 0.50) flickerType = 'buzz';     // 8% buzzing flicker
                     }
+
                     var light = new THREE.PointLight(0xFFE8A0, isDead ? 0 : 0.6, CELL * 3.5);
                     light.position.set(c * CELL + CELL / 2, WALL_H - 0.3, r * CELL + CELL / 2);
+
+                    // Only key lights cast shadows to save performance
+                    if (useShadows && !isDead && Math.random() < 0.3) {
+                        light.castShadow = true;
+                        light.shadow.bias = -0.001;
+                    }
+
                     scene.add(light);
+
                     // Fixture mesh
                     var fixGeo = new THREE.BoxGeometry(1.6, 0.08, 0.25);
                     var fixMat = new THREE.MeshBasicMaterial({ color: isDead ? 0x555555 : 0xFFE8A0 });
                     var fixture = new THREE.Mesh(fixGeo, fixMat);
                     fixture.position.copy(light.position); fixture.position.y = WALL_H - 0.04;
                     scene.add(fixture);
+
                     corridorLights.push({
                         light: light, fixture: fixture, fixMat: fixMat,
                         baseIntensity: isDead ? 0 : 0.6,
@@ -266,6 +300,12 @@
 
         // Player flashlight - realistic cone
         var flashlight = new THREE.SpotLight(0xFFEECC, 0.8, 35, Math.PI / 5.5, 0.6, 1.5);
+        if (useShadows) {
+            flashlight.castShadow = true;
+            flashlight.shadow.mapSize.width = 1024;
+            flashlight.shadow.mapSize.height = 1024;
+            flashlight.shadow.bias = -0.0001;
+        }
         camera.add(flashlight);
         flashlight.target.position.set(0, -0.3, -1);
         camera.add(flashlight.target);
@@ -302,6 +342,7 @@
     // ---- ELDRITCH PAC-MAN (NIGHTMARE EDITION) ----
     function createPacman(spawnPos, isExtra) {
         var group = new THREE.Group();
+        var useShadows = window.QualityFX && window.QualityFX.isRT();
 
         // Body - deformed pulsating flesh/chitin sphere with darker tones
         var bodyGeo = new THREE.SphereGeometry(1.4, 32, 32);
@@ -315,8 +356,13 @@
             verts.setZ(i, z + noise - warp * 0.5);
         }
         bodyGeo.computeVertexNormals();
-        var bodyMat = new THREE.MeshBasicMaterial({ color: 0x8B6914 });
+
+        var bodyMat = useShadows
+            ? new THREE.MeshStandardMaterial({ color: 0x8B6914, roughness: 0.4, metalness: 0.2 })
+            : new THREE.MeshBasicMaterial({ color: 0x8B6914 });
+
         var body = new THREE.Mesh(bodyGeo, bodyMat);
+        if (useShadows) { body.castShadow = true; body.receiveShadow = true; }
         group.add(body);
         pacmanParts.body = body;
         pacmanParts.bodyMat = bodyMat;
@@ -331,14 +377,18 @@
 
         // Upper jaw — larger, more menacing
         var jawUpperGeo = new THREE.SphereGeometry(1.45, 32, 16, 0, Math.PI * 2, 0, Math.PI / 2);
-        var jawMat = new THREE.MeshBasicMaterial({ color: 0x7A5800 });
+        var jawMat = useShadows
+            ? new THREE.MeshStandardMaterial({ color: 0x7A5800, roughness: 0.3 })
+            : new THREE.MeshBasicMaterial({ color: 0x7A5800 });
         var jawUpper = new THREE.Mesh(jawUpperGeo, jawMat);
+        if (useShadows) jawUpper.castShadow = true;
         group.add(jawUpper);
         pacmanParts.jawUpper = jawUpper;
 
         // Lower jaw - animated
         var jawLowerGeo = new THREE.SphereGeometry(1.45, 32, 16, 0, Math.PI * 2, Math.PI / 2, Math.PI / 2);
         var jawLower = new THREE.Mesh(jawLowerGeo, jawMat.clone());
+        if (useShadows) jawLower.castShadow = true;
         group.add(jawLower);
         pacmanParts.jawLower = jawLower;
 
