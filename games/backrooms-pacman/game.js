@@ -184,6 +184,10 @@
         createDistortionOverlay();
         createBlackoutOverlay();
         console.log('[Backrooms] init() complete, scene.children:', scene.children.length);
+
+        if (window.QualityFX) {
+            QualityFX.injectThreeJS(renderer, scene, camera);
+        }
     }
 
     // ---- BUILD MAZE ----

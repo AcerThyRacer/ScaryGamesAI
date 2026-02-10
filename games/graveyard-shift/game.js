@@ -71,6 +71,10 @@
             camera.updateProjectionMatrix();
             renderer.setSize(window.innerWidth, window.innerHeight);
         });
+
+        if (window.QualityFX) {
+            QualityFX.injectThreeJS(renderer, scene, camera);
+        }
     }
 
     function buildCemetery() {
@@ -161,6 +165,10 @@
 
         // Spawn disturbances
         spawnDisturbances();
+
+        if (window.QualityFX && window.QualityFX.updateScene) {
+            QualityFX.updateScene();
+        }
     }
 
     function spawnDisturbances() {
