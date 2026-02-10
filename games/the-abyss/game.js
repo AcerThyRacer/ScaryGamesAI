@@ -192,6 +192,11 @@
         animate();
 
         console.log('✅ Three.js initialized');
+
+        if (window.QualityFX) {
+            QualityFX.injectThreeJS(renderer, scene, camera);
+        }
+
         return true;
     }
 
