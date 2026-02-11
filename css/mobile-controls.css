@@ -1,0 +1,691 @@
+/* ============================================
+   Mobile Controls CSS
+   Touch UI for ScaryGamesAI games
+   ============================================ */
+
+/* ── Container ─────────────────────────────── */
+.mobile-controls-container {
+    position: fixed;
+    inset: 0;
+    z-index: 9000;
+    pointer-events: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: none;
+    padding: env(safe-area-inset-top, 0) env(safe-area-inset-right, 0) env(safe-area-inset-bottom, 0) env(safe-area-inset-left, 0);
+}
+
+.mobile-controls-container * {
+    pointer-events: auto;
+    touch-action: none;
+}
+
+/* ── Virtual Joystick ──────────────────────── */
+.mc-joystick {
+    position: fixed;
+    left: 80px;
+    bottom: 100px;
+    width: 0;
+    height: 0;
+    opacity: 0;
+    transition: opacity 0.15s;
+    z-index: 9010;
+}
+
+.mc-joystick.active {
+    opacity: 1;
+}
+
+.mc-joystick-ring {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    left: -60px;
+    top: -60px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.06);
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3),
+        inset 0 0 15px rgba(255, 255, 255, 0.03);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mc-joystick-thumb {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%,
+            rgba(255, 255, 255, 0.25),
+            rgba(255, 255, 255, 0.08));
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    box-shadow: 0 0 12px rgba(255, 50, 50, 0.15),
+        0 2px 8px rgba(0, 0, 0, 0.4);
+    transition: transform 0.05s;
+    will-change: transform;
+}
+
+.mc-joystick.active .mc-joystick-thumb {
+    box-shadow: 0 0 18px rgba(255, 50, 50, 0.3),
+        0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+/* ── Action Buttons ────────────────────────── */
+.mc-buttons-zone {
+    position: fixed;
+    right: 20px;
+    bottom: 80px;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 14px;
+    align-items: center;
+    z-index: 9010;
+    padding-right: env(safe-area-inset-right, 0);
+    padding-bottom: env(safe-area-inset-bottom, 0);
+}
+
+.mc-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.07);
+    border: 2px solid rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    transition: transform 0.1s, background 0.1s, box-shadow 0.1s;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+}
+
+.mc-btn-active {
+    transform: scale(0.88);
+    background: rgba(255, 60, 60, 0.2);
+    border-color: rgba(255, 60, 60, 0.4);
+    box-shadow: 0 0 16px rgba(255, 60, 60, 0.3),
+        0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.mc-btn-icon {
+    font-size: 22px;
+    line-height: 1;
+}
+
+.mc-btn-label {
+    font-size: 8px;
+    font-family: 'Inter', sans-serif;
+    color: rgba(255, 255, 255, 0.5);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+}
+
+/* Special button sizes / positions */
+.mc-btn-jump {
+    width: 68px;
+    height: 68px;
+    border-color: rgba(100, 255, 100, 0.2);
+}
+
+.mc-btn-jump.mc-btn-active {
+    background: rgba(100, 255, 100, 0.15);
+    border-color: rgba(100, 255, 100, 0.4);
+    box-shadow: 0 0 16px rgba(100, 255, 100, 0.3);
+}
+
+.mc-btn-attack {
+    border-color: rgba(255, 80, 80, 0.2);
+}
+
+.mc-btn-attack.mc-btn-active {
+    background: rgba(255, 80, 80, 0.2);
+    border-color: rgba(255, 80, 80, 0.5);
+    box-shadow: 0 0 16px rgba(255, 80, 80, 0.4);
+}
+
+.mc-btn-sprint {
+    width: 50px;
+    height: 50px;
+    border-color: rgba(255, 200, 50, 0.2);
+}
+
+.mc-btn-sprint.mc-btn-active {
+    background: rgba(255, 200, 50, 0.15);
+    border-color: rgba(255, 200, 50, 0.4);
+    box-shadow: 0 0 16px rgba(255, 200, 50, 0.3);
+}
+
+.mc-btn-interact {
+    border-color: rgba(100, 150, 255, 0.2);
+}
+
+.mc-btn-interact.mc-btn-active {
+    background: rgba(100, 150, 255, 0.15);
+    border-color: rgba(100, 150, 255, 0.4);
+    box-shadow: 0 0 16px rgba(100, 150, 255, 0.3);
+}
+
+/* Secondary row for extra buttons */
+.mc-buttons-zone .mc-btn:nth-child(n+3) {
+    width: 50px;
+    height: 50px;
+}
+
+.mc-buttons-zone .mc-btn:nth-child(n+3) .mc-btn-icon {
+    font-size: 18px;
+}
+
+/* ── Landscape Lock Overlay ────────────────── */
+.mc-landscape-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 99999;
+    background: rgba(0, 0, 0, 0.95);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
+}
+
+.mc-landscape-overlay.visible {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.mc-landscape-prompt {
+    text-align: center;
+    color: #ccc;
+    font-family: 'Inter', sans-serif;
+}
+
+.mc-rotate-icon {
+    font-size: 64px;
+    margin-bottom: 16px;
+    animation: mc-rotate-wiggle 2s ease-in-out infinite;
+}
+
+.mc-landscape-prompt p {
+    font-size: 16px;
+    max-width: 260px;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+@keyframes mc-rotate-wiggle {
+
+    0%,
+    100% {
+        transform: rotate(-15deg);
+    }
+
+    50% {
+        transform: rotate(15deg);
+    }
+}
+
+/* ── Mobile Body Adjustments ───────────────── */
+body.mc-mobile-active {
+    overscroll-behavior: none;
+    -webkit-overflow-scrolling: auto;
+}
+
+body.mc-mobile-active .game-hud {
+    font-size: clamp(11px, 2.5vw, 16px);
+}
+
+body.mc-mobile-active .hud-score {
+    font-size: clamp(10px, 2.5vw, 14px);
+    padding: 4px 8px;
+}
+
+body.mc-mobile-active .hud-btn {
+    padding: 6px 10px;
+    font-size: clamp(9px, 2vw, 12px);
+}
+
+body.mc-mobile-active .start-screen h1 {
+    font-size: clamp(1.2rem, 5vw, 2.5rem);
+}
+
+body.mc-mobile-active .start-screen .game-desc {
+    font-size: clamp(0.75rem, 2.5vw, 1rem);
+    padding: 0 10px;
+}
+
+body.mc-mobile-active .start-btn,
+body.mc-mobile-active .play-btn {
+    min-width: 160px;
+    min-height: 48px;
+    font-size: clamp(14px, 3vw, 18px);
+}
+
+body.mc-mobile-active .controls-overlay .control-item {
+    font-size: clamp(11px, 2.5vw, 14px);
+}
+
+body.mc-mobile-active .back-link {
+    font-size: clamp(12px, 2.5vw, 14px);
+    padding: 8px 12px;
+    z-index: 100;
+}
+
+/* Hide keyboard controls hints on mobile */
+body.mc-mobile-active .controls-overlay .control-item {
+    display: none;
+}
+
+body.mc-mobile-active .controls-overlay .controls-content h2::after {
+    content: 'Use on-screen touch controls';
+    display: block;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.5);
+    font-weight: 400;
+    margin-top: 8px;
+}
+
+/* Minimap mobile repositioning */
+body.mc-mobile-active .minimap-container {
+    right: 10px !important;
+    top: 50px !important;
+    transform: scale(0.7);
+    transform-origin: top right;
+}
+
+/* Game over / win screen mobile */
+body.mc-mobile-active .game-end-screen h1 {
+    font-size: clamp(1.5rem, 6vw, 3rem);
+}
+
+body.mc-mobile-active .game-end-screen p {
+    font-size: clamp(0.8rem, 3vw, 1.1rem);
+}
+
+/* ── Media Queries ─────────────────────────── */
+@media (max-width: 480px) {
+    .mc-joystick-ring {
+        width: 100px;
+        height: 100px;
+        left: -50px;
+        top: -50px;
+    }
+
+    .mc-joystick-thumb {
+        width: 40px;
+        height: 40px;
+    }
+
+    .mc-btn {
+        width: 52px;
+        height: 52px;
+    }
+
+    .mc-btn-icon {
+        font-size: 18px;
+    }
+
+    .mc-buttons-zone {
+        right: 14px;
+        bottom: 60px;
+        gap: 10px;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1024px) {
+
+    /* Tablet adjustments */
+    .mc-joystick-ring {
+        width: 140px;
+        height: 140px;
+        left: -70px;
+        top: -70px;
+    }
+
+    .mc-joystick-thumb {
+        width: 56px;
+        height: 56px;
+    }
+
+    .mc-btn {
+        width: 70px;
+        height: 70px;
+    }
+
+    .mc-btn-icon {
+        font-size: 26px;
+    }
+}
+
+/* Hide on desktop (fallback, JS handles main logic) */
+@media (hover: hover) and (pointer: fine) {
+    .mobile-controls-container {
+        display: none !important;
+    }
+
+    .mc-landscape-overlay {
+        display: none !important;
+    }
+}
+
+/* ══════════════════════════════════════════════
+   TOUCH FEEDBACK ANIMATIONS
+   ══════════════════════════════════════════════ */
+
+/* Ripple effect on button press */
+.mc-btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+    opacity: 0;
+    transform: scale(0.5);
+    transition: opacity 0.15s ease, transform 0.15s ease;
+    pointer-events: none;
+}
+
+.mc-btn-active::after {
+    opacity: 1;
+    transform: scale(1.2);
+}
+
+/* Pulse glow on hold */
+.mc-btn-active {
+    animation: mcBtnPulse 0.6s ease-in-out infinite;
+}
+
+@keyframes mcBtnPulse {
+
+    0%,
+    100% {
+        box-shadow: 0 0 12px rgba(255, 60, 60, 0.3);
+    }
+
+    50% {
+        box-shadow: 0 0 22px rgba(255, 60, 60, 0.6);
+    }
+}
+
+/* Bounce feedback on release */
+.mc-btn-released {
+    animation: mcBtnBounce 0.25s ease-out;
+}
+
+@keyframes mcBtnBounce {
+    0% {
+        transform: scale(0.88);
+    }
+
+    50% {
+        transform: scale(1.08);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* Joystick direction arrows */
+.mc-joystick-ring::before {
+    content: '↑';
+    position: absolute;
+    top: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.15);
+    pointer-events: none;
+}
+
+.mc-joystick-ring::after {
+    content: '↓';
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 12px;
+    color: rgba(255, 255, 255, 0.15);
+    pointer-events: none;
+}
+
+/* Active joystick glow */
+.mc-joystick.active .mc-joystick-ring {
+    border-color: rgba(255, 100, 100, 0.3);
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 25px rgba(255, 50, 50, 0.15), inset 0 0 15px rgba(255, 255, 255, 0.03);
+}
+
+/* Container enter/exit transition */
+.mobile-controls-container {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.mobile-controls-container.mc-visible {
+    opacity: 1;
+}
+
+/* Touch position indicator */
+.mc-touch-indicator {
+    position: fixed;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.05);
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity 0.15s;
+}
+
+.mc-touch-indicator.active {
+    opacity: 1;
+    animation: mcTouchRipple 0.4s ease-out;
+}
+
+@keyframes mcTouchRipple {
+    0% {
+        width: 16px;
+        height: 16px;
+        opacity: 0.6;
+    }
+
+    100% {
+        width: 40px;
+        height: 40px;
+        opacity: 0;
+    }
+}
+
+/* Smooth transitions for button labels */
+.mc-btn-label {
+    transition: color 0.15s ease;
+}
+
+.mc-btn-active .mc-btn-label {
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* Sprint button hold indicator */
+.mc-btn-sprint.mc-btn-active {
+    animation: mcSprintGlow 0.5s ease-in-out infinite;
+}
+
+@keyframes mcSprintGlow {
+
+    0%,
+    100% {
+        box-shadow: 0 0 12px rgba(255, 200, 50, 0.3);
+        border-color: rgba(255, 200, 50, 0.4);
+    }
+
+    50% {
+        box-shadow: 0 0 24px rgba(255, 200, 50, 0.6);
+        border-color: rgba(255, 200, 50, 0.6);
+    }
+}
+
+/* Interact button visual feedback */
+.mc-btn-interact.mc-btn-active {
+    animation: mcInteractGlow 0.5s ease-in-out infinite;
+}
+
+@keyframes mcInteractGlow {
+
+    0%,
+    100% {
+        box-shadow: 0 0 12px rgba(100, 150, 255, 0.3);
+    }
+
+    50% {
+        box-shadow: 0 0 24px rgba(100, 150, 255, 0.6);
+    }
+}
+
+/* ══════════════════════════════════════════════
+   MOBILE CONTROL CUSTOMIZATION PANEL
+   ══════════════════════════════════════════════ */
+
+.mc-settings-btn {
+    position: fixed;
+    top: 8px;
+    right: 60px;
+    z-index: 9015;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+}
+
+.mc-settings-panel {
+    position: fixed;
+    top: 48px;
+    right: 12px;
+    z-index: 9020;
+    width: 240px;
+    background: rgba(10, 10, 15, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    padding: 14px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition: all 0.2s ease;
+    font-family: 'Inter', system-ui, sans-serif;
+    color: #ccc;
+}
+
+.mc-settings-panel.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.mc-settings-title {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #ffcc44;
+    margin-bottom: 10px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.mc-settings-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    font-size: 0.78rem;
+}
+
+.mc-settings-row:last-child {
+    border-bottom: none;
+}
+
+.mc-settings-slider {
+    width: 80px;
+    height: 4px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 2px;
+    outline: none;
+}
+
+.mc-settings-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #cc1122;
+    cursor: pointer;
+}
+
+.mc-settings-toggle {
+    width: 36px;
+    height: 20px;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    cursor: pointer;
+    transition: all 0.2s;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.mc-settings-toggle::after {
+    content: '';
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    top: 2px;
+    left: 2px;
+    background: rgba(255, 255, 255, 0.4);
+    transition: all 0.2s;
+}
+
+.mc-settings-toggle.on {
+    background: #cc1122;
+    border-color: #cc1122;
+}
+
+.mc-settings-toggle.on::after {
+    left: 18px;
+    background: #fff;
+}
+
+/* ══════════════════════════════════════════════
+   REDUCED MOTION for mobile controls
+   ══════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+
+    .mc-btn-active,
+    .mc-btn-released,
+    .mc-touch-indicator.active,
+    .mc-btn-sprint.mc-btn-active,
+    .mc-btn-interact.mc-btn-active {
+        animation: none !important;
+    }
+}

@@ -757,6 +757,369 @@ function createParticles() {
     }
 }
 
+// ============ PHASE 4: CINEMATIC HOMEPAGE ============
+
+// Typed subtitle effect
+function initTypedSubtitle() {
+    const el = document.getElementById('hero-typed-subtitle');
+    if (!el) return;
+    const phrases = [
+        'ENTER THE DARKNESS',
+        'FACE YOUR FEARS',
+        'NO ONE CAN HEAR YOU SCREAM',
+        'THE HORROR AWAITS',
+        'SURVIVE THE NIGHTMARE',
+        'EMBRACE THE TERROR'
+    ];
+    let phraseIdx = 0, charIdx = 0, deleting = false;
+    function tick() {
+        const current = phrases[phraseIdx];
+        if (!deleting) {
+            el.textContent = current.substring(0, charIdx + 1);
+            charIdx++;
+            if (charIdx === current.length) {
+                setTimeout(() => { deleting = true; tick(); }, 2200);
+                return;
+            }
+            setTimeout(tick, 70 + Math.random() * 40);
+        } else {
+            el.textContent = current.substring(0, charIdx);
+            charIdx--;
+            if (charIdx < 0) {
+                deleting = false;
+                charIdx = 0;
+                phraseIdx = (phraseIdx + 1) % phrases.length;
+                setTimeout(tick, 400);
+                return;
+            }
+            setTimeout(tick, 35);
+        }
+    }
+    tick();
+}
+
+// Floating horror icons in hero
+function initFloatingIcons() {
+    const container = document.getElementById('hero-floating-icons');
+    if (!container) return;
+    const icons = ['💀', '👻', '🦇', '🕷️', '🩸', '⚰️', '🔪', '🧟', '👁️', '🕯️', '☠️', '🫀'];
+    for (let i = 0; i < 18; i++) {
+        const span = document.createElement('span');
+        span.className = 'hero-float-icon';
+        span.textContent = icons[i % icons.length];
+        span.style.left = Math.random() * 100 + '%';
+        span.style.animationDelay = (Math.random() * 12) + 's';
+        span.style.animationDuration = (8 + Math.random() * 10) + 's';
+        span.style.fontSize = (1 + Math.random() * 1.5) + 'rem';
+        container.appendChild(span);
+    }
+}
+
+// Terror counter — animate on scroll
+function initTerrorCounters() {
+    const counters = document.querySelectorAll('.terror-stat-number');
+    if (!counters.length) return;
+    let animated = false;
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && !animated) {
+                animated = true;
+                counters.forEach(counter => {
+                    const target = parseInt(counter.getAttribute('data-count'));
+                    const duration = 2500;
+                    const startTime = performance.now();
+                    function update(now) {
+                        const elapsed = now - startTime;
+                        const progress = Math.min(elapsed / duration, 1);
+                        const eased = 1 - Math.pow(1 - progress, 3);
+                        counter.textContent = Math.floor(target * eased).toLocaleString();
+                        if (progress < 1) requestAnimationFrame(update);
+                    }
+                    requestAnimationFrame(update);
+                });
+            }
+        });
+    }, { threshold: 0.3 });
+    const section = document.querySelector('.terror-counter-section');
+    if (section) observer.observe(section);
+}
+
+// Showcase carousel
+function initShowcaseCarousel() {
+    const track = document.getElementById('showcase-track');
+    const dotsWrap = document.getElementById('showcase-dots');
+    if (!track || !dotsWrap) return;
+
+    const spotlightGames = GAMES.filter(g => g.isNew || g.difficulty >= 4).slice(0, 5);
+    if (!spotlightGames.length) return;
+
+    spotlightGames.forEach((game, idx) => {
+        const slide = document.createElement('div');
+        slide.className = 'showcase-slide' + (idx === 0 ? ' active' : '');
+        slide.innerHTML = `
+            <div class="showcase-visual"><canvas></canvas></div>
+            <div class="showcase-info">
+                <div class="showcase-tags">${game.tags.map((t, i) => `<span class="tag ${game.tagClasses[i]}">${t}</span>`).join('')}</div>
+                <h3 class="showcase-title">${game.title}</h3>
+                <p class="showcase-desc">${game.desc}</p>
+                <a href="${game.url}" class="play-btn">▶ Play Now</a>
+            </div>
+        `;
+        track.appendChild(slide);
+        const canvas = slide.querySelector('canvas');
+        setTimeout(() => drawCardThumb(canvas, game), 100);
+
+        const dot = document.createElement('button');
+        dot.className = 'showcase-dot' + (idx === 0 ? ' active' : '');
+        dot.setAttribute('data-idx', idx);
+        dotsWrap.appendChild(dot);
+    });
+
+    let current = 0;
+    function goTo(idx) {
+        const slides = track.querySelectorAll('.showcase-slide');
+        const dots = dotsWrap.querySelectorAll('.showcase-dot');
+        slides.forEach((s, i) => s.classList.toggle('active', i === idx));
+        dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+        current = idx;
+    }
+
+    dotsWrap.addEventListener('click', e => {
+        if (e.target.classList.contains('showcase-dot')) {
+            goTo(parseInt(e.target.getAttribute('data-idx')));
+        }
+    });
+    const prevBtn = document.getElementById('showcase-prev');
+    const nextBtn = document.getElementById('showcase-next');
+    if (prevBtn) prevBtn.addEventListener('click', () => goTo((current - 1 + spotlightGames.length) % spotlightGames.length));
+    if (nextBtn) nextBtn.addEventListener('click', () => goTo((current + 1) % spotlightGames.length));
+
+    // Auto-advance every 5s
+    setInterval(() => goTo((current + 1) % spotlightGames.length), 5000);
+}
+
+// Scare-O-Meter
+function initScareOMeter() {
+    const fill = document.getElementById('scare-meter-fill');
+    const needle = document.getElementById('scare-meter-needle');
+    const number = document.getElementById('scare-meter-number');
+    const pulse = document.getElementById('scare-meter-pulse');
+    if (!fill || !number) return;
+
+    let value = 0;
+    const target = 55 + Math.floor(Math.random() * 35); // 55-89
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && value === 0) {
+                const startTime = performance.now();
+                function animate(now) {
+                    const elapsed = now - startTime;
+                    const progress = Math.min(elapsed / 2000, 1);
+                    const eased = 1 - Math.pow(1 - progress, 3);
+                    value = Math.floor(target * eased);
+                    fill.style.width = value + '%';
+                    if (needle) needle.style.left = value + '%';
+                    number.textContent = value;
+                    if (progress < 1) requestAnimationFrame(animate);
+                    else {
+                        // Pulse the value up/down randomly
+                        setInterval(() => {
+                            const delta = Math.floor(Math.random() * 5) - 2;
+                            value = Math.max(30, Math.min(99, value + delta));
+                            fill.style.width = value + '%';
+                            if (needle) needle.style.left = value + '%';
+                            number.textContent = value;
+                        }, 1500);
+                    }
+                }
+                requestAnimationFrame(animate);
+            }
+        });
+    }, { threshold: 0.3 });
+
+    const section = document.querySelector('.scare-meter-section');
+    if (section) observer.observe(section);
+}
+
+// Terror Wall (testimonials)
+function initTerrorWall() {
+    const grid = document.getElementById('terror-wall');
+    if (!grid) return;
+    const testimonials = [
+        { name: 'DarkSoul_99', avatar: '👤', rating: 5, text: '"I screamed so loud my neighbors called the police. 10/10 would scream again."', game: 'Backrooms: Pac-Man' },
+        { name: 'NightOwl', avatar: '🦉', rating: 5, text: '"The Abyss genuinely gave me nightmares for a week. This site is NOT for the faint of heart."', game: 'The Abyss' },
+        { name: 'xX_Survivor_Xx', avatar: '💀', rating: 4, text: '"Played at 3 AM. Worst decision ever. The jump scares got me EVERY time."', game: 'The Elevator' },
+        { name: 'GhostHunter42', avatar: '👻', rating: 5, text: '"Graveyard Shift had me checking behind my door IRL. Absolutely terrifying atmosphere."', game: 'Graveyard Shift' },
+        { name: 'ScaredStiff', avatar: '🫣', rating: 5, text: '"Web of Terror made me discover my arachnophobia was WAY worse than I thought."', game: 'Web of Terror' },
+        { name: 'CryptKeeper_X', avatar: '⚰️', rating: 4, text: '"Cursed Depths ate 40 hours of my life. The deeper you go, the worse it gets."', game: 'Cursed Depths' },
+    ];
+
+    testimonials.forEach(t => {
+        const card = document.createElement('div');
+        card.className = 'terror-wall-card';
+        const stars = '⭐'.repeat(t.rating) + '☆'.repeat(5 - t.rating);
+        card.innerHTML = `
+            <div class="tw-header">
+                <span class="tw-avatar">${t.avatar}</span>
+                <div>
+                    <div class="tw-name">${t.name}</div>
+                    <div class="tw-stars">${stars}</div>
+                </div>
+            </div>
+            <p class="tw-text">${t.text}</p>
+            <div class="tw-game">🎮 ${t.game}</div>
+        `;
+        grid.appendChild(card);
+    });
+}
+
+// Newsletter form handler
+function initNewsletter() {
+    const form = document.getElementById('newsletter-form');
+    if (!form) return;
+    form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const btn = form.querySelector('.newsletter-btn');
+        btn.textContent = '✅ Subscribed!';
+        btn.style.background = 'linear-gradient(135deg, #00ff88, #00cc66)';
+        const input = form.querySelector('.newsletter-input');
+        input.value = '';
+        setTimeout(() => {
+            btn.textContent = '🩸 Subscribe';
+            btn.style.background = '';
+        }, 3000);
+    });
+}
+
+// ============ PHASE 5: GAME CARD REVOLUTION ============
+
+// 3D tilt effect on game cards (mouse + touch)
+function initCardTilt() {
+    var tiltAmount = 14;  // degrees
+
+    function attachTilt(card) {
+        function onMove(clientX, clientY) {
+            var rect = card.getBoundingClientRect();
+            var x = (clientX - rect.left) / rect.width;
+            var y = (clientY - rect.top) / rect.height;
+            if (x < 0 || x > 1 || y < 0 || y > 1) return;
+            var rotY = (x - 0.5) * tiltAmount;
+            var rotX = (y - 0.5) * -tiltAmount;
+            card.style.setProperty('transform',
+                'perspective(800px) rotateX(' + rotX.toFixed(2) + 'deg) rotateY(' + rotY.toFixed(2) + 'deg) translateY(-4px) scale(1.02)',
+                'important');
+        }
+
+        function onReset() {
+            card.style.setProperty('transform', '', '');
+        }
+
+        // Mouse events — directly on each card
+        card.addEventListener('mouseenter', function (e) { onMove(e.clientX, e.clientY); });
+        card.addEventListener('mousemove', function (e) { onMove(e.clientX, e.clientY); });
+        card.addEventListener('mouseleave', onReset);
+
+        // Touch events
+        card.addEventListener('touchmove', function (e) {
+            var t = e.touches[0];
+            if (t) onMove(t.clientX, t.clientY);
+        }, { passive: true });
+        card.addEventListener('touchend', onReset);
+    }
+
+    // Attach to existing cards
+    document.querySelectorAll('.game-card').forEach(attachTilt);
+
+    // Watch for dynamically added cards
+    var observer = new MutationObserver(function (muts) {
+        muts.forEach(function (m) {
+            m.addedNodes.forEach(function (node) {
+                if (node.nodeType !== 1) return;
+                if (node.classList && node.classList.contains('game-card')) attachTilt(node);
+                else if (node.querySelectorAll) {
+                    node.querySelectorAll('.game-card').forEach(attachTilt);
+                }
+            });
+        });
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+}
+
+// Enhanced game card rendering with Phase 5 features
+const ORIGINAL_createGameCards = createGameCards;
+function createGameCardsEnhanced(filter) {
+    const grids = document.querySelectorAll('#games-grid');
+    grids.forEach(grid => {
+        grid.innerHTML = '';
+        const filtered = filter && filter !== 'all' ? GAMES.filter(g => {
+            if (filter === '3d') return g.tags.includes('3D');
+            if (filter === '2d') return g.tags.includes('2D');
+            return g.category === filter;
+        }) : GAMES;
+        filtered.forEach(game => {
+            const skulls = '💀'.repeat(game.difficulty || 1) + '🖤'.repeat(5 - (game.difficulty || 1));
+            const locked = !canAccessGame(game);
+            const tierLabel = TIER_NAMES[game.requiredTier] || 'Free';
+            const lockOverlay = locked ? `<div class="game-lock-overlay"><div class="game-lock-icon">🔒</div><div class="game-lock-text">Requires ${tierLabel}</div></div>` : '';
+            const quality = getQualityForTier();
+            const qualityBadge = !locked ? `<span class="quality-badge ${quality.cls}">${quality.icon} ${quality.label}</span>` : '';
+
+            // Phase 5: Rating stars
+            const ratingStars = '⭐'.repeat(Math.min(game.difficulty || 1, 5));
+            // Phase 5: Fake play count
+            const playCount = Math.floor(100 + Math.random() * 900);
+            // Phase 5: Ribbon
+            let ribbon = '';
+            if (game.requiredTier === 'none' && !game.isNew) ribbon = '<div class="card-ribbon card-ribbon-free">FREE</div>';
+            else if (game.isNew) ribbon = '<div class="card-ribbon card-ribbon-new">NEW</div>';
+            else if (game.difficulty >= 4) ribbon = '<div class="card-ribbon card-ribbon-hot">HOT</div>';
+
+            const card = document.createElement('div');
+            card.className = 'game-card' + (locked ? ' game-card-locked' : '');
+            card.setAttribute('data-category', game.category || '');
+            card.style.setProperty('--card-color', game.color);
+            card.innerHTML = `
+                <div class="card-holo-border"></div>
+                <div class="game-card-image">
+                    <canvas></canvas>
+                    <div class="card-scan-line"></div>
+                    ${ribbon}
+                    ${lockOverlay}
+                </div>
+                <div class="game-card-body">
+                    <div class="game-card-tags">
+                        ${game.tags.map((t, i) => `<span class="tag ${game.tagClasses[i]}">${t}</span>`).join('')}
+                        ${qualityBadge}
+                    </div>
+                    <h3 class="game-card-title">${game.title}</h3>
+                    <div class="game-card-difficulty" title="Difficulty">${skulls}</div>
+                    <div class="game-card-meta">
+                        <span class="card-rating">${ratingStars}</span>
+                        <span class="card-players"><span class="live-dot"></span> ${playCount} playing</span>
+                    </div>
+                    <p class="game-card-desc">${game.desc}</p>
+                    ${locked ? `<button class="play-btn game-upgrade-btn" data-tier="${game.requiredTier}">🔒 Upgrade to Play</button>` : `<a href="${game.url}" class="play-btn">▶ Play Now</a>`}
+                </div>
+                <div class="card-bottom-glow" style="background:linear-gradient(90deg, transparent, ${game.color}, transparent);"></div>
+            `;
+            grid.appendChild(card);
+            const canvas = card.querySelector('canvas');
+            setTimeout(() => drawCardThumb(canvas, game), 50);
+            const upgradeBtn = card.querySelector('.game-upgrade-btn');
+            if (upgradeBtn) {
+                upgradeBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    showUpgradeModal(game.requiredTier);
+                });
+            }
+        });
+    });
+}
+
+// Override createGameCards with enhanced version
+createGameCards = createGameCardsEnhanced;
+
 // Featured game animated canvas
 function animateFeaturedCanvas() {
     const container = document.getElementById('featured-canvas');
@@ -911,6 +1274,17 @@ function initVideoRotation() {
     video2.addEventListener('ended', () => crossfade(video2, video1));
 }
 
+// Hero live count animation
+function initHeroLiveCount() {
+    const el = document.getElementById('hero-live-count');
+    if (!el) return;
+    setInterval(() => {
+        const delta = Math.floor(Math.random() * 30) - 15;
+        const current = parseInt(el.textContent.replace(/,/g, '')) || 1247;
+        el.textContent = Math.max(800, current + delta).toLocaleString();
+    }, 3000);
+}
+
 // Init
 document.addEventListener('DOMContentLoaded', () => {
     createFilterBar();
@@ -918,5 +1292,16 @@ document.addEventListener('DOMContentLoaded', () => {
     createParticles();
     animateFeaturedCanvas();
     initVideoRotation();
+    // Phase 4
+    initTypedSubtitle();
+    initFloatingIcons();
+    initTerrorCounters();
+    initShowcaseCarousel();
+    initScareOMeter();
+    initTerrorWall();
+    initNewsletter();
+    initHeroLiveCount();
+    // Phase 5
+    initCardTilt();
 });
 

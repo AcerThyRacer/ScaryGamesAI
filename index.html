@@ -37,19 +37,52 @@
   </nav>
 
   <main class="main-content">
-    <!-- Hero -->
+    <!-- Hero (Enhanced) -->
     <section class="hero">
       <div class="particles" id="particles"></div>
+      <div class="hero-floating-icons" id="hero-floating-icons"></div>
       <h1 class="hero-title">ScaryGames</h1>
-      <p class="hero-subtitle">ENTER THE DARKNESS</p>
+      <p class="hero-subtitle" id="hero-typed-subtitle"></p>
       <p class="hero-desc">
         Experience terrifying browser-based horror games.
         Navigate haunted backrooms, crawl through shadow-filled dungeons,
         and survive your worst nightmares — all from your browser.
       </p>
-      <a href="/games.html" class="hero-cta">
-        ▶ Play Now
-      </a>
+      <div class="hero-cta-wrap">
+        <a href="/games.html" class="hero-cta">
+          <span class="hero-cta-pulse"></span>
+          ▶ Play Now
+        </a>
+        <span class="hero-player-count">🟢 <span id="hero-live-count">1,247</span> playing now</span>
+      </div>
+    </section>
+
+    <!-- Terror Counter (NEW) -->
+    <section class="terror-counter-section">
+      <div class="container">
+        <div class="terror-counter-grid" id="terror-counters">
+          <div class="terror-stat" data-target="847293">
+            <div class="terror-stat-icon">🎮</div>
+            <div class="terror-stat-number" data-count="847293">0</div>
+            <div class="terror-stat-label">Games Played</div>
+          </div>
+          <div class="terror-stat" data-target="12847">
+            <div class="terror-stat-icon">👤</div>
+            <div class="terror-stat-number" data-count="12847">0</div>
+            <div class="terror-stat-label">Active Players</div>
+          </div>
+          <div class="terror-stat" data-target="3241567">
+            <div class="terror-stat-icon">😱</div>
+            <div class="terror-stat-number" data-count="3241567">0</div>
+            <div class="terror-stat-label">Scares Delivered</div>
+          </div>
+          <div class="terror-stat" data-target="98432">
+            <div class="terror-stat-icon">⏱️</div>
+            <div class="terror-stat-number" data-count="98432">0</div>
+            <div class="terror-stat-label">Hours Survived</div>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- Featured Game -->
@@ -61,7 +94,7 @@
         </div>
         <div class="featured-game">
           <div class="featured-game-info">
-            <span class="featured-badge">🔥 FEATURED</span>
+            <span class="featured-badge">🔥 FEATURED <span class="live-dot"></span></span>
             <h3>Backrooms: Pac-Man</h3>
             <p>You're trapped in the backrooms. Something familiar yet terrifying is hunting you —
               a massive Pac-Man. Collect all the pellets to find your way out...
@@ -78,6 +111,57 @@
       </div>
     </section>
 
+    <!-- Showcase Carousel (NEW) -->
+    <section class="showcase-section">
+      <div class="container">
+        <div class="section-header">
+          <h2>🔥 Spotlight</h2>
+          <p>This week's most terrifying picks</p>
+        </div>
+        <div class="showcase-carousel" id="showcase-carousel">
+          <div class="showcase-track" id="showcase-track"></div>
+          <div class="showcase-dots" id="showcase-dots"></div>
+          <button class="showcase-arrow showcase-prev" id="showcase-prev">❮</button>
+          <button class="showcase-arrow showcase-next" id="showcase-next">❯</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works (NEW) -->
+    <section class="how-it-works-section">
+      <div class="container">
+        <div class="section-header">
+          <h2>How It Works</h2>
+          <p>Three steps to terror</p>
+        </div>
+        <div class="hiw-grid">
+          <div class="hiw-step">
+            <div class="hiw-icon">🎯</div>
+            <div class="hiw-number">01</div>
+            <h3>Choose Your Fear</h3>
+            <p>Browse our collection of terrifying games. From psychological horror to survival terror — pick your
+              nightmare.</p>
+          </div>
+          <div class="hiw-connector">→</div>
+          <div class="hiw-step">
+            <div class="hiw-icon">🖥️</div>
+            <div class="hiw-number">02</div>
+            <h3>Play Instantly</h3>
+            <p>No downloads, no installs. Click play and you're in. Our games run directly in your browser at full
+              quality.</p>
+          </div>
+          <div class="hiw-connector">→</div>
+          <div class="hiw-step">
+            <div class="hiw-icon">💀</div>
+            <div class="hiw-number">03</div>
+            <h3>Survive... If You Can</h3>
+            <p>Face your fears, complete challenges, climb leaderboards, and unlock achievements. How long will you
+              last?</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
     <!-- All Games Preview -->
     <section class="container" style="padding-bottom: 80px;">
       <div class="section-header">
@@ -87,6 +171,44 @@
       <div class="games-grid" id="games-grid"></div>
     </section>
 
+    <!-- Scare-O-Meter (NEW) -->
+    <section class="scare-meter-section">
+      <div class="container">
+        <div class="section-header">
+          <h2>🎯 Scare-O-Meter</h2>
+          <p>Global terror intensity — LIVE</p>
+        </div>
+        <div class="scare-meter-wrap" id="scare-meter">
+          <div class="scare-meter-gauge">
+            <div class="scare-meter-fill" id="scare-meter-fill"></div>
+            <div class="scare-meter-needle" id="scare-meter-needle"></div>
+            <div class="scare-meter-labels">
+              <span>😊 Calm</span>
+              <span>😰 Uneasy</span>
+              <span>😱 Terrified</span>
+              <span>💀 MAXIMUM</span>
+            </div>
+          </div>
+          <div class="scare-meter-value">
+            <span class="scare-meter-number" id="scare-meter-number">0</span>
+            <span class="scare-meter-unit">/ 100</span>
+          </div>
+          <div class="scare-meter-pulse" id="scare-meter-pulse">⚡ LIVE PULSE</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Community Terror Wall (NEW) -->
+    <section class="terror-wall-section">
+      <div class="container">
+        <div class="section-header">
+          <h2>💬 Community Terror Wall</h2>
+          <p>What survivors are saying</p>
+        </div>
+        <div class="terror-wall-grid" id="terror-wall"></div>
+      </div>
+    </section>
+
     <!-- Daily Challenge -->
     <section class="container" style="padding-bottom: 40px;">
       <div class="section-header">
@@ -94,6 +216,23 @@
         <p>A new dare every day</p>
       </div>
       <div id="daily-challenge-card"></div>
+    </section>
+
+    <!-- Newsletter CTA (NEW) -->
+    <section class="newsletter-section">
+      <div class="container">
+        <div class="newsletter-wrap">
+          <div class="newsletter-icon">💀</div>
+          <h2 class="newsletter-title">Join The Darkness</h2>
+          <p class="newsletter-desc">Get notified about new games, events, and exclusive content. No spam — only scares.
+          </p>
+          <form class="newsletter-form" id="newsletter-form" onsubmit="return false;">
+            <input type="email" class="newsletter-input" placeholder="your@email.com" required>
+            <button type="submit" class="newsletter-btn">🩸 Subscribe</button>
+          </form>
+          <p class="newsletter-small">Join 8,400+ survivors. Unsubscribe anytime.</p>
+        </div>
+      </div>
     </section>
 
     <!-- About -->
@@ -133,6 +272,9 @@
     });
   </script>
   <script src="/js/scroll-fx.js"></script>
+    <script src="/js/adaptive-quality.js"></script>
+    <script src="/js/transitions.js"></script>
+    <script src="/js/micro-interactions.js"></script>
 </body>
 
 </html>
