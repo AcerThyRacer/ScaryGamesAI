@@ -332,8 +332,10 @@
         // Create several chunks of snowy terrain
         var snowMat = new THREE.MeshStandardMaterial({
             color: 0xdde8f0,
-            roughness: 0.85,
-            metalness: 0.05
+            roughness: 0.4, // Icier
+            metalness: 0.1,
+            emissive: 0x112233,
+            emissiveIntensity: 0.1
         });
 
         for (var i = 0; i < 5; i++) {
@@ -440,15 +442,15 @@
 
     function createSnow() {
         var snowGeo = new THREE.BufferGeometry();
-        var SNOW_COUNT = 3000;
+        var SNOW_COUNT = 6000; // Double the snow
         var positions = new Float32Array(SNOW_COUNT * 3);
         for (var i = 0; i < SNOW_COUNT; i++) {
-            positions[i * 3] = (Math.random() - 0.5) * 80;
-            positions[i * 3 + 1] = Math.random() * 40;
-            positions[i * 3 + 2] = (Math.random() - 0.5) * 100;
+            positions[i * 3] = (Math.random() - 0.5) * 120;
+            positions[i * 3 + 1] = Math.random() * 60;
+            positions[i * 3 + 2] = (Math.random() - 0.5) * 150;
         }
         snowGeo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-        var snowMat = new THREE.PointsMaterial({ color: 0xffffff, size: 0.15, transparent: true, opacity: 0.8 });
+        var snowMat = new THREE.PointsMaterial({ color: 0xaaccff, size: 0.2, transparent: true, opacity: 0.6, blending: THREE.AdditiveBlending });
         var snow = new THREE.Points(snowGeo, snowMat);
         snow.userData.positions = positions;
         scene.add(snow);

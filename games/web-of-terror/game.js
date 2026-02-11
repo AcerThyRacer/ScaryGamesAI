@@ -132,8 +132,10 @@
         scene.add(new THREE.AmbientLight(0x111100, 0.05));
 
         // Player torch
-        torchLight = new THREE.SpotLight(0xffaa44, 2, 15, Math.PI / 5, 0.4, 1.5);
+        torchLight = new THREE.SpotLight(0xffaa44, 2.5, 20, Math.PI / 4, 0.5, 1.5);
         torchLight.castShadow = true;
+        torchLight.shadow.mapSize.width = 1024;
+        torchLight.shadow.mapSize.height = 1024;
         camera.add(torchLight);
         camera.add(torchLight.target);
         torchLight.target.position.set(0, 0, -5);
@@ -306,7 +308,13 @@
             if (torch <= 0) { torch = 0; torchOn = false; }
         }
         if (torchLight) {
-            torchLight.intensity = torchOn ? (1.5 + Math.sin(Date.now() * 0.01) * 0.2) : 0;
+            // Realistic flame flicker (position + intensity)
+            var time = Date.now() * 0.01;
+            torchLight.intensity = torchOn ? (2.0 + Math.sin(time) * 0.3 + Math.cos(time * 2.5) * 0.2) : 0;
+            if (torchOn) {
+                torchLight.position.x = Math.sin(time * 0.5) * 0.05;
+                torchLight.position.y = Math.cos(time * 0.7) * 0.05;
+            }
         }
 
         // Movement with wall collision
