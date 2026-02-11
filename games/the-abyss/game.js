@@ -10,7 +10,7 @@
     // VERSION & CONFIG
     // ============================================
     const GAME_VERSION = '2.0.0';
-    
+
     // Settings will be loaded from SaveSystem
     let CONFIG = {};
     let settings = {};
@@ -22,7 +22,7 @@
     let clock = new THREE.Clock();
     let deltaTime = 0;
     let gameTime = 0;
-    
+
     // ============================================
     // GAME STATE
     // ============================================
@@ -42,7 +42,7 @@
     let initialized = false;
     let currentSaveSlot = -1;
     let isNewGame = true;
-    
+
     // ============================================
     // ENTITY SYSTEMS
     // ============================================
@@ -60,7 +60,7 @@
     let bioluminescentPlants = [];
     let floatingParticles = [];
     let activeFlares = [];
-    
+
     // ============================================
     // PLAYER SYSTEM
     // ============================================
@@ -86,7 +86,7 @@
         deathCount: 0,
         detectedByCreatures: 0
     };
-    
+
     // ============================================
     // INPUT SYSTEM
     // ============================================
@@ -101,7 +101,7 @@
         moveDown: false,
         sprint: false
     };
-    
+
     // ============================================
     // VISUAL EFFECTS
     // ============================================
@@ -111,24 +111,24 @@
         targetFov: 75,
         vignetteIntensity: 0.3
     };
-    
+
     // ============================================
     // AUDIO SYSTEM
     // ============================================
     let audioContext = null;
-    
+
     // ============================================
     // AUTO-SAVE
     // ============================================
     let lastAutoSave = 0;
-    
+
     // ============================================
     // PHASE 2: BIOME & ENVIRONMENT
     // ============================================
     let currentBiome = null;
     let biomeEntities = [];
     let environmentalHazards = [];
-    
+
     // ============================================
     // THREE.JS INITIALIZATION
     // ============================================
@@ -192,6 +192,10 @@
         animate();
 
         console.log('✅ Three.js initialized');
+
+        // Quality tier enhancements
+        try { if (typeof QualityEnhancer !== 'undefined') QualityEnhancer.enhance(renderer, scene, camera); } catch (e) { console.warn('QualityEnhancer:', e); }
+
         return true;
     }
 
@@ -203,14 +207,14 @@
             roughness: 0.9,
             metalness: 0.1
         });
-        
+
         // Add some noise to floor vertices
         const positions = floorGeometry.attributes.position.array;
         for (let i = 0; i < positions.length; i += 3) {
             positions[i + 2] = Math.random() * 2; // Z becomes Y after rotation
         }
         floorGeometry.computeVertexNormals();
-        
+
         const floor = new THREE.Mesh(floorGeometry, floorMaterial);
         floor.rotation.x = -Math.PI / 2;
         floor.position.y = -50;
@@ -257,7 +261,7 @@
 
         const particleSystem = new THREE.Points(geometry, material);
         scene.add(particleSystem);
-        
+
         // Store for animation
         window.marineSnow = particleSystem;
     }
@@ -266,24 +270,24 @@
     // INITIALIZATION
     // ============================================
     document.addEventListener('DOMContentLoaded', initGame);
-    
+
     function initGame() {
         // Initialize Three.js first
         if (!initThreeJS()) {
             console.error('Failed to initialize Three.js');
             return;
         }
-        
+
         // Load settings
         if (typeof SaveSystem !== 'undefined') {
             settings = SaveSystem.loadSettings();
             SaveSystem.resetSessionStats();
-            
+
             // Apply settings to CONFIG
             CONFIG = {
-                renderDistance: settings.graphics.quality === 'ultra' ? 200 : 
-                               settings.graphics.quality === 'high' ? 150 : 
-                               settings.graphics.quality === 'medium' ? 100 : 75,
+                renderDistance: settings.graphics.quality === 'ultra' ? 200 :
+                    settings.graphics.quality === 'high' ? 150 :
+                        settings.graphics.quality === 'medium' ? 100 : 75,
                 shadowMapSize: settings.graphics.shadowQuality === 'high' ? 2048 : 1024,
                 bloomStrength: settings.graphics.bloom ? 1.2 : 0,
                 bloomRadius: 0.8,
@@ -310,59 +314,59 @@
                 fov: 75
             };
         }
-        
+
         // Initialize game modes
         if (typeof GameModes !== 'undefined') {
             GameModes.init();
         }
-        
+
         // Initialize resource system
         if (typeof ResourceSystem !== 'undefined') {
             ResourceSystem.init();
         }
-        
+
         // Initialize event system
         if (typeof EventSystem !== 'undefined') {
             EventSystem.init();
-            
+
             // Listen for events
             EventSystem.on('event_start', (data) => {
                 handleEventStart(data.event);
             });
-            
+
             EventSystem.on('poi_spawned', (data) => {
                 handlePOISpawned(data.poi);
             });
         }
-        
+
         // ============================================
         // PHASE 1: Initialize New Engine Systems
         // ============================================
         initPhase1Systems();
-        
+
         setupEventListeners();
         setupUI();
         loadMenuData();
     }
-    
+
     // ============================================
     // PHASE 1 SYSTEMS INITIALIZATION
     // ============================================
     async function initPhase1Systems() {
         console.log('🚀 Initializing Phase 1 Technical Foundation...');
-        
+
         try {
             // Get canvas
             const canvas = document.getElementById('game-canvas');
             if (!canvas) return;
-            
+
             // Wait for Three.js to be ready
             if (typeof THREE === 'undefined') {
                 console.warn('Three.js not loaded yet, delaying Phase 1 init');
                 setTimeout(initPhase1Systems, 100);
                 return;
             }
-            
+
             // Initialize Phase 1 Integration
             if (typeof Phase1Integration !== 'undefined') {
                 // We'll initialize after scene setup in startGame
@@ -380,7 +384,7 @@
             const stats = SaveSystem.loadLifetimeStats();
             const bestTimeEl = document.getElementById('best-time');
             const totalPlaysEl = document.getElementById('total-plays');
-            
+
             if (bestTimeEl) {
                 if (stats.bestTime !== Infinity) {
                     const mins = Math.floor(stats.bestTime / 60);
@@ -390,11 +394,11 @@
                     bestTimeEl.textContent = '--:--';
                 }
             }
-            
+
             if (totalPlaysEl) {
                 totalPlaysEl.textContent = stats.gamesPlayed;
             }
-            
+
             // Show "Continue" button if saves exist
             if (SaveSystem.hasAnySave()) {
                 const continueBtn = document.getElementById('continue-btn');
@@ -413,16 +417,16 @@
         document.addEventListener('pointerlockchange', handlePointerLockChange);
         window.addEventListener('resize', handleResize);
         window.addEventListener('gamepadconnected', handleGamepadConnected);
-        
+
         // UI buttons
         document.getElementById('start-btn')?.addEventListener('click', () => {
             showGameModeSelection();
         });
-        
+
         document.getElementById('continue-btn')?.addEventListener('click', () => {
             showLoadGameMenu();
         });
-        
+
         document.getElementById('settings-btn')?.addEventListener('click', openSettings);
         document.getElementById('achievements-btn')?.addEventListener('click', showAchievements);
         document.getElementById('stats-btn')?.addEventListener('click', showStatistics);
@@ -445,7 +449,7 @@
     // ============================================
     function showGameModeSelection() {
         const startScreen = document.getElementById('start-screen');
-        
+
         // Create mode selection overlay
         let modeSelect = document.getElementById('mode-selection');
         if (!modeSelect) {
@@ -490,7 +494,7 @@
                     <button class="back-btn" onclick="document.getElementById('mode-selection').style.display='none'">← Back</button>
                 </div>
             `;
-            
+
             // Add styles
             const style = document.createElement('style');
             style.textContent = `
@@ -562,7 +566,7 @@
             `;
             document.head.appendChild(style);
             document.body.appendChild(modeSelect);
-            
+
             // Add click handlers
             modeSelect.querySelectorAll('.mode-card').forEach(card => {
                 card.addEventListener('click', () => {
@@ -571,7 +575,7 @@
                 });
             });
         }
-        
+
         modeSelect.style.display = 'flex';
         modeSelect.classList.add('active');
     }
@@ -580,14 +584,14 @@
         if (typeof GameModes !== 'undefined') {
             GameModes.setGameMode(mode);
         }
-        
+
         // Hide mode selection
         document.getElementById('mode-selection').style.display = 'none';
-        
+
         // Start new game
         isNewGame = true;
         currentSaveSlot = -1;
-        
+
         // Check if tutorial should show
         if (settings.gameplay.tutorialEnabled && typeof TutorialSystem !== 'undefined') {
             initAudio();
@@ -607,7 +611,7 @@
                 startGame();
             }
         });
-        
+
         TutorialSystem.start();
     }
 
@@ -616,14 +620,14 @@
     // ============================================
     function showLoadGameMenu() {
         const saves = SaveSystem.getAllSaves();
-        
+
         let loadMenu = document.getElementById('load-game-menu');
         if (!loadMenu) {
             loadMenu = document.createElement('div');
             loadMenu.id = 'load-game-menu';
             loadMenu.className = 'load-game-overlay';
             document.body.appendChild(loadMenu);
-            
+
             const style = document.createElement('style');
             style.textContent = `
                 .load-game-overlay {
@@ -696,21 +700,21 @@
             `;
             document.head.appendChild(style);
         }
-        
+
         // Build save slots
         let html = `
             <div class="load-game-content">
                 <h2>Load Game</h2>
         `;
-        
+
         for (let i = 0; i < SaveSystem.MAX_SAVE_SLOTS; i++) {
             const save = saves.find(s => s.slot === i);
-            
+
             if (save) {
                 const date = new Date(save.timestamp).toLocaleDateString();
                 const time = new Date(save.timestamp).toLocaleTimeString();
                 const playtime = formatPlaytime(save.playtime);
-                
+
                 html += `
                     <div class="save-slot" data-slot="${i}">
                         <div class="save-info">
@@ -733,16 +737,16 @@
                 `;
             }
         }
-        
+
         html += `
                 <button class="back-btn" onclick="document.getElementById('load-game-menu').style.display='none'" style="margin-top: 20px;">← Back</button>
             </div>
         `;
-        
+
         loadMenu.innerHTML = html;
         loadMenu.style.display = 'flex';
         loadMenu.classList.add('active');
-        
+
         // Add click handlers
         loadMenu.querySelectorAll('.save-slot:not(.empty)').forEach(slot => {
             slot.addEventListener('click', () => {
@@ -762,10 +766,10 @@
     function loadGame(slot) {
         const save = SaveSystem.loadSaveGame(slot);
         if (!save) return;
-        
+
         currentSaveSlot = slot;
         isNewGame = false;
-        
+
         // Apply saved data
         player.position.set(save.player.position.x, save.player.position.y, save.player.position.z);
         player.oxygen = save.player.oxygen;
@@ -773,19 +777,19 @@
         player.flares = save.player.flares;
         player.artifactsCollected = save.world.artifactsCollected.length;
         player.logsCollected = save.world.logsCollected.length;
-        
+
         // Set game mode
         if (typeof GameModes !== 'undefined') {
             GameModes.setGameMode(save.session.gameMode);
         }
-        
+
         document.getElementById('load-game-menu').style.display = 'none';
-        
+
         initAudio();
         startGame();
     }
 
-    window.deleteSave = function(slot) {
+    window.deleteSave = function (slot) {
         if (confirm('Are you sure you want to delete this save?')) {
             SaveSystem.deleteSaveGame(slot);
             showLoadGameMenu(); // Refresh
@@ -799,14 +803,14 @@
         const achievements = SaveSystem.getAllAchievements();
         const unlocked = SaveSystem.loadAchievements().unlocked;
         const progress = SaveSystem.loadAchievements().progress;
-        
+
         let modal = document.getElementById('achievements-modal');
         if (!modal) {
             modal = document.createElement('div');
             modal.id = 'achievements-modal';
             modal.className = 'achievements-overlay';
             document.body.appendChild(modal);
-            
+
             const style = document.createElement('style');
             style.textContent = `
                 .achievements-overlay {
@@ -901,10 +905,10 @@
             `;
             document.head.appendChild(style);
         }
-        
+
         const totalPoints = Object.values(achievements).reduce((sum, a) => sum + a.points, 0);
         const unlockedPoints = unlocked.reduce((sum, id) => sum + (achievements[id]?.points || 0), 0);
-        
+
         let html = `
             <div class="achievements-content">
                 <h2>Achievements</h2>
@@ -914,22 +918,22 @@
                 </div>
                 <div class="achievement-list">
         `;
-        
+
         Object.values(achievements).forEach(ach => {
             const isUnlocked = unlocked.includes(ach.id);
             const prog = progress[ach.id];
-            
+
             let displayName = ach.name;
             let displayDesc = ach.desc;
             let displayIcon = ach.icon;
-            
+
             // Hide secret achievements that aren't unlocked
             if (ach.secret && !isUnlocked) {
                 displayName = '???';
                 displayDesc = 'Hidden Achievement';
                 displayIcon = '🔒';
             }
-            
+
             html += `
                 <div class="achievement-item ${isUnlocked ? 'unlocked' : ''} ${ach.secret ? 'secret' : ''}">
                     <div class="achievement-icon">${displayIcon}</div>
@@ -947,13 +951,13 @@
                 </div>
             `;
         });
-        
+
         html += `
                 </div>
                 <button class="back-btn" onclick="document.getElementById('achievements-modal').style.display='none'" style="margin-top: 20px;">← Back</button>
             </div>
         `;
-        
+
         modal.innerHTML = html;
         modal.style.display = 'flex';
         modal.classList.add('active');
@@ -964,14 +968,14 @@
     // ============================================
     function showStatistics() {
         const stats = SaveSystem.loadLifetimeStats();
-        
+
         let modal = document.getElementById('stats-modal');
         if (!modal) {
             modal = document.createElement('div');
             modal.id = 'stats-modal';
             modal.className = 'stats-overlay';
             document.body.appendChild(modal);
-            
+
             const style = document.createElement('style');
             style.textContent = `
                 .stats-overlay {
@@ -1026,11 +1030,11 @@
             `;
             document.head.appendChild(style);
         }
-        
-        const bestTime = stats.bestTime !== Infinity ? 
-            `${Math.floor(stats.bestTime / 60)}:${String(Math.floor(stats.bestTime % 60)).padStart(2, '0')}` : 
+
+        const bestTime = stats.bestTime !== Infinity ?
+            `${Math.floor(stats.bestTime / 60)}:${String(Math.floor(stats.bestTime % 60)).padStart(2, '0')}` :
             '--:--';
-        
+
         modal.innerHTML = `
             <div class="stats-content">
                 <h2>Lifetime Statistics</h2>
@@ -1071,7 +1075,7 @@
                 <button class="back-btn" onclick="document.getElementById('stats-modal').style.display='none'" style="margin-top: 20px;">← Back</button>
             </div>
         `;
-        
+
         modal.style.display = 'flex';
         modal.classList.add('active');
     }
@@ -1087,9 +1091,9 @@
             modal.className = 'settings-overlay';
             document.body.appendChild(modal);
         }
-        
+
         const currentSettings = SaveSystem.loadSettings();
-        
+
         modal.innerHTML = `
             <div class="settings-content">
                 <h2>Settings</h2>
@@ -1178,7 +1182,7 @@
                 </div>
             </div>
         `;
-        
+
         // Add styles
         if (!document.getElementById('settings-styles')) {
             const style = document.createElement('style');
@@ -1280,18 +1284,18 @@
             `;
             document.head.appendChild(style);
         }
-        
+
         // Tab switching
         modal.querySelectorAll('.tab-btn').forEach(btn => {
             btn.addEventListener('click', () => {
                 modal.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
                 modal.querySelectorAll('.settings-panel').forEach(p => p.classList.remove('active'));
-                
+
                 btn.classList.add('active');
                 modal.querySelector(`.settings-panel[data-panel="${btn.dataset.tab}"]`).classList.add('active');
             });
         });
-        
+
         // FOV value update
         const fovSlider = modal.querySelector('#setting-fov');
         const fovValue = modal.querySelector('#fov-value');
@@ -1300,11 +1304,11 @@
                 fovValue.textContent = fovSlider.value;
             });
         }
-        
+
         modal.style.display = 'flex';
     }
 
-    window.saveSettingsFromMenu = function() {
+    window.saveSettingsFromMenu = function () {
         const newSettings = {
             version: '2.0.0',
             graphics: {
@@ -1330,23 +1334,23 @@
                 showDamageNumbers: document.getElementById('setting-damage-numbers').checked
             }
         };
-        
+
         SaveSystem.saveSettings(newSettings);
         settings = newSettings;
-        
+
         // Apply immediately
         if (camera) {
             camera.fov = newSettings.graphics.fov;
             camera.updateProjectionMatrix();
         }
-        
+
         document.getElementById('settings-modal').style.display = 'none';
-        
+
         // Show notification
         showNotification('Settings saved!', 'success');
     };
 
-    window.resetAllSettings = function() {
+    window.resetAllSettings = function () {
         if (confirm('Reset all settings to default?')) {
             SaveSystem.resetSettings();
             settings = SaveSystem.loadSettings();
@@ -1361,11 +1365,11 @@
     function showNotification(message, type = 'info') {
         const notification = document.getElementById('notification');
         if (!notification) return;
-        
+
         notification.textContent = message;
         notification.className = 'notification ' + type;
         notification.style.opacity = '1';
-        
+
         setTimeout(() => {
             notification.style.opacity = '0';
         }, 3000);
@@ -1378,12 +1382,12 @@
         if (!settings.gameplay.autoSave) return;
         if (!GameModes.canSave || !GameModes.canSave()) return;
         if (currentState !== GAME_STATE.PLAYING) return;
-        
+
         const now = Date.now();
         const interval = settings.gameplay.autoSaveInterval * 1000;
-        
+
         if (now - lastAutoSave < interval) return;
-        
+
         // Find available slot or use current
         let slot = currentSaveSlot;
         if (slot < 0) {
@@ -1396,7 +1400,7 @@
             }
             if (slot < 0) slot = 0; // Overwrite first
         }
-        
+
         const saveData = createSaveData();
         if (SaveSystem.createSaveGame(slot, saveData)) {
             currentSaveSlot = slot;
@@ -1408,7 +1412,7 @@
     function createSaveData() {
         const now = Date.now();
         const playtime = Math.floor((now - player.startTime) / 1000);
-        
+
         return {
             playtime: playtime,
             player: {
@@ -1438,7 +1442,7 @@
     // ============================================
     function handleKeyDown(e) {
         keys[e.code] = true;
-        
+
         if (e.code === 'ShiftLeft' || e.code === 'ShiftRight') {
             player.isSprinting = true;
             inputState.sprint = true;
@@ -1446,9 +1450,9 @@
                 TutorialSystem.onSprint();
             }
         }
-        
+
         // Update input state for Phase 1 physics
-        switch(e.code) {
+        switch (e.code) {
             case 'KeyW': inputState.moveForward = true; break;
             case 'KeyS': inputState.moveBackward = true; break;
             case 'KeyA': inputState.moveLeft = true; break;
@@ -1457,14 +1461,14 @@
             case 'ControlLeft':
             case 'ControlRight': inputState.moveDown = true; break;
         }
-        
+
         if (e.code === 'KeyF') {
             throwFlare();
             if (TutorialSystem.isActive && TutorialSystem.onFlareUse) {
                 TutorialSystem.onFlareUse();
             }
         }
-        
+
         if (e.code === 'Escape') {
             if (currentState === GAME_STATE.PLAYING) {
                 pauseGame();
@@ -1472,15 +1476,15 @@
                 resumeGame();
             }
         }
-        
+
         if (e.code === 'KeyP') {
             togglePhotoMode();
         }
-        
+
         if (e.code === 'KeyI') {
             openInventory();
         }
-        
+
         // Track for tutorial
         if (TutorialSystem.isActive && TutorialSystem.isActive()) {
             if (['KeyW', 'KeyA', 'KeyS', 'KeyD'].includes(e.code)) {
@@ -1494,14 +1498,14 @@
 
     function handleKeyUp(e) {
         keys[e.code] = false;
-        
+
         if (e.code === 'ShiftLeft' || e.code === 'ShiftRight') {
             player.isSprinting = false;
             inputState.sprint = false;
         }
-        
+
         // Update input state for Phase 1 physics
-        switch(e.code) {
+        switch (e.code) {
             case 'KeyW': inputState.moveForward = false; break;
             case 'KeyS': inputState.moveBackward = false; break;
             case 'KeyA': inputState.moveLeft = false; break;
@@ -1514,17 +1518,17 @@
 
     function handleMouseMove(e) {
         if (!pointerLocked || currentState !== GAME_STATE.PLAYING) return;
-        
+
         const sensitivity = settings.controls.mouseSensitivityX * 0.002;
         player.rotation.yaw -= e.movementX * sensitivity;
-        
+
         const pitchSensitivity = settings.controls.mouseSensitivityY * 0.002;
         let pitchChange = e.movementY * pitchSensitivity;
         if (settings.controls.invertY) pitchChange = -pitchChange;
         player.rotation.pitch -= pitchChange;
-        
+
         player.rotation.pitch = Math.max(-Math.PI / 2.2, Math.min(Math.PI / 2.2, player.rotation.pitch));
-        
+
         if (TutorialSystem.isActive && TutorialSystem.onLook) {
             TutorialSystem.onLook();
         }
@@ -1561,37 +1565,37 @@
     function startGame() {
         document.getElementById('start-screen').style.display = 'none';
         document.getElementById('game-hud').style.display = 'flex';
-        
+
         gameActive = true;
         currentState = GAME_STATE.PLAYING;
         player.startTime = Date.now();
-        
+
         // Reset session stats
         SaveSystem.resetSessionStats();
-        
+
         // Achievement: first real dive
         if (!isNewGame) {
             SaveSystem.unlockAchievement('first_dive');
         }
-        
+
         // ============================================
         // PHASE 1: Activate Advanced Systems
         // ============================================
         activatePhase1Systems();
     }
-    
+
     async function activatePhase1Systems() {
         if (!scene || !camera || !renderer) return;
-        
+
         try {
             console.log('🎮 Activating Phase 1 systems...');
-            
+
             const canvas = document.getElementById('game-canvas');
-            
+
             // Initialize Phase 1 Integration
             if (typeof Phase1Integration !== 'undefined') {
                 await Phase1Integration.init(canvas, scene, camera, renderer);
-                
+
                 // Setup player object for physics
                 if (player) {
                     if (!player.object3D) {
@@ -1601,51 +1605,51 @@
                     }
                     Phase1Integration.setupPlayerPhysics(player.object3D);
                 }
-                
+
                 if (settings.graphics.quality) {
                     Phase1Integration.setPostProcessQuality(settings.graphics.quality);
                 }
             }
-            
+
             // Start procedural ambient audio
             if (typeof ProceduralSound !== 'undefined') {
                 const ambientMusic = ProceduralSound.createAdaptiveMusic();
                 ambientMusic.start();
                 window.adaptiveMusic = ambientMusic;
             }
-            
+
             // ============================================
             // PHASE 2: Initialize Content Systems
             // ============================================
             activatePhase2Systems();
-            
+
             console.log('✅ All systems active');
             showNotification('🌊 All systems online', 'success');
-            
+
         } catch (e) {
             console.error('System activation failed:', e);
         }
     }
-    
+
     function activatePhase2Systems() {
         console.log('🎮 Activating Phase 2 content systems...');
-        
+
         // Initialize resource system
         if (typeof ResourceSystem !== 'undefined') {
             ResourceSystem.init();
         }
-        
+
         // Initialize narrative system
         if (typeof NarrativeSystem !== 'undefined') {
             NarrativeSystem.init();
         }
-        
+
         // Spawn initial content
         if (typeof ExpandedBiomeSystem !== 'undefined') {
             const startingBiome = ExpandedBiomeSystem.getBiomeForDepth(5);
             spawnBiomeContent(startingBiome);
         }
-        
+
         console.log('✅ Phase 2 systems active');
     }
 
@@ -1669,10 +1673,10 @@
         player.flares = 3;
         player.artifactsCollected = 0;
         player.deathCount++;
-        
+
         // Reset stats
         SaveSystem.resetSessionStats();
-        
+
         document.getElementById('game-over-screen').style.display = 'none';
         gameActive = true;
         currentState = GAME_STATE.PLAYING;
@@ -1685,14 +1689,14 @@
             const saveData = createSaveData();
             SaveSystem.createSaveGame(currentSaveSlot, saveData);
         }
-        
+
         location.reload();
     }
 
     function gameOver() {
         gameActive = false;
         currentState = GAME_STATE.GAME_OVER;
-        
+
         // Update lifetime stats
         const sessionData = {
             playtime: (Date.now() - player.startTime) / 1000,
@@ -1704,7 +1708,7 @@
             completed: false
         };
         SaveSystem.updateLifetimeStats(sessionData);
-        
+
         document.getElementById('game-over-screen').style.display = 'flex';
         document.getElementById('game-hud').style.display = 'none';
     }
@@ -1717,9 +1721,9 @@
             ChallengeManager.notify('the-abyss', 'artifacts_collected', player.artifactsCollected);
             ChallengeManager.notify('the-abyss', 'oxygen', player.oxygen);
         }
-        
+
         const completionTime = (Date.now() - player.startTime) / 1000;
-        
+
         // Update lifetime stats
         const sessionData = {
             playtime: completionTime,
@@ -1733,22 +1737,22 @@
             completionTime: completionTime
         };
         const stats = SaveSystem.updateLifetimeStats(sessionData);
-        
+
         // Unlock achievements
         SaveSystem.unlockAchievement('treasure_hunter');
-        
+
         if (player.artifactsCollected >= 5) {
             SaveSystem.unlockAchievement('archaeologist');
         }
-        
+
         if (completionTime < 600) {
             SaveSystem.unlockAchievement('speed_demon');
         }
-        
+
         if (player.deathCount === 0) {
             SaveSystem.unlockAchievement('survivor');
         }
-        
+
         // Update win screen
         const winScreen = document.getElementById('game-win-screen');
         if (winScreen) {
@@ -1758,7 +1762,7 @@
             document.getElementById('win-distance').textContent = Math.floor(player.distanceTraveled) + 'm';
             document.getElementById('win-logs').textContent = `${player.logsCollected}/4`;
         }
-        
+
         winScreen.style.display = 'flex';
         document.getElementById('game-hud').style.display = 'none';
     }
@@ -1770,20 +1774,20 @@
                 ResourceSystem.useItem('flare', player);
                 SaveSystem.updateSessionStat('flaresUsed', 1);
                 updateHUD();
-                
+
                 // Achievement progress
                 const progress = SaveSystem.getAchievementProgress('flare_master');
                 SaveSystem.updateAchievementProgress('flare_master', (progress.current || 0) + 1, 10);
                 return;
             }
         }
-        
+
         // Fallback to old system
         if (player.flares > 0) {
             player.flares--;
             SaveSystem.updateSessionStat('flaresUsed', 1);
             updateHUD();
-            
+
             // Achievement progress
             const progress = SaveSystem.getAchievementProgress('flare_master');
             SaveSystem.updateAchievementProgress('flare_master', (progress.current || 0) + 1, 10);
@@ -1795,14 +1799,14 @@
     // ============================================
     function openInventory() {
         if (currentState !== GAME_STATE.PLAYING) return;
-        
+
         let inventoryModal = document.getElementById('inventory-modal');
         if (!inventoryModal) {
             inventoryModal = document.createElement('div');
             inventoryModal.id = 'inventory-modal';
             inventoryModal.className = 'inventory-overlay';
             document.body.appendChild(inventoryModal);
-            
+
             // Add styles
             const style = document.createElement('style');
             style.id = 'inventory-styles';
@@ -1916,17 +1920,17 @@
             `;
             document.head.appendChild(style);
         }
-        
+
         // Build inventory content
         const inventory = ResourceSystem.getInventory();
         const recipes = ResourceSystem.getAvailableRecipes();
-        
+
         let html = `
             <div class="inventory-content">
                 <h2>Inventory</h2>
                 <div class="inventory-grid">
         `;
-        
+
         // Show items
         for (const [itemId, count] of Object.entries(inventory)) {
             const resource = ResourceSystem.RESOURCES[itemId.toUpperCase()];
@@ -1939,21 +1943,21 @@
                 `;
             }
         }
-        
+
         // Empty slots
         const filledSlots = Object.keys(inventory).length;
         const maxSlots = ResourceSystem.maxInventorySlots;
         for (let i = filledSlots; i < maxSlots; i++) {
             html += `<div class="inventory-slot"></div>`;
         }
-        
+
         html += `
                 </div>
                 <div class="crafting-panel">
                     <h3>Crafting</h3>
                     <div class="recipe-list">
         `;
-        
+
         // Show recipes
         for (const recipe of recipes) {
             const canCraft = recipe.canCraft;
@@ -1976,30 +1980,30 @@
                 </div>
             `;
         }
-        
+
         html += `
                     </div>
                 </div>
                 <button class="back-btn" onclick="closeInventory()" style="margin-top: 20px;">← Back</button>
             </div>
         `;
-        
+
         inventoryModal.innerHTML = html;
         inventoryModal.style.display = 'flex';
         inventoryModal.classList.add('active');
-        
+
         // Pause game
         pauseGame();
     }
 
-    window.useItemFromInventory = function(itemId) {
+    window.useItemFromInventory = function (itemId) {
         if (ResourceSystem.useItem(itemId, player)) {
             closeInventory();
             updateHUD();
         }
     };
 
-    window.craftItem = function(recipeId) {
+    window.craftItem = function (recipeId) {
         const result = ResourceSystem.craft(recipeId);
         if (result.success) {
             showNotification(`Crafted: ${result.recipe.name}`, 'success');
@@ -2007,7 +2011,7 @@
         }
     };
 
-    window.closeInventory = function() {
+    window.closeInventory = function () {
         const modal = document.getElementById('inventory-modal');
         if (modal) {
             modal.style.display = 'none';
@@ -2033,7 +2037,7 @@
 
     function checkResourceAchievements() {
         const inventory = ResourceSystem.getInventory();
-        
+
         // Check for crystal collector
         const crystalCount = (inventory['crystal_shard'] || 0) + (inventory['pure_crystal'] || 0);
         if (crystalCount >= 20) {
@@ -2048,20 +2052,20 @@
         const hudDepth = document.getElementById('hud-depth');
         const hudFlares = document.getElementById('hud-flares');
         const hudLogs = document.getElementById('hud-logs');
-        
+
         if (hudArtifacts) hudArtifacts.textContent = `🏺 ${player.artifactsCollected}/5`;
         if (hudOxygen) hudOxygen.textContent = `💨 ${Math.round(player.oxygen)}%`;
         if (hudHealth) hudHealth.textContent = `❤ ${Math.round(player.health)}%`;
         if (hudDepth) hudDepth.textContent = `⬇ ${Math.round(player.depth)}m`;
         if (hudFlares) hudFlares.textContent = `🔥 ${player.flares}`;
         if (hudLogs) hudLogs.textContent = `📄 ${player.logsCollected}/4`;
-        
+
         // Phase 2: Update wrist display
         const wristOxygen = document.getElementById('wrist-oxygen');
         const wristDepth = document.getElementById('wrist-depth');
         const wristTime = document.getElementById('wrist-time');
         const wristDistance = document.getElementById('wrist-distance');
-        
+
         if (wristOxygen) {
             const pressure = Math.max(1, 1 + player.depth / 10).toFixed(0);
             wristOxygen.textContent = `${pressure} bar`;
@@ -2094,40 +2098,40 @@
     // ============================================
     function updateBiomeAndEnvironment(dt) {
         if (!player) return;
-        
+
         // ============================================
         // PHASE 2: Content Systems Update
         // ============================================
-        
+
         // Update expanded biome system
         if (typeof ExpandedBiomeSystem !== 'undefined') {
             const newBiome = ExpandedBiomeSystem.update(player.depth, dt);
-            
+
             if (newBiome && newBiome !== currentBiome) {
                 currentBiome = newBiome;
                 onBiomeChanged(newBiome);
-                
+
                 // Spawn content for new biome
                 spawnBiomeContent(newBiome);
             }
-            
+
             // Apply pressure damage
             if (ExpandedBiomeSystem.shouldApplyPressureDamage()) {
                 const damage = ExpandedBiomeSystem.getPressureDamageRate() * dt;
                 player.health -= damage;
             }
         }
-        
+
         // Update legacy biome system
         if (typeof BiomeSystem !== 'undefined') {
             BiomeSystem.update(player.depth, dt);
         }
-        
+
         // Update creature ecosystem
         if (typeof CreatureEcosystem !== 'undefined' && player.object3D) {
             CreatureEcosystem.update(dt, player.object3D);
         }
-        
+
         // Update narrative system
         if (typeof NarrativeSystem !== 'undefined') {
             NarrativeSystem.update({
@@ -2136,7 +2140,7 @@
                 discoveredRuins: player.discoveredRuins
             });
         }
-        
+
         // Check for nearby POIs
         if (typeof POISystem !== 'undefined') {
             const nearbyPOIs = POISystem.getNearbyPOIs(player.position, 30);
@@ -2145,11 +2149,11 @@
                     showPOIDiscovery(poi);
                 }
             }
-            
+
             // Cleanup distant POIs
             POISystem.cleanupDistantPOIs(player.position, 200);
         }
-        
+
         // Update event system
         if (typeof EventSystem !== 'undefined') {
             const gameState = {
@@ -2165,12 +2169,12 @@
                 isInCave: false,
                 flashlightBattery: player.flashlightBattery
             };
-            
+
             EventSystem.update(dt, gameState);
-            
+
             // Apply event effects
             const eventEffects = EventSystem.getActiveEventEffects();
-            
+
             // Apply current forces
             if (eventEffects.forceDirections.length > 0) {
                 for (const force of eventEffects.forceDirections) {
@@ -2183,13 +2187,13 @@
 
     function onBiomeChanged(biome) {
         console.log(`Biome changed to: ${biome.name}`);
-        
+
         // Update fog
         if (scene && scene.fog) {
             scene.fog.color.setHex(biome.fogColor);
             scene.fog.density = biome.fogDensity;
         }
-        
+
         // Achievement check
         if (biome.id === 'abyss' && typeof SaveSystem !== 'undefined') {
             SaveSystem.unlockAchievement('deep_diver');
@@ -2201,17 +2205,17 @@
         if (typeof POISystem !== 'undefined') {
             POISystem.spawnForBiome(biome);
         }
-        
+
         // Spawn resources
         if (typeof ResourceSystem !== 'undefined') {
             ResourceSystem.spawnForBiome(biome);
         }
-        
+
         // Spawn creatures
         if (typeof CreatureEcosystem !== 'undefined') {
             CreatureEcosystem.spawnForBiome(biome);
         }
-        
+
         // Spawn data log
         if (typeof NarrativeSystem !== 'undefined') {
             const log = NarrativeSystem.getLogForBiome(biome.id);
@@ -2225,7 +2229,7 @@
         if (!poi.discoveryShown) {
             poi.discoveryShown = true;
             showNotification(`📍 Discovered: ${poi.config.name}`, 'success');
-            
+
             // Mark as visited
             POISystem.visitPOI(poi.id);
         }
@@ -2233,28 +2237,28 @@
 
     function handleEventStart(event) {
         console.log('Event started:', event.name);
-        
-        switch(event.id) {
+
+        switch (event.id) {
             case 'creature_ambush':
                 // Spawn ambush creatures
                 spawnAmbushCreatures(event.data.creatures);
                 break;
-                
+
             case 'sinking_debris':
                 // Spawn lootable debris
                 spawnDebris(event.data.position, event.data.loot);
                 break;
-                
+
             case 'leviathan_passing':
                 // Trigger leviathan sighting
                 triggerLeviathanSighting();
                 break;
-                
+
             case 'oxygen_rich_vent':
                 // Create oxygen vent effect
                 createOxygenVent(player.position);
                 break;
-                
+
             case 'whale_fall':
                 // Spawn whale fall POI
                 if (BiomeSystem.getPOIManager) {
@@ -2281,7 +2285,7 @@
 
     function triggerLeviathanSighting() {
         showNotification('🐋 The Leviathan passes in the distance...', 'warning');
-        
+
         // Unlock achievement if survived
         setTimeout(() => {
             if (player.health > 0 && typeof SaveSystem !== 'undefined') {
@@ -2293,12 +2297,12 @@
     function createOxygenVent(position) {
         // Create visual and gameplay effect
         showNotification('💨 Oxygen-rich vent detected!', 'success');
-        
+
         // Temporarily boost oxygen
         const originalMax = player.maxOxygen;
         player.maxOxygen = 150;
         player.oxygen = Math.min(player.oxygen + 30, player.maxOxygen);
-        
+
         // Reset after event
         setTimeout(() => {
             player.maxOxygen = originalMax;
@@ -2317,16 +2321,16 @@
     function animate() {
         if (!gameActive && currentState !== GAME_STATE.PAUSED) return;
         requestAnimationFrame(animate);
-        
+
         const dt = clock.getDelta();
-        
+
         // ============================================
         // PHASE 1: Physics-Based Movement
         // ============================================
         if (gameActive && Phase1Integration?.isInitialized()) {
             Phase1Integration.applyPlayerInput(inputState, dt);
         }
-        
+
         // Update session stats
         if (gameActive) {
             SaveSystem.updateSessionStat('distanceSwum', player.currentSpeed * dt);
@@ -2335,17 +2339,17 @@
                 SaveSystem.updateSessionStat('deepestPoint', player.depth);
             }
         }
-        
+
         // Phase 2: Update biome and environment
         if (gameActive) {
             updateBiomeAndEnvironment(dt);
         }
-        
+
         // Auto-save check
         if (settings.gameplay.autoSave) {
             autoSave();
         }
-        
+
         updateHUD();
     }
 

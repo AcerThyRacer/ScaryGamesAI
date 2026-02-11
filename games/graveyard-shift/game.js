@@ -227,6 +227,8 @@
         player.x = 0; player.y = 1.6; player.z = 0;
         yaw = 0; pitch = 0; isCrouching = false; flashlightOn = true;
         buildCemetery();
+        // Quality tier enhancements
+        try { if (typeof QualityEnhancer !== 'undefined') QualityEnhancer.enhance(renderer, scene, camera); } catch(e) { console.warn('QualityEnhancer:', e); }
         // Spawn initial ghosts
         for (var i = 0; i < 3; i++) {
             spawnGhost((Math.random() - 0.5) * 30, (Math.random() - 0.5) * 30);

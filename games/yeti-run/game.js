@@ -151,6 +151,8 @@
         createTerrain();
         createSnow();
         createForest();
+        // Quality tier enhancements
+        try { if (typeof QualityEnhancer !== 'undefined') QualityEnhancer.enhance(renderer, scene, camera); } catch(e) { console.warn('QualityEnhancer:', e); }
     }
 
     function createPlayer() {

@@ -272,6 +272,8 @@
         // Clear scene except elevator
         while (scene.children.length > 0) scene.remove(scene.children[0]);
         buildElevator();
+        // Quality tier enhancements
+        try { if (typeof QualityEnhancer !== 'undefined') QualityEnhancer.enhance(renderer, scene, camera); } catch(e) { console.warn('QualityEnhancer:', e); }
         floor = 8 + Math.floor(Math.random() * 6); // start at random high floor
         sanity = 100; doorOpen = true; isRiding = false;
         doorAnim = 1; // start with doors open

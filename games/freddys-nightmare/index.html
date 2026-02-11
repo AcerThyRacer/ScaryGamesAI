@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Freddy's Nightmare — ScaryGamesAI</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #000;
+            font-family: 'Courier New', monospace;
+        }
+
+        #game-canvas {
+            display: block;
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="game-page">
+        <a href="/games.html" class="back-link" id="back-link">← Back to Games</a>
+
+        <div class="start-screen" id="start-screen">
+            <h1>Freddy's Nightmare</h1>
+            <p class="game-desc">You're the night security guard at Freddy Fazbear's abandoned pizzeria. Monitor the
+                cameras, close the doors, and survive until 6 AM. But watch your power — when it's gone, so are you.</p>
+            <button class="start-btn" id="start-btn">START NIGHT SHIFT</button>
+        </div>
+
+        <div class="controls-overlay" id="controls-overlay" style="display:none;">
+            <div class="controls-content">
+                <h2>Controls</h2>
+                <div class="control-item"><span class="control-key">1-8</span> Switch Camera</div>
+                <div class="control-item"><span class="control-key">Q</span> Toggle Left Door</div>
+                <div class="control-item"><span class="control-key">E</span> Toggle Right Door</div>
+                <div class="control-item"><span class="control-key">F</span> Flash Light</div>
+                <div class="control-item"><span class="control-key">Space</span> Toggle Camera Panel</div>
+                <p class="controls-start-hint">Starting in a moment...</p>
+            </div>
+        </div>
+
+        <div class="game-container" id="game-container">
+            <canvas id="game-canvas"></canvas>
+            <div class="game-hud" id="game-hud" style="display:none;">
+                <div>
+                    <div class="hud-score" id="hud-time" style="font-size:1.4rem;color:#ff4444;">12:00 AM</div>
+                    <div class="hud-score" id="hud-power" style="font-size:1rem;color:#00ff88;">⚡ Power: 100%</div>
+                </div>
+                <div class="hud-controls">
+                    <div class="hud-score" id="hud-night" style="font-size:1rem;">Night 1</div>
+                    <button class="hud-btn" id="fullscreen-btn">⛶ Fullscreen</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-end-screen game-over" id="game-over-screen" style="display:none;">
+            <h1>YOU DIDN'T SURVIVE</h1>
+            <p id="death-msg">The animatronics got you...</p>
+            <button class="play-btn" onclick="location.reload()">▶ Try Again</button>
+            <a href="/games.html" style="display:block;margin-top:16px;color:#888;">← Back to Games</a>
+        </div>
+
+        <div class="game-end-screen game-win" id="game-win-screen" style="display:none;">
+            <h1>6:00 AM — YOU SURVIVED!</h1>
+            <p id="win-msg">You made it through the night!</p>
+            <button class="play-btn" id="next-night-btn">▶ Next Night</button>
+            <a href="/games.html" style="display:block;margin-top:16px;color:#888;">← Back to Games</a>
+        </div>
+    </div>
+
+    <script src="/js/game-utils.js"></script>
+    <script src="/js/audio.js"></script>
+    <script src="/js/quality-enhancer.js"></script>
+    <script src="/js/quality-fx.js"></script>
+    <script src="game.js"></script>
+</body>
+
+</html>

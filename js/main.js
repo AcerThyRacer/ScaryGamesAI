@@ -4,7 +4,7 @@
 
 // Tier hierarchy: none < lite < pro < max
 const TIER_LEVELS = { none: 0, lite: 1, pro: 2, max: 3 };
-const TIER_NAMES = { lite: 'Lite 🥉', pro: 'Pro 🥈', max: 'Max 🥇' };
+const TIER_NAMES = { lite: 'Survivor 🩹', pro: 'Hunter 🗡️', max: 'Elder God 🜏' };
 const QUALITY_INFO = {
     none: { label: 'Standard', icon: '🎮', cls: 'quality-standard' },
     lite: { label: 'Standard', icon: '🎮', cls: 'quality-standard' },
@@ -181,6 +181,51 @@ const GAMES = [
         color: '#CC1133',
         bgColor: '#0a0008',
         difficulty: 4, category: 'action', isNew: true, requiredTier: 'none',
+    },
+    // ===== NEW GAMES =====
+    {
+        id: 'freddys-nightmare',
+        title: "Freddy's Nightmare",
+        desc: "You're the night security guard at an abandoned pizzeria. Monitor cameras, close doors, manage power, and survive five nights against four killer animatronics.",
+        tags: ['2D', 'Horror', 'FNAF'],
+        tagClasses: ['tag-2d', 'tag-horror', 'tag-survival'],
+        url: '/games/freddys-nightmare/',
+        color: '#8B4513',
+        bgColor: '#1a0e05',
+        difficulty: 4, category: 'action', isNew: true, requiredTier: 'none',
+    },
+    {
+        id: 'haunted-asylum',
+        title: 'Haunted Asylum',
+        desc: 'Explore a procedurally generated abandoned asylum. Find 3 fuse boxes, collect medical records, and escape before the patients catch you. Watch your sanity.',
+        tags: ['2D', 'Horror', 'Exploration'],
+        tagClasses: ['tag-2d', 'tag-horror', 'tag-survival'],
+        url: '/games/haunted-asylum/',
+        color: '#44aa66',
+        bgColor: '#0a1a0e',
+        difficulty: 3, category: 'action', isNew: true, requiredTier: 'none',
+    },
+    {
+        id: 'ritual-circle',
+        title: 'Ritual Circle',
+        desc: 'Defend a summoning circle from 10 waves of cultists and demons. Place occult traps, cast exorcism spells, and complete the ancient ritual.',
+        tags: ['2D', 'Strategy', 'Horror'],
+        tagClasses: ['tag-2d', 'tag-strategy', 'tag-horror'],
+        url: '/games/ritual-circle/',
+        color: '#9944ff',
+        bgColor: '#0f0520',
+        difficulty: 3, category: 'strategy', isNew: true, requiredTier: 'pro',
+    },
+    {
+        id: 'cursed-sands',
+        title: 'Cursed Sands',
+        desc: 'Ancient Egypt. Cursed deserts beneath a scorching sun. Explore pyramids, temples, and the Nile. Collect 7 sacred artifacts before mummies, Anubis guards, and sandstorms claim your soul.',
+        tags: ['3D', 'Open World', 'Horror'],
+        tagClasses: ['tag-3d', 'tag-survival', 'tag-horror'],
+        url: '/games/cursed-sands/',
+        color: '#d4a843',
+        bgColor: '#1a1508',
+        difficulty: 5, category: 'action', isNew: true, requiredTier: 'none',
     },
 ];
 
@@ -465,6 +510,110 @@ function drawCardThumb(canvas, game) {
         // Surface grass
         ctx.fillStyle = 'rgba(45,90,30,0.5)';
         ctx.fillRect(0, h * 0.32, w, 4);
+    } else if (game.id === 'freddys-nightmare') {
+        // FNAF-style office
+        ctx.fillStyle = 'rgba(15,10,5,0.9)'; ctx.fillRect(0, 0, w, h);
+        // Office walls
+        ctx.fillStyle = 'rgba(25,20,15,0.8)'; ctx.fillRect(0, 0, w * 0.12, h); ctx.fillRect(w * 0.88, 0, w * 0.12, h);
+        // Desk
+        ctx.fillStyle = 'rgba(42,34,24,0.6)'; ctx.fillRect(w * 0.2, h * 0.65, w * 0.6, h * 0.08);
+        // Monitor
+        ctx.fillStyle = 'rgba(0,20,0,0.5)'; ctx.fillRect(w * 0.35, h * 0.4, w * 0.3, h * 0.22);
+        ctx.strokeStyle = 'rgba(50,50,50,0.6)'; ctx.lineWidth = 1; ctx.strokeRect(w * 0.35, h * 0.4, w * 0.3, h * 0.22);
+        // Camera scanlines
+        ctx.strokeStyle = 'rgba(0,50,0,0.2)';
+        for (let sl = 0; sl < 8; sl++) { ctx.beginPath(); ctx.moveTo(w * 0.35, h * 0.4 + sl * 6); ctx.lineTo(w * 0.65, h * 0.4 + sl * 6); ctx.stroke(); }
+        // Animatronic silhouette
+        ctx.fillStyle = 'rgba(60,30,0,0.5)'; ctx.beginPath(); ctx.arc(w * 0.5, h * 0.48, 12, 0, Math.PI * 2); ctx.fill();
+        // Red eyes
+        ctx.fillStyle = 'rgba(255,50,0,0.8)'; ctx.beginPath(); ctx.arc(w * 0.48, h * 0.47, 2, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(w * 0.52, h * 0.47, 2, 0, Math.PI * 2); ctx.fill();
+        // Door buttons
+        ctx.fillStyle = 'rgba(255,0,0,0.3)'; ctx.beginPath(); ctx.arc(w * 0.06, h * 0.5, 6, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(w * 0.94, h * 0.5, 6, 0, Math.PI * 2); ctx.fill();
+    } else if (game.id === 'haunted-asylum') {
+        // Asylum corridors
+        const grd = ctx.createLinearGradient(0, 0, 0, h);
+        grd.addColorStop(0, 'rgba(10,25,15,0.95)'); grd.addColorStop(1, 'rgba(5,15,8,0.95)');
+        ctx.fillStyle = grd; ctx.fillRect(0, 0, w, h);
+        // Corridor perspective
+        ctx.fillStyle = 'rgba(20,40,25,0.5)'; ctx.fillRect(0, 0, w * 0.18, h); ctx.fillRect(w * 0.82, 0, w * 0.18, h);
+        ctx.fillStyle = 'rgba(12,20,14,0.6)'; ctx.fillRect(w * 0.18, 0, w * 0.64, h);
+        // Tiled floor
+        ctx.strokeStyle = 'rgba(30,50,35,0.3)'; ctx.lineWidth = 0.5;
+        for (let fl = 0; fl < 10; fl++) { ctx.beginPath(); ctx.moveTo(w * 0.18, fl * h / 10); ctx.lineTo(w * 0.82, fl * h / 10); ctx.stroke(); }
+        // Door at end
+        ctx.fillStyle = 'rgba(40,55,40,0.5)'; ctx.fillRect(w * 0.4, h * 0.15, w * 0.2, h * 0.4);
+        // Flashlight cone
+        const flGrd = ctx.createRadialGradient(w * 0.5, h * 0.9, 5, w * 0.5, h * 0.5, h * 0.5);
+        flGrd.addColorStop(0, 'rgba(200,255,200,0.1)'); flGrd.addColorStop(1, 'transparent');
+        ctx.fillStyle = flGrd; ctx.fillRect(0, 0, w, h);
+        // Patient silhouette
+        ctx.fillStyle = 'rgba(80,100,80,0.3)'; ctx.beginPath(); ctx.ellipse(w * 0.45, h * 0.4, 6, 10, 0, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = 'rgba(255,255,100,0.4)'; ctx.beginPath(); ctx.arc(w * 0.44, h * 0.38, 1.5, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(w * 0.46, h * 0.38, 1.5, 0, Math.PI * 2); ctx.fill();
+    } else if (game.id === 'ritual-circle') {
+        // Graveyard with summoning circle
+        const grd = ctx.createLinearGradient(0, 0, 0, h);
+        grd.addColorStop(0, 'rgba(10,5,20,0.95)'); grd.addColorStop(1, 'rgba(15,8,5,0.95)');
+        ctx.fillStyle = grd; ctx.fillRect(0, 0, w, h);
+        // Ground
+        ctx.fillStyle = 'rgba(14,10,6,0.6)'; ctx.fillRect(0, h * 0.65, w, h * 0.35);
+        // Tombstones
+        ctx.fillStyle = 'rgba(30,25,25,0.5)';
+        for (let t = 0; t < 5; t++) { const tx = w * 0.1 + t * w * 0.18; ctx.fillRect(tx, h * 0.55, 10, 18); ctx.beginPath(); ctx.arc(tx + 5, h * 0.55, 5, Math.PI, 0); ctx.fill(); }
+        // Summoning circle
+        ctx.strokeStyle = 'rgba(150,60,200,0.5)'; ctx.lineWidth = 2;
+        ctx.beginPath(); ctx.arc(w * 0.5, h * 0.5, 30, 0, Math.PI * 2); ctx.stroke();
+        // Pentagram
+        ctx.strokeStyle = 'rgba(150,60,200,0.3)'; ctx.lineWidth = 1;
+        for (let i = 0; i < 5; i++) { const a = (i * 4 * Math.PI / 5) - Math.PI / 2; const px = w * 0.5 + Math.cos(a) * 25; const py = h * 0.5 + Math.sin(a) * 25; if (i === 0) { ctx.beginPath(); ctx.moveTo(px, py); } else ctx.lineTo(px, py); }
+        ctx.closePath(); ctx.stroke();
+        // Glow
+        const cGrd = ctx.createRadialGradient(w * 0.5, h * 0.5, 10, w * 0.5, h * 0.5, 45);
+        cGrd.addColorStop(0, 'rgba(150,60,200,0.15)'); cGrd.addColorStop(1, 'transparent');
+        ctx.fillStyle = cGrd; ctx.fillRect(0, 0, w, h);
+        // Enemies approaching
+        ctx.fillStyle = 'rgba(170,60,60,0.4)'; ctx.beginPath(); ctx.arc(w * 0.15, h * 0.3, 8, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(w * 0.85, h * 0.6, 8, 0, Math.PI * 2); ctx.fill();
+    } else if (game.id === 'cursed-sands') {
+        // Ancient Egypt desert scene
+        const grd = ctx.createLinearGradient(0, 0, 0, h);
+        grd.addColorStop(0, 'rgba(135,180,230,0.9)'); grd.addColorStop(0.35, 'rgba(255,200,100,0.6)');
+        grd.addColorStop(0.5, 'rgba(212,168,67,0.9)'); grd.addColorStop(1, 'rgba(160,120,50,0.95)');
+        ctx.fillStyle = grd; ctx.fillRect(0, 0, w, h);
+        // Scorching sun
+        ctx.fillStyle = 'rgba(255,240,180,0.4)'; ctx.shadowColor = '#ffcc00'; ctx.shadowBlur = 30;
+        ctx.beginPath(); ctx.arc(w * 0.75, h * 0.15, 18, 0, Math.PI * 2); ctx.fill();
+        ctx.fillStyle = 'rgba(255,255,220,0.8)'; ctx.shadowBlur = 15;
+        ctx.beginPath(); ctx.arc(w * 0.75, h * 0.15, 10, 0, Math.PI * 2); ctx.fill();
+        ctx.shadowBlur = 0;
+        // Sand dunes
+        ctx.fillStyle = 'rgba(200,160,60,0.5)';
+        ctx.beginPath(); ctx.moveTo(0, h * 0.6); ctx.quadraticCurveTo(w * 0.25, h * 0.45, w * 0.5, h * 0.55);
+        ctx.quadraticCurveTo(w * 0.75, h * 0.48, w, h * 0.58); ctx.lineTo(w, h); ctx.lineTo(0, h); ctx.fill();
+        // Great Pyramid
+        ctx.fillStyle = 'rgba(180,150,80,0.7)';
+        ctx.beginPath(); ctx.moveTo(w * 0.35, h * 0.55); ctx.lineTo(w * 0.5, h * 0.2); ctx.lineTo(w * 0.65, h * 0.55); ctx.fill();
+        // Smaller pyramid
+        ctx.fillStyle = 'rgba(170,140,70,0.6)';
+        ctx.beginPath(); ctx.moveTo(w * 0.6, h * 0.55); ctx.lineTo(w * 0.68, h * 0.35); ctx.lineTo(w * 0.76, h * 0.55); ctx.fill();
+        // Obelisk
+        ctx.fillStyle = 'rgba(120,110,80,0.6)'; ctx.fillRect(w * 0.18, h * 0.35, 5, 30);
+        ctx.fillStyle = 'rgba(255,215,0,0.5)';
+        ctx.beginPath(); ctx.moveTo(w * 0.18, h * 0.35); ctx.lineTo(w * 0.18 + 2.5, h * 0.3); ctx.lineTo(w * 0.18 + 5, h * 0.35); ctx.fill();
+        // Mummy silhouette
+        ctx.fillStyle = 'rgba(100,80,50,0.4)';
+        ctx.beginPath(); ctx.arc(w * 0.25, h * 0.58, 6, 0, Math.PI * 2); ctx.fill();
+        ctx.fillRect(w * 0.25 - 3, h * 0.58, 6, 15);
+        // Green glowing eyes
+        ctx.fillStyle = 'rgba(68,255,68,0.8)'; ctx.shadowColor = '#44ff44'; ctx.shadowBlur = 6;
+        ctx.beginPath(); ctx.arc(w * 0.245, h * 0.575, 1.5, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(w * 0.255, h * 0.575, 1.5, 0, Math.PI * 2); ctx.fill();
+        ctx.shadowBlur = 0;
+        // Heat shimmer lines
+        ctx.strokeStyle = 'rgba(255,230,150,0.1)'; ctx.lineWidth = 0.5;
+        for (let sh = 0; sh < 5; sh++) { ctx.beginPath(); ctx.moveTo(0, h * 0.5 + sh * 6); ctx.bezierCurveTo(w * 0.3, h * 0.48 + sh * 6, w * 0.7, h * 0.52 + sh * 6, w, h * 0.5 + sh * 6); ctx.stroke(); }
     }
 
     // Vignette
@@ -538,9 +687,9 @@ function showUpgradeModal(tier) {
     const old = document.getElementById('upgrade-modal');
     if (old) old.remove();
     const tierInfo = {
-        lite: { name: 'Lite', icon: '🥉', color: '#cd7f32', price: '$2/mo' },
-        pro: { name: 'Pro', icon: '🥈', color: '#c0c0c0', price: '$5/mo' },
-        max: { name: 'Max', icon: '🥇', color: '#ffd700', price: '$8/mo' },
+        lite: { name: 'Survivor', icon: '🩹', color: '#cd7f32', price: '$2/mo' },
+        pro: { name: 'Hunter', icon: '🗡️', color: '#c0c0c0', price: '$5/mo' },
+        max: { name: 'Elder God', icon: '🜏', color: '#ffd700', price: '$8/mo' },
     };
     const info = tierInfo[tier] || tierInfo.lite;
     const modal = document.createElement('div');
@@ -700,14 +849,36 @@ function initVideoRotation() {
     const video2 = document.getElementById('bg-video-2');
     if (!video1 || !video2) return;
 
-    const sources = ['/assets/hero-video.mp4', '/assets/yeti-chase.mp4'];
+    const sources = [
+        '/assets/hero-video.mp4',
+        '/assets/yeti-chase.mp4',
+        '/assets/forest-monster-chase.mp4',
+    ];
 
-    // Randomly pick which video plays first
-    const firstIndex = Math.random() < 0.5 ? 0 : 1;
-    const secondIndex = 1 - firstIndex;
+    // Shuffle array using Fisher-Yates
+    function shuffle(arr) {
+        const a = arr.slice();
+        for (let i = a.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [a[i], a[j]] = [a[j], a[i]];
+        }
+        return a;
+    }
 
-    video1.src = sources[firstIndex];
-    video2.src = sources[secondIndex];
+    let queue = shuffle(sources);
+    let queueIndex = 0;
+
+    function nextSource() {
+        if (queueIndex >= queue.length) {
+            queue = shuffle(sources);
+            queueIndex = 0;
+        }
+        return queue[queueIndex++];
+    }
+
+    // Assign initial videos
+    video1.src = nextSource();
+    video2.src = nextSource();
 
     // Preload the inactive video so it's ready
     video1.preload = 'auto';
@@ -728,8 +899,11 @@ function initVideoRotation() {
         to.classList.add('active');
 
         // Pause the old video after the CSS transition finishes
+        // and preload the next source into the now-hidden element
         setTimeout(() => {
             from.pause();
+            from.src = nextSource();
+            from.load();
         }, 1600);
     }
 

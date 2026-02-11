@@ -49,55 +49,185 @@ function doCraft(recipe) {
     if (!canCraft(recipe)) return;
     for (const [id, amt] of recipe.ingredients) removeItem(id, amt);
     addItem(recipe.result, recipe.rAmt);
+    // Phase A: Apply weapon modifier to crafted weapon
+    if (typeof applyWeaponModifier === 'function') {
+        const slot = player.inventory.find(s => s && s.id === recipe.result && !s.modifier);
+        if (slot) applyWeaponModifier(slot);
+    }
+    // Phase 7: Track crafts
+    if (typeof totalCrafts !== 'undefined') totalCrafts++;
+    if (typeof checkQuestProgress === 'function') checkQuestProgress('craft', recipe.result);
+    if (typeof playSFX === 'function') playSFX('pickup');
 }
 
-// ===== DRAW HUD =====
+// ===== FLOATING DAMAGE/XP NUMBERS =====
+const _floatingNumbers = [];
+function spawnDamageNumber(x, y, text, color, isXP) {
+    _floatingNumbers.push({
+        x, y, text: String(text), color, life: 50, maxLife: 50,
+        vx: (Math.random() - 0.5) * 1.5, vy: -2 - Math.random() * 1.5,
+        size: isXP ? 12 : (parseInt(text) > 30 ? 18 : 14),
+        isXP: isXP || false
+    });
+}
+function updateFloatingNumbers() {
+    for (let i = _floatingNumbers.length - 1; i >= 0; i--) {
+        const n = _floatingNumbers[i];
+        n.x += n.vx; n.y += n.vy; n.vy += 0.04; n.life--;
+        if (n.life <= 0) _floatingNumbers.splice(i, 1);
+    }
+}
+function drawFloatingNumbers(ctx, camX, camY) {
+    for (const n of _floatingNumbers) {
+        const alpha = Math.min(1, n.life / 15);
+        const scale = n.life > 40 ? 1 + (50 - n.life) * 0.05 : 1;
+        ctx.save();
+        ctx.globalAlpha = alpha;
+        ctx.font = `bold ${Math.floor(n.size * scale)}px Inter`;
+        ctx.textAlign = 'center';
+        // Shadow
+        ctx.fillStyle = 'rgba(0,0,0,0.6)';
+        ctx.fillText(n.text, n.x - camX + 1, n.y - camY + 1);
+        // Text
+        ctx.fillStyle = n.color;
+        ctx.fillText(n.text, n.x - camX, n.y - camY);
+        ctx.restore();
+    }
+}
+
+// ===== DRAW HUD (Premium Glass-Panel) =====
 function drawHUD(ctx, W, H, dayTime) {
-    // Hotbar background
-    ctx.fillStyle = 'rgba(0,0,0,0.7)';
-    ctx.strokeStyle = 'rgba(204,17,34,0.3)';
-    ctx.lineWidth = 1;
+    // --- Glass-panel hotbar ---
+    const hotbarW = 10 * (SLOT_SIZE + 4) + 8;
+    const hbXStart = HOTBAR_X;
+
+    // Hotbar glass background
+    ctx.save();
+    ctx.fillStyle = 'rgba(8,4,16,0.65)';
+    const hbRad = 8;
+    roundedRect(ctx, hbXStart - 4, HOTBAR_Y - 4, hotbarW, SLOT_SIZE + 8, hbRad);
+    ctx.fill();
+    // Glass border glow
+    ctx.strokeStyle = 'rgba(180,60,80,0.35)';
+    ctx.lineWidth = 1.5;
+    roundedRect(ctx, hbXStart - 4, HOTBAR_Y - 4, hotbarW, SLOT_SIZE + 8, hbRad);
+    ctx.stroke();
+    // Inner highlight
+    ctx.fillStyle = 'rgba(255,255,255,0.03)';
+    roundedRect(ctx, hbXStart - 2, HOTBAR_Y - 2, hotbarW - 4, (SLOT_SIZE + 4) / 2, hbRad);
+    ctx.fill();
+    ctx.restore();
+
     for (let i = 0; i < 10; i++) {
         const x = HOTBAR_X + i * (SLOT_SIZE + 4), y = HOTBAR_Y;
-        ctx.fillRect(x, y, SLOT_SIZE, SLOT_SIZE);
-        ctx.strokeStyle = i === player.hotbar ? '#CC1122' : 'rgba(255,255,255,0.1)';
-        ctx.lineWidth = i === player.hotbar ? 2 : 1;
-        ctx.strokeRect(x, y, SLOT_SIZE, SLOT_SIZE);
+        // Slot background
+        ctx.fillStyle = i === player.hotbar ? 'rgba(200,40,60,0.25)' : 'rgba(0,0,0,0.3)';
+        roundedRect(ctx, x, y, SLOT_SIZE, SLOT_SIZE, 4);
+        ctx.fill();
+        // Slot border
+        if (i === player.hotbar) {
+            ctx.strokeStyle = '#FF3344';
+            ctx.lineWidth = 2;
+            ctx.shadowColor = '#FF3344';
+            ctx.shadowBlur = 8;
+        } else {
+            ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+            ctx.lineWidth = 1;
+            ctx.shadowBlur = 0;
+        }
+        roundedRect(ctx, x, y, SLOT_SIZE, SLOT_SIZE, 4);
+        ctx.stroke();
+        ctx.shadowBlur = 0;
         // Item
         const slot = player.inventory[i];
         if (slot) {
             drawItemIcon(ctx, slot.id, x + 4, y + 4, SLOT_SIZE - 8);
             if (slot.count > 1) {
-                ctx.fillStyle = '#fff'; ctx.font = '10px Inter, sans-serif'; ctx.textAlign = 'right';
+                ctx.fillStyle = '#000'; ctx.font = 'bold 10px Inter'; ctx.textAlign = 'right';
+                ctx.fillText(slot.count, x + SLOT_SIZE - 3, y + SLOT_SIZE - 3);
+                ctx.fillStyle = '#fff';
                 ctx.fillText(slot.count, x + SLOT_SIZE - 4, y + SLOT_SIZE - 4);
             }
         }
+        // Hotbar number
+        ctx.fillStyle = 'rgba(255,255,255,0.2)'; ctx.font = '8px Inter'; ctx.textAlign = 'left';
+        ctx.fillText(i + 1 > 9 ? '0' : String(i + 1), x + 3, y + 10);
     }
 
-    // Health bar
-    const hbX = HOTBAR_X, hbY = HOTBAR_Y + SLOT_SIZE + 8;
-    ctx.fillStyle = '#222'; ctx.fillRect(hbX, hbY, 200, 14);
-    ctx.fillStyle = '#CC1122'; ctx.fillRect(hbX, hbY, 200 * (player.hp / player.maxHp), 14);
-    ctx.strokeStyle = 'rgba(204,17,34,0.4)'; ctx.lineWidth = 1; ctx.strokeRect(hbX, hbY, 200, 14);
-    ctx.fillStyle = '#fff'; ctx.font = 'bold 10px Inter'; ctx.textAlign = 'center';
-    ctx.fillText(`♥ ${Math.ceil(player.hp)} / ${player.maxHp}`, hbX + 100, hbY + 11);
+    // --- Heart-based HP ---
+    const hpY = HOTBAR_Y + SLOT_SIZE + 10;
+    const maxHearts = Math.ceil(player.maxHp / 20);
+    const filledHearts = player.hp / 20;
+    ctx.font = '14px Inter';
+    for (let i = 0; i < Math.min(maxHearts, 10); i++) {
+        const hx = HOTBAR_X + i * 18;
+        if (i < Math.floor(filledHearts)) {
+            // Full heart
+            ctx.fillStyle = '#CC1122';
+            ctx.fillText('♥', hx, hpY + 12);
+        } else if (i < filledHearts) {
+            // Partial (half) heart
+            ctx.fillStyle = '#CC1122';
+            ctx.globalAlpha = 0.5;
+            ctx.fillText('♥', hx, hpY + 12);
+            ctx.globalAlpha = 1;
+        } else {
+            // Empty heart
+            ctx.fillStyle = 'rgba(100,30,30,0.5)';
+            ctx.fillText('♥', hx, hpY + 12);
+        }
+    }
+    // HP text
+    ctx.fillStyle = '#ddd'; ctx.font = '10px Inter'; ctx.textAlign = 'left';
+    ctx.fillText(`${Math.ceil(player.hp)}/${player.maxHp}`, HOTBAR_X + Math.min(maxHearts, 10) * 18 + 4, hpY + 12);
 
-    // Mana bar
-    ctx.fillStyle = '#222'; ctx.fillRect(hbX, hbY + 18, 200, 10);
-    ctx.fillStyle = '#2244CC'; ctx.fillRect(hbX, hbY + 18, 200 * (player.mana / player.maxMana), 10);
-    ctx.strokeStyle = 'rgba(34,68,204,0.4)'; ctx.strokeRect(hbX, hbY + 18, 200, 10);
-    ctx.fillStyle = '#aaf'; ctx.font = '9px Inter'; ctx.textAlign = 'center';
-    ctx.fillText(`✦ ${Math.ceil(player.mana)} / ${player.maxMana}`, hbX + 100, hbY + 27);
+    // Low HP pulse warning
+    if (player.hp / player.maxHp < 0.3) {
+        const pulse = Math.sin(gameFrame * 0.15) * 0.5 + 0.5;
+        ctx.fillStyle = `rgba(200,0,0,${pulse * 0.08})`;
+        ctx.fillRect(0, 0, W, H);
+    }
 
-    // Level & XP
-    ctx.textAlign = 'left'; ctx.fillStyle = '#FFD700'; ctx.font = 'bold 11px Inter';
-    ctx.fillText(`Lv.${player.level}  XP: ${player.xp}/${player.level * 50}`, hbX, hbY + 44);
+    // --- Mana orb ---
+    const manaY = hpY + 18;
+    const manaFill = player.mana / player.maxMana;
+    // Orb background
+    ctx.fillStyle = 'rgba(10,10,40,0.6)';
+    ctx.beginPath(); ctx.arc(HOTBAR_X + 10, manaY + 8, 10, 0, Math.PI * 2); ctx.fill();
+    // Mana fill (clip arc from bottom)
+    ctx.save();
+    ctx.beginPath(); ctx.arc(HOTBAR_X + 10, manaY + 8, 9, 0, Math.PI * 2); ctx.clip();
+    ctx.fillStyle = '#2255CC';
+    ctx.fillRect(HOTBAR_X, manaY + 8 + 9 - 18 * manaFill, 20, 18 * manaFill);
+    // Shine
+    ctx.fillStyle = 'rgba(100,160,255,0.3)';
+    ctx.fillRect(HOTBAR_X + 4, manaY + 8 - 6, 4, 6);
+    ctx.restore();
+    // Orb border
+    ctx.strokeStyle = 'rgba(80,100,220,0.5)'; ctx.lineWidth = 1.5;
+    ctx.beginPath(); ctx.arc(HOTBAR_X + 10, manaY + 8, 10, 0, Math.PI * 2); ctx.stroke();
+    // Mana text
+    ctx.fillStyle = '#88AAFF'; ctx.font = '10px Inter'; ctx.textAlign = 'left';
+    ctx.fillText(`✦ ${Math.ceil(player.mana)}/${player.maxMana}`, HOTBAR_X + 24, manaY + 12);
 
+    // --- Level/XP with bar ---
+    const xpY = manaY + 24;
+    const xpNeeded = player.level * 50;
+    const xpPct = player.xp / xpNeeded;
+    ctx.fillStyle = '#FFD700'; ctx.font = 'bold 11px Inter'; ctx.textAlign = 'left';
+    ctx.fillText(`Lv.${player.level}`, HOTBAR_X, xpY);
+    // Mini XP bar
+    ctx.fillStyle = 'rgba(0,0,0,0.4)';
+    roundedRect(ctx, HOTBAR_X + 40, xpY - 8, 100, 8, 3); ctx.fill();
+    ctx.fillStyle = '#FFD700';
+    roundedRect(ctx, HOTBAR_X + 40, xpY - 8, Math.max(2, 100 * xpPct), 8, 3); ctx.fill();
+    ctx.fillStyle = '#aaa'; ctx.font = '8px Inter';
+    ctx.fillText(`${player.xp}/${xpNeeded}`, HOTBAR_X + 144, xpY);
     // Defense
-    ctx.fillStyle = '#88aacc';
-    ctx.fillText(`🛡 ${player.defense}`, hbX + 160, hbY + 44);
+    ctx.fillStyle = '#88aacc'; ctx.font = '10px Inter';
+    ctx.fillText(`🛡 ${player.defense}`, HOTBAR_X + 195, xpY);
 
-    // Depth meter
+    // --- Depth/Biome display (right side) ---
     const depthBlocks = Math.max(0, Math.floor(player.y / TILE) - SURFACE_Y);
     let biome = 'Haunted Forest';
     if (depthBlocks > ABYSS_Y - SURFACE_Y) biome = 'Hell Core';
@@ -108,104 +238,251 @@ function drawHUD(ctx, W, H, dayTime) {
     else if (depthBlocks > CAVE_Y - SURFACE_Y) biome = 'Mushroom Caverns';
     else if (depthBlocks > 20) biome = 'Bone Caverns';
 
-    ctx.textAlign = 'right'; ctx.fillStyle = '#aaa'; ctx.font = '11px Inter';
-    ctx.fillText(`Depth: ${depthBlocks}m`, W - 16, 20);
-    ctx.fillStyle = '#CC1122'; ctx.font = '10px Creepster, cursive';
-    ctx.fillText(biome, W - 16, 36);
+    // Glass panel for depth
+    ctx.fillStyle = 'rgba(8,4,16,0.55)';
+    roundedRect(ctx, W - 160, 6, 148, 50, 6); ctx.fill();
+    ctx.strokeStyle = 'rgba(180,60,80,0.25)'; ctx.lineWidth = 1;
+    roundedRect(ctx, W - 160, 6, 148, 50, 6); ctx.stroke();
 
-    // Day/night indicator
-    const isNight = dayTime > 0.5;
-    ctx.fillStyle = isNight ? '#334' : '#886';
-    ctx.fillText(isNight ? '🌙 Night' : '☀ Day', W - 16, 52);
+    ctx.textAlign = 'right'; ctx.fillStyle = '#ccc'; ctx.font = '11px Inter';
+    ctx.fillText(`Depth: ${depthBlocks}m`, W - 18, 24);
+    ctx.fillStyle = '#CC1122'; ctx.font = '11px Creepster, cursive';
+    ctx.fillText(biome, W - 18, 40);
 
-    // Phase 2: Weather indicator
+    // Day/night clock
+    const _clockIcon = typeof getGameTimeIcon === 'function' ? getGameTimeIcon() : (dayTime > 0.5 ? '🌙' : '☀');
+    const _clockStr = typeof getGameTimeString === 'function' ? getGameTimeString() : (dayTime > 0.5 ? 'Night' : 'Day');
+    const _nightAmt = typeof getNightAmount === 'function' ? getNightAmount() : (dayTime > 0.5 ? 1 : 0);
+    ctx.fillStyle = _nightAmt > 0.5 ? '#8899BB' : '#DDCC88'; ctx.font = 'bold 10px Inter';
+    ctx.fillText(`${_clockIcon} ${_clockStr}`, W - 18, 53);
+
+    // Weather
     if (weather.type !== 'clear') {
         const wIcons = { rain: '🌧', storm: '⛈', fog: '🌫', blood_rain: '🩸', ash: '🌋' };
-        ctx.fillStyle = '#CCAA88'; ctx.font = '10px Inter';
-        ctx.fillText(`${wIcons[weather.type] || ''} ${weather.type.replace('_', ' ')}`, W - 16, 66);
+        ctx.fillStyle = '#CCAA88'; ctx.font = '9px Inter';
+        ctx.fillText(`${wIcons[weather.type] || ''} ${weather.type.replace('_', ' ')}`, W - 18, 68);
     }
-    // Phase 2: Active event
     if (worldEvent.type) {
         ctx.fillStyle = '#FF4444'; ctx.font = 'bold 10px Inter';
-        ctx.fillText(`⚠ ${worldEvent.type.replace(/_/g, ' ').toUpperCase()}`, W - 16, 80);
+        ctx.fillText(`⚠ ${worldEvent.type.replace(/_/g, ' ').toUpperCase()}`, W - 18, 82);
     }
-    // Phase 2: NPC interaction hint
+
+    // NPC hint
     let nearNPC = false;
     for (const n of npcs) {
         const d = Math.sqrt((n.x - player.x) ** 2 + (n.y - player.y) ** 2);
         if (d < 50 && n.rescued) { nearNPC = n; break; }
     }
     if (nearNPC) {
+        ctx.fillStyle = 'rgba(0,0,0,0.5)';
+        roundedRect(ctx, W / 2 - 180, H - 42, 360, 26, 6); ctx.fill();
         ctx.fillStyle = '#44FF44'; ctx.font = '11px Inter'; ctx.textAlign = 'center';
-        ctx.fillText(`[F] Talk to ${nearNPC.name}  [T] Toggle Companion`, W / 2, H - 30);
+        ctx.fillText(`[F] Talk to ${nearNPC.name}  [T] Toggle Companion`, W / 2, H - 24);
     }
 
-    // Effects
-    let ey = 60;
+    // Buffs
+    let ey = 90;
     for (const eff of player.effects) {
+        ctx.textAlign = 'right';
+        ctx.fillStyle = 'rgba(0,0,0,0.4)';
+        roundedRect(ctx, W - 140, ey - 10, 128, 16, 3); ctx.fill();
         ctx.fillStyle = '#44CC44'; ctx.font = '10px Inter';
-        ctx.fillText(`⚡ ${eff.type} (${Math.ceil(eff.duration / 60)}s)`, W - 16, ey);
-        ey += 14;
+        ctx.fillText(`⚡ ${eff.type} (${Math.ceil(eff.duration / 60)}s)`, W - 18, ey);
+        ey += 20;
     }
 
-    // Boss health bar
+    // --- BOSS HP BAR (premium centered) ---
     if (boss && !boss.dead) {
-        const bw = 400, bx = (W - bw) / 2, by = 16;
-        ctx.fillStyle = 'rgba(0,0,0,0.7)'; ctx.fillRect(bx - 2, by - 2, bw + 4, 24);
-        ctx.fillStyle = '#441111'; ctx.fillRect(bx, by, bw, 20);
-        ctx.fillStyle = '#CC2244'; ctx.fillRect(bx, by, bw * (boss.hp / boss.maxHp), 20);
-        ctx.strokeStyle = '#CC2244'; ctx.lineWidth = 1; ctx.strokeRect(bx, by, bw, 20);
-        ctx.fillStyle = '#fff'; ctx.font = 'bold 12px Creepster'; ctx.textAlign = 'center';
-        ctx.fillText(`${boss.name}  —  Phase ${boss.phase}`, W / 2, by + 15);
+        const bw = Math.min(500, W * 0.4), bx = (W - bw) / 2, by = 10;
+        // Glass panel
+        ctx.fillStyle = 'rgba(8,4,16,0.7)';
+        roundedRect(ctx, bx - 6, by - 4, bw + 12, 32, 6); ctx.fill();
+        // HP bar background
+        ctx.fillStyle = '#220808';
+        roundedRect(ctx, bx, by, bw, 20, 4); ctx.fill();
+        // HP bar gradient fill
+        const hpPct = boss.hp / boss.maxHp;
+        const hpGrd = ctx.createLinearGradient(bx, by, bx, by + 20);
+        if (hpPct > 0.3) {
+            hpGrd.addColorStop(0, '#EE3355'); hpGrd.addColorStop(1, '#991122');
+        } else {
+            hpGrd.addColorStop(0, '#FF6622'); hpGrd.addColorStop(1, '#AA2200');
+        }
+        ctx.fillStyle = hpGrd;
+        roundedRect(ctx, bx, by, Math.max(4, bw * hpPct), 20, 4); ctx.fill();
+        // Shine on bar
+        ctx.fillStyle = 'rgba(255,255,255,0.1)';
+        roundedRect(ctx, bx + 2, by + 1, bw * hpPct - 4, 8, 3); ctx.fill();
+        // Phase markers
+        const phases = boss.phases || 3;
+        for (let p = 1; p < phases; p++) {
+            const px2 = bx + (bw / phases) * p;
+            ctx.fillStyle = 'rgba(255,255,255,0.2)';
+            ctx.fillRect(px2 - 0.5, by, 1, 20);
+        }
+        // Border
+        ctx.strokeStyle = 'rgba(200,40,60,0.6)'; ctx.lineWidth = 1.5;
+        roundedRect(ctx, bx, by, bw, 20, 4); ctx.stroke();
+        // Name & phase
+        ctx.fillStyle = '#fff'; ctx.font = 'bold 11px Creepster'; ctx.textAlign = 'center';
+        ctx.fillText(`${boss.name}  ·  Phase ${boss.phase}/${phases}`, W / 2, by + 15);
     }
 
-    // Held item name tooltip
+    // Held item tooltip
     const held = getHeldItem();
     if (held) {
-        ctx.textAlign = 'center'; ctx.fillStyle = getItemColor(held.id); ctx.font = '11px Inter';
-        ctx.fillText(getItemName(held.id), HOTBAR_X + 5 * (SLOT_SIZE + 4) + SLOT_SIZE / 2, HOTBAR_Y + SLOT_SIZE + 58);
+        const nameText = getItemName(held.id);
+        const it = ITEMS[held.id];
+        const tipY = HOTBAR_Y + SLOT_SIZE + 58;
+        ctx.textAlign = 'center';
+        // Background pill
+        const metrics = ctx.measureText(nameText);
+        const pillW = metrics.width + 16;
+        ctx.fillStyle = 'rgba(0,0,0,0.5)';
+        roundedRect(ctx, HOTBAR_X + 5 * (SLOT_SIZE + 4) + SLOT_SIZE / 2 - pillW / 2, tipY - 12, pillW, 18, 4);
+        ctx.fill();
+        ctx.fillStyle = getItemColor(held.id); ctx.font = '11px Inter';
+        ctx.fillText(nameText, HOTBAR_X + 5 * (SLOT_SIZE + 4) + SLOT_SIZE / 2, tipY);
+        // Show damage if weapon/gun
+        if (it && (it.type === 'weapon' || it.type === 'gun' || it.type === 'bow')) {
+            ctx.fillStyle = '#FF8866'; ctx.font = '9px Inter';
+            ctx.fillText(`⚔ ${it.damage} dmg`, HOTBAR_X + 5 * (SLOT_SIZE + 4) + SLOT_SIZE / 2, tipY + 14);
+        }
     }
 
-    // Mining progress bar
+    // Mining progress (centered pill)
     if (player.miningX >= 0) {
         const b = getBlock(player.miningX, player.miningY);
         const td = TILE_DATA[b];
         if (td && td.hardness > 0) {
             const pct = player.miningProgress / td.hardness;
-            const mx = W / 2 - 30, my = H / 2 + 30;
-            ctx.fillStyle = '#222'; ctx.fillRect(mx, my, 60, 6);
-            ctx.fillStyle = '#FFaa33'; ctx.fillRect(mx, my, 60 * Math.min(1, pct), 6);
+            const mx = W / 2 - 40, my = H / 2 + 35;
+            ctx.fillStyle = 'rgba(0,0,0,0.5)';
+            roundedRect(ctx, mx, my, 80, 8, 4); ctx.fill();
+            ctx.fillStyle = '#FFaa33';
+            roundedRect(ctx, mx, my, Math.max(4, 80 * Math.min(1, pct)), 8, 4); ctx.fill();
         }
     }
+
+    // Update floating numbers
+    updateFloatingNumbers();
+}
+
+// Rounded rect helper
+function roundedRect(ctx, x, y, w, h, r) {
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.lineTo(x + w - r, y);
+    ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+    ctx.lineTo(x + w, y + h - r);
+    ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+    ctx.lineTo(x + r, y + h);
+    ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+    ctx.lineTo(x, y + r);
+    ctx.quadraticCurveTo(x, y, x + r, y);
+    ctx.closePath();
 }
 
 function drawItemIcon(ctx, id, x, y, size) {
     ctx.fillStyle = getItemColor(id);
     if (id < 100) {
-        // Block - draw as square
+        // Block - 3D-ish cube look
         ctx.fillRect(x + 2, y + 2, size - 4, size - 4);
-        // Inner highlight
         ctx.fillStyle = 'rgba(255,255,255,0.15)';
         ctx.fillRect(x + 2, y + 2, size - 4, (size - 4) / 3);
+        ctx.fillStyle = 'rgba(0,0,0,0.12)';
+        ctx.fillRect(x + 2, y + 2 + (size - 4) * 0.7, size - 4, (size - 4) * 0.3);
     } else {
         const it = ITEMS[id];
-        if (it && (it.type === 'weapon' || it.toolType === 'pick')) {
-            // Tool/weapon shape
-            ctx.fillRect(x + size / 2 - 2, y + 2, 4, size - 4);
-            ctx.fillRect(x + 4, y + 4, size - 8, 6);
+        if (it && it.type === 'gun') {
+            // Gun icon — barrel + stock
+            ctx.fillRect(x + 4, y + size / 2 - 2, size - 6, 4); // barrel
+            ctx.fillRect(x + size - 10, y + size / 2 - 4, 6, 8); // stock
+            ctx.fillStyle = 'rgba(0,0,0,0.2)';
+            ctx.fillRect(x + 4, y + size / 2, size - 6, 2);
+            // Trigger
+            ctx.fillStyle = getItemColor(id);
+            ctx.fillRect(x + size / 2 - 1, y + size / 2 + 2, 2, 4);
+        } else if (it && it.type === 'ammo') {
+            // Bullet icon
+            ctx.beginPath();
+            ctx.arc(x + size / 2, y + size / 2, size / 4, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = 'rgba(255,255,255,0.3)';
+            ctx.fillRect(x + size / 2 - 1, y + 4, 2, size / 3);
+        } else if (it && (it.type === 'weapon' || it.toolType === 'pick')) {
+            // Sword/tool — angled
+            ctx.save();
+            ctx.translate(x + size / 2, y + size / 2);
+            ctx.rotate(-Math.PI / 4);
+            ctx.fillRect(-2, -size / 2 + 2, 4, size - 6); // blade
+            ctx.fillStyle = 'rgba(100,80,50,0.8)';
+            ctx.fillRect(-4, size / 2 - 10, 8, 6); // handle
+            ctx.restore();
+        } else if (it && it.type === 'bow') {
+            // Bow arc
+            ctx.strokeStyle = getItemColor(id); ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(x + size / 2 + 4, y + size / 2, size / 2 - 4, Math.PI * 0.7, Math.PI * 1.3);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(x + size / 2 + 2, y + 4);
+            ctx.lineTo(x + size / 2 + 2, y + size - 4);
+            ctx.stroke();
         } else if (it && it.type === 'armor') {
             ctx.fillRect(x + 4, y + 4, size - 8, size - 8);
             ctx.fillStyle = 'rgba(255,255,255,0.2)';
             ctx.fillRect(x + 6, y + 6, size - 12, 4);
+            ctx.fillStyle = 'rgba(0,0,0,0.15)';
+            ctx.fillRect(x + 6, y + size - 10, size - 12, 4);
         } else if (it && it.type === 'potion') {
             ctx.beginPath();
-            ctx.arc(x + size / 2, y + size / 2 + 2, size / 3, 0, Math.PI * 2);
-            ctx.fill();
+            ctx.arc(x + size / 2, y + size / 2 + 2, size / 3, 0, Math.PI * 2); ctx.fill();
             ctx.fillRect(x + size / 2 - 2, y + 4, 4, size / 3);
-        } else {
-            // Generic material
+            ctx.fillStyle = 'rgba(255,255,255,0.25)';
+            ctx.fillRect(x + size / 2 - 3, y + size / 3 + 2, 2, 4);
+        } else if (it && it.type === 'magic') {
+            // Magic staff / orb
+            ctx.fillRect(x + size / 2 - 1, y + 6, 2, size - 8);
+            ctx.fillStyle = getItemColor(id);
+            ctx.beginPath(); ctx.arc(x + size / 2, y + 6, 4, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = 'rgba(255,255,255,0.3)';
+            ctx.beginPath(); ctx.arc(x + size / 2 - 1, y + 5, 2, 0, Math.PI * 2); ctx.fill();
+        } else if (it && it.type === 'summon') {
+            // Mysterious item with glow
+            const glow = Math.sin(gameFrame * 0.08) * 0.3 + 0.5;
+            ctx.globalAlpha = glow;
+            ctx.beginPath(); ctx.arc(x + size / 2, y + size / 2, size / 2 - 2, 0, Math.PI * 2); ctx.fill();
+            ctx.globalAlpha = 1;
+            ctx.fillStyle = '#FFF';
+            ctx.beginPath(); ctx.arc(x + size / 2, y + size / 2, 3, 0, Math.PI * 2); ctx.fill();
+        } else if (it && it.type === 'food') {
+            // Food item
             ctx.beginPath();
-            ctx.arc(x + size / 2, y + size / 2, size / 3, 0, Math.PI * 2);
+            ctx.ellipse(x + size / 2, y + size / 2, size / 3, size / 4, 0, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = 'rgba(255,255,255,0.15)';
+            ctx.fillRect(x + size / 3, y + size / 3, size / 4, 2);
+        } else if (it && it.type === 'accessory') {
+            // Ring shape
+            ctx.strokeStyle = getItemColor(id); ctx.lineWidth = 3;
+            ctx.beginPath(); ctx.arc(x + size / 2, y + size / 2, size / 3, 0, Math.PI * 2); ctx.stroke();
+            ctx.fillStyle = getItemColor(id);
+            ctx.beginPath(); ctx.arc(x + size / 2, y + size / 3, 3, 0, Math.PI * 2); ctx.fill();
+        } else {
+            // Generic material — diamond shape
+            ctx.beginPath();
+            ctx.moveTo(x + size / 2, y + 3);
+            ctx.lineTo(x + size - 3, y + size / 2);
+            ctx.lineTo(x + size / 2, y + size - 3);
+            ctx.lineTo(x + 3, y + size / 2);
+            ctx.closePath();
+            ctx.fill();
+            ctx.fillStyle = 'rgba(255,255,255,0.15)';
+            ctx.beginPath();
+            ctx.moveTo(x + size / 2, y + 5);
+            ctx.lineTo(x + size - 6, y + size / 2);
+            ctx.lineTo(x + size / 2, y + size / 2);
+            ctx.lineTo(x + 6, y + size / 2);
+            ctx.closePath();
             ctx.fill();
         }
     }
@@ -641,3 +918,193 @@ function drawNPCDialogueBox(ctx, W, H) {
     ctx.fillStyle = '#ccc'; ctx.font = '11px Inter';
     ctx.fillText(showNPCDialogue.text, px + 12, py + 38);
 }
+
+// ===== PHASE 7: QUEST TRACKER PANEL =====
+let showQuestPanel = false;
+let showAchievementPanel = false;
+
+function drawQuestTracker(ctx, W, H) {
+    if (!activeQuests || activeQuests.length === 0) return;
+    // Mini quest tracker (top-left under HUD)
+    const qx = 10, qy = HOTBAR_Y + SLOT_SIZE + 95;
+    ctx.fillStyle = 'rgba(8,4,16,0.55)';
+    roundedRect(ctx, qx, qy, 200, 16 + activeQuests.length * 20, 6); ctx.fill();
+    ctx.strokeStyle = 'rgba(180,160,60,0.25)'; ctx.lineWidth = 1;
+    roundedRect(ctx, qx, qy, 200, 16 + activeQuests.length * 20, 6); ctx.stroke();
+    ctx.fillStyle = '#FFD700'; ctx.font = 'bold 10px Inter'; ctx.textAlign = 'left';
+    ctx.fillText('📜 QUESTS', qx + 8, qy + 12);
+    for (let i = 0; i < activeQuests.length; i++) {
+        const q = activeQuests[i];
+        const y2 = qy + 16 + i * 20;
+        ctx.fillStyle = q.completed ? '#44FF44' : '#ccc'; ctx.font = '9px Inter';
+        const prog = q.count ? `${Math.min(q.progress, q.count)}/${q.count}` : (q.completed ? '✓' : '...');
+        ctx.fillText(`${q.completed ? '✅' : '⬜'} ${q.description}`, qx + 8, y2 + 8);
+        ctx.fillStyle = '#aaa';
+        ctx.fillText(prog, qx + 180, y2 + 8);
+    }
+}
+
+// ===== PHASE 7: QUEST BOARD SCREEN =====
+function drawQuestBoardScreen(ctx, W, H) {
+    if (!showQuestPanel) return;
+    ctx.fillStyle = 'rgba(0,0,0,0.7)'; ctx.fillRect(0, 0, W, H);
+    const pw = 420, ph = 350;
+    const px = (W - pw) / 2, py = (H - ph) / 2;
+    ctx.fillStyle = 'rgba(20,10,30,0.95)';
+    roundedRect(ctx, px, py, pw, ph, 10); ctx.fill();
+    ctx.strokeStyle = 'rgba(180,160,60,0.4)'; ctx.lineWidth = 2;
+    roundedRect(ctx, px, py, pw, ph, 10); ctx.stroke();
+    ctx.fillStyle = '#FFD700'; ctx.font = 'bold 16px Creepster'; ctx.textAlign = 'center';
+    ctx.fillText('📜 QUEST BOARD', px + pw / 2, py + 28);
+    ctx.fillStyle = '#aaa'; ctx.font = '10px Inter';
+    ctx.fillText(`Completed: ${completedQuests}`, px + pw / 2, py + 44);
+    // Active quests
+    for (let i = 0; i < activeQuests.length; i++) {
+        const q = activeQuests[i], y2 = py + 60 + i * 50;
+        ctx.fillStyle = q.completed ? 'rgba(40,80,40,0.4)' : 'rgba(30,20,40,0.5)';
+        roundedRect(ctx, px + 10, y2, pw - 20, 44, 6); ctx.fill();
+        ctx.fillStyle = q.completed ? '#44FF44' : '#FFD700'; ctx.font = 'bold 11px Inter'; ctx.textAlign = 'left';
+        ctx.fillText(q.description, px + 18, y2 + 18);
+        ctx.fillStyle = '#aaa'; ctx.font = '10px Inter';
+        const prog = q.count ? `Progress: ${Math.min(q.progress, q.count)}/${q.count}` : (q.completed ? 'COMPLETE!' : 'In Progress');
+        ctx.fillText(prog, px + 18, y2 + 34);
+        ctx.fillStyle = '#FFD700'; ctx.textAlign = 'right';
+        ctx.fillText(`Reward: ${q.rewardAmt}x Token`, px + pw - 18, y2 + 18);
+    }
+    // New quest button
+    if (activeQuests.length < 3) {
+        const btnY = py + ph - 45;
+        ctx.fillStyle = 'rgba(100,80,20,0.5)';
+        roundedRect(ctx, px + pw / 2 - 60, btnY, 120, 30, 6); ctx.fill();
+        ctx.strokeStyle = '#FFD700'; ctx.lineWidth = 1;
+        roundedRect(ctx, px + pw / 2 - 60, btnY, 120, 30, 6); ctx.stroke();
+        ctx.fillStyle = '#FFD700'; ctx.font = 'bold 12px Inter'; ctx.textAlign = 'center';
+        ctx.fillText('+ New Quest', px + pw / 2, btnY + 20);
+    }
+    // Close hint
+    ctx.fillStyle = '#666'; ctx.font = '10px Inter'; ctx.textAlign = 'center';
+    ctx.fillText('[Q] Close', px + pw / 2, py + ph - 10);
+}
+
+// ===== PHASE 7: ACHIEVEMENT GALLERY =====
+function drawAchievementScreen(ctx, W, H) {
+    if (!showAchievementPanel) return;
+    ctx.fillStyle = 'rgba(0,0,0,0.7)'; ctx.fillRect(0, 0, W, H);
+    const pw = 480, ph = 400;
+    const px = (W - pw) / 2, py = (H - ph) / 2;
+    ctx.fillStyle = 'rgba(20,10,30,0.95)';
+    roundedRect(ctx, px, py, pw, ph, 10); ctx.fill();
+    ctx.strokeStyle = 'rgba(200,150,50,0.4)'; ctx.lineWidth = 2;
+    roundedRect(ctx, px, py, pw, ph, 10); ctx.stroke();
+    ctx.fillStyle = '#FFD700'; ctx.font = 'bold 16px Creepster'; ctx.textAlign = 'center';
+    ctx.fillText('🏆 ACHIEVEMENTS', px + pw / 2, py + 28);
+    const total = typeof ACHIEVEMENTS !== 'undefined' ? ACHIEVEMENTS.length : 0;
+    const unlocked = typeof unlockedAchievements !== 'undefined' ? unlockedAchievements.size : 0;
+    ctx.fillStyle = '#aaa'; ctx.font = '11px Inter';
+    ctx.fillText(`${unlocked}/${total} Unlocked`, px + pw / 2, py + 44);
+    // Achievement grid
+    if (typeof ACHIEVEMENTS !== 'undefined') {
+        for (let i = 0; i < ACHIEVEMENTS.length; i++) {
+            const a = ACHIEVEMENTS[i];
+            const col = i % 3, row = Math.floor(i / 3);
+            const ax = px + 15 + col * 155, ay = py + 58 + row * 55;
+            const isUnlocked = unlockedAchievements.has(a.id);
+            ctx.fillStyle = isUnlocked ? 'rgba(60,80,40,0.5)' : 'rgba(30,25,35,0.5)';
+            roundedRect(ctx, ax, ay, 145, 48, 6); ctx.fill();
+            ctx.strokeStyle = isUnlocked ? 'rgba(100,200,60,0.3)' : 'rgba(80,60,80,0.2)'; ctx.lineWidth = 1;
+            roundedRect(ctx, ax, ay, 145, 48, 6); ctx.stroke();
+            ctx.fillStyle = isUnlocked ? '#FFD700' : '#555'; ctx.font = '18px Inter'; ctx.textAlign = 'left';
+            ctx.fillText(a.icon, ax + 8, ay + 28);
+            ctx.fillStyle = isUnlocked ? '#ddd' : '#666'; ctx.font = 'bold 10px Inter';
+            ctx.fillText(a.name, ax + 32, ay + 18);
+            ctx.fillStyle = isUnlocked ? '#aaa' : '#444'; ctx.font = '9px Inter';
+            ctx.fillText(a.desc, ax + 32, ay + 32);
+        }
+    }
+    ctx.fillStyle = '#666'; ctx.font = '10px Inter'; ctx.textAlign = 'center';
+    ctx.fillText('[G] Close', px + pw / 2, py + ph - 10);
+}
+
+// ===== PHASE 6: STATUS EFFECT ICONS ON HUD =====
+function drawStatusEffectIcons(ctx, W, H) {
+    if (!player.effects || player.effects.length === 0) return;
+    let sx = HOTBAR_X + 230, sy = HOTBAR_Y + SLOT_SIZE + 10;
+    for (const eff of player.effects) {
+        const def = typeof STATUS_EFFECTS !== 'undefined' ? STATUS_EFFECTS[eff.type] : null;
+        if (!def) continue;
+        ctx.fillStyle = 'rgba(0,0,0,0.4)';
+        roundedRect(ctx, sx, sy, 22, 22, 4); ctx.fill();
+        ctx.strokeStyle = def.color; ctx.lineWidth = 1;
+        roundedRect(ctx, sx, sy, 22, 22, 4); ctx.stroke();
+        ctx.fillStyle = '#fff'; ctx.font = '13px Inter'; ctx.textAlign = 'center';
+        ctx.fillText(def.icon, sx + 11, sy + 16);
+        // Timer
+        ctx.fillStyle = def.color; ctx.font = '7px Inter';
+        ctx.fillText(Math.ceil(eff.duration / 60) + 's', sx + 11, sy + 22);
+        sx += 26;
+    }
+}
+
+// ===== PHASE 6+7: INPUT HANDLING =====
+canvas.addEventListener('keydown', function (e) {
+    // 'R' - Fishing cast/reel
+    if (e.code === 'KeyR' && gameState === 'playing' && !showInventory && !showCrafting && !showPause) {
+        if (typeof fishingState !== 'undefined' && fishingState.active && fishingState.biting) {
+            if (typeof reelFish === 'function') reelFish();
+            if (typeof playSFX === 'function') playSFX('fish');
+        } else if (typeof startFishing === 'function') {
+            startFishing();
+        }
+    }
+    // 'P' - Use pet/mount from held item
+    if (e.code === 'KeyP' && gameState === 'playing' && !showInventory && !showCrafting) {
+        const held = getHeldItem();
+        if (held && ITEMS[held.id]) {
+            if (ITEMS[held.id].type === 'pet' && typeof summonPet === 'function') summonPet(held.id);
+            if (ITEMS[held.id].type === 'mount' && typeof toggleMount === 'function') toggleMount(held.id);
+        }
+    }
+    // 'Q' - Toggle quest panel
+    if (e.code === 'KeyQ' && gameState === 'playing' && !showInventory && !showCrafting) {
+        showQuestPanel = !showQuestPanel;
+        showAchievementPanel = false;
+    }
+    // 'G' - Toggle achievement gallery
+    if (e.code === 'KeyG' && gameState === 'playing' && !showInventory && !showCrafting) {
+        showAchievementPanel = !showAchievementPanel;
+        showQuestPanel = false;
+    }
+    // 'U' - Use held potion
+    if (e.code === 'KeyU' && gameState === 'playing') {
+        const held = getHeldItem();
+        if (held && ITEMS[held.id] && ITEMS[held.id].type === 'potion' && ITEMS[held.id].effect) {
+            if (typeof applyStatusEffect === 'function') {
+                applyStatusEffect(player, ITEMS[held.id].effect, ITEMS[held.id].duration || 1800);
+                held.count--;
+                if (held.count <= 0) player.inventory[player.hotbar] = null;
+                if (typeof playSFX === 'function') playSFX('pickup');
+            }
+        }
+        // Food
+        if (held && ITEMS[held.id] && ITEMS[held.id].type === 'food') {
+            player.hp = Math.min(player.maxHp, player.hp + (ITEMS[held.id].heal || 20));
+            if (ITEMS[held.id].effect && typeof applyStatusEffect === 'function') applyStatusEffect(player, ITEMS[held.id].effect, ITEMS[held.id].duration || 1800);
+            held.count--;
+            if (held.count <= 0) player.inventory[player.hotbar] = null;
+        }
+    }
+});
+
+// Quest board click handler
+canvas.addEventListener('click', function (e) {
+    if (!showQuestPanel) return;
+    const pw = 420, ph = 350;
+    const px = (W - pw) / 2, py = (H - ph) / 2;
+    const btnY = py + ph - 45;
+    if (e.offsetX >= px + pw / 2 - 60 && e.offsetX <= px + pw / 2 + 60 && e.offsetY >= btnY && e.offsetY <= btnY + 30) {
+        if (activeQuests.length < 3 && typeof generateQuest === 'function') {
+            activeQuests.push(generateQuest());
+            if (typeof playSFX === 'function') playSFX('quest');
+        }
+    }
+});

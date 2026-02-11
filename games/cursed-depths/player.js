@@ -28,6 +28,8 @@ function initPlayer(heights) {
     // Starting items
     addItem(I_WOOD_PICK, 1);
     addItem(I_WOOD_SWORD, 1);
+    addItem(I_LIGHT_MUSKET, 1);
+    addItem(I_MUSKET_BALL, 50);
     addItem(T.TORCH, 10);
     addItem(T.WOOD, 20);
 }

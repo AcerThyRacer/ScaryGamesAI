@@ -1,11 +1,30 @@
 {
   "name": "scarygamesai",
-  "version": "1.0.0",
-  "description": "Horror Gaming Website",
+  "version": "2.0.0",
+  "description": "Horror Gaming Platform with Advanced Subscription System",
   "license": "GPL-3.0-or-later",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "node server.js"
-  }
+    "dev": "SET NODE_ENV=development && node server.js",
+    "setup": "node scripts/setup.js",
+    "seed": "node scripts/seed.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
+    "stripe": "^14.5.0"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "horror",
+    "games",
+    "subscription",
+    "battle-pass",
+    "gamification"
+  ],
+  "author": "ScaryGamesAI"
 }

@@ -1,0 +1,838 @@
+/**
+ * ScaryGamesAI Subscription System - Enhanced Styles
+ * All Phases: Visual Effects, UI Components, Animations
+ */
+
+/* ==================== PHASE 1: URGENCY MECHANICS ==================== */
+
+/* Limited Spots Meter */
+.urgency-meter {
+    background: linear-gradient(135deg, rgba(204, 17, 34, 0.2), rgba(139, 0, 0, 0.3));
+    border: 1px solid rgba(204, 17, 34, 0.4);
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin: 20px auto;
+    max-width: 500px;
+    text-align: center;
+    animation: urgencyPulse 2s ease-in-out infinite;
+}
+
+@keyframes urgencyPulse {
+    0%, 100% { box-shadow: 0 0 20px rgba(204, 17, 34, 0.3); }
+    50% { box-shadow: 0 0 40px rgba(204, 17, 34, 0.6), 0 0 60px rgba(255, 0, 0, 0.2); }
+}
+
+.urgency-icon {
+    font-size: 1.5rem;
+    margin-right: 8px;
+    animation: fireFlicker 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes fireFlicker {
+    from { transform: scale(1); opacity: 1; }
+    to { transform: scale(1.2); opacity: 0.8; }
+}
+
+.urgency-bar {
+    height: 6px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 3px;
+    margin-top: 10px;
+    overflow: hidden;
+}
+
+.urgency-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #ff4444, #cc1122);
+    border-radius: 3px;
+    transition: width 0.5s ease;
+    animation: fillShimmer 2s ease-in-out infinite;
+}
+
+@keyframes fillShimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+/* Flash Sale Banner */
+.flash-sale-inner {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 14px 24px;
+    background: linear-gradient(90deg, #1a0a0f, #330a1a, #1a0a0f);
+    background-size: 200% 100%;
+    animation: gradientShift 3s linear infinite;
+    border-bottom: 2px solid #ffd700;
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 200% 50%; }
+}
+
+.flash-icon {
+    font-size: 1.5rem;
+    animation: lightningFlash 0.5s ease-in-out infinite;
+}
+
+@keyframes lightningFlash {
+    0%, 90%, 100% { opacity: 1; }
+    95% { opacity: 0.3; }
+}
+
+.flash-text {
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.flash-timer {
+    font-family: 'Courier New', monospace;
+    font-weight: bold;
+    color: #ffd700;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 4px 12px;
+    border-radius: 6px;
+}
+
+.flash-cta {
+    background: linear-gradient(135deg, #ffd700, #cc9900);
+    color: #000;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.flash-cta:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(255, 215, 0, 0.5);
+}
+
+/* Exit Intent Modal */
+.exit-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100000;
+    animation: fadeIn 0.3s ease;
+}
+
+.exit-modal {
+    background: linear-gradient(135deg, #1a0a1a, #2a151a);
+    border: 2px solid rgba(204, 17, 34, 0.5);
+    border-radius: 20px;
+    padding: 40px;
+    max-width: 450px;
+    text-align: center;
+    position: relative;
+    animation: slideUp 0.4s ease;
+}
+
+.exit-rune {
+    font-size: 4rem;
+    margin-bottom: 16px;
+    animation: runeGlow 2s ease-in-out infinite;
+}
+
+@keyframes runeGlow {
+    0%, 100% { filter: drop-shadow(0 0 10px rgba(204, 17, 34, 0.5)); }
+    50% { filter: drop-shadow(0 0 30px rgba(204, 17, 34, 0.8)); }
+}
+
+.exit-offer {
+    margin: 24px 0;
+    padding: 20px;
+    background: rgba(204, 17, 34, 0.1);
+    border-radius: 12px;
+    border: 1px solid rgba(204, 17, 34, 0.3);
+}
+
+.exit-discount {
+    display: block;
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #ff4444;
+    text-shadow: 0 0 20px rgba(255, 68, 68, 0.5);
+}
+
+.exit-code {
+    font-family: monospace;
+    color: #888;
+    margin-top: 8px;
+}
+
+.exit-urgency {
+    color: #ffd700;
+    font-size: 0.9rem;
+    margin-bottom: 20px;
+}
+
+.exit-accept {
+    display: block;
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, #cc1122, #991122);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 12px;
+    transition: all 0.3s;
+}
+
+.exit-decline {
+    background: transparent;
+    color: #666;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+
+/* ==================== PHASE 2: BATTLE PASS ==================== */
+
+.bp-widget {
+    background: linear-gradient(135deg, rgba(20, 10, 20, 0.9), rgba(30, 15, 25, 0.9));
+    border: 1px solid rgba(204, 68, 255, 0.3);
+    border-radius: 16px;
+    padding: 24px;
+    margin: 20px 0;
+}
+
+.bp-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.bp-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.bp-level {
+    background: linear-gradient(135deg, #cc44ff, #9911aa);
+    padding: 6px 16px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.bp-progress-container {
+    margin-bottom: 16px;
+}
+
+.bp-progress-bar {
+    height: 10px;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 5px;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+.bp-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #cc44ff, #ff44cc);
+    border-radius: 5px;
+    transition: width 0.5s ease;
+    box-shadow: 0 0 10px rgba(204, 68, 255, 0.5);
+}
+
+.bp-xp {
+    font-size: 0.85rem;
+    color: #888;
+}
+
+.bp-streak {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+    padding: 10px;
+    background: rgba(255, 107, 53, 0.1);
+    border-radius: 8px;
+}
+
+.streak-flame {
+    animation: flameFlicker 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes flameFlicker {
+    from { transform: scale(1); }
+    to { transform: scale(1.2) rotate(-5deg); }
+}
+
+.bp-next-reward {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.bp-next-reward button {
+    background: linear-gradient(135deg, #cc44ff, #9911aa);
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+/* ==================== PHASE 2: REFERRAL ==================== */
+
+.referral-widget {
+    background: linear-gradient(135deg, rgba(15, 10, 25, 0.9), rgba(25, 15, 35, 0.9));
+    border: 1px solid rgba(139, 92, 246, 0.3);
+    border-radius: 16px;
+    padding: 24px;
+    margin: 20px 0;
+}
+
+.referral-widget h3 {
+    margin: 0 0 8px 0;
+    color: #8b5cf6;
+}
+
+.referral-code-box {
+    display: flex;
+    gap: 10px;
+    margin: 16px 0;
+}
+
+.referral-code-box code {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.4);
+    padding: 12px;
+    border-radius: 8px;
+    font-family: monospace;
+    font-size: 1.1rem;
+    letter-spacing: 1px;
+}
+
+.referral-code-box button {
+    background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.referral-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin-top: 16px;
+}
+
+.referral-stats .stat {
+    text-align: center;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+}
+
+.stat-value {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #8b5cf6;
+}
+
+.stat-label {
+    font-size: 0.75rem;
+    color: #888;
+    text-transform: uppercase;
+}
+
+/* ==================== PHASE 3: PERSONAL GRIMOIRE ==================== */
+
+.grimoire-personal {
+    background: linear-gradient(135deg, rgba(15, 10, 20, 0.95), rgba(20, 10, 30, 0.95));
+    border: 1px solid rgba(204, 68, 255, 0.2);
+    border-radius: 20px;
+    padding: 28px;
+    margin: 24px 0;
+}
+
+.archetype-card {
+    text-align: center;
+    padding: 24px;
+    background: rgba(204, 68, 255, 0.05);
+    border-radius: 12px;
+    margin: 20px 0;
+    border: 1px solid rgba(204, 68, 255, 0.1);
+}
+
+.archetype-icon {
+    font-size: 3rem;
+    margin-bottom: 12px;
+}
+
+.archetype-card h3 {
+    margin: 0 0 8px 0;
+    color: #cc44ff;
+}
+
+.horror-stats {
+    margin: 20px 0;
+}
+
+.stat-bar {
+    margin-bottom: 16px;
+}
+
+.stat-bar label {
+    display: block;
+    font-size: 0.9rem;
+    margin-bottom: 6px;
+    color: #aaa;
+}
+
+.stat-bar .bar {
+    height: 8px;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.stat-bar .fill {
+    height: 100%;
+    background: linear-gradient(90deg, #cc1122, #ff4444);
+    border-radius: 4px;
+    transition: width 1s ease;
+}
+
+.ai-recommendation {
+    background: rgba(204, 68, 255, 0.08);
+    border-left: 3px solid #cc44ff;
+    padding: 20px;
+    border-radius: 0 12px 12px 0;
+    margin-top: 20px;
+}
+
+.ai-recommendation h4 {
+    margin: 0 0 10px 0;
+    color: #cc44ff;
+}
+
+.ai-recommendation button {
+    margin-top: 12px;
+    background: linear-gradient(135deg, #cc44ff, #9911aa);
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* ==================== PHASE 3: ADAPTIVE THEMES ==================== */
+
+.theme-blood-moon {
+    --bg-primary: #1a0505;
+    --bg-secondary: #2a0a0a;
+    --accent-red: #ff2222;
+    --accent-red-glow: rgba(255, 34, 34, 0.5);
+}
+
+.theme-blood-moon .bg-fog::before {
+    background: radial-gradient(ellipse, #ff2222 0%, transparent 70%);
+    opacity: 0.08;
+}
+
+.theme-spectral {
+    --bg-primary: #0a0a1a;
+    --bg-secondary: #151525;
+    --accent-purple: #9966ff;
+    --accent-purple-glow: rgba(153, 102, 255, 0.5);
+}
+
+.theme-spectral .bg-fog::before {
+    background: radial-gradient(ellipse, #9966ff 0%, transparent 70%);
+    opacity: 0.08;
+}
+
+.theme-void {
+    --bg-primary: #050505;
+    --bg-secondary: #0a0a0a;
+    --accent-gold: #ffaa00;
+    --accent-void: #cc44ff;
+}
+
+.theme-void body {
+    background: radial-gradient(ellipse at center, #1a0a2a 0%, #050505 100%);
+}
+
+/* ==================== PHASE 4: CULT LEADERBOARD ==================== */
+
+.cult-leaderboard {
+    background: linear-gradient(135deg, rgba(20, 10, 15, 0.9), rgba(30, 15, 20, 0.9));
+    border: 1px solid rgba(255, 215, 0, 0.2);
+    border-radius: 16px;
+    padding: 24px;
+    margin: 20px 0;
+}
+
+.cult-leaderboard h3 {
+    margin: 0 0 20px 0;
+    text-align: center;
+    color: #ffd700;
+}
+
+.leaderboard-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.leaderboard-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+    transition: all 0.3s;
+}
+
+.leaderboard-item:hover {
+    background: rgba(255, 255, 255, 0.06);
+    transform: translateX(5px);
+}
+
+.leaderboard-item.top-1 {
+    background: linear-gradient(90deg, rgba(255, 215, 0, 0.2), transparent);
+    border: 1px solid rgba(255, 215, 0, 0.3);
+}
+
+.leaderboard-item.top-2 {
+    background: linear-gradient(90deg, rgba(192, 192, 192, 0.2), transparent);
+    border: 1px solid rgba(192, 192, 192, 0.3);
+}
+
+.leaderboard-item.top-3 {
+    background: linear-gradient(90deg, rgba(205, 127, 50, 0.2), transparent);
+    border: 1px solid rgba(205, 127, 50, 0.3);
+}
+
+.leaderboard-item .rank {
+    font-weight: bold;
+    font-size: 1.2rem;
+    width: 30px;
+}
+
+.leaderboard-item .name {
+    flex: 1;
+}
+
+.tier-badge {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.tier-badge.survivor {
+    background: rgba(205, 127, 50, 0.2);
+    color: #cd7f32;
+}
+
+.tier-badge.hunter {
+    background: rgba(192, 192, 192, 0.2);
+    color: #c0c0c0;
+}
+
+.tier-badge.elder {
+    background: rgba(255, 215, 0, 0.2);
+    color: #ffd700;
+}
+
+.eternal-badge {
+    background: linear-gradient(135deg, #cc44ff, #9911aa);
+    color: #fff;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-size: 0.65rem;
+}
+
+/* ==================== PHASE 4: COMMUNITY GOALS ==================== */
+
+.community-goals {
+    background: linear-gradient(135deg, rgba(15, 20, 15, 0.9), rgba(20, 25, 20, 0.9));
+    border: 1px solid rgba(0, 255, 136, 0.2);
+    border-radius: 16px;
+    padding: 24px;
+    margin: 20px 0;
+}
+
+.community-goals h3 {
+    margin: 0 0 8px 0;
+    color: #00ff88;
+}
+
+.total-souls {
+    text-align: center;
+    font-size: 1.5rem;
+    color: #00ff88;
+    margin-bottom: 24px;
+    text-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+}
+
+.goal-item {
+    margin-bottom: 20px;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.goal-item.unlocked {
+    background: rgba(0, 255, 136, 0.1);
+    border-color: rgba(0, 255, 136, 0.3);
+}
+
+.goal-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.goal-reward {
+    font-weight: bold;
+    color: #fff;
+}
+
+.goal-progress {
+    font-size: 0.85rem;
+    color: #888;
+}
+
+.goal-bar {
+    height: 8px;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 8px;
+}
+
+.goal-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #00ff88, #00cc66);
+    border-radius: 4px;
+    transition: width 1s ease;
+}
+
+.goal-item.unlocked .goal-fill {
+    background: linear-gradient(90deg, #ffd700, #ffaa00);
+}
+
+.goal-desc {
+    font-size: 0.85rem;
+    color: #888;
+    margin: 0;
+}
+
+.unlocked-badge {
+    display: inline-block;
+    margin-top: 8px;
+    background: #00ff88;
+    color: #000;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+
+/* ==================== PHASE 5: PLATFORM SYNC ==================== */
+
+.platform-sync {
+    text-align: center;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 12px;
+    margin: 20px 0;
+}
+
+.platforms {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin: 16px 0;
+}
+
+.platform {
+    padding: 10px 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    text-transform: uppercase;
+    font-size: 0.8rem;
+    opacity: 0.5;
+}
+
+.platform.active {
+    background: linear-gradient(135deg, #cc44ff, #9911aa);
+    opacity: 1;
+    box-shadow: 0 0 20px rgba(204, 68, 255, 0.3);
+}
+
+/* ==================== UTILITY COMPONENTS ==================== */
+
+/* Toast Notifications */
+.toast {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 16px 24px;
+    border-radius: 12px;
+    color: #fff;
+    font-weight: 500;
+    z-index: 100000;
+    transform: translateY(100px);
+    opacity: 0;
+    transition: all 0.3s ease;
+}
+
+.toast.show {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.toast-success {
+    background: linear-gradient(135deg, #00aa44, #00ff88);
+    box-shadow: 0 4px 20px rgba(0, 255, 136, 0.3);
+}
+
+.toast-error {
+    background: linear-gradient(135deg, #aa1122, #ff4444);
+    box-shadow: 0 4px 20px rgba(255, 68, 68, 0.3);
+}
+
+.toast-info {
+    background: linear-gradient(135deg, #4444aa, #6666ff);
+    box-shadow: 0 4px 20px rgba(102, 102, 255, 0.3);
+}
+
+/* Scroll Animations */
+.scroll-animate {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease;
+}
+
+.scroll-animate.animate-in {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Custom Cursor */
+.custom-cursor {
+    width: 20px;
+    height: 20px;
+    border: 2px solid rgba(204, 17, 34, 0.6);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 99999;
+    transition: all 0.1s ease;
+    transform: translate(-50%, -50%);
+}
+
+/* Activity Ticker */
+#activity-ticker {
+    text-align: center;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 20px;
+    font-size: 0.9rem;
+    color: #888;
+}
+
+.ticker-activity {
+    animation: tickerFade 4s ease-in-out;
+}
+
+@keyframes tickerFade {
+    0%, 100% { opacity: 0; transform: translateY(10px); }
+    10%, 90% { opacity: 1; transform: translateY(0); }
+}
+
+/* Personalized Pricing */
+.price-original {
+    text-decoration: line-through;
+    color: #666;
+    font-size: 1.2rem;
+    margin-right: 8px;
+}
+
+.price-discounted {
+    color: #00ff88;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+.price-badge {
+    background: #cc1122;
+    color: #fff;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    margin-left: 8px;
+    animation: badgePulse 1s ease-in-out infinite;
+}
+
+@keyframes badgePulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { 
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to { 
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .flash-sale-inner {
+        flex-wrap: wrap;
+        font-size: 0.85rem;
+    }
+    
+    .referral-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .leaderboard-item {
+        font-size: 0.85rem;
+    }
+    
+    .exit-modal {
+        margin: 20px;
+        padding: 24px;
+    }
+}

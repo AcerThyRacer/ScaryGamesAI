@@ -260,6 +260,8 @@
         player.x = 1 * CELL + CELL / 2; player.y = 1.5; player.z = 1 * CELL + CELL / 2;
         yaw = 0; pitch = 0;
         buildMine();
+        // Quality tier enhancements
+        try { if (typeof QualityEnhancer !== 'undefined') QualityEnhancer.enhance(renderer, scene, camera); } catch(e) { console.warn('QualityEnhancer:', e); }
     }
 
     function restartGame() {

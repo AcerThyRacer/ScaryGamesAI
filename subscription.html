@@ -8,158 +8,176 @@
         content="ScaryGamesAI Subscriptions — Choose your nightmare tier. Unlock cheats, exclusive games, and more.">
     <title>Subscribe — ScaryGamesAI</title>
     <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/subscription-enhanced.css">
 </head>
 
 <body>
+    <!-- Dynamic Background Layers -->
     <div class="bg-fog"></div>
     <div class="bg-grain"></div>
+    <div class="reality-warp" id="reality-warp"></div>
+    <div id="particle-container"></div>
 
+    <!-- Flash Sale Banner -->
+    <div id="flash-sale-banner" class="promo-banner" style="display: none;"></div>
+
+    <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-inner">
-            <a href="/" class="nav-logo">ScaryGames</a>
+            <a href="/" class="nav-logo">Scary<span>Games</span>AI</a>
             <ul class="nav-links">
                 <li><a href="/">Home</a></li>
                 <li><a href="/games.html">Games</a></li>
                 <li><a href="/achievements.html">Achievements</a></li>
                 <li><a href="/leaderboards.html">Leaderboards</a></li>
                 <li><a href="/subscription.html" class="active">Subscribe</a></li>
-                <li><a href="/#about">About</a></li>
+                <li><a href="/challenges.html">Challenges</a></li>
             </ul>
         </div>
     </nav>
 
     <main class="main-content">
-        <!-- Promo Banner -->
-        <div class="promo-banner" id="promo-banner">
-            <div class="promo-inner">
-                <span class="promo-fire">🔥</span>
-                <span class="promo-text"><strong>Launch Sale</strong> — 30% off all tiers for the first month!</span>
-                <span class="promo-countdown" id="promo-countdown"></span>
-                <button class="promo-dismiss" id="promo-dismiss">✕</button>
-            </div>
-        </div>
+        
+        <!-- Limited Spots Urgency -->
+        <div id="limited-spots" class="scroll-animate"></div>
 
         <!-- Subscription Hero -->
         <section class="sub-hero">
             <div class="sub-hero-particles" id="sub-particles"></div>
-            <h1 class="sub-hero-title">Choose Your Nightmare</h1>
-            <p class="sub-hero-subtitle">UNLOCK THE DARKNESS</p>
+            <h1 class="sub-hero-title">Choose Your Fate</h1>
+            <p class="sub-hero-subtitle">BIND YOUR SOUL</p>
             <p class="sub-hero-desc">
-                Pick a tier. Get more games, exclusive cheats, rare themes, and VIP perks.
-                The deeper you go, the more power you unlock.
+                Select a pact. Gain access to more realms, forbidden knowledge, dark masks, and eldritch power.
+                The deeper you descend, the more reality bends to your will.
             </p>
+            
+            <!-- Live Activity Ticker -->
+            <div id="activity-ticker" class="scroll-animate"></div>
+            
             <!-- Subscriber Counter -->
-            <div class="subscriber-counter" id="subscriber-counter">
-                <span class="counter-text">Join</span>
-                <span class="counter-number" id="counter-number">0</span>
-                <span class="counter-text">+ survivors who chose their fate</span>
+            <div class="cult-feed-container scroll-animate">
+                <div class="subscriber-counter" id="subscriber-counter">
+                    <span class="counter-text">Join</span>
+                    <span class="counter-number" id="counter-number">1,247</span>
+                    <span class="counter-text">+ souls still breathing...</span>
+                </div>
             </div>
         </section>
 
-        <!-- Billing Toggle -->
+        <!-- Personal Grimoire Dashboard (Phase 3) -->
+        <section class="container" id="personal-grimoire-section" style="display: none;">
+            <div id="personal-grimoire"></div>
+        </section>
+
+        <!-- Battle Pass Widget (Phase 2) -->
         <section class="container">
-            <div class="billing-toggle-wrap">
-                <span class="billing-label billing-label-active" id="label-monthly">Monthly</span>
-                <button class="billing-toggle" id="billing-toggle" aria-label="Toggle annual billing">
+            <div id="battle-pass-widget" class="scroll-animate"></div>
+        </section>
+
+        <!-- Billing Toggle / Altar -->
+        <section class="container">
+            <div class="billing-toggle-wrap scroll-animate">
+                <span class="billing-label billing-label-active" id="label-monthly">Monthly Sacrifice</span>
+                <button class="billing-toggle" id="billing-toggle" aria-label="Toggle billing cycle">
                     <span class="billing-toggle-thumb"></span>
                 </button>
-                <span class="billing-label" id="label-annual">Annual</span>
-                <span class="billing-save-badge">Save 2 months!</span>
+                <span class="billing-label" id="label-annual">Annual Pact (-17%)</span>
+                <span class="billing-save-badge">Save $16</span>
             </div>
+            <p id="personalized-discount-reason" style="text-align: center; color: #00ff88; margin-top: 10px;"></p>
         </section>
 
         <!-- Pricing Cards -->
         <section class="container" style="padding-bottom: 60px;">
             <div class="pricing-grid">
 
-                <!-- LITE — Bronze -->
-                <div class="pricing-card bronze" data-tilt>
+                <!-- SURVIVOR — Bronze -->
+                <div class="pricing-card bronze scroll-animate" data-tilt>
                     <div class="pricing-card-inner">
                         <div class="card-canvas-wrap"><canvas class="card-canvas" id="canvas-bronze"></canvas></div>
-                        <div class="pricing-tier-icon">🥉</div>
-                        <h3 class="pricing-tier-name bronze-text">Lite</h3>
-                        <p class="pricing-tier-label">Bronze Tier</p>
-                        <div class="pricing-price">
+                        <div class="pricing-tier-icon">🩹</div>
+                        <h3 class="pricing-tier-name bronze-text">Survivor</h3>
+                        <p class="pricing-tier-label">You're Not Dead Yet</p>
+                        <div class="pricing-price" id="price-survivor">
                             <span class="pricing-currency">$</span>
                             <span class="pricing-amount" data-monthly="2" data-annual="20">2</span>
                             <span class="pricing-period" data-monthly="/mo" data-annual="/yr">/mo</span>
                         </div>
                         <div class="pricing-annual-note" style="display:none;">~$1.67/mo — billed annually</div>
                         <ul class="pricing-features">
-                            <li class="feature-yes"><span class="feature-icon">✦</span> 3 free games (for everyone)</li>
-                            <li class="feature-yes"><span class="feature-icon">✦</span> Standard rendering quality</li>
-                            <li class="feature-yes"><span class="feature-icon">✦</span> 2 website themes</li>
-                            <li class="feature-yes"><span class="feature-icon">✦</span> Bronze skull badge</li>
-                            <li class="feature-yes"><span class="feature-icon">✦</span> View leaderboards</li>
-                            <li class="feature-yes"><span class="feature-icon">✦</span> Community support</li>
-                            <li class="feature-no"><span class="feature-icon">✗</span> No ray/path tracing</li>
-                            <li class="feature-no"><span class="feature-icon">✗</span> No cheats or hints</li>
+                            <li class="feature-yes"><span class="feature-icon">✦</span> 3 curses lifted (free)</li>
+                            <li class="feature-yes"><span class="feature-icon">✦</span> Candlelight vision</li>
+                            <li class="feature-yes"><span class="feature-icon">✦</span> 2 masks to wear</li>
+                            <li class="feature-yes"><span class="feature-icon">✦</span> Survivor bandage badge</li>
+                            <li class="feature-yes"><span class="feature-icon">✦</span> Battle Pass: 50% XP</li>
+                            <li class="feature-yes"><span class="feature-icon">✦</span> See other victims</li>
+                            <li class="feature-no"><span class="feature-icon">✗</span> No True Sight</li>
+                            <li class="feature-no"><span class="feature-icon">✗</span> No forbidden knowledge</li>
                         </ul>
-                        <button class="sub-btn sub-btn-bronze" data-tier="lite">
-                            <span class="sub-btn-text">Subscribe</span>
+                        <button class="sub-btn sub-btn-bronze" data-tier="survivor">
+                            <span class="sub-btn-text">Bind Soul</span>
                             <span class="sub-btn-glow"></span>
                         </button>
                     </div>
                 </div>
 
-                <!-- PRO — Silver -->
-                <div class="pricing-card silver" data-tilt>
+                <!-- HUNTER — Silver (Featured) -->
+                <div class="pricing-card silver featured scroll-animate" data-tilt>
+                    <div class="pricing-badge">🜏 MOST CHOSEN</div>
                     <div class="pricing-card-inner">
                         <div class="card-canvas-wrap"><canvas class="card-canvas" id="canvas-silver"></canvas></div>
-                        <div class="pricing-tier-icon">🥈</div>
-                        <h3 class="pricing-tier-name silver-text">Pro</h3>
-                        <p class="pricing-tier-label">Silver Tier</p>
-                        <div class="pricing-price">
+                        <div class="pricing-tier-icon">🗡️</div>
+                        <h3 class="pricing-tier-name silver-text">Hunter</h3>
+                        <p class="pricing-tier-label">Hunt or Be Hunted</p>
+                        <div class="pricing-price" id="price-hunter">
                             <span class="pricing-currency">$</span>
                             <span class="pricing-amount" data-monthly="5" data-annual="50">5</span>
                             <span class="pricing-period" data-monthly="/mo" data-annual="/yr">/mo</span>
                         </div>
                         <div class="pricing-annual-note" style="display:none;">~$4.17/mo — billed annually</div>
                         <ul class="pricing-features">
-                            <li class="feature-yes"><span class="feature-icon">✦</span> Access to 8 games</li>
-                            <li class="feature-yes"><span class="feature-icon">💠</span> Ray Tracing on ALL games</li>
-                            <li class="feature-yes"><span class="feature-icon">✦</span> Early access to new games</li>
-                            <li class="feature-yes"><span class="feature-icon">✦</span> 5 themes + 3 effects</li>
-                            <li class="feature-yes"><span class="feature-icon">✦</span> Silver skull badge</li>
-                            <li class="feature-yes"><span class="feature-icon">✦</span> Submit leaderboard scores</li>
-                            <li class="feature-yes"><span class="feature-icon">✦</span> Basic hints & tips</li>
-                            <li class="feature-yes"><span class="feature-icon">✦</span> Priority email support</li>
+                            <li class="feature-yes"><span class="feature-icon">✦</span> Access to 8 realms</li>
+                            <li class="feature-yes"><span class="feature-icon">💠</span> True Sight on ALL games</li>
+                            <li class="feature-yes"><span class="feature-icon">✦</span> First blood on new releases</li>
+                            <li class="feature-yes"><span class="feature-icon">✦</span> 5 masks + 3 curses</li>
+                            <li class="feature-yes"><span class="feature-icon">✦</span> Battle Pass: Full XP</li>
+                            <li class="feature-yes"><span class="feature-icon">✦</span> AI Horror Recommendations</li>
+                            <li class="feature-yes"><span class="feature-icon">✦</span> Whispers from the dark</li>
+                            <li class="feature-yes"><span class="feature-icon">✦</span> Swift raven support</li>
                         </ul>
-                        <button class="sub-btn sub-btn-silver" data-tier="pro">
-                            <span class="sub-btn-text">Subscribe</span>
+                        <button class="sub-btn sub-btn-silver" data-tier="hunter">
+                            <span class="sub-btn-text">Bind Soul</span>
                             <span class="sub-btn-glow"></span>
                         </button>
                     </div>
                 </div>
 
-                <!-- MAX — Gold -->
-                <div class="pricing-card gold featured" data-tilt>
-                    <div class="pricing-badge">🔥 BEST VALUE</div>
+                <!-- ELDER GOD — Gold -->
+                <div class="pricing-card gold scroll-animate" data-tilt>
+                    <div class="pricing-badge">🜏 ULTIMATE POWER</div>
                     <div class="pricing-card-inner">
                         <div class="card-canvas-wrap"><canvas class="card-canvas" id="canvas-gold"></canvas></div>
-                        <div class="pricing-tier-icon">🥇</div>
-                        <h3 class="pricing-tier-name gold-text">Max</h3>
-                        <p class="pricing-tier-label">Gold Tier</p>
-                        <div class="pricing-price">
+                        <div class="pricing-tier-icon">🜏</div>
+                        <h3 class="pricing-tier-name gold-text">Elder God</h3>
+                        <p class="pricing-tier-label">Reality Bends to You</p>
+                        <div class="pricing-price" id="price-elder">
                             <span class="pricing-currency">$</span>
                             <span class="pricing-amount" data-monthly="8" data-annual="80">8</span>
                             <span class="pricing-period" data-monthly="/mo" data-annual="/yr">/mo</span>
                         </div>
                         <div class="pricing-annual-note" style="display:none;">~$6.67/mo — billed annually</div>
                         <ul class="pricing-features">
-                            <li class="feature-yes"><span class="feature-icon">★</span> All games + all modes</li>
-                            <li class="feature-yes"><span class="feature-icon">✨</span> Path Tracing on ALL games</li>
-                            <li class="feature-yes"><span class="feature-icon">★</span> Exclusive beta games</li>
-                            <li class="feature-yes"><span class="feature-icon">★</span> All themes & all effects</li>
-                            <li class="feature-yes"><span class="feature-icon">★</span> Gold skull badge + profile glow
-                            </li>
-                            <li class="feature-yes"><span class="feature-icon">★</span> Full cheats & trainers</li>
-                            <li class="feature-yes"><span class="feature-icon">★</span> Custom avatars</li>
-                            <li class="feature-yes"><span class="feature-icon">★</span> 24/7 VIP support + Discord role
-                            </li>
+                            <li class="feature-yes"><span class="feature-icon">★</span> All realms + all dimensions</li>
+                            <li class="feature-yes"><span class="feature-icon">✨</span> Reality Shatter on ALL games</li>
+                            <li class="feature-yes"><span class="feature-icon">★</span> Forbidden beta realms</li>
+                            <li class="feature-yes"><span class="feature-icon">★</span> All masks & all curses</li>
+                            <li class="feature-yes"><span class="feature-icon">★</span> Battle Pass: 2x XP + Instant Rewards</li>
+                            <li class="feature-yes"><span class="feature-icon">★</span> Personal AI Horror Curator</li>
+                            <li class="feature-yes"><span class="feature-icon">★</span> Cult Leadership status</li>
+                            <li class="feature-yes"><span class="feature-icon">★</span> Cross-platform sync</li>
                         </ul>
-                        <button class="sub-btn sub-btn-gold" data-tier="max">
-                            <span class="sub-btn-text">Subscribe</span>
+                        <button class="sub-btn sub-btn-gold" data-tier="elder">
+                            <span class="sub-btn-text">Bind Soul</span>
                             <span class="sub-btn-glow"></span>
                         </button>
                     </div>
@@ -168,80 +186,96 @@
             </div>
         </section>
 
+        <!-- Referral Widget (Phase 2) -->
+        <section class="container">
+            <div id="referral-widget" class="scroll-animate"></div>
+        </section>
+
+        <!-- Community Goals (Phase 4) -->
+        <section class="container">
+            <h2 class="comparison-title scroll-animate">The Great Ascension</h2>
+            <div id="community-goals" class="scroll-animate"></div>
+        </section>
+
+        <!-- Cult Leaderboard (Phase 4) -->
+        <section class="container">
+            <h2 class="comparison-title scroll-animate">The Eternal Rankings</h2>
+            <div id="cult-leaderboard" class="scroll-animate"></div>
+        </section>
+
+        <!-- Platform Sync (Phase 5) -->
+        <section class="container">
+            <div id="platform-sync" class="scroll-animate"></div>
+        </section>
+
         <!-- Comparison Table -->
         <section class="container" style="padding-bottom: 60px;">
-            <div class="comparison-section">
-                <h2 class="comparison-title">Full Comparison</h2>
+            <div class="comparison-section scroll-animate">
+                <h2 class="comparison-title">The Price of Power</h2>
                 <div class="comparison-table-wrap">
                     <table class="comparison-table">
                         <thead>
                             <tr>
                                 <th>Feature</th>
-                                <th class="bronze-text">🥉 Lite</th>
-                                <th class="silver-text">🥈 Pro</th>
-                                <th class="gold-text">🥇 Max</th>
+                                <th class="bronze-text">🩹 Survivor</th>
+                                <th class="silver-text">🗡️ Hunter</th>
+                                <th class="gold-text">🜏 Elder God</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr>
-                                <td>Price</td>
+                                <td>Blood Price</td>
                                 <td>$2/mo</td>
                                 <td>$5/mo</td>
                                 <td>$8/mo</td>
                             </tr>
                             <tr>
-                                <td>Game Access</td>
-                                <td>3 free games</td>
-                                <td>8 games</td>
-                                <td>All games</td>
+                                <td>Battle Pass XP</td>
+                                <td>50%</td>
+                                <td>100%</td>
+                                <td>200%</td>
                             </tr>
                             <tr>
-                                <td>Rendering Quality</td>
-                                <td>Standard</td>
-                                <td class="feature-yes">💠 Ray Tracing</td>
-                                <td class="feature-yes">✨ Path Tracing</td>
-                            </tr>
-                            <tr>
-                                <td>Early / Beta Access</td>
+                                <td>AI Recommendations</td>
                                 <td class="feature-no">✗</td>
-                                <td class="feature-yes">Early Access</td>
-                                <td class="feature-yes">Early + Beta</td>
+                                <td class="feature-yes">Basic</td>
+                                <td class="feature-yes">Personal Curator</td>
                             </tr>
                             <tr>
-                                <td>Cheats & Trainers</td>
+                                <td>Cult Status</td>
+                                <td>Acolyte</td>
+                                <td>Member</td>
+                                <td>High Priest</td>
+                            </tr>
+                            <tr>
+                                <td>Realm Access</td>
+                                <td>3 curses lifted</td>
+                                <td>8 realms</td>
+                                <td>All dimensions</td>
+                            </tr>
+                            <tr>
+                                <td>Vision Clarity</td>
+                                <td>Candlelight</td>
+                                <td class="feature-yes">💠 True Sight</td>
+                                <td class="feature-yes">✨ Reality Shatter</td>
+                            </tr>
+                            <tr>
+                                <td>Exclusive Games</td>
+                                <td>1 mini-game</td>
+                                <td>3 mini-games</td>
+                                <td>All + Beta Access</td>
+                            </tr>
+                            <tr>
+                                <td>Referral Rewards</td>
+                                <td>Basic</td>
+                                <td>Enhanced</td>
+                                <td>Cult Leader Bonuses</td>
+                            </tr>
+                            <tr>
+                                <td>Cross-Platform</td>
                                 <td class="feature-no">✗</td>
-                                <td>Basic hints</td>
-                                <td class="feature-yes">Full cheats</td>
-                            </tr>
-                            <tr>
-                                <td>Themes / Effects</td>
-                                <td>2 themes</td>
-                                <td>5 themes, 3 effects</td>
-                                <td>All unlocked</td>
-                            </tr>
-                            <tr>
-                                <td>Leaderboards</td>
-                                <td>View only</td>
-                                <td>Submit scores</td>
-                                <td>Private + custom</td>
-                            </tr>
-                            <tr>
-                                <td>Profile Badge</td>
-                                <td>Bronze skull</td>
-                                <td>Silver skull</td>
-                                <td>Gold skull + glow</td>
-                            </tr>
-                            <tr>
-                                <td>Support</td>
-                                <td>Community</td>
-                                <td>Priority email</td>
-                                <td>24/7 VIP + Discord</td>
-                            </tr>
-                            <tr>
-                                <td>Extras</td>
-                                <td>—</td>
-                                <td>Monthly wallpaper</td>
-                                <td>Custom avatars, exclusives</td>
+                                <td>Web + Mobile</td>
+                                <td>All Platforms + VR</td>
                             </tr>
                         </tbody>
                     </table>
@@ -251,42 +285,38 @@
 
         <!-- Testimonials -->
         <section class="container" style="padding-bottom: 60px;">
-            <h2 class="comparison-title">What Survivors Say</h2>
+            <h2 class="comparison-title scroll-animate">Whispers from the Void</h2>
             <div class="testimonials-grid">
-                <div class="testimonial-card">
+                <div class="testimonial-card scroll-animate">
                     <div class="testimonial-stars">★★★★★</div>
-                    <p class="testimonial-quote">"The full cheats on Max tier literally saved my soul in Web of
-                        Terror.
-                        I couldn't have escaped those spider tunnels without god mode."</p>
+                    <p class="testimonial-quote">"The AI recommendations on Elder God tier literally read my mind. It suggested Web of Terror exactly when I was ready for spider horror. Iä! Iä!"</p>
                     <div class="testimonial-author">
                         <div class="testimonial-avatar testimonial-avatar-gold">👤</div>
                         <div>
                             <span class="testimonial-name">DarkPlayer99</span>
-                            <span class="testimonial-tier gold-text">🥇 Max</span>
+                            <span class="testimonial-tier gold-text">🜏 Elder God</span>
                         </div>
                     </div>
                 </div>
-                <div class="testimonial-card">
+                <div class="testimonial-card scroll-animate">
                     <div class="testimonial-stars">★★★★★</div>
-                    <p class="testimonial-quote">"Early access to new games is worth every penny. I played Graveyard
-                        Shift a week before everyone else. The Silver badge looks sick on my profile."</p>
+                    <p class="testimonial-quote">"The Battle Pass keeps me coming back every day. I'm level 42 now and the exclusive mini-games are genuinely terrifying. Worth every penny."</p>
                     <div class="testimonial-author">
                         <div class="testimonial-avatar testimonial-avatar-silver">👤</div>
                         <div>
                             <span class="testimonial-name">NightCrawl</span>
-                            <span class="testimonial-tier silver-text">🥈 Pro</span>
+                            <span class="testimonial-tier silver-text">🗡️ Hunter</span>
                         </div>
                     </div>
                 </div>
-                <div class="testimonial-card">
+                <div class="testimonial-card scroll-animate">
                     <div class="testimonial-stars">★★★★☆</div>
-                    <p class="testimonial-quote">"For just $2 a month, I get access to 3 solid horror games and the
-                        Bronze badge. Perfect for casual scares without breaking the bank."</p>
+                    <p class="testimonial-quote">"For just $2 a month, I get access to solid cursed games and the Survivor badge. Perfect for casual scares. The referral system got me 2 free weeks!"</p>
                     <div class="testimonial-author">
                         <div class="testimonial-avatar testimonial-avatar-bronze">👤</div>
                         <div>
                             <span class="testimonial-name">CasualFright</span>
-                            <span class="testimonial-tier bronze-text">🥉 Lite</span>
+                            <span class="testimonial-tier bronze-text">🩹 Survivor</span>
                         </div>
                     </div>
                 </div>
@@ -295,80 +325,90 @@
 
         <!-- FAQ Accordion -->
         <section class="container" style="padding-bottom: 100px;">
-            <h2 class="comparison-title">Frequently Asked Questions</h2>
+            <h2 class="comparison-title scroll-animate">Forbidden Knowledge</h2>
             <div class="faq-list">
-                <div class="faq-item">
+                <div class="faq-item scroll-animate">
                     <button class="faq-question">
-                        <span>Can I upgrade or downgrade my tier anytime?</span>
+                        <span>How does the Battle Pass work?</span>
                         <span class="faq-chevron">▾</span>
                     </button>
                     <div class="faq-answer">
-                        <p>Yes! You can upgrade or downgrade at any time. When upgrading, you'll get immediate
-                            access to
-                            all new perks. When downgrading, your current benefits stay active until the end of your
-                            billing cycle.</p>
+                        <p>Your Battle Pass levels up as you gain XP from playing games, logging in daily, completing challenges, and maintaining your subscription. Each level unlocks exclusive rewards like custom cursors, profile frames, mini-games, and even free subscription time. Higher tiers earn XP faster!</p>
                     </div>
                 </div>
-                <div class="faq-item">
+                <div class="faq-item scroll-animate">
                     <button class="faq-question">
-                        <span>How do cheats and trainers work?</span>
+                        <span>What are AI Horror Recommendations?</span>
                         <span class="faq-chevron">▾</span>
                     </button>
                     <div class="faq-answer">
-                        <p>Max tier subscribers get access to in-game cheat menus for every game. This includes god
-                            mode, infinite stamina, speed hacks, wall hacks, and more. Pro tier gets basic hints
-                            like
-                            enemy locations and puzzle solutions. Cheats don't affect leaderboard scores — fair play
-                            is
-                            preserved.</p>
+                        <p>Our AI analyzes your play patterns, fear responses, and preferences to create a personalized Horror Profile. It recommends games based on your terror tolerance, preferred play times, and genre preferences. Elder God tier gets a Personal Horror Curator that can even generate custom challenges!</p>
                     </div>
                 </div>
-                <div class="faq-item">
+                <div class="faq-item scroll-animate">
                     <button class="faq-question">
-                        <span>Can I cancel anytime?</span>
+                        <span>How do referrals work?</span>
                         <span class="faq-chevron">▾</span>
                     </button>
                     <div class="faq-answer">
-                        <p>Absolutely. No contracts, no hidden fees. Cancel with one click and your benefits stay
-                            active
-                            until the end of your current billing period. You can re-subscribe anytime.</p>
+                        <p>Share your unique summoning code with friends. When they subscribe, you both get rewards: they get 20% off their first month, and you earn account credit (up to permanent 20% discounts for 10+ referrals). Top summoners get exclusive "Cult Leader" status and badges.</p>
                     </div>
                 </div>
-                <div class="faq-item">
+                <div class="faq-item scroll-animate">
                     <button class="faq-question">
-                        <span>What's included in "exclusive beta games"?</span>
+                        <span>What are Community Goals?</span>
                         <span class="faq-chevron">▾</span>
                     </button>
                     <div class="faq-answer">
-                        <p>Max tier members get access to games still in development. You'll play them before anyone
-                            else, submit feedback, and help shape the final releases. New beta games drop monthly.
-                        </p>
+                        <p>As our cult grows, we unlock content for everyone! At 1,000 subscribers we unlock new themes, at 5,000 exclusive mini-games, and at 50,000 an entirely new horror game. Your subscription helps the entire community!</p>
                     </div>
                 </div>
-                <div class="faq-item">
+                <div class="faq-item scroll-animate">
                     <button class="faq-question">
-                        <span>Do I save money with annual billing?</span>
+                        <span>Can I ascend or descend my pact anytime?</span>
                         <span class="faq-chevron">▾</span>
                     </button>
                     <div class="faq-answer">
-                        <p>Yes — annual billing gives you 2 months free on every tier. That's a ~17% discount. For
-                            example, Max goes from $96/year (monthly) to just $80/year (annual).</p>
+                        <p>Yes! You can upgrade or downgrade at any time. When upgrading, you'll gain immediate access to all new abilities and your Battle Pass gets an XP boost. When downgrading, your current powers stay active until the end of your billing cycle.</p>
                     </div>
                 </div>
-                <div class="faq-item">
+                <div class="faq-item scroll-animate">
                     <button class="faq-question">
-                        <span>What's the 24/7 VIP support & Discord role?</span>
+                        <span>What's included in cross-platform sync?</span>
                         <span class="faq-chevron">▾</span>
                     </button>
                     <div class="faq-answer">
-                        <p>Max tier gets a special gold "VIP" role in our Discord server with access to exclusive
-                            channels, direct support from the dev team, and priority bug reports. You also get a
-                            glowing
-                            gold profile badge on the website.</p>
+                        <p>Your subscription, progress, Battle Pass level, achievements, and unlocked content sync across Web, Mobile, Desktop, and (for Elder God tier) VR. Play on your phone during the day, continue on PC at night. Your horror follows you everywhere...</p>
                     </div>
                 </div>
             </div>
         </section>
+
+        <!-- Tier Lore Cards -->
+        <section class="container" style="padding-bottom: 80px;">
+            <h2 class="comparison-title scroll-animate">The Path of Power</h2>
+            <div class="tier-lore-grid">
+                <div class="tier-lore-card survivor-lore scroll-animate">
+                    <div class="lore-icon">🩹</div>
+                    <h3>The Survivor's Path</h3>
+                    <p>You wake in darkness, clutching only a dying flashlight. Three cursed games await—can you endure? Bandage your wounds and pray. The night is long, and something is watching.</p>
+                    <div class="lore-flavor">"I just want to make it until dawn..."</div>
+                </div>
+                <div class="tier-lore-card hunter-lore scroll-animate">
+                    <div class="lore-icon">🗡️</div>
+                    <h3>The Hunter's Oath</h3>
+                    <p>The moon is your ally, silver your weapon. No longer prey, you stalk the shadows. Eight realms bow to your blade. You see what others cannot. You hunt what hunts others.</p>
+                    <div class="lore-flavor">"I am the thing that goes bump in the night."</div>
+                </div>
+                <div class="tier-lore-card elder-lore scroll-animate">
+                    <div class="lore-icon">🜏</div>
+                    <h3>The Elder's Ascension</h3>
+                    <p>Reality frays at your touch. All dimensions open their gates. You wield forbidden knowledge like a whip, shape the void like clay. Lesser beings whisper your name in terror.</p>
+                    <div class="lore-flavor">"Iä! Iä! The stars align for ME!"</div>
+                </div>
+            </div>
+        </section>
+
     </main>
 
     <footer class="footer">
@@ -377,67 +417,77 @@
         </div>
     </footer>
 
-    <script src="/js/main.js"></script>
-    <script src="/js/profiles.js"></script>
-    <script src="/js/achievements.js"></script>
-    <script src="/js/leaderboards.js"></script>
-    <script src="/js/daily.js"></script>
-    <script src="/js/social.js"></script>
-    <script src="/js/customizer.js"></script>
-    <script>
-        (function () {
-            /* ========== Floating Embers ========== */
-            const pc = document.getElementById('sub-particles');
-            if (pc) {
-                for (let i = 0; i < 40; i++) {
-                    const p = document.createElement('div');
-                    p.className = 'particle';
-                    p.style.left = Math.random() * 100 + '%';
-                    p.style.animationDelay = Math.random() * 6 + 's';
-                    p.style.animationDuration = (4 + Math.random() * 4) + 's';
-                    const colors = ['#cd7f32', '#c0c0c0', '#ffd700', '#cc1122'];
-                    p.style.background = colors[Math.floor(Math.random() * colors.length)];
-                    pc.appendChild(p);
-                }
-            }
+    <!-- Audio Control -->
+    <button class="audio-toggle" id="audio-toggle" title="Toggle Ambient Horror">
+        <span class="audio-icon">🔇</span>
+        <span class="audio-label">Silence</span>
+    </button>
 
-            /* ========== Billing Toggle ========== */
-            const toggle = document.getElementById('billing-toggle');
+    <!-- Ritual Modal -->
+    <div class="ritual-modal-overlay" id="ritual-modal">
+        <div class="ritual-modal">
+            <div class="ritual-circle">
+                <div class="ritual-rune">🜏</div>
+                <div class="ritual-glow"></div>
+            </div>
+            <h2 class="ritual-title" id="ritual-title">PACT SEALED</h2>
+            <p class="ritual-message" id="ritual-message">Your soul has been bound.</p>
+            <div class="ritual-timer" id="ritual-timer">00:00:00</div>
+            <p class="ritual-flavor" id="ritual-flavor">The darkness remembers.</p>
+            <button class="ritual-close" id="ritual-close">Enter the Void</button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/js/main.js"></script>
+    <script src="/js/subscription-system.js"></script>
+    
+    <script>
+        // Legacy support for existing functionality
+        (function () {
+            // Billing Toggle
+            const billingToggle = document.getElementById('billing-toggle');
             const lblM = document.getElementById('label-monthly');
             const lblA = document.getElementById('label-annual');
             let isAnnual = false;
 
-            toggle.addEventListener('click', () => {
-                isAnnual = !isAnnual;
-                toggle.classList.toggle('active', isAnnual);
-                lblM.classList.toggle('billing-label-active', !isAnnual);
-                lblA.classList.toggle('billing-label-active', isAnnual);
+            if (billingToggle) {
+                billingToggle.addEventListener('click', () => {
+                    isAnnual = !isAnnual;
+                    billingToggle.classList.toggle('active', isAnnual);
+                    lblM?.classList.toggle('billing-label-active', !isAnnual);
+                    lblA?.classList.toggle('billing-label-active', isAnnual);
 
-                document.querySelectorAll('.pricing-amount').forEach(el => {
-                    const v = isAnnual ? el.dataset.annual : el.dataset.monthly;
-                    el.classList.add('price-flip');
-                    setTimeout(() => { el.textContent = v; el.classList.remove('price-flip'); }, 200);
+                    document.querySelectorAll('.pricing-amount').forEach(el => {
+                        const v = isAnnual ? el.dataset.annual : el.dataset.monthly;
+                        el.classList.add('price-flip');
+                        setTimeout(() => { 
+                            el.textContent = v; 
+                            el.classList.remove('price-flip'); 
+                        }, 200);
+                    });
+                    
+                    document.querySelectorAll('.pricing-period').forEach(el => {
+                        el.textContent = isAnnual ? el.dataset.annual : el.dataset.monthly;
+                    });
+                    
+                    document.querySelectorAll('.pricing-annual-note').forEach(el => {
+                        el.style.display = isAnnual ? 'block' : 'none';
+                    });
                 });
-                document.querySelectorAll('.pricing-period').forEach(el => {
-                    el.textContent = isAnnual ? el.dataset.annual : el.dataset.monthly;
-                });
-                document.querySelectorAll('.pricing-annual-note').forEach(el => {
-                    el.style.display = isAnnual ? 'block' : 'none';
-                });
-            });
+            }
 
-            /* ========== FAQ Accordion ========== */
+            // FAQ Accordion
             document.querySelectorAll('.faq-question').forEach(btn => {
                 btn.addEventListener('click', () => {
                     const item = btn.parentElement;
                     const wasOpen = item.classList.contains('open');
-                    // close all
                     document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
                     if (!wasOpen) item.classList.add('open');
                 });
             });
 
-            /* ========== 3D Card Tilt ========== */
+            // 3D Card Tilt
             document.querySelectorAll('[data-tilt]').forEach(card => {
                 card.addEventListener('mousemove', (e) => {
                     const rect = card.getBoundingClientRect();
@@ -448,56 +498,51 @@
                     const baseScale = card.classList.contains('featured') ? 'scale(1.05)' : '';
                     card.style.transform = `${baseScale} perspective(800px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) translateY(-6px)`;
                 });
+                
                 card.addEventListener('mouseleave', () => {
                     const baseScale = card.classList.contains('featured') ? 'scale(1.05)' : '';
                     card.style.transform = baseScale;
                 });
             });
 
-            /* ========== Animated Card Canvases ========== */
+            // Animated Card Canvases
             function animateBronze(canvas) {
                 const ctx = canvas.getContext('2d');
                 let t = 0;
                 const embers = [];
-                for (let i = 0; i < 25; i++) embers.push({ x: Math.random(), y: Math.random(), s: Math.random() * 2 + 1, v: Math.random() * 0.004 + 0.002, d: Math.random() * 0.002 - 0.001, o: Math.random() });
+                for (let i = 0; i < 25; i++) {
+                    embers.push({ 
+                        x: Math.random(), 
+                        y: Math.random(), 
+                        s: Math.random() * 2 + 1, 
+                        v: Math.random() * 0.004 + 0.002 
+                    });
+                }
+                
                 function draw() {
                     const w = canvas.width = canvas.parentElement.offsetWidth;
                     const h = canvas.height = canvas.parentElement.offsetHeight;
-                    ctx.clearRect(0, 0, w, h);
-
-                    // Torch glow
-                    const flicker = 0.6 + Math.sin(t * 6) * 0.15 + Math.sin(t * 13) * 0.08;
-                    const grd = ctx.createRadialGradient(w / 2, h * 0.85, 4, w / 2, h * 0.85, h * 0.7 * flicker);
-                    grd.addColorStop(0, 'rgba(255, 150, 50, 0.25)');
-                    grd.addColorStop(0.4, 'rgba(205, 127, 50, 0.1)');
-                    grd.addColorStop(1, 'transparent');
-                    ctx.fillStyle = grd;
+                    ctx.fillStyle = '#0a0500';
                     ctx.fillRect(0, 0, w, h);
 
-                    // Torch flame
-                    ctx.fillStyle = `rgba(255, 120, 20, ${0.4 + Math.sin(t * 8) * 0.15})`;
-                    ctx.beginPath();
-                    ctx.ellipse(w / 2, h * 0.82, 6 + Math.sin(t * 5) * 2, 12 + Math.sin(t * 7) * 4, 0, 0, Math.PI * 2);
-                    ctx.fill();
-                    ctx.fillStyle = `rgba(255, 200, 80, ${0.5 + Math.sin(t * 10) * 0.2})`;
-                    ctx.beginPath();
-                    ctx.ellipse(w / 2, h * 0.84, 3, 6, 0, 0, Math.PI * 2);
-                    ctx.fill();
+                    // Flashlight sweep
+                    const sweepAngle = Math.sin(t * 0.5) * 0.4;
+                    const beamGrd = ctx.createRadialGradient(w/2, h*0.8, 5, w/2 + Math.sin(sweepAngle)*30, h*0.5, h*0.8);
+                    beamGrd.addColorStop(0, 'rgba(255, 250, 220, 0.4)');
+                    beamGrd.addColorStop(1, 'transparent');
+                    ctx.fillStyle = beamGrd;
+                    ctx.fillRect(0, 0, w, h);
 
                     // Embers
                     embers.forEach(e => {
                         e.y -= e.v;
-                        e.x += e.d + Math.sin(t * 3 + e.o * 10) * 0.001;
-                        if (e.y < -0.05) { e.y = 1.05; e.x = 0.3 + Math.random() * 0.4; }
-                        const fade = e.y < 0.3 ? e.y / 0.3 : 1;
-                        ctx.fillStyle = `rgba(255, ${100 + Math.floor(e.o * 100)}, 20, ${0.7 * fade})`;
-                        ctx.shadowColor = '#ff8800';
-                        ctx.shadowBlur = 4;
+                        if (e.y < 0) e.y = 1;
+                        ctx.fillStyle = `rgba(255, ${100 + Math.floor(Math.random() * 100)}, 20, 0.7)`;
                         ctx.beginPath();
                         ctx.arc(e.x * w, e.y * h, e.s, 0, Math.PI * 2);
                         ctx.fill();
                     });
-                    ctx.shadowBlur = 0;
+
                     t += 0.016;
                     requestAnimationFrame(draw);
                 }
@@ -507,39 +552,31 @@
             function animateSilver(canvas) {
                 const ctx = canvas.getContext('2d');
                 let t = 0;
-                const wisps = [];
-                for (let i = 0; i < 8; i++) wisps.push({ x: Math.random(), y: Math.random(), r: 20 + Math.random() * 30, sx: Math.random() * 0.3 + 0.1, sy: Math.random() * 0.2 + 0.1 });
+                
                 function draw() {
                     const w = canvas.width = canvas.parentElement.offsetWidth;
                     const h = canvas.height = canvas.parentElement.offsetHeight;
-                    ctx.clearRect(0, 0, w, h);
+                    ctx.fillStyle = '#0a0a12';
+                    ctx.fillRect(0, 0, w, h);
 
                     // Moonlight
-                    const grd = ctx.createRadialGradient(w * 0.6, h * 0.15, 5, w * 0.6, h * 0.15, h * 0.6);
-                    grd.addColorStop(0, 'rgba(200, 210, 230, 0.15)');
-                    grd.addColorStop(0.5, 'rgba(192, 192, 192, 0.05)');
+                    const moonX = w * 0.7;
+                    const moonY = h * 0.2;
+                    const grd = ctx.createRadialGradient(moonX, moonY, 5, moonX, moonY, h * 0.8);
+                    grd.addColorStop(0, 'rgba(220, 230, 255, 0.25)');
                     grd.addColorStop(1, 'transparent');
                     ctx.fillStyle = grd;
                     ctx.fillRect(0, 0, w, h);
 
-                    // Moon disc
-                    ctx.fillStyle = 'rgba(220, 225, 240, 0.12)';
-                    ctx.beginPath();
-                    ctx.arc(w * 0.6, h * 0.15, 12, 0, Math.PI * 2);
-                    ctx.fill();
-
-                    // Fog wisps
-                    wisps.forEach(ws => {
-                        const cx = ws.x * w + Math.sin(t * ws.sx) * 30;
-                        const cy = ws.y * h + Math.cos(t * ws.sy) * 15;
-                        const fgrd = ctx.createRadialGradient(cx, cy, 0, cx, cy, ws.r);
-                        fgrd.addColorStop(0, `rgba(192, 192, 192, ${0.08 + Math.sin(t + ws.x * 5) * 0.03})`);
-                        fgrd.addColorStop(1, 'transparent');
-                        ctx.fillStyle = fgrd;
+                    // Silver sparks
+                    for (let i = 0; i < 20; i++) {
+                        const x = (Math.sin(t + i) + 1) * w / 2;
+                        const y = (Math.cos(t * 0.5 + i) + 1) * h / 2;
+                        ctx.fillStyle = `rgba(200, 220, 255, ${0.3 + Math.sin(t * 2 + i) * 0.3})`;
                         ctx.beginPath();
-                        ctx.arc(cx, cy, ws.r, 0, Math.PI * 2);
+                        ctx.arc(x, y, 1.5, 0, Math.PI * 2);
                         ctx.fill();
-                    });
+                    }
 
                     t += 0.016;
                     requestAnimationFrame(draw);
@@ -550,20 +587,17 @@
             function animateGold(canvas) {
                 const ctx = canvas.getContext('2d');
                 let t = 0;
-                const sparks = [];
-                for (let i = 0; i < 20; i++) sparks.push({ a: (i / 20) * Math.PI * 2, r: 30 + Math.random() * 10, s: Math.random() * 1.5 + 0.5, v: Math.random() * 0.5 + 0.5 });
+                
                 function draw() {
                     const w = canvas.width = canvas.parentElement.offsetWidth;
                     const h = canvas.height = canvas.parentElement.offsetHeight;
                     const cx = w / 2, cy = h * 0.45;
-                    ctx.clearRect(0, 0, w, h);
-
-                    // Crown glow
-                    const grd = ctx.createRadialGradient(cx, cy, 5, cx, cy, 60);
-                    grd.addColorStop(0, 'rgba(255, 215, 0, 0.2)');
-                    grd.addColorStop(0.5, 'rgba(255, 180, 0, 0.08)');
-                    grd.addColorStop(1, 'transparent');
-                    ctx.fillStyle = grd;
+                    
+                    // Cosmic void background
+                    const voidGrd = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(w, h));
+                    voidGrd.addColorStop(0, 'rgba(20, 10, 40, 0.9)');
+                    voidGrd.addColorStop(1, 'rgba(5, 0, 15, 1)');
+                    ctx.fillStyle = voidGrd;
                     ctx.fillRect(0, 0, w, h);
 
                     // Rotating flame ring
@@ -574,8 +608,7 @@
                         const fy = cy + Math.sin(angle) * ringR;
                         const size = 4 + Math.sin(t * 5 + i) * 2;
                         const fgrd = ctx.createRadialGradient(fx, fy, 0, fx, fy, size);
-                        fgrd.addColorStop(0, 'rgba(255, 215, 0, 0.5)');
-                        fgrd.addColorStop(0.6, 'rgba(255, 150, 0, 0.2)');
+                        fgrd.addColorStop(0, 'rgba(255, 215, 0, 0.6)');
                         fgrd.addColorStop(1, 'transparent');
                         ctx.fillStyle = fgrd;
                         ctx.beginPath();
@@ -583,21 +616,12 @@
                         ctx.fill();
                     }
 
-                    // Golden sparks
-                    sparks.forEach(sp => {
-                        sp.a += 0.008 * sp.v;
-                        const dist = sp.r + Math.sin(t * 2 + sp.a * 3) * 8;
-                        const sx = cx + Math.cos(sp.a) * dist;
-                        const sy = cy + Math.sin(sp.a) * dist;
-                        const fade = 0.5 + Math.sin(t * 4 + sp.a * 7) * 0.3;
-                        ctx.fillStyle = `rgba(255, 215, 0, ${fade})`;
-                        ctx.shadowColor = '#ffd700';
-                        ctx.shadowBlur = 6;
-                        ctx.beginPath();
-                        ctx.arc(sx, sy, sp.s, 0, Math.PI * 2);
-                        ctx.fill();
-                    });
-                    ctx.shadowBlur = 0;
+                    // Central eye
+                    const eyePulse = 1 + Math.sin(t * 3) * 0.1;
+                    ctx.fillStyle = 'rgba(204, 68, 255, 0.8)';
+                    ctx.beginPath();
+                    ctx.arc(cx, cy, 6 * eyePulse, 0, Math.PI * 2);
+                    ctx.fill();
 
                     t += 0.016;
                     requestAnimationFrame(draw);
@@ -613,117 +637,45 @@
             if (cs) animateSilver(cs);
             if (cg) animateGold(cg);
 
-            /* ========== PHASE 2: LocalStorage Subscription ========== */
-            const TIER_KEY = 'sgai-sub-tier';
-            const currentTier = localStorage.getItem(TIER_KEY) || 'none';
-
-            function updateButtonStates() {
-                const tier = localStorage.getItem(TIER_KEY) || 'none';
-                document.querySelectorAll('.sub-btn[data-tier]').forEach(btn => {
-                    const btnTier = btn.getAttribute('data-tier');
-                    const txt = btn.querySelector('.sub-btn-text');
-                    if (btnTier === tier) {
-                        txt.textContent = '✓ Subscribed';
-                        btn.classList.add('sub-btn-active');
-                        btn.closest('.pricing-card').classList.add('pricing-card-subscribed');
-                    } else {
-                        txt.textContent = 'Subscribe';
-                        btn.classList.remove('sub-btn-active');
-                        btn.closest('.pricing-card').classList.remove('pricing-card-subscribed');
-                    }
-                });
-            }
-            updateButtonStates();
-
-            document.querySelectorAll('.sub-btn[data-tier]').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const tier = btn.getAttribute('data-tier');
-                    const current = localStorage.getItem(TIER_KEY);
-                    if (current === tier) {
-                        // Unsubscribe
-                        localStorage.removeItem(TIER_KEY);
-                    } else {
-                        localStorage.setItem(TIER_KEY, tier);
-                    }
-                    updateButtonStates();
-                    // Pulse animation
-                    btn.classList.add('sub-btn-pulse');
-                    setTimeout(() => btn.classList.remove('sub-btn-pulse'), 600);
-                });
-            });
-
-            /* ========== PHASE 2: Animated Subscriber Counter ========== */
+            // Counter Animation
             const counterEl = document.getElementById('counter-number');
-            const targetCount = 1247;
-            let counted = false;
+            if (counterEl) {
+                const targetCount = 1247;
+                let counted = false;
 
-            function animateCounter() {
-                if (counted) return;
-                counted = true;
-                const duration = 2000;
-                const start = performance.now();
-                function step(now) {
-                    const elapsed = now - start;
-                    const progress = Math.min(elapsed / duration, 1);
-                    // Ease out quad
-                    const eased = 1 - (1 - progress) * (1 - progress);
-                    counterEl.textContent = Math.floor(eased * targetCount).toLocaleString();
-                    if (progress < 1) requestAnimationFrame(step);
-                    else counterEl.textContent = targetCount.toLocaleString();
-                }
-                requestAnimationFrame(step);
-            }
-
-            // IntersectionObserver to trigger counter on scroll
-            const counterSection = document.getElementById('subscriber-counter');
-            if (counterSection && 'IntersectionObserver' in window) {
-                const obs = new IntersectionObserver((entries) => {
-                    entries.forEach(e => { if (e.isIntersecting) { animateCounter(); obs.disconnect(); } });
-                }, { threshold: 0.5 });
-                obs.observe(counterSection);
-            } else {
-                animateCounter();
-            }
-
-            /* ========== PHASE 2: Promo Banner with Countdown ========== */
-            const promoBanner = document.getElementById('promo-banner');
-            const promoDismiss = document.getElementById('promo-dismiss');
-            const promoCountdown = document.getElementById('promo-countdown');
-            const PROMO_DISMISSED_KEY = 'sgai-promo-dismissed';
-            const PROMO_END_KEY = 'sgai-promo-end';
-
-            // Set promo end to 48 hours from first visit (persisted)
-            let promoEnd = localStorage.getItem(PROMO_END_KEY);
-            if (!promoEnd) {
-                promoEnd = Date.now() + 48 * 60 * 60 * 1000;
-                localStorage.setItem(PROMO_END_KEY, promoEnd);
-            }
-            promoEnd = parseInt(promoEnd);
-
-            const wasPromoDismissed = localStorage.getItem(PROMO_DISMISSED_KEY);
-            const promoExpired = Date.now() > promoEnd;
-
-            if (!wasPromoDismissed && !promoExpired) {
-                promoBanner.style.display = 'block';
-                function updateCountdown() {
-                    const remaining = promoEnd - Date.now();
-                    if (remaining <= 0) {
-                        promoCountdown.textContent = 'Expired!';
-                        return;
+                const animateCounter = () => {
+                    if (counted) return;
+                    counted = true;
+                    const duration = 2000;
+                    const start = performance.now();
+                    
+                    function step(now) {
+                        const elapsed = now - start;
+                        const progress = Math.min(elapsed / duration, 1);
+                        const eased = 1 - (1 - progress) * (1 - progress);
+                        counterEl.textContent = Math.floor(eased * targetCount).toLocaleString();
+                        if (progress < 1) requestAnimationFrame(step);
                     }
-                    const hrs = Math.floor(remaining / 3600000);
-                    const mins = Math.floor((remaining % 3600000) / 60000);
-                    const secs = Math.floor((remaining % 60000) / 1000);
-                    promoCountdown.textContent = `${hrs}h ${mins}m ${secs}s`;
-                    requestAnimationFrame(updateCountdown);
-                }
-                updateCountdown();
+                    requestAnimationFrame(step);
+                };
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(e => { 
+                        if (e.isIntersecting) { 
+                            animateCounter(); 
+                            observer.disconnect(); 
+                        } 
+                    });
+                }, { threshold: 0.5 });
+                
+                observer.observe(document.getElementById('subscriber-counter'));
             }
 
-            promoDismiss.addEventListener('click', () => {
-                promoBanner.style.display = 'none';
-                localStorage.setItem(PROMO_DISMISSED_KEY, 'true');
-            });
+            // Flash sale banner display
+            const flashBanner = document.getElementById('flash-sale-banner');
+            if (flashBanner) {
+                flashBanner.style.display = 'block';
+            }
         })();
     </script>
 </body>

@@ -99,6 +99,46 @@
                 '--border-glow': 'rgba(255,85,170,0.3)', '--text-primary': '#f0d0e0', '--text-secondary': '#9a6a8a',
             }
         },
+        {
+            id: 'midnight', name: '🌙 Midnight Mass', preview: 'linear-gradient(135deg, #050510, #0a0a20)',
+            vars: {
+                '--bg-primary': '#050510', '--bg-secondary': '#0a0a18', '--bg-card': 'rgba(12,12,30,0.85)',
+                '--bg-card-hover': 'rgba(18,18,45,0.95)', '--accent-red': '#6644cc', '--accent-red-glow': 'rgba(102,68,204,0.4)',
+                '--border-glow': 'rgba(102,68,204,0.3)', '--text-primary': '#d0d0f0', '--text-secondary': '#6a6a9a',
+            }
+        },
+        {
+            id: 'slasher', name: '🔪 Slasher Film', preview: 'linear-gradient(135deg, #0a0000, #1a0005)',
+            vars: {
+                '--bg-primary': '#0a0000', '--bg-secondary': '#120002', '--bg-card': 'rgba(20,0,4,0.9)',
+                '--bg-card-hover': 'rgba(35,0,8,0.95)', '--accent-red': '#dd1111', '--accent-red-glow': 'rgba(221,17,17,0.5)',
+                '--border-glow': 'rgba(221,17,17,0.35)', '--text-primary': '#ffcccc', '--text-secondary': '#994444',
+            }
+        },
+        {
+            id: 'haunted', name: '🏚️ Haunted House', preview: 'linear-gradient(135deg, #0f0a05, #1a1008)',
+            vars: {
+                '--bg-primary': '#0f0a05', '--bg-secondary': '#1a1208', '--bg-card': 'rgba(26,18,8,0.85)',
+                '--bg-card-hover': 'rgba(40,28,12,0.95)', '--accent-red': '#cc9944', '--accent-red-glow': 'rgba(204,153,68,0.35)',
+                '--border-glow': 'rgba(204,153,68,0.25)', '--text-primary': '#e8dcc8', '--text-secondary': '#8a7a5a',
+            }
+        },
+        {
+            id: 'sewer', name: '🐀 Sewer Creep', preview: 'linear-gradient(135deg, #0a1208, #051005)',
+            vars: {
+                '--bg-primary': '#0a1208', '--bg-secondary': '#0a1a08', '--bg-card': 'rgba(12,26,10,0.85)',
+                '--bg-card-hover': 'rgba(18,40,15,0.95)', '--accent-red': '#66aa33', '--accent-red-glow': 'rgba(102,170,51,0.4)',
+                '--border-glow': 'rgba(102,170,51,0.3)', '--text-primary': '#c8e0b8', '--text-secondary': '#6a8a5a',
+            }
+        },
+        {
+            id: 'morgue', name: '🧊 Cold Morgue', preview: 'linear-gradient(135deg, #080a10, #0d1218)',
+            vars: {
+                '--bg-primary': '#080a10', '--bg-secondary': '#0d1218', '--bg-card': 'rgba(13,18,28,0.85)',
+                '--bg-card-hover': 'rgba(20,28,42,0.95)', '--accent-red': '#88aabb', '--accent-red-glow': 'rgba(136,170,187,0.35)',
+                '--border-glow': 'rgba(136,170,187,0.25)', '--text-primary': '#d0e0e8', '--text-secondary': '#6a7a8a',
+            }
+        },
     ];
 
     // ======================== EFFECTS ========================
@@ -115,6 +155,9 @@
         { id: 'eyes', name: '👁️ Watching Eyes', desc: 'Eyes in the dark' },
         { id: 'rain', name: '🌧️ Blood Rain', desc: 'Red rain streaks' },
         { id: 'cracks', name: '💔 Screen Cracks', desc: 'Cracked screen overlay' },
+        { id: 'spiders', name: '🕷️ Crawling Spiders', desc: 'Spiders crawl across screen' },
+        { id: 'shadowhand', name: '✋ Shadow Hands', desc: 'Hands reach from the edges' },
+        { id: 'candle', name: '🕯️ Flickering Candle', desc: 'Warm candlelight flicker' },
     ];
 
     let activeTheme = localStorage.getItem('sg_theme') || 'default';
@@ -315,6 +358,37 @@
                     drip.style.animationDuration = (3 + Math.random() * 4) + 's';
                     el.appendChild(drip);
                 }
+            }
+
+            // Spiders crawling
+            if (id === 'spiders') {
+                for (let i = 0; i < 6; i++) {
+                    const spider = document.createElement('div');
+                    spider.className = 'fx-spider';
+                    spider.style.left = Math.random() * 100 + '%';
+                    spider.style.top = Math.random() * 100 + '%';
+                    spider.style.animationDelay = Math.random() * 5 + 's';
+                    spider.style.animationDuration = (8 + Math.random() * 8) + 's';
+                    el.appendChild(spider);
+                }
+            }
+
+            // Shadow hands reaching
+            if (id === 'shadowhand') {
+                const positions = ['left', 'right', 'bottom'];
+                positions.forEach((pos, i) => {
+                    const hand = document.createElement('div');
+                    hand.className = 'fx-shadowhand fx-shadowhand-' + pos;
+                    hand.style.animationDelay = (i * 2 + Math.random() * 3) + 's';
+                    el.appendChild(hand);
+                });
+            }
+
+            // Candle flicker overlay
+            if (id === 'candle') {
+                const glow = document.createElement('div');
+                glow.className = 'fx-candle-glow';
+                el.appendChild(glow);
             }
         });
     }

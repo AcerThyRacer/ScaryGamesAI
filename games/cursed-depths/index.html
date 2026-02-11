@@ -323,6 +323,41 @@
             background: rgba(255, 255, 255, 0.15);
             color: #fff;
         }
+
+        .mode-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 14px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .mode-btn {
+            padding: 8px 18px;
+            background: rgba(255, 255, 255, 0.06);
+            color: #8a8a9a;
+            font-size: 0.8rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .mode-btn:hover {
+            background: rgba(138, 92, 246, 0.2);
+            border-color: rgba(138, 92, 246, 0.4);
+            color: #bb88ff;
+            transform: translateY(-1px);
+        }
+
+        .version-tag {
+            margin-top: 18px;
+            font-size: 0.65rem;
+            color: rgba(138, 92, 246, 0.4);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
     </style>
 </head>
 
@@ -331,53 +366,189 @@
         <a href="/games.html" class="back-link" id="back-link">← Back to Games</a>
 
         <div class="start-screen" id="start-screen">
-            <h1>Cursed Depths</h1>
-            <p class="game-subtitle">DIG · CRAFT · SURVIVE</p>
+            <!-- Animated particles background -->
+            <canvas id="start-particles"
+                style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;"></canvas>
+            <!-- Nano Banana Mascot Canvas -->
+            <canvas id="nano-banana" width="180" height="220"
+                style="position:relative;z-index:2;margin-bottom:-10px;"></canvas>
+            <h1>CURSED DEPTHS</h1>
+            <p class="game-subtitle">🍌 NANO BANANA EDITION 🍌</p>
             <p class="game-desc">
-                Descend into a cursed underworld filled with horrifying creatures, ancient bones, and demonic
-                corruption. Mine resources, craft weapons, build shelters, and survive the darkness below.
+                Descend into a procedurally generated underworld spanning desert wastelands, frozen tundras,
+                dense jungles, and the void of space. Mine, craft, fight bosses, and survive the darkness.
             </p>
 
-            <!-- Phase 3: World options -->
+            <!-- World options -->
             <div class="world-options">
-                <label>World Seed
+                <label>🌍 World Seed
                     <input type="text" id="seed-input" placeholder="Random">
                 </label>
-                <label>World Size
+                <label>📏 World Size
                     <select id="size-select">
                         <option value="small">Small (400×200)</option>
                         <option value="medium" selected>Medium (800×400)</option>
                         <option value="large">Large (1600×600)</option>
                     </select>
                 </label>
-                <label>Character
+                <label>👤 Character
                     <select id="skin-select">
                         <option value="default">Default</option>
                         <option value="skeleton">Skeleton 💀</option>
                         <option value="demon">Demon 👹</option>
                         <option value="ghost">Ghost 👻</option>
                         <option value="vampire">Vampire 🧛</option>
+                        <option value="banana">Nano Banana 🍌</option>
                     </select>
                 </label>
             </div>
             <div class="option-row">
                 <label><input type="checkbox" id="hardcore-check"> ☠ Hardcore</label>
-                <label><input type="checkbox" id="speedrun-check"> ⏱ Speedrun Timer</label>
+                <label><input type="checkbox" id="speedrun-check"> ⏱ Speedrun</label>
+                <label><input type="checkbox" id="hardmode-check"> 🔥 Start Hardmode</label>
             </div>
 
-            <button class="start-btn" id="start-btn">ENTER THE DEPTHS</button>
-            <button class="continue-btn" id="continue-btn" style="display:none;">CONTINUE GAME</button>
+            <button class="start-btn" id="start-btn">⚔ ENTER THE DEPTHS ⚔</button>
+            <button class="continue-btn" id="continue-btn" style="display:none;">↻ CONTINUE GAME</button>
 
-            <!-- Phase 4: Endgame mode buttons -->
-            <div class="option-row" style="margin-top: 16px;">
-                <button class="continue-btn" id="boss-rush-btn"
-                    style="display:inline-block;font-size:0.8rem;padding:8px 18px;">⚔ Boss Rush</button>
-                <button class="continue-btn" id="endless-btn"
-                    style="display:inline-block;font-size:0.8rem;padding:8px 18px;">∞ Endless Dungeon</button>
-                <button class="continue-btn" id="daily-btn"
-                    style="display:inline-block;font-size:0.8rem;padding:8px 18px;">📅 Daily Challenge</button>
+            <!-- Game mode buttons -->
+            <div class="mode-buttons">
+                <button class="mode-btn" id="boss-rush-btn">⚔ Boss Rush</button>
+                <button class="mode-btn" id="endless-btn">∞ Endless Dungeon</button>
+                <button class="mode-btn" id="daily-btn">📅 Daily Challenge</button>
             </div>
+
+            <p class="version-tag">v3.0 — Space & Gravity Update</p>
         </div>
+
+        <!-- Nano Banana Animation Script -->
+        <script>
+            (function () {
+                // Particles
+                const pc = document.getElementById('start-particles');
+                const pctx = pc.getContext('2d');
+                const particles = [];
+                function resizePC() { pc.width = window.innerWidth; pc.height = window.innerHeight; }
+                resizePC(); window.addEventListener('resize', resizePC);
+                for (let i = 0; i < 50; i++) {
+                    particles.push({
+                        x: Math.random() * pc.width, y: Math.random() * pc.height,
+                        vx: (Math.random() - 0.5) * 0.5, vy: -0.3 - Math.random() * 0.5,
+                        r: 1 + Math.random() * 3, a: 0.2 + Math.random() * 0.5,
+                        color: ['#cc1122', '#8a5cf6', '#44FFAA', '#FFDD44', '#33AACC'][Math.floor(Math.random() * 5)]
+                    });
+                }
+                function drawParticles() {
+                    pctx.clearRect(0, 0, pc.width, pc.height);
+                    for (const p of particles) {
+                        p.x += p.vx; p.y += p.vy;
+                        if (p.y < -10) { p.y = pc.height + 10; p.x = Math.random() * pc.width; }
+                        if (p.x < -10) p.x = pc.width + 10;
+                        if (p.x > pc.width + 10) p.x = -10;
+                        pctx.globalAlpha = p.a * (0.5 + Math.sin(Date.now() * 0.002 + p.x) * 0.5);
+                        pctx.fillStyle = p.color;
+                        pctx.beginPath(); pctx.arc(p.x, p.y, p.r, 0, Math.PI * 2); pctx.fill();
+                        // Glow
+                        pctx.globalAlpha = p.a * 0.15;
+                        pctx.beginPath(); pctx.arc(p.x, p.y, p.r * 4, 0, Math.PI * 2); pctx.fill();
+                    }
+                    pctx.globalAlpha = 1;
+                    if (document.getElementById('start-screen').style.display !== 'none') requestAnimationFrame(drawParticles);
+                }
+                drawParticles();
+
+                // Nano Banana Mascot
+                const bc = document.getElementById('nano-banana');
+                const bctx = bc.getContext('2d');
+                function drawBanana() {
+                    const t = Date.now() * 0.001;
+                    const floatY = Math.sin(t * 1.5) * 6;
+                    bctx.clearRect(0, 0, 180, 220);
+                    bctx.save();
+                    bctx.translate(90, 100 + floatY);
+
+                    // Glow aura
+                    const grad = bctx.createRadialGradient(0, 0, 10, 0, 0, 55);
+                    grad.addColorStop(0, `rgba(138, 92, 246, ${0.3 + Math.sin(t * 2) * 0.15})`);
+                    grad.addColorStop(0.5, `rgba(68, 255, 170, ${0.15 + Math.sin(t * 3) * 0.1})`);
+                    grad.addColorStop(1, 'rgba(0,0,0,0)');
+                    bctx.fillStyle = grad;
+                    bctx.beginPath(); bctx.arc(0, 0, 55, 0, Math.PI * 2); bctx.fill();
+
+                    // Banana body (curved shape)
+                    bctx.fillStyle = '#FFD700';
+                    bctx.beginPath();
+                    bctx.moveTo(-12, -35);
+                    bctx.quadraticCurveTo(-22, -10, -18, 25);
+                    bctx.quadraticCurveTo(-10, 40, 0, 42);
+                    bctx.quadraticCurveTo(10, 40, 18, 25);
+                    bctx.quadraticCurveTo(22, -10, 12, -35);
+                    bctx.quadraticCurveTo(0, -42, -12, -35);
+                    bctx.fill();
+
+                    // Banana highlight
+                    bctx.fillStyle = 'rgba(255,255,200,0.3)';
+                    bctx.beginPath();
+                    bctx.moveTo(-6, -30);
+                    bctx.quadraticCurveTo(-12, -5, -10, 20);
+                    bctx.quadraticCurveTo(-5, 20, -2, -5);
+                    bctx.quadraticCurveTo(0, -25, -6, -30);
+                    bctx.fill();
+
+                    // Banana stem
+                    bctx.fillStyle = '#8B7355';
+                    bctx.fillRect(-4, -40, 8, 8);
+                    bctx.fillStyle = '#6B5335';
+                    bctx.fillRect(-3, -42, 6, 4);
+
+                    // Eyes (creepy purple glow)
+                    const eyeGlow = `rgba(138, 92, 246, ${0.6 + Math.sin(t * 4) * 0.3})`;
+                    bctx.fillStyle = eyeGlow;
+                    bctx.beginPath(); bctx.arc(-7, -8, 5, 0, Math.PI * 2); bctx.fill();
+                    bctx.beginPath(); bctx.arc(7, -8, 5, 0, Math.PI * 2); bctx.fill();
+                    // Pupils (look at mouse)
+                    bctx.fillStyle = '#220044';
+                    bctx.beginPath(); bctx.arc(-7 + Math.sin(t) * 1.5, -8, 2.5, 0, Math.PI * 2); bctx.fill();
+                    bctx.beginPath(); bctx.arc(7 + Math.sin(t) * 1.5, -8, 2.5, 0, Math.PI * 2); bctx.fill();
+
+                    // Sinister smile
+                    bctx.strokeStyle = '#443300';
+                    bctx.lineWidth = 1.5;
+                    bctx.beginPath();
+                    bctx.arc(0, 2, 8, 0.2, Math.PI - 0.2);
+                    bctx.stroke();
+
+                    // Tiny arms
+                    bctx.strokeStyle = '#FFD700';
+                    bctx.lineWidth = 2;
+                    // Left arm (waving)
+                    const armAngle = Math.sin(t * 3) * 0.3;
+                    bctx.beginPath(); bctx.moveTo(-15, 5);
+                    bctx.lineTo(-25 + Math.cos(armAngle) * 5, 0 + Math.sin(armAngle) * 8);
+                    bctx.stroke();
+                    bctx.fillStyle = '#FFD700';
+                    bctx.beginPath(); bctx.arc(-25 + Math.cos(armAngle) * 5, 0 + Math.sin(armAngle) * 8, 3, 0, Math.PI * 2); bctx.fill();
+                    // Right arm
+                    bctx.beginPath(); bctx.moveTo(15, 5);
+                    bctx.lineTo(25, 10 + Math.sin(t * 2) * 3);
+                    bctx.stroke();
+                    bctx.fillStyle = '#FFD700';
+                    bctx.beginPath(); bctx.arc(25, 10 + Math.sin(t * 2) * 3, 3, 0, Math.PI * 2); bctx.fill();
+
+                    // Tiny legs/feet
+                    bctx.strokeStyle = '#FFD700'; bctx.lineWidth = 2;
+                    bctx.beginPath(); bctx.moveTo(-5, 38); bctx.lineTo(-8, 50); bctx.stroke();
+                    bctx.beginPath(); bctx.moveTo(5, 38); bctx.lineTo(8, 50); bctx.stroke();
+                    bctx.fillStyle = '#CC9900';
+                    bctx.beginPath(); bctx.arc(-8, 50, 3, 0, Math.PI * 2); bctx.fill();
+                    bctx.beginPath(); bctx.arc(8, 50, 3, 0, Math.PI * 2); bctx.fill();
+
+                    bctx.restore();
+                    if (document.getElementById('start-screen').style.display !== 'none') requestAnimationFrame(drawBanana);
+                }
+                drawBanana();
+            })();
+        </script>
 
         <div class="controls-overlay" id="controls-overlay" style="display:none;">
             <div class="controls-content">
