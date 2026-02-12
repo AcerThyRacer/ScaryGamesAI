@@ -214,21 +214,25 @@
             void main() { vUv = uv; gl_Position = vec4(position, 1.0); }
         `;
 
-        // Rotational motion blur shader
+        // Rotational motion blur shader + Directional Zoom Blur
         var frag = `
             uniform sampler2D tDiffuse;
             uniform vec2 uVelocity;
+            uniform float uSpeed;
             varying vec2 vUv;
             void main() {
                 vec4 color = texture2D(tDiffuse, vUv);
-                if (length(uVelocity) < 0.0001) {
+                if (length(uVelocity) < 0.0001 && uSpeed < 0.01) {
                     gl_FragColor = color;
                     return;
                 }
                 float samples = 8.0;
                 for (float i = 1.0; i < 8.0; i++) {
                     float t = i / (samples - 1.0);
-                    color += texture2D(tDiffuse, vUv - uVelocity * t);
+                    // Combine rotational (uVelocity) and zoom blur (uSpeed)
+                    vec2 zoomOffset = (vUv - 0.5) * uSpeed;
+                    vec2 offset = uVelocity + zoomOffset;
+                    color += texture2D(tDiffuse, vUv - offset * t);
                 }
                 gl_FragColor = color / samples;
             }
@@ -237,7 +241,8 @@
         blurMaterial = new THREE.ShaderMaterial({
             uniforms: {
                 tDiffuse: { value: null },
-                uVelocity: { value: new THREE.Vector2(0, 0) }
+                uVelocity: { value: new THREE.Vector2(0, 0) },
+                uSpeed: { value: 0.0 }
             },
             vertexShader: vert,
             fragmentShader: frag,
@@ -998,11 +1003,15 @@
             var dx = p.position.x - playerPos.x, dz = p.position.z - playerPos.z;
             if (Math.sqrt(dx * dx + dz * dz) < 1.2) {
                 p.userData.collected = true; scene.remove(p); collectedPellets++;
-                HorrorAudio.playCollect(); updateHUD();
-                if (window.ChallengeManager) {
-                    ChallengeManager.notify('backrooms-pacman', 'pellets', 1);
-                    ChallengeManager.notify('backrooms-pacman', 'score', collectedPellets * 100);
-                }
+                try {
+                    HorrorAudio.playCollect();
+                    updateHUD();
+                    if (window.ChallengeManager) {
+                        ChallengeManager.notify('backrooms-pacman', 'pellets', 1);
+                        ChallengeManager.notify('backrooms-pacman', 'score', collectedPellets * 100);
+                    }
+                } catch (e) { console.error('Error during pellet collection:', e); }
+
                 if (collectedPellets >= totalPellets) gameWin();
             }
         }
@@ -1301,6 +1310,15 @@
             // Strength multiplier
             var s = 0.5;
             blurMaterial.uniforms.uVelocity.value.set(dy * s, dp * s);
+
+            // Directional Zoom Blur (Pro/Max feature)
+            var zoom = 0;
+            if (window.QualityFX && window.QualityFX.isRT()) {
+                // Scale zoom blur by speed (max speed ~11)
+                zoom = (currentSpeed / 11.0) * 0.04;
+                if (zoom < 0.001) zoom = 0;
+            }
+            blurMaterial.uniforms.uSpeed.value = zoom;
         }
         lastYaw = yaw;
         lastPitch = pitch;

@@ -63,6 +63,7 @@ var HorrorAudio = (function () {
 
     // ============ NOISE GENERATORS ============
     function createNoiseBuffer(duration, type) {
+        if (!ctx) return null;
         var sampleRate = ctx.sampleRate;
         var length = sampleRate * duration;
         var buffer = ctx.createBuffer(1, length, sampleRate);
@@ -97,6 +98,7 @@ var HorrorAudio = (function () {
     // UI click
     function playClick() {
         ensureContext();
+        if (!ctx || !sfxGain) return;
         var osc = ctx.createOscillator();
         var gain = ctx.createGain();
         osc.frequency.setValueAtTime(800, ctx.currentTime);
@@ -112,6 +114,7 @@ var HorrorAudio = (function () {
     // UI hover
     function playHover() {
         ensureContext();
+        if (!ctx || !sfxGain) return;
         var osc = ctx.createOscillator();
         var gain = ctx.createGain();
         osc.type = 'sine';
@@ -127,6 +130,7 @@ var HorrorAudio = (function () {
     // Collect item (pellet, key, artifact)
     function playCollect() {
         ensureContext();
+        if (!ctx || !sfxGain) return;
         var osc = ctx.createOscillator();
         var gain = ctx.createGain();
         osc.type = 'sine';
@@ -144,6 +148,7 @@ var HorrorAudio = (function () {
     // Powerup grab
     function playPowerup() {
         ensureContext();
+        if (!ctx || !sfxGain) return;
         for (var i = 0; i < 3; i++) {
             var osc = ctx.createOscillator();
             var gain = ctx.createGain();
@@ -161,7 +166,9 @@ var HorrorAudio = (function () {
     // Footstep
     function playFootstep(surface) {
         ensureContext();
+        if (!ctx || !sfxGain) return;
         var buffer = createNoiseBuffer(0.08, 'brown');
+        if (!buffer) return;
         var src = ctx.createBufferSource();
         src.buffer = buffer;
         var gain = ctx.createGain();
@@ -196,6 +203,7 @@ var HorrorAudio = (function () {
     // Jump
     function playJump() {
         ensureContext();
+        if (!ctx || !sfxGain) return;
         var osc = ctx.createOscillator();
         var gain = ctx.createGain();
         osc.type = 'sine';
@@ -212,6 +220,7 @@ var HorrorAudio = (function () {
     // Death / Game Over
     function playDeath() {
         ensureContext();
+        if (!ctx || !sfxGain) return;
         // Low rumble + dissonant chord
         var osc1 = ctx.createOscillator();
         var osc2 = ctx.createOscillator();
@@ -236,7 +245,9 @@ var HorrorAudio = (function () {
     // Jump scare sting
     function playJumpScare() {
         ensureContext();
+        if (!ctx || !sfxGain) return;
         var buffer = createNoiseBuffer(0.4, 'white');
+        if (!buffer) return;
         var src = ctx.createBufferSource();
         src.buffer = buffer;
         var gain = ctx.createGain();
@@ -267,6 +278,7 @@ var HorrorAudio = (function () {
     // Win / Level complete
     function playWin() {
         ensureContext();
+        if (!ctx || !sfxGain) return;
         var notes = [523, 659, 784, 1047];
         for (var i = 0; i < notes.length; i++) {
             var osc = ctx.createOscillator();
@@ -285,7 +297,9 @@ var HorrorAudio = (function () {
     // Hit/stumble
     function playHit() {
         ensureContext();
+        if (!ctx || !sfxGain) return;
         var buffer = createNoiseBuffer(0.15, 'brown');
+        if (!buffer) return;
         var src = ctx.createBufferSource();
         src.buffer = buffer;
         var gain = ctx.createGain();
@@ -302,9 +316,11 @@ var HorrorAudio = (function () {
     var heartbeatInterval = null;
     function startHeartbeat(bpm) {
         ensureContext();
+        if (!ctx || !ambienceGain) return;
         bpm = bpm || 70;
         if (heartbeatInterval) clearInterval(heartbeatInterval);
         function beat() {
+            if (!ctx || !ambienceGain) return;
             var osc = ctx.createOscillator();
             var gain = ctx.createGain();
             osc.type = 'sine';
@@ -319,6 +335,7 @@ var HorrorAudio = (function () {
 
             // Second thump (diastolic)
             setTimeout(function () {
+                if (!ctx || !ambienceGain) return;
                 var osc2 = ctx.createOscillator();
                 var g2 = ctx.createGain();
                 osc2.type = 'sine';
@@ -348,6 +365,7 @@ var HorrorAudio = (function () {
     function startDrone(baseFreq, type) {
         ensureContext();
         stopDrone();
+        if (!ctx || !ambienceGain) return;
         baseFreq = baseFreq || 55;
         type = type || 'dark';
 
@@ -418,9 +436,11 @@ var HorrorAudio = (function () {
     function startWind(intensity) {
         ensureContext();
         stopWind();
+        if (!ctx || !ambienceGain) return;
         intensity = intensity || 0.5;
 
         var buffer = createNoiseBuffer(4, 'pink');
+        if (!buffer) return;
         var src = ctx.createBufferSource();
         src.buffer = buffer;
         src.loop = true;
@@ -467,6 +487,7 @@ var HorrorAudio = (function () {
     // ============ 3D AUDIO ============
     function updateListener(x, y, z, fx, fy, fz, ux, uy, uz) {
         ensureContext();
+        if (!ctx) return;
         if (ctx.listener.positionX) {
             var t = ctx.currentTime;
             ctx.listener.positionX.setTargetAtTime(x, t, 0.1);
@@ -486,6 +507,7 @@ var HorrorAudio = (function () {
 
     function create3DSound(type) {
         ensureContext();
+        if (!ctx || !sfxGain) return null;
         var panner = ctx.createPanner();
         panner.panningModel = 'HRTF';
         panner.distanceModel = 'exponential';
@@ -500,47 +522,49 @@ var HorrorAudio = (function () {
         if (type === 'monster_breath') {
             // heavy breathing / static hybrid
             var buffer = createNoiseBuffer(4, 'pink');
-            source = ctx.createBufferSource();
-            source.buffer = buffer;
-            source.loop = true;
+            if (buffer) {
+                source = ctx.createBufferSource();
+                source.buffer = buffer;
+                source.loop = true;
 
-            var filter = ctx.createBiquadFilter();
-            filter.type = 'lowpass';
-            filter.frequency.value = 500;
+                var filter = ctx.createBiquadFilter();
+                filter.type = 'lowpass';
+                filter.frequency.value = 500;
 
-            lfo = ctx.createOscillator();
-            lfo.frequency.value = 0.3; // breath speed
+                lfo = ctx.createOscillator();
+                lfo.frequency.value = 0.3; // breath speed
 
-            gain = ctx.createGain();
-            gain.gain.value = 0; // base
+                gain = ctx.createGain();
+                gain.gain.value = 0; // base
 
-            // LFO modulation
-            var lfoGain = ctx.createGain();
-            lfoGain.gain.value = 0.8;
+                // LFO modulation
+                var lfoGain = ctx.createGain();
+                lfoGain.gain.value = 0.8;
 
-            lfo.connect(lfoGain);
-            lfoGain.connect(gain.gain);
+                lfo.connect(lfoGain);
+                lfoGain.connect(gain.gain);
 
-            // Bias gain up so it breathes 0.2 to 1.0
-            var constant = ctx.createConstantSource ? ctx.createConstantSource() : ctx.createOscillator();
-            if (ctx.createConstantSource) {
-                 constant.offset.value = 0.4;
-                 constant.connect(gain.gain);
-                 constant.start();
-            } else {
-                // Fallback for no ConstantSource (rare now, but safe)
-                gain.gain.value = 0.4;
+                // Bias gain up so it breathes 0.2 to 1.0
+                var constant = ctx.createConstantSource ? ctx.createConstantSource() : ctx.createOscillator();
+                if (ctx.createConstantSource) {
+                    constant.offset.value = 0.4;
+                    constant.connect(gain.gain);
+                    constant.start();
+                } else {
+                    // Fallback for no ConstantSource (rare now, but safe)
+                    gain.gain.value = 0.4;
+                }
+
+                source.connect(filter);
+                filter.connect(gain);
+                gain.connect(panner);
+
+                source.start();
+                lfo.start();
+
+                // Store nodes for cleanup
+                source.onended = function () { alive = false; };
             }
-
-            source.connect(filter);
-            filter.connect(gain);
-            gain.connect(panner);
-
-            source.start();
-            lfo.start();
-
-            // Store nodes for cleanup
-            source.onended = function() { alive = false; };
         }
 
         return {
