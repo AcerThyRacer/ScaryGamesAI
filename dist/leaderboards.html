@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <meta name="description" content="View top horror game scores and rankings across ScaryGamesAI.">
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="ScaryGamesAI">
+    <meta property="og:title" content="Leaderboards — ScaryGamesAI">
+    <meta property="og:description" content="View top horror game scores and rankings across ScaryGamesAI.">
+    <meta property="og:image" content="https://scarygames.ai/assets/og-image.png">
+    <meta property="og:url" content="https://scarygames.ai/leaderboards.html">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Leaderboards — ScaryGamesAI">
+    <meta name="twitter:description" content="View top horror game scores and rankings across ScaryGamesAI.">
+    <meta name="twitter:image" content="https://scarygames.ai/assets/og-image.png">
+    <link rel="canonical" href="https://scarygames.ai/leaderboards.html">
+    <link rel="alternate" hreflang="en" href="https://scarygames.ai/leaderboards.html">
+    <link rel="alternate" hreflang="x-default" href="https://scarygames.ai/leaderboards.html">
+    <title>Leaderboards — ScaryGamesAI</title>
+    <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "name": "Leaderboards — ScaryGamesAI",
+          "url": "https://scarygames.ai/leaderboards.html",
+          "description": "View top horror game scores and rankings across ScaryGamesAI.",
+          "isPartOf": {
+            "@type": "WebSite",
+            "name": "ScaryGamesAI",
+            "url": "https://scarygames.ai/"
+          }
+        }
+    </script>
+    <link rel="manifest" href="/assets/manifest-BkXN0yik.json">
+  <script type="module" crossorigin src="/assets/js/chunks/styles-C37ZYxfD.js"></script>
+  <script type="module" crossorigin src="/assets/js/chunks/shell-j7F2CuES.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/css/styles-CoPMDZEA.css">
+</head>
+
+<body>
+    <!-- Skip link for accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <div class="bg-fog"></div>
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
+        <div class="nav-inner">
+            <a href="/" class="nav-logo">Scary<span>Games</span>AI</a>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/games.html">Games</a></li>
+                <li><a href="/challenges.html">Challenges</a></li>
+                <li><a href="/achievements.html">Achievements</a></li>
+                <li><a href="/leaderboards.html" class="active" aria-current="page">Leaderboards</a></li>
+                <li><a href="/subscription.html">Subscribe</a></li>
+                <li><a href="/store.html">Store</a></li>
+                <li><a href="/#about">About</a></li>
+            </ul>
+        </div>
+    </nav>
+    <main class="main-content" id="main-content" role="main" style="padding-top:100px;max-width:1000px;margin:0 auto;">
+        <h1
+            style="font-family:var(--font-display);text-align:center;font-size:2.5rem;margin-bottom:8px;color:var(--accent-red);">
+            Leaderboards</h1>
+        <p style="text-align:center;color:var(--text-secondary);margin-bottom:32px;">Top scores across all games</p>
+        <div class="lb-tabs" id="lb-tabs"></div>
+        <div id="leaderboard-container"></div>
+    </main>
+    <script src="/js/page-shell.js"></script>
+    <script src="/js/profiles.js"></script>
+    <script src="/js/leaderboards.js"></script>
+    <script src="/js/customizer.js"></script>
+    <script>
+        const GAME_NAMES = {
+            'backrooms-pacman': 'Backrooms: Pac-Man',
+            'shadow-crawler': 'Shadow Crawler',
+            'the-abyss': 'The Abyss',
+            'nightmare-run': 'Nightmare Run',
+            'yeti-run': 'Yeti Run',
+            'blood-tetris': 'Blood Tetris',
+            'seance': 'Séance',
+            'dollhouse': 'The Dollhouse',
+            'zombie-horde': 'Zombie Horde',
+            'the-elevator': 'The Elevator',
+            'graveyard-shift': 'Graveyard Shift',
+            'web-of-terror': 'Web of Terror',
+        };
+        document.addEventListener('DOMContentLoaded', function () {
+            var container = document.getElementById('leaderboard-container');
+            var tabs = document.getElementById('lb-tabs');
+            var gameIds = Object.keys(GAME_NAMES);
+            var activeGame = new URLSearchParams(window.location.search).get('game') || gameIds[0];
+
+            // Build tabs
+            gameIds.forEach(function (gid) {
+                var btn = document.createElement('button');
+                btn.className = 'filter-btn' + (gid === activeGame ? ' active' : '');
+                btn.textContent = GAME_NAMES[gid];
+                btn.addEventListener('click', function () {
+                    tabs.querySelectorAll('.filter-btn').forEach(function (b) { b.classList.remove('active'); });
+                    btn.classList.add('active');
+                    showBoard(gid);
+                });
+                tabs.appendChild(btn);
+            });
+
+            function showBoard(gid) {
+                container.innerHTML = '';
+                Leaderboards.renderBoard(container, gid, GAME_NAMES[gid]);
+            }
+            showBoard(activeGame);
+        });
+    </script>
+    <footer class="footer" role="contentinfo">
+        <div class="footer-inner">
+            <p>&copy; 2026 ScaryGamesAI — Enter at your own risk. 💀</p>
+        </div>
+    </footer>
+</body>
+
+</html>

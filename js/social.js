@@ -101,7 +101,7 @@
         // Share Image
         var imgBtn = document.createElement('button');
         imgBtn.className = 'social-btn social-btn-card';
-        imgBtn.innerHTML = '📸 Share Card';
+        imgBtn.textContent = '📸 Share Card';
         imgBtn.addEventListener('click', function () {
             var dataUrl = generateShareCard(gameTitle, score, playerName);
             var win = window.open();
@@ -115,12 +115,12 @@
         // Copy Dare Link
         var dareBtn = document.createElement('button');
         dareBtn.className = 'social-btn social-btn-dare';
-        dareBtn.innerHTML = '🎯 Dare a Friend';
+        dareBtn.textContent = '🎯 Dare a Friend';
         dareBtn.addEventListener('click', function () {
             var link = generateDareLink(gameId, playerName, score);
             copyToClipboard(link, function (ok) {
-                dareBtn.innerHTML = ok ? '✅ Link Copied!' : '❌ Copy Failed';
-                setTimeout(function () { dareBtn.innerHTML = '🎯 Dare a Friend'; }, 2000);
+                dareBtn.textContent = ok ? '✅ Link Copied!' : '❌ Copy Failed';
+                setTimeout(function () { dareBtn.textContent = '🎯 Dare a Friend'; }, 2000);
             });
         });
         wrapper.appendChild(dareBtn);
@@ -128,13 +128,13 @@
         // Copy Score
         var copyBtn = document.createElement('button');
         copyBtn.className = 'social-btn social-btn-copy';
-        copyBtn.innerHTML = '📋 Copy Score';
+        copyBtn.textContent = '📋 Copy Score';
         copyBtn.addEventListener('click', function () {
             var text = '🎮 I scored ' + score + ' in ' + gameTitle + ' on ScaryGamesAI! Can you beat me? ' +
                 window.location.origin + '/games/' + gameId + '/';
             copyToClipboard(text, function (ok) {
-                copyBtn.innerHTML = ok ? '✅ Copied!' : '❌ Copy Failed';
-                setTimeout(function () { copyBtn.innerHTML = '📋 Copy Score'; }, 2000);
+                copyBtn.textContent = ok ? '✅ Copied!' : '❌ Copy Failed';
+                setTimeout(function () { copyBtn.textContent = '📋 Copy Score'; }, 2000);
             });
         });
         wrapper.appendChild(copyBtn);
@@ -150,7 +150,19 @@
             var score = params.get('score') || '???';
             var dareBar = document.createElement('div');
             dareBar.className = 'dare-banner';
-            dareBar.innerHTML = '🎯 <strong>' + from + '</strong> dared you to beat their score of <strong>' + score + '</strong>!';
+            dareBar.appendChild(document.createTextNode('🎯 '));
+
+            var fromStrong = document.createElement('strong');
+            fromStrong.textContent = from;
+            dareBar.appendChild(fromStrong);
+
+            dareBar.appendChild(document.createTextNode(' dared you to beat their score of '));
+
+            var scoreStrong = document.createElement('strong');
+            scoreStrong.textContent = score;
+            dareBar.appendChild(scoreStrong);
+
+            dareBar.appendChild(document.createTextNode('!'));
             document.body.insertBefore(dareBar, document.body.firstChild);
             setTimeout(function () { dareBar.classList.add('visible'); }, 100);
         }

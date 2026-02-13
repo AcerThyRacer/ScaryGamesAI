@@ -1,0 +1,14 @@
+# Default ownership
+* @AcerThyRacer
+
+# CI/CD and deployment safeguards
+/.github/workflows/* @AcerThyRacer
+/scripts/enforce-branch-protection.js @AcerThyRacer
+/docs/runbooks/* @AcerThyRacer
+
+# Security and runtime critical areas
+/api/* @AcerThyRacer
+/middleware/* @AcerThyRacer
+/models/* @AcerThyRacer
+/services/* @AcerThyRacer
+/server.js @AcerThyRacer

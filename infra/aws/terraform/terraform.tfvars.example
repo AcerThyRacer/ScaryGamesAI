@@ -1,0 +1,12 @@
+environment             = "staging"
+aws_region              = "us-west-2"
+app_image               = "123456789012.dkr.ecr.us-west-2.amazonaws.com/scarygamesai:latest"
+app_desired_count       = 2
+
+# Keep these in secure tfvars files or CI environment secrets.
+db_admin_username       = "sgai_admin"
+db_admin_password       = "REPLACE_ME"
+
+database_url_secret_arn = "arn:aws:secretsmanager:us-west-2:123456789012:secret:sgai/staging/database_url"
+redis_url_secret_arn    = "arn:aws:secretsmanager:us-west-2:123456789012:secret:sgai/staging/redis_url"
+jwt_secret_arn          = "arn:aws:secretsmanager:us-west-2:123456789012:secret:sgai/staging/jwt_secret"

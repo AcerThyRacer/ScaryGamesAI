@@ -3,8 +3,53 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <title>Backrooms: Pac-Man — ScaryGamesAI</title>
+    <meta name="description" content="Escape a haunted maze where a giant Pac-Man hunts you through eerie backrooms corridors.">
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+    <link rel="canonical" href="https://scarygames.ai/games/backrooms-pacman/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="ScaryGamesAI">
+    <meta property="og:title" content="Backrooms: Pac-Man — ScaryGamesAI">
+    <meta property="og:description" content="Escape a haunted maze where a giant Pac-Man hunts you through eerie backrooms corridors.">
+    <meta property="og:url" content="https://scarygames.ai/games/backrooms-pacman/">
+    <meta property="og:image" content="https://scarygames.ai/assets/og-game-fallback.svg?game=backrooms-pacman">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Backrooms: Pac-Man — ScaryGamesAI">
+    <meta name="twitter:description" content="Escape a haunted maze where a giant Pac-Man hunts you through eerie backrooms corridors.">
+    <meta name="twitter:image" content="https://scarygames.ai/assets/og-game-fallback.svg?game=backrooms-pacman">
+    <link rel="manifest" href="/manifest.json">
+    <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "VideoGame",
+          "name": "Backrooms: Pac-Man",
+          "description": "Escape a haunted maze where a giant Pac-Man hunts you through eerie backrooms corridors.",
+          "genre": [
+            "Horror",
+            "Maze",
+            "Survival"
+          ],
+          "applicationCategory": "Game",
+          "operatingSystem": "Web Browser",
+          "url": "https://scarygames.ai/games/backrooms-pacman/",
+          "image": [
+            "https://scarygames.ai/assets/og-game-fallback.svg?game=backrooms-pacman"
+          ],
+          "publisher": {
+            "@type": "Organization",
+            "name": "ScaryGamesAI",
+            "url": "https://scarygames.ai/"
+          },
+          "isPartOf": {
+            "@type": "WebSite",
+            "name": "ScaryGamesAI",
+            "url": "https://scarygames.ai/"
+          }
+        }
+    </script>
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="/css/game-responsive.css">
     <link rel="stylesheet" href="/css/mobile-controls.css">
@@ -21,24 +66,26 @@
             height: 100vh;
         }
     </style>
+    <link rel="stylesheet" href="/css/mobile-enhancements.css" id="mc-enhance-css">
 </head>
 
 <body>
-    <div class="game-page">
-        <a href="/games.html" class="back-link" id="back-link">← Back to Games</a>
+    <a href="#game-container" class="sr-only skip-link">Skip to game</a>
+    <main class="game-page" role="main">
+        <a href="/games.html" class="back-link" id="back-link" aria-label="Return to games list">← Back to Games</a>
 
         <!-- Start Screen -->
-        <div class="start-screen" id="start-screen">
-            <h1>Backrooms: Pac-Man</h1>
+        <div class="start-screen" id="start-screen" role="dialog" aria-modal="false" aria-labelledby="start-title">
+            <h1 id="start-title">Backrooms: Pac-Man</h1>
             <p class="game-desc">You're trapped in the backrooms. A giant Pac-Man is hunting you. Collect all the
                 pellets to find your way out.</p>
-            <button class="start-btn" id="start-btn">START GAME</button>
+            <button class="start-btn" id="start-btn" aria-label="Start Backrooms Pac-Man game">START GAME</button>
         </div>
 
         <!-- Controls Overlay -->
-        <div class="controls-overlay" id="controls-overlay" style="display:none;">
+        <div class="controls-overlay" id="controls-overlay" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="controls-title">
             <div class="controls-content">
-                <h2>Controls</h2>
+                <h2 id="controls-title">Controls</h2>
                 <div class="control-item"><span class="control-key">W A S D</span> Move</div>
                 <div class="control-item"><span class="control-key">Mouse</span> Look Around</div>
                 <div class="control-item"><span class="control-key">Shift</span> Run</div>
@@ -49,7 +96,7 @@
 
         <!-- Game Container -->
         <div class="game-container" id="game-container">
-            <canvas id="game-canvas"></canvas>
+            <canvas id="game-canvas" aria-label="Backrooms Pac-Man game canvas - use WASD to move, mouse to look around"></canvas>
 
             <!-- HUD -->
             <div class="game-hud" id="game-hud" style="display:none;">
@@ -69,6 +116,7 @@
                     </div>
                 </div>
                 <div class="hud-controls">
+                    <button class="hud-btn" id="audio-btn" onclick="HorrorAudioEnhanced.toggleSettings()">🔊 Audio</button>
                     <button class="hud-btn" id="fullscreen-btn">⛶ Fullscreen</button>
                 </div>
             </div>
@@ -80,23 +128,27 @@
         </div>
 
         <!-- Game Over -->
-        <div class="game-end-screen game-over" id="game-over-screen" style="display:none;">
-            <h1>GAME OVER</h1>
-            <p>Pac-Man consumed you...</p>
-            <button class="play-btn" onclick="location.reload()">▶ Try Again</button>
+        <div class="game-end-screen game-over" id="game-over-screen" style="display:none;" role="alertdialog" aria-modal="true" aria-labelledby="gameover-title" aria-describedby="gameover-desc">
+            <h1 id="gameover-title">GAME OVER</h1>
+            <p id="gameover-desc">Pac-Man consumed you...</p>
+            <button class="play-btn" id="gameover-retry-btn" aria-label="Try again">▶ Try Again</button>
             <a href="/games.html" style="display:block;margin-top:16px;color:#888;">← Back to Games</a>
         </div>
 
         <!-- Win Screen -->
-        <div class="game-end-screen game-win" id="game-win-screen" style="display:none;">
-            <h1>YOU ESCAPED!</h1>
-            <p>All pellets collected. You found the way out!</p>
-            <button class="play-btn" onclick="location.reload()">▶ Play Again</button>
+        <div class="game-end-screen game-win" id="game-win-screen" style="display:none;" role="alertdialog" aria-modal="true" aria-labelledby="win-title" aria-describedby="win-desc">
+            <h1 id="win-title">YOU ESCAPED!</h1>
+            <p id="win-desc">All pellets collected. You found the way out!</p>
+            <button class="play-btn" id="win-retry-btn" aria-label="Play again">▶ Play Again</button>
             <a href="/games.html" style="display:block;margin-top:16px;color:#888;">← Back to Games</a>
         </div>
-    </div>
+    </main>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- Three.js from CDN - Consider self-hosting for production with SRI hash -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" crossorigin="anonymous"></script>
+    <script src="/js/visual-enhancements.js"></script>
+    <script src="/js/audio-enhanced.js"></script>
+    <script src="/js/ai-system.js"></script>
     <script src="/js/game-utils.js"></script>
     <script src="/js/audio.js"></script>
     <script src="/js/quality-enhancer.js"></script>
@@ -109,6 +161,20 @@
     <script src="/js/mobile-tutorial.js"></script>
     <script src="/js/mobile-settings.js"></script>
     <script src="/js/device-testing.js"></script>
+    
+    <!-- Mobile Support -->
+    <script src="/js/mobile-setup.js" id="mobile-setup-js"></script>
+    <script src="/js/mobile-controls.js" id="mc-js"></script>
+    <script src="/js/mobile-game-bindings.js" id="mc-bindings-js"></script>
+    <script src="/js/mobile-universal-init.js" id="mc-init-js"></script>
+    <script src="/js/mobile-patcher.js" id="mc-patcher-js"></script>
+    <!-- End Mobile Support -->
+    
+    <!-- Accessibility, Memory & Performance -->
+    <script src="/js/accessibility-manager.js" id="a11y-js"></script>
+    <script src="/js/memory-manager.js" id="mem-js"></script>
+    <script src="/js/performance-optimizer.js" id="perf-js"></script>
+    <!-- End Core Systems -->
     <script src="game.js"></script>
 </body>
 

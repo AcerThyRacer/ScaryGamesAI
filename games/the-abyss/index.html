@@ -3,8 +3,53 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <title>The Abyss — ScaryGamesAI</title>
+    <meta name="description" content="Dive into a terrifying underwater abyss where unknown creatures and hazards surround you.">
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+    <link rel="canonical" href="https://scarygames.ai/games/the-abyss/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="ScaryGamesAI">
+    <meta property="og:title" content="The Abyss — ScaryGamesAI">
+    <meta property="og:description" content="Dive into a terrifying underwater abyss where unknown creatures and hazards surround you.">
+    <meta property="og:url" content="https://scarygames.ai/games/the-abyss/">
+    <meta property="og:image" content="https://scarygames.ai/assets/og-game-fallback.svg?game=the-abyss">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="The Abyss — ScaryGamesAI">
+    <meta name="twitter:description" content="Dive into a terrifying underwater abyss where unknown creatures and hazards surround you.">
+    <meta name="twitter:image" content="https://scarygames.ai/assets/og-game-fallback.svg?game=the-abyss">
+    <link rel="manifest" href="/manifest.json">
+    <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "VideoGame",
+          "name": "The Abyss",
+          "description": "Dive into a terrifying underwater abyss where unknown creatures and hazards surround you.",
+          "genre": [
+            "Horror",
+            "Exploration",
+            "Survival"
+          ],
+          "applicationCategory": "Game",
+          "operatingSystem": "Web Browser",
+          "url": "https://scarygames.ai/games/the-abyss/",
+          "image": [
+            "https://scarygames.ai/assets/og-game-fallback.svg?game=the-abyss"
+          ],
+          "publisher": {
+            "@type": "Organization",
+            "name": "ScaryGamesAI",
+            "url": "https://scarygames.ai/"
+          },
+          "isPartOf": {
+            "@type": "WebSite",
+            "name": "ScaryGamesAI",
+            "url": "https://scarygames.ai/"
+          }
+        }
+    </script>
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="/css/game-responsive.css">
     <link rel="stylesheet" href="/css/mobile-controls.css">
@@ -908,6 +953,7 @@
             }
         }
     </style>
+    <link rel="stylesheet" href="/css/mobile-enhancements.css" id="mc-enhance-css">
 </head>
 
 <body>
@@ -999,7 +1045,7 @@
 
         <!-- Game Container -->
         <div class="game-container" id="game-container">
-            <canvas id="game-canvas"></canvas>
+            <canvas id="game-canvas" aria-label="The Abyss underwater horror game canvas - use WASD to swim, Mouse to look around"></canvas>
             
             <!-- Damage Overlay -->
             <div id="damage-overlay"></div>
@@ -1103,17 +1149,18 @@
     </div>
 
     <!-- Scripts -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <!-- Post-processing -->
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+    <!-- Three.js from CDN - Consider self-hosting for production with SRI hash -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" crossorigin="anonymous"></script>
+    <!-- Post-processing - Consider self-hosting for production with SRI hash -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js" crossorigin="anonymous"></script>
     <!-- SSAO -->
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/SSAOShader.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/SSAOPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/SSAOShader.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/SSAOPass.js" crossorigin="anonymous"></script>
     
     <!-- PHASE 1: Technical Foundation (NEW) -->
     <!-- Core Engine -->
@@ -1167,6 +1214,20 @@
     <script src="/js/mobile-tutorial.js"></script>
     <script src="/js/mobile-settings.js"></script>
     <script src="/js/device-testing.js"></script>
+    
+    <!-- Mobile Support -->
+    <script src="/js/mobile-setup.js" id="mobile-setup-js"></script>
+    <script src="/js/mobile-controls.js" id="mc-js"></script>
+    <script src="/js/mobile-game-bindings.js" id="mc-bindings-js"></script>
+    <script src="/js/mobile-universal-init.js" id="mc-init-js"></script>
+    <script src="/js/mobile-patcher.js" id="mc-patcher-js"></script>
+    <!-- End Mobile Support -->
+    
+    <!-- Accessibility, Memory & Performance -->
+    <script src="/js/accessibility-manager.js" id="a11y-js"></script>
+    <script src="/js/memory-manager.js" id="mem-js"></script>
+    <script src="/js/performance-optimizer.js" id="perf-js"></script>
+    <!-- End Core Systems -->
     <script src="game.js"></script>
 </body>
 

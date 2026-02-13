@@ -4,13 +4,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <meta name="description" content="Complete daily and weekly horror challenges to earn rewards and climb the ranks.">
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="ScaryGamesAI">
+    <meta property="og:title" content="Challenges — ScaryGamesAI">
+    <meta property="og:description" content="Complete daily and weekly horror challenges to earn rewards and climb the ranks.">
+    <meta property="og:image" content="https://scarygames.ai/assets/og-image.png">
+    <meta property="og:url" content="https://scarygames.ai/challenges.html">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Challenges — ScaryGamesAI">
+    <meta name="twitter:description" content="Complete daily and weekly horror challenges to earn rewards and climb the ranks.">
+    <meta name="twitter:image" content="https://scarygames.ai/assets/og-image.png">
+    <link rel="canonical" href="https://scarygames.ai/challenges.html">
+    <link rel="alternate" hreflang="en" href="https://scarygames.ai/challenges.html">
+    <link rel="alternate" hreflang="x-default" href="https://scarygames.ai/challenges.html">
     <title>Challenges — ScaryGamesAI</title>
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="/css/challenges.css">
+    <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "name": "Challenges — ScaryGamesAI",
+          "url": "https://scarygames.ai/challenges.html",
+          "description": "Complete daily and weekly horror challenges to earn rewards and climb the ranks.",
+          "isPartOf": {
+            "@type": "WebSite",
+            "name": "ScaryGamesAI",
+            "url": "https://scarygames.ai/"
+          }
+        }
+    </script>
+    <link rel="manifest" href="/manifest.json">
 </head>
 
 <body>
+    <!-- Skip link for accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
     <div class="bg-fog"></div>
     <div class="bg-grain"></div>
     <div class="challenges-vignette"></div>
@@ -30,7 +64,7 @@
         </div>
     </nav>
 
-    <main class="main-content" role="main">
+    <main class="main-content" id="main-content" role="main">
         <!-- ===== CINEMATIC HERO ===== -->
         <section class="challenges-hero" aria-label="Challenges hero banner">
             <div class="challenges-embers" id="hero-embers" aria-hidden="true"></div>
@@ -219,13 +253,11 @@
         </div>
     </footer>
 
+    <script src="/js/page-shell.js"></script>
     <script src="/js/main.js"></script>
     <script src="/js/challenges.js"></script>
     <script src="/js/challenges-ui.js"></script>
-    <script src="/js/scroll-fx.js"></script>
-    <script src="/js/adaptive-quality.js"></script>
-    <script src="/js/transitions.js"></script>
-    <script src="/js/micro-interactions.js"></script>
+    <script type="module" src="/js/perf-entry.js"></script>
 </body>
 
 </html>

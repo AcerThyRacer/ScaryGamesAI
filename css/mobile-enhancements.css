@@ -1,0 +1,441 @@
+/* ============================================
+   Mobile Enhancements CSS
+   Additional touch-friendly improvements
+   ============================================ */
+
+/* ══════════════════════════════════════════════
+   RESPONSIVE CANVAS SCALING
+   ══════════════════════════════════════════════ */
+
+/* Canvas always fills screen on mobile */
+body.is-mobile #game-canvas {
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    max-width: none !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    border: none !important;
+    border-radius: 0 !important;
+    object-fit: cover;
+}
+
+/* Aspect ratio preserving canvas (for fixed-ratio games) */
+body.is-mobile.canvas-fit #game-canvas {
+    object-fit: contain;
+    background: #000;
+}
+
+/* ══════════════════════════════════════════════
+   TOUCH-FRIENDLY HUD
+   ══════════════════════════════════════════════ */
+
+body.is-mobile .game-hud {
+    position: fixed;
+    top: env(safe-area-inset-top, 0);
+    left: 0;
+    right: 0;
+    padding: 8px 12px;
+    padding-top: calc(8px + env(safe-area-inset-top, 0px));
+    gap: 8px;
+    font-size: 12px;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, transparent 100%);
+    z-index: 100;
+}
+
+body.is-mobile .hud-item {
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-size: clamp(10px, 2.5vw, 13px);
+    min-height: 32px;
+}
+
+body.is-mobile .hud-btn {
+    min-width: 44px;
+    min-height: 44px;
+    padding: 10px 14px;
+    font-size: 12px;
+}
+
+/* Move HUD to avoid mobile controls */
+body.is-mobile.mc-mobile-active .game-hud {
+    bottom: 0;
+    top: auto;
+    background: linear-gradient(to top, rgba(0,0,0,0.5) 0%, transparent 100%);
+    padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px));
+}
+
+/* ══════════════════════════════════════════════
+   GAME-SPECIFIC MOBILE LAYOUTS
+   ══════════════════════════════════════════════ */
+
+/* FNAF-style camera buttons */
+body.is-mobile.game-fnaf .mc-buttons-zone {
+    flex-direction: row;
+    bottom: 20px;
+    right: 20px;
+    left: 20px;
+    justify-content: space-between;
+}
+
+body.is-mobile.game-fnaf .mc-btn {
+    width: 70px;
+    height: 50px;
+    border-radius: 12px;
+}
+
+/* Tetris controls - side buttons */
+body.is-mobile.game-tetris .mc-buttons-zone {
+    flex-direction: column;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+body.is-mobile.game-tetris .mc-btn {
+    width: 50px;
+    height: 50px;
+}
+
+/* Strategy game buttons - bottom row */
+body.is-mobile.game-strategy .mc-buttons-zone {
+    flex-direction: row;
+    bottom: 20px;
+    left: 20px;
+    right: 20px;
+    justify-content: space-around;
+}
+
+body.is-mobile.game-strategy .mc-btn {
+    width: 60px;
+    height: 60px;
+}
+
+/* ══════════════════════════════════════════════
+   TOUCH FEEDBACK ENHANCEMENTS
+   ══════════════════════════════════════════════ */
+
+/* Visual touch ripple on canvas */
+.touch-ripple {
+    position: fixed;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%);
+    pointer-events: none;
+    animation: touchRipple 0.5s ease-out forwards;
+    z-index: 9999;
+}
+
+@keyframes touchRipple {
+    0% {
+        transform: translate(-50%, -50%) scale(0.5);
+        opacity: 1;
+    }
+    100% {
+        transform: translate(-50%, -50%) scale(2);
+        opacity: 0;
+    }
+}
+
+/* ══════════════════════════════════════════════
+   MOBILE MENU IMPROVEMENTS
+   ══════════════════════════════════════════════ */
+
+body.is-mobile .start-screen,
+body.is-mobile .game-over-screen,
+body.is-mobile .game-win-screen {
+    padding: 16px;
+    padding-top: calc(16px + env(safe-area-inset-top, 0px));
+    padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+}
+
+body.is-mobile .start-screen h1 {
+    font-size: clamp(1.5rem, 7vw, 2.5rem);
+    margin-bottom: 12px;
+}
+
+body.is-mobile .game-desc {
+    font-size: clamp(12px, 3vw, 16px);
+    max-width: 100%;
+    line-height: 1.5;
+    margin-bottom: 20px;
+}
+
+body.is-mobile .start-btn,
+body.is-mobile .play-btn,
+body.is-mobile .retry-btn {
+    width: 100%;
+    max-width: 280px;
+    min-height: 56px;
+    font-size: 18px;
+    padding: 14px 24px;
+    margin: 8px auto;
+    display: block;
+}
+
+body.is-mobile .difficulty-selector {
+    flex-direction: column;
+    width: 100%;
+    max-width: 280px;
+    margin: 16px auto;
+}
+
+body.is-mobile .difficulty-btn {
+    width: 100%;
+    min-height: 48px;
+    margin: 4px 0;
+}
+
+/* ══════════════════════════════════════════════
+   CONTROLS OVERLAY MOBILE
+   ══════════════════════════════════════════════ */
+
+body.is-mobile .controls-overlay {
+    padding: 0;
+}
+
+body.is-mobile .controls-overlay .controls-content {
+    max-width: 95vw;
+    max-height: 90vh;
+    padding: 20px;
+    margin: 16px;
+    overflow-y: auto;
+}
+
+body.is-mobile .controls-overlay h2 {
+    font-size: clamp(18px, 5vw, 24px);
+    margin-bottom: 12px;
+}
+
+body.is-mobile .controls-overlay .control-item {
+    display: none !important; /* Hide keyboard hints on mobile */
+}
+
+body.is-mobile .controls-overlay .mobile-controls-hint {
+    display: block !important;
+    text-align: center;
+    color: rgba(255,255,255,0.7);
+    font-size: 14px;
+    padding: 16px;
+}
+
+/* ══════════════════════════════════════════════
+   FULLSCREEN BUTTON
+   ══════════════════════════════════════════════ */
+
+body.is-mobile .fullscreen-btn {
+    position: fixed;
+    top: calc(8px + env(safe-area-inset-top, 0px));
+    right: 8px;
+    width: 44px;
+    height: 44px;
+    z-index: 200;
+    opacity: 0.7;
+}
+
+body.is-mobile .fullscreen-btn:active {
+    opacity: 1;
+}
+
+/* ══════════════════════════════════════════════
+   ORIENTATION PROMPT IMPROVEMENTS
+   ══════════════════════════════════════════════ */
+
+.mobile-orientation-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 999999;
+    background: linear-gradient(135deg, #1a0a0a 0%, #0a0a1a 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Inter', sans-serif;
+    padding: 20px;
+}
+
+.mobile-orientation-overlay .icon {
+    font-size: 80px;
+    animation: phoneRotate 2s ease-in-out infinite;
+    margin-bottom: 24px;
+}
+
+@keyframes phoneRotate {
+    0%, 100% { transform: rotate(-30deg); }
+    50% { transform: rotate(30deg); }
+}
+
+.mobile-orientation-overlay h2 {
+    font-size: 20px;
+    color: #fff;
+    margin-bottom: 12px;
+    text-align: center;
+}
+
+.mobile-orientation-overlay p {
+    font-size: 14px;
+    color: rgba(255,255,255,0.6);
+    text-align: center;
+    max-width: 280px;
+    line-height: 1.5;
+}
+
+/* ══════════════════════════════════════════════
+   GAMEPAD SUPPORT (for mobile controllers)
+   ══════════════════════════════════════════════ */
+
+body.is-mobile.gamepad-connected .mc-joystick,
+body.is-mobile.gamepad-connected .mc-buttons-zone {
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+/* ══════════════════════════════════════════════
+   REDUCED MOTION
+   ══════════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+    body.is-mobile * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ══════════════════════════════════════════════
+   HIGH CONTRAST MODE
+   ══════════════════════════════════════════════ */
+
+@media (prefers-contrast: high) {
+    body.is-mobile .mc-btn {
+        border-width: 3px;
+        border-color: #fff;
+    }
+    
+    body.is-mobile .mc-joystick-ring {
+        border-width: 3px;
+        border-color: #fff;
+    }
+}
+
+/* ══════════════════════════════════════════════
+   SMALL SCREEN ADJUSTMENTS (< 375px)
+   ══════════════════════════════════════════════ */
+
+@media (max-width: 374px) {
+    body.is-mobile .mc-joystick-ring {
+        width: 80px;
+        height: 80px;
+        left: -40px;
+        top: -40px;
+    }
+    
+    body.is-mobile .mc-joystick-thumb {
+        width: 32px;
+        height: 32px;
+    }
+    
+    body.is-mobile .mc-btn {
+        width: 44px;
+        height: 44px;
+    }
+    
+    body.is-mobile .mc-btn-icon {
+        font-size: 16px;
+    }
+    
+    body.is-mobile .mc-btn-label {
+        display: none;
+    }
+    
+    body.is-mobile .game-hud {
+        font-size: 10px;
+    }
+}
+
+/* ══════════════════════════════════════════════
+   TABLET ADJUSTMENTS (768px - 1024px)
+   ══════════════════════════════════════════════ */
+
+@media (min-width: 768px) and (max-width: 1024px) {
+    body.is-mobile .mc-joystick-ring {
+        width: 140px;
+        height: 140px;
+        left: -70px;
+        top: -70px;
+    }
+    
+    body.is-mobile .mc-joystick-thumb {
+        width: 56px;
+        height: 56px;
+    }
+    
+    body.is-mobile .mc-btn {
+        width: 70px;
+        height: 70px;
+    }
+    
+    body.is-mobile .mc-btn-icon {
+        font-size: 28px;
+    }
+    
+    body.is-mobile .game-hud {
+        font-size: 14px;
+    }
+    
+    body.is-mobile .start-btn,
+    body.is-mobile .play-btn {
+        max-width: 320px;
+        min-height: 60px;
+        font-size: 20px;
+    }
+}
+
+/* ══════════════════════════════════════════════
+   LANDSCAPE SPECIFIC
+   ══════════════════════════════════════════════ */
+
+@media (orientation: landscape) and (max-height: 500px) {
+    body.is-mobile .game-hud {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 4px;
+        padding: 4px 8px;
+    }
+    
+    body.is-mobile .hud-item {
+        padding: 4px 8px;
+        min-height: 24px;
+    }
+    
+    body.is-mobile .mc-buttons-zone {
+        flex-direction: row;
+        bottom: 10px;
+        gap: 8px;
+    }
+    
+    body.is-mobile .mc-btn {
+        width: 50px;
+        height: 50px;
+    }
+}
+
+/* ══════════════════════════════════════════════
+   PORTRAIT SPECIFIC
+   ══════════════════════════════════════════════ */
+
+@media (orientation: portrait) {
+    body.is-mobile .mc-joystick {
+        left: 60px;
+        bottom: 120px;
+    }
+    
+    body.is-mobile .mc-buttons-zone {
+        right: 20px;
+        bottom: 100px;
+    }
+}

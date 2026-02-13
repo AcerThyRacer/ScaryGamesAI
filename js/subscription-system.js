@@ -9,9 +9,11 @@ class SubscriptionSystem {
         this.userToken = localStorage.getItem('sgai-token') || 'demo-token';
         this.currentTier = localStorage.getItem('sgai-tier') || null;
         this.battlePass = null;
+        this.battlePassV2 = null;
         this.userProfile = null;
         this.communityGoals = null;
-        
+        this.backendUnavailable = false;
+
         this.init();
     }
 
@@ -29,41 +31,102 @@ class SubscriptionSystem {
             // Load subscription status
             const status = await this.apiGet('/subscriptions/status');
             this.currentTier = status.tier;
-            
-            // Load battle pass
-            this.battlePass = await this.apiGet('/subscriptions/battle-pass');
-            
+
+            // Load battle pass v2 first, fallback to legacy
+            try {
+                this.battlePassV2 = await this.apiGet('/subscriptions/battle-pass/v2');
+                this.battlePass = this.mapV2ToLegacyBattlePass(this.battlePassV2);
+                this.backendUnavailable = false;
+            } catch (bpErr) {
+                if (this.isBackendUnavailableError(bpErr)) {
+                    this.backendUnavailable = true;
+                    this.showToast('Battle Pass v2 backend unavailable, using legacy data.', 'info');
+                }
+                this.battlePass = await this.apiGet('/subscriptions/battle-pass');
+            }
+
             // Load user profile
             this.userProfile = await this.apiGet('/subscriptions/profile');
-            
+
             // Load community goals
             this.communityGoals = await this.apiGet('/subscriptions/community-goals');
-            
+
             this.updateUI();
         } catch (e) {
             console.error('Failed to load user data:', e);
         }
     }
 
+    createIdempotencyKey(scope = 'sub') {
+        return `${scope}-${Date.now()}-${Math.random().toString(36).slice(2)}`;
+    }
+
+    isBackendUnavailableError(error) {
+        return error?.status === 503 || error?.code === 'PG_REQUIRED' || error?.code === 'BP_V2_REQUIRES_POSTGRES';
+    }
+
+    async request(endpoint, options = {}) {
+        const response = await fetch(`${this.apiBase}${endpoint}`, options);
+        let data = null;
+
+        try {
+            data = await response.json();
+        } catch (_) {
+            data = null;
+        }
+
+        if (!response.ok || (data && data.success === false)) {
+            const err = new Error(data?.error?.message || data?.message || `Request failed (${response.status})`);
+            err.status = response.status;
+            err.code = data?.error?.code || data?.code || null;
+            err.payload = data;
+            throw err;
+        }
+
+        return data || { success: response.ok };
+    }
+
     async apiGet(endpoint) {
-        const response = await fetch(`${this.apiBase}${endpoint}`, {
+        return this.request(endpoint, {
             headers: {
                 'Authorization': `Bearer ${this.userToken}`
             }
         });
-        return response.json();
     }
 
-    async apiPost(endpoint, data) {
-        const response = await fetch(`${this.apiBase}${endpoint}`, {
+    async apiPost(endpoint, data, { idempotencyScope = null } = {}) {
+        const headers = {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${this.userToken}`
+        };
+
+        if (idempotencyScope) {
+            const key = this.createIdempotencyKey(idempotencyScope);
+            headers['idempotency-key'] = key;
+            headers['x-idempotency-key'] = key;
+        }
+
+        return this.request(endpoint, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${this.userToken}`
-            },
-            body: JSON.stringify(data)
+            headers,
+            body: JSON.stringify(data || {})
         });
-        return response.json();
+    }
+
+    mapV2ToLegacyBattlePass(v2) {
+        const state = v2?.state || {};
+        const level = Number(state.currentTier || 1);
+        const xp = Number(state.currentXp || 0);
+        const nextThreshold = Number(state.nextTierXp || 1000);
+        const progress = Math.max(0, Math.min(100, Math.round((xp / Math.max(nextThreshold, 1)) * 100)));
+
+        return {
+            level,
+            xp,
+            progress,
+            streakDays: Number(state.loginStreak || 0),
+            nextReward: state.nextReward || null,
+        };
     }
 
     // ==================== PHASE 1: URGENCY & CONVERSION ====================
@@ -273,20 +336,26 @@ class SubscriptionSystem {
                     <span class="streak-flame">🔥</span>
                     <span>${streakDays} Day Streak</span>
                 </div>
+                ${this.backendUnavailable ? '<div class="bp-next-reward"><span>⚠️ Live BP v2 currently unavailable (fallback active)</span></div>' : ''}
                 ${nextReward ? `
                     <div class="bp-next-reward">
                         <span>Next: ${nextReward.name}</span>
                         <button onclick="subscriptionSystem.claimDaily()">Claim Daily</button>
                     </div>
                 ` : ''}
+                <div class="bp-next-reward" style="display:flex;gap:8px;flex-wrap:wrap;">
+                    <button onclick="subscriptionSystem.submitBattlePassEvent('daily_login', 1)">Submit Event</button>
+                    <button onclick="subscriptionSystem.claimBattlePassTier(level)">Claim Tier</button>
+                    <button onclick="subscriptionSystem.claimBattlePassRetroactive(Math.max(1, level - 2), level)">Claim Retroactive</button>
+                </div>
             </div>
         `;
     }
 
     async claimDaily() {
         try {
-            const result = await this.apiPost('/subscriptions/daily-login', {});
-            
+            const result = await this.apiPost('/subscriptions/daily-login', {}, { idempotencyScope: 'sub-daily-login' });
+
             if (result.success) {
                 this.showToast(`+${result.xpGained} XP! Streak: ${result.streak} days`, 'success');
                 await this.loadUserData();
@@ -294,6 +363,118 @@ class SubscriptionSystem {
             }
         } catch (e) {
             this.showToast(e.message || 'Already claimed today', 'error');
+        }
+    }
+
+    async submitBattlePassEvent(eventType, eventValue = 1, seasonKey = null) {
+        try {
+            const result = await this.apiPost('/subscriptions/battle-pass/v2/events', {
+                eventType,
+                eventValue,
+                seasonKey,
+                source: 'subscription_page',
+                occurredAt: new Date().toISOString(),
+                metadata: { path: window.location.pathname }
+            }, { idempotencyScope: 'bpv2-events' });
+
+            this.showToast(`BP event accepted (+${result.xpGranted || 0} XP)`, 'success');
+            await this.loadUserData();
+        } catch (e) {
+            this.showToast(this.isBackendUnavailableError(e)
+                ? 'Battle Pass v2 backend unavailable for event submission.'
+                : (e.message || 'Failed to submit BP event'), this.isBackendUnavailableError(e) ? 'info' : 'error');
+        }
+    }
+
+    async claimBattlePassTier(tierNumber, seasonKey = null) {
+        try {
+            await this.apiPost('/subscriptions/battle-pass/v2/claim-tier', {
+                tierNumber,
+                seasonKey,
+            }, { idempotencyScope: 'bpv2-claim-tier' });
+
+            this.showToast(`Tier ${tierNumber} claimed`, 'success');
+            await this.loadUserData();
+        } catch (e) {
+            this.showToast(this.isBackendUnavailableError(e)
+                ? 'Battle Pass v2 backend unavailable for tier claims.'
+                : (e.message || 'Failed to claim tier'), this.isBackendUnavailableError(e) ? 'info' : 'error');
+        }
+    }
+
+    async claimBattlePassRetroactive(fromTier, toTier, seasonKey = null) {
+        try {
+            const result = await this.apiPost('/subscriptions/battle-pass/v2/claim-retroactive', {
+                seasonKey,
+                fromTier,
+                toTier,
+            }, { idempotencyScope: 'bpv2-claim-retroactive' });
+
+            const claimedCount = Array.isArray(result.claimed) ? result.claimed.length : 0;
+            this.showToast(`Retroactive claim completed (${claimedCount} rewards)`, 'success');
+            await this.loadUserData();
+        } catch (e) {
+            this.showToast(this.isBackendUnavailableError(e)
+                ? 'Battle Pass v2 backend unavailable for retroactive claim.'
+                : (e.message || 'Failed retroactive claim'), this.isBackendUnavailableError(e) ? 'info' : 'error');
+        }
+    }
+
+    async createBattlePassTeam(name, seasonKey = null) {
+        try {
+            const result = await this.apiPost('/subscriptions/battle-pass/v2/team/create', {
+                name,
+                seasonKey,
+            }, { idempotencyScope: 'bpv2-team-create' });
+            this.showToast(`Team created: ${result.team?.name || name}`, 'success');
+            return result;
+        } catch (e) {
+            this.showToast(e.message || 'Failed to create team', this.isBackendUnavailableError(e) ? 'info' : 'error');
+            throw e;
+        }
+    }
+
+    async joinBattlePassTeam(teamId, seasonKey = null) {
+        try {
+            const result = await this.apiPost('/subscriptions/battle-pass/v2/team/join', {
+                teamId,
+                seasonKey,
+            }, { idempotencyScope: 'bpv2-team-join' });
+            this.showToast('Joined battle pass team', 'success');
+            return result;
+        } catch (e) {
+            this.showToast(e.message || 'Failed to join team', this.isBackendUnavailableError(e) ? 'info' : 'error');
+            throw e;
+        }
+    }
+
+    async contributeBattlePassTeam(xpAmount, seasonKey = null) {
+        try {
+            const result = await this.apiPost('/subscriptions/battle-pass/v2/team/contribute', {
+                xpAmount,
+                seasonKey,
+            }, { idempotencyScope: 'bpv2-team-contribute' });
+            this.showToast('Team XP contribution submitted', 'success');
+            return result;
+        } catch (e) {
+            this.showToast(e.message || 'Failed to contribute team XP', this.isBackendUnavailableError(e) ? 'info' : 'error');
+            throw e;
+        }
+    }
+
+    async giftSubscription(recipientUserId, tier, billingCycle = 'monthly', message = '') {
+        try {
+            const result = await this.apiPost('/subscriptions/gift', {
+                recipientUserId,
+                tier,
+                billingCycle,
+                message,
+            }, { idempotencyScope: 'sub-gift' });
+            this.showToast('Subscription gift sent', 'success');
+            return result;
+        } catch (e) {
+            this.showToast(e.message || 'Failed to gift subscription', this.isBackendUnavailableError(e) ? 'info' : 'error');
+            throw e;
         }
     }
 

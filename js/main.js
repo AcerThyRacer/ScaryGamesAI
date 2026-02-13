@@ -1212,10 +1212,18 @@ function initVideoRotation() {
     const video2 = document.getElementById('bg-video-2');
     if (!video1 || !video2) return;
 
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) {
+        video1.remove();
+        video2.remove();
+        return;
+    }
+
+    const canUseWebmVp9 = !!video1.canPlayType('video/webm; codecs="vp9"');
     const sources = [
-        '/assets/hero-video.mp4',
-        '/assets/yeti-chase.mp4',
-        '/assets/forest-monster-chase.mp4',
+        { modern: '/assets/hero-video.webm', fallback: '/assets/hero-video.mp4' },
+        { modern: '/assets/yeti-chase.webm', fallback: '/assets/yeti-chase.mp4' },
+        { modern: '/assets/forest-monster-chase.webm', fallback: '/assets/forest-monster-chase.mp4' },
     ];
 
     // Shuffle array using Fisher-Yates
@@ -1236,21 +1244,62 @@ function initVideoRotation() {
             queue = shuffle(sources);
             queueIndex = 0;
         }
-        return queue[queueIndex++];
+        const selected = queue[queueIndex++];
+        return canUseWebmVp9 ? selected.modern : selected.fallback;
+    }
+
+    function primeVideoElement(video, src) {
+        const fallbackSrc = src.replace(/\.webm$/i, '.mp4');
+        video.src = src;
+        video.dataset.fallbackSrc = fallbackSrc;
     }
 
     // Assign initial videos
-    video1.src = nextSource();
-    video2.src = nextSource();
+    primeVideoElement(video1, nextSource());
+    primeVideoElement(video2, nextSource());
 
-    // Preload the inactive video so it's ready
-    video1.preload = 'auto';
-    video2.preload = 'auto';
+    // Keep network pressure low until the hero is visible
+    video1.preload = 'metadata';
+    video2.preload = 'metadata';
 
-    // Start the first video
-    video1.classList.add('active');
-    video2.classList.remove('active');
-    video1.play().catch(() => { });
+    function attachFallback(video) {
+        video.addEventListener('error', () => {
+            const fallback = video.dataset.fallbackSrc;
+            if (!fallback || video.src.endsWith(fallback)) return;
+            video.src = fallback;
+            video.load();
+        });
+    }
+
+    attachFallback(video1);
+    attachFallback(video2);
+
+    let started = false;
+
+    function startPlayback() {
+        if (started) return;
+        started = true;
+
+        // Start the first video
+        video1.classList.add('active');
+        video2.classList.remove('active');
+        video1.play().catch(() => { });
+    }
+
+    if ('IntersectionObserver' in window) {
+        const hero = document.querySelector('.hero') || document.body;
+        const io = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                    startPlayback();
+                    io.disconnect();
+                }
+            });
+        }, { threshold: 0.15 });
+        io.observe(hero);
+    } else {
+        startPlayback();
+    }
 
     function crossfade(from, to) {
         // Start loading/seeking the next video to frame 0
@@ -1265,7 +1314,7 @@ function initVideoRotation() {
         // and preload the next source into the now-hidden element
         setTimeout(() => {
             from.pause();
-            from.src = nextSource();
+            primeVideoElement(from, nextSource());
             from.load();
         }, 1600);
     }
@@ -1287,21 +1336,34 @@ function initHeroLiveCount() {
 
 // Init
 document.addEventListener('DOMContentLoaded', () => {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
     createFilterBar();
     createGameCards();
-    createParticles();
-    animateFeaturedCanvas();
+    if (!prefersReducedMotion) {
+        createParticles();
+        animateFeaturedCanvas();
+    }
     initVideoRotation();
-    // Phase 4
-    initTypedSubtitle();
-    initFloatingIcons();
-    initTerrorCounters();
-    initShowcaseCarousel();
-    initScareOMeter();
-    initTerrorWall();
-    initNewsletter();
-    initHeroLiveCount();
-    // Phase 5
-    initCardTilt();
+
+    const runDeferred = () => {
+        // Phase 4
+        initTypedSubtitle();
+        initFloatingIcons();
+        initTerrorCounters();
+        initShowcaseCarousel();
+        initScareOMeter();
+        initTerrorWall();
+        initNewsletter();
+        initHeroLiveCount();
+        // Phase 5
+        initCardTilt();
+    };
+
+    if ('requestIdleCallback' in window) {
+        window.requestIdleCallback(runDeferred, { timeout: 1200 });
+    } else {
+        setTimeout(runDeferred, 250);
+    }
 });
 

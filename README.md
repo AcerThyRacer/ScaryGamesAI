@@ -277,6 +277,63 @@ ScaryGamesAI/
 - Modern browser with **WebGL** support (Chrome, Firefox, Edge, Safari)
 - No build step, no bundler, no framework — just `node server.js`
 
+## 🗄️ Optional PostgreSQL + Redis Foundation (Phase 1.1)
+
+The platform continues to run with the default JSON data layer. PostgreSQL and Redis are additive, optional foundations.
+
+1. Copy [`./.env.example`](.env.example) to `.env`.
+2. Configure PostgreSQL:
+   - Set `DB_PROVIDER=postgres`
+   - Set `DATABASE_URL=postgres://user:pass@host:5432/dbname`
+3. (Optional) Configure Redis:
+   - Set `REDIS_URL=redis://localhost:6379`
+4. Run migrations:
+
+```bash
+npm run db:migrate
+```
+
+If PostgreSQL or Redis are unavailable, the app gracefully falls back to JSON storage and in-memory cache.
+
+## 🔐 Branch Protection and Required Quality Gates (Phase 6)
+
+Branch protection is enforced through the `quality` GitHub Actions check and CODEOWNERS policy.
+
+- Workflow: [`ci-cd.yml`](.github/workflows/ci-cd.yml)
+- Runbook: [`branch-protection.md`](docs/runbooks/branch-protection.md)
+- Automation script: [`enforce-branch-protection.js`](scripts/enforce-branch-protection.js)
+- Ownership policy: [`CODEOWNERS`](.github/CODEOWNERS)
+
+Apply protection via script:
+
+```bash
+GITHUB_TOKEN=ghp_xxx GITHUB_OWNER=your-org-or-user GITHUB_REPO=ScaryGamesAI npm run branch:protect
+```
+
+## 📊 Observability + Feature Flags (Phase 6)
+
+- Observability bootstrap: [`observability.js`](services/observability.js)
+- Frontend Sentry loader: [`observability-client.js`](js/observability-client.js)
+- Feature flag API: [`feature-flags.js`](api/feature-flags.js)
+- Observability runbook: [`observability.md`](docs/runbooks/observability.md)
+- Schema migration: [`007_phase6_observability_and_flags.sql`](db/migrations/007_phase6_observability_and_flags.sql)
+
+Run migration and optional JSON backfill:
+
+```bash
+npm run db:migrate
+npm run db:backfill:phase6
+```
+
+Quality and regression-protection entrypoints:
+
+```bash
+npm run ci:guardrails
+npm run ci:quality
+```
+
+`ci:guardrails` runs fast static guard checks (script wiring, CI gates, telemetry hooks), while `ci:quality` runs the full lint/test/build/budget/guardrail chain.
+
 ## 🎯 Shared Features
 
 All games share a common infrastructure:

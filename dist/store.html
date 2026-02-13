@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <meta name="description" content="ScaryGamesAI Store — Skins, effects, battle passes, and more.">
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="ScaryGamesAI">
+    <meta property="og:title" content="Store — ScaryGamesAI">
+    <meta property="og:description" content="Unlock skins, effects, bundles, and battle passes in the ScaryGamesAI store.">
+    <meta property="og:image" content="https://scarygames.ai/assets/og-image.png">
+    <meta property="og:url" content="https://scarygames.ai/store.html">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Store — ScaryGamesAI">
+    <meta name="twitter:description" content="Unlock skins, effects, bundles, and battle passes in the ScaryGamesAI store.">
+    <meta name="twitter:image" content="https://scarygames.ai/assets/og-image.png">
+    <link rel="canonical" href="https://scarygames.ai/store.html">
+    <link rel="alternate" hreflang="en" href="https://scarygames.ai/store.html">
+    <link rel="alternate" hreflang="x-default" href="https://scarygames.ai/store.html">
+    <title>Store — ScaryGamesAI</title>
+    <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "name": "Store — ScaryGamesAI",
+          "url": "https://scarygames.ai/store.html",
+          "description": "Unlock skins, effects, bundles, and battle passes in the ScaryGamesAI store.",
+          "isPartOf": {
+            "@type": "WebSite",
+            "name": "ScaryGamesAI",
+            "url": "https://scarygames.ai/"
+          }
+        }
+    </script>
+    <link rel="manifest" href="/assets/manifest-BkXN0yik.json">
+  <script type="module" crossorigin src="/assets/js/chunks/styles-C37ZYxfD.js"></script>
+  <script type="module" crossorigin src="/assets/js/chunks/shell-j7F2CuES.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/css/styles-CoPMDZEA.css">
+</head>
+
+<body class="store-page">
+    <!-- Skip link for accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <div class="bg-fog"></div>
+    <div class="bg-grain"></div>
+
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
+        <div class="nav-inner">
+            <a href="/" class="nav-logo">Scary<span>Games</span>AI</a>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/games.html">Games</a></li>
+                <li><a href="/challenges.html">Challenges</a></li>
+                <li><a href="/achievements.html">Achievements</a></li>
+                <li><a href="/leaderboards.html">Leaderboards</a></li>
+                <li><a href="/subscription.html">Subscribe</a></li>
+                <li><a href="/store.html" class="active">Store</a></li>
+                <li><a href="/#about">About</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content" id="main-content" role="main">
+        <!-- Store Hero -->
+        <section class="container" style="padding-top: 100px; padding-bottom: 40px;">
+            <div style="text-align: center; max-width: 600px; margin: 0 auto;">
+                <h1 style="font-size: 3rem; margin-bottom: 16px;">🛒 Scary Store</h1>
+                <p style="color: #888; font-size: 1.1rem; margin-bottom: 32px;">
+                    Customize your horror experience with exclusive skins, effects, and the Winter Battle Pass!
+                </p>
+                <button id="open-store-btn" class="hero-cta" style="display: inline-flex; align-items: center; gap: 8px;">
+                    <span class="hero-cta-pulse"></span>
+                    Open Store
+                </button>
+            </div>
+        </section>
+
+        <!-- Quick Links -->
+        <section class="container" style="padding-bottom: 40px;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+                <!-- Battle Pass Card -->
+                <div class="quick-link-card" onclick="ScaryStore.openStore('battlepass')" style="
+                    background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(139, 92, 246, 0.1));
+                    border: 1px solid rgba(6, 182, 212, 0.3);
+                    border-radius: 16px;
+                    padding: 32px;
+                    cursor: pointer;
+                    transition: all 0.3s;
+                " onmouseover="this.style.transform='translateY(-4px)'; this.style.borderColor='rgba(6, 182, 212, 0.6)'"
+                   onmouseout="this.style.transform=''; this.style.borderColor='rgba(6, 182, 212, 0.3)'">
+                    <div style="font-size: 3rem; margin-bottom: 16px;">❄️</div>
+                    <h2 style="margin: 0 0 8px; color: #fff;">Winter Battle Pass</h2>
+                    <p style="color: #888; margin: 0 0 16px;">100 Tiers • 70+ Rewards • Limited Time</p>
+                    <span style="color: #06b6d4; font-weight: 600;">View Pass →</span>
+                </div>
+
+                <!-- Skins Card -->
+                <div class="quick-link-card" onclick="ScaryStore.openStore('skins')" style="
+                    background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(249, 115, 22, 0.1));
+                    border: 1px solid rgba(239, 68, 68, 0.3);
+                    border-radius: 16px;
+                    padding: 32px;
+                    cursor: pointer;
+                    transition: all 0.3s;
+                " onmouseover="this.style.transform='translateY(-4px)'; this.style.borderColor='rgba(239, 68, 68, 0.6)'"
+                   onmouseout="this.style.transform=''; this.style.borderColor='rgba(239, 68, 68, 0.3)'">
+                    <div style="font-size: 3rem; margin-bottom: 16px;">👤</div>
+                    <h2 style="margin: 0 0 8px; color: #fff;">Character Skins</h2>
+                    <p style="color: #888; margin: 0 0 16px;">25+ Unique skins from Survivor to Elder God</p>
+                    <span style="color: #ef4444; font-weight: 600;">Browse Skins →</span>
+                </div>
+
+                <!-- Effects Card -->
+                <div class="quick-link-card" onclick="ScaryStore.openStore('effects')" style="
+                    background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(59, 130, 246, 0.1));
+                    border: 1px solid rgba(168, 85, 247, 0.3);
+                    border-radius: 16px;
+                    padding: 32px;
+                    cursor: pointer;
+                    transition: all 0.3s;
+                " onmouseover="this.style.transform='translateY(-4px)'; this.style.borderColor='rgba(168, 85, 247, 0.6)'"
+                   onmouseout="this.style.transform=''; this.style.borderColor='rgba(168, 85, 247, 0.3)'">
+                    <div style="font-size: 3rem; margin-bottom: 16px;">✨</div>
+                    <h2 style="margin: 0 0 8px; color: #fff;">Visual Effects</h2>
+                    <p style="color: #888; margin: 0 0 16px;">Trails, auras, death effects & more</p>
+                    <span style="color: #a855f7; font-weight: 600;">View Effects →</span>
+                </div>
+
+                <!-- Bundles Card -->
+                <div class="quick-link-card" onclick="ScaryStore.openStore('bundles')" style="
+                    background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(16, 185, 129, 0.1));
+                    border: 1px solid rgba(34, 197, 94, 0.3);
+                    border-radius: 16px;
+                    padding: 32px;
+                    cursor: pointer;
+                    transition: all 0.3s;
+                " onmouseover="this.style.transform='translateY(-4px)'; this.style.borderColor='rgba(34, 197, 94, 0.6)'"
+                   onmouseout="this.style.transform=''; this.style.borderColor='rgba(34, 197, 94, 0.3)'">
+                    <div style="font-size: 3rem; margin-bottom: 16px;">📦</div>
+                    <h2 style="margin: 0 0 8px; color: #fff;">Bundles</h2>
+                    <p style="color: #888; margin: 0 0 16px;">Save up to 50% with curated bundles</p>
+                    <span style="color: #22c55e; font-weight: 600;">View Bundles →</span>
+                </div>
+
+                <!-- Currency Card -->
+                <div class="quick-link-card" onclick="ScaryStore.openStore('currency')" style="
+                    background: linear-gradient(135deg, rgba(251, 191, 36, 0.1), rgba(245, 158, 11, 0.1));
+                    border: 1px solid rgba(251, 191, 36, 0.3);
+                    border-radius: 16px;
+                    padding: 32px;
+                    cursor: pointer;
+                    transition: all 0.3s;
+                " onmouseover="this.style.transform='translateY(-4px)'; this.style.borderColor='rgba(251, 191, 36, 0.6)'"
+                   onmouseout="this.style.transform=''; this.style.borderColor='rgba(251, 191, 36, 0.3)'">
+                    <div style="font-size: 3rem; margin-bottom: 16px;">💎</div>
+                    <h2 style="margin: 0 0 8px; color: #fff;">Blood Gems</h2>
+                    <p style="color: #888; margin: 0 0 16px;">Premium currency for exclusive items</p>
+                    <span style="color: #fbbf24; font-weight: 600;">Buy Gems →</span>
+                </div>
+
+                <!-- Gifts Card -->
+                <div class="quick-link-card" onclick="ScaryStore.openStore('gifts')" style="
+                    background: linear-gradient(135deg, rgba(244, 63, 94, 0.1), rgba(236, 72, 153, 0.1));
+                    border: 1px solid rgba(244, 63, 94, 0.3);
+                    border-radius: 16px;
+                    padding: 32px;
+                    cursor: pointer;
+                    transition: all 0.3s;
+                " onmouseover="this.style.transform='translateY(-4px)'; this.style.borderColor='rgba(244, 63, 94, 0.6)'"
+                   onmouseout="this.style.transform=''; this.style.borderColor='rgba(244, 63, 94, 0.3)'">
+                    <div style="font-size: 3rem; margin-bottom: 16px;">🎁</div>
+                    <h2 style="margin: 0 0 8px; color: #fff;">Gift Subscriptions</h2>
+                    <p style="color: #888; margin: 0 0 16px;">Give the gift of horror</p>
+                    <span style="color: #f43f5e; font-weight: 600;">Send Gift →</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Section -->
+        <section class="container" style="padding-bottom: 60px;">
+            <h2 style="text-align: center; margin-bottom: 24px; color: #fff;">❄️ Winter Battle Pass Highlights</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+                <div style="background: rgba(255,255,255,0.03); border-radius: 12px; padding: 20px; text-align: center;">
+                    <div style="font-size: 2.5rem; margin-bottom: 8px;">❄️</div>
+                    <div style="font-weight: 700; color: #fff;">Frost Demon Skin</div>
+                    <div style="color: #888; font-size: 0.85rem;">Tier 25</div>
+                </div>
+                <div style="background: rgba(255,255,255,0.03); border-radius: 12px; padding: 20px; text-align: center;">
+                    <div style="font-size: 2.5rem; margin-bottom: 8px;">👸</div>
+                    <div style="font-weight: 700; color: #fff;">Ice Queen Skin</div>
+                    <div style="color: #fbbf24; font-size: 0.85rem;">Tier 50 (Premium)</div>
+                </div>
+                <div style="background: rgba(255,255,255,0.03); border-radius: 12px; padding: 20px; text-align: center;">
+                    <div style="font-size: 2.5rem; margin-bottom: 8px;">🦣</div>
+                    <div style="font-weight: 700; color: #fff;">Yeti Beast Skin</div>
+                    <div style="color: #fbbf24; font-size: 0.85rem;">Tier 75 (Premium)</div>
+                </div>
+                <div style="background: rgba(255,255,255,0.03); border-radius: 12px; padding: 20px; text-align: center;">
+                    <div style="font-size: 2.5rem; margin-bottom: 8px;">😈</div>
+                    <div style="font-weight: 700; color: #fff;">Krampus Skin</div>
+                    <div style="color: #f43f5e; font-size: 0.85rem;">Tier 100 (Premium)</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats -->
+        <section class="container" style="padding-bottom: 60px;">
+            <div style="display: flex; justify-content: center; gap: 60px; flex-wrap: wrap; text-align: center;">
+                <div>
+                    <div style="font-size: 2.5rem; font-weight: 700; color: #fff;">100+</div>
+                    <div style="color: #888;">Cosmetics</div>
+                </div>
+                <div>
+                    <div style="font-size: 2.5rem; font-weight: 700; color: #fff;">25+</div>
+                    <div style="color: #888;">Skins</div>
+                </div>
+                <div>
+                    <div style="font-size: 2.5rem; font-weight: 700; color: #fff;">100</div>
+                    <div style="color: #888;">Battle Pass Tiers</div>
+                </div>
+                <div>
+                    <div style="font-size: 2.5rem; font-weight: 700; color: #fff;">15%</div>
+                    <div style="color: #888;">Elder God Discount</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer" role="contentinfo">
+        <div class="footer-inner">
+            <p>&copy; 2026 ScaryGamesAI — Enter at your own risk. 💀</p>
+        </div>
+    </footer>
+
+    <script src="/js/store-system.js"></script>
+    <script src="/js/page-shell.js"></script>
+    <script src="/js/main.js"></script>
+    <script>
+        // Open store button
+        document.getElementById('open-store-btn').addEventListener('click', function() {
+            ScaryStore.openStore('featured');
+        });
+
+        // Auto-open store on page load if requested
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('tab')) {
+            setTimeout(() => {
+                ScaryStore.openStore(urlParams.get('tab'));
+            }, 500);
+        }
+    </script>
+</body>
+
+</html>

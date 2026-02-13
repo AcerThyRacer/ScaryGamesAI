@@ -7,6 +7,87 @@ const projectiles = [];
 let boss = null;
 let spawnTimer = 0;
 
+// ===== PHASE 3: FEATURE-FLAGGED HOT-PATH POOLS + METRICS =====
+const PERF_FLAGS = {
+    projectilePooling: true,
+    smokePooling: true,
+    weatherPooling: true,
+};
+
+const _phase3Perf = (typeof window !== 'undefined'
+    ? (window.__phase3Perf = window.__phase3Perf || {})
+    : {});
+_phase3Perf.cursedDepths = _phase3Perf.cursedDepths || {
+    projectile: { pooledAlloc: 0, freshAlloc: 0, release: 0 },
+    smoke: { pooledAlloc: 0, freshAlloc: 0, release: 0 },
+    weather: { pooledAlloc: 0, freshAlloc: 0, release: 0 }
+};
+
+const _projectilePool = [];
+
+function _trackPoolMetric(channel, key) {
+    const bucket = _phase3Perf.cursedDepths && _phase3Perf.cursedDepths[channel];
+    if (!bucket) return;
+    bucket[key] = (bucket[key] || 0) + 1;
+}
+
+function _acquireProjectile(template) {
+    if (!template) return template;
+    if (!PERF_FLAGS.projectilePooling) {
+        _trackPoolMetric('projectile', 'freshAlloc');
+        return { ...template, __pooledProjectile: false };
+    }
+    const p = _projectilePool.pop();
+    if (p) {
+        _trackPoolMetric('projectile', 'pooledAlloc');
+        p.x = template.x;
+        p.y = template.y;
+        p.vx = template.vx;
+        p.vy = template.vy;
+        p.damage = template.damage;
+        p.life = template.life;
+        p.color = template.color;
+        p.size = template.size;
+        p.fromBoss = !!template.fromBoss;
+        p.fromPlayer = !!template.fromPlayer;
+        p.isBullet = !!template.isBullet;
+        p.__pooledProjectile = true;
+        return p;
+    }
+    _trackPoolMetric('projectile', 'freshAlloc');
+    return {
+        x: template.x,
+        y: template.y,
+        vx: template.vx,
+        vy: template.vy,
+        damage: template.damage,
+        life: template.life,
+        color: template.color,
+        size: template.size,
+        fromBoss: !!template.fromBoss,
+        fromPlayer: !!template.fromPlayer,
+        isBullet: !!template.isBullet,
+        __pooledProjectile: true,
+    };
+}
+
+function _releaseProjectile(p) {
+    if (!p || !p.__pooledProjectile || !PERF_FLAGS.projectilePooling) return;
+    _trackPoolMetric('projectile', 'release');
+    _projectilePool.push(p);
+}
+
+const _nativeProjectilesPush = Array.prototype.push;
+projectiles.push = function phase3PooledProjectilePush(...items) {
+    if (!items || items.length === 0) return this.length;
+    const converted = new Array(items.length);
+    for (let i = 0; i < items.length; i++) {
+        const item = items[i];
+        converted[i] = (item && item.__pooledProjectile) ? item : _acquireProjectile(item);
+    }
+    return _nativeProjectilesPush.apply(this, converted);
+};
+
 function spawnEnemy(type, x, y) {
     const def = ENEMY_TYPES[type];
     if (!def) return null;
@@ -1094,24 +1175,31 @@ function updateBoss() {
 function updateProjectiles() {
     for (let i = projectiles.length - 1; i >= 0; i--) {
         const p = projectiles[i];
+        let remove = false;
+
         p.x += p.vx; p.y += p.vy; p.life--;
-        if (p.life <= 0) { projectiles.splice(i, 1); continue; }
-        // Hit block
-        const tx = Math.floor(p.x / TILE), ty = Math.floor(p.y / TILE);
-        if (isSolid(tx, ty)) { projectiles.splice(i, 1); continue; }
+        if (p.life <= 0) remove = true;
+
+        if (!remove) {
+            // Hit block
+            const tx = Math.floor(p.x / TILE), ty = Math.floor(p.y / TILE);
+            if (isSolid(tx, ty)) remove = true;
+        }
+
         // Hit player (if from boss/enemy)
-        if (p.fromBoss && player.invincible <= 0) {
+        if (!remove && p.fromBoss && player.invincible <= 0) {
             const dx = p.x - (player.x + player.w / 2), dy = p.y - (player.y + player.h / 2);
             if (Math.sqrt(dx * dx + dy * dy) < 15) {
                 player.hp -= Math.max(1, p.damage - player.defense);
                 player.invincible = 20;
                 if (typeof spawnDamageNumber === 'function') spawnDamageNumber(player.x + player.w / 2, player.y - 10, Math.max(1, p.damage - player.defense), '#FF4444');
-                projectiles.splice(i, 1);
                 spawnParticles(player.x + player.w / 2, player.y, '#CC2244', 4, 3);
+                remove = true;
             }
         }
+
         // Hit enemies (if from player)
-        if (p.fromPlayer) {
+        if (!remove && p.fromPlayer) {
             for (const e of enemies) {
                 if (e.dead) continue;
                 const ex = e.x + e.w / 2, ey = e.y + e.h / 2;
@@ -1124,9 +1212,21 @@ function updateProjectiles() {
                         if (typeof totalKills !== 'undefined') totalKills++;
                         if (e.drops) for (const d of e.drops) addItem(d[0], d[1] + Math.floor(Math.random() * (d[2] - d[1] + 1)));
                     }
-                    projectiles.splice(i, 1); break;
+                    remove = true;
+                    break;
                 }
             }
+        }
+
+        if (remove) {
+            const last = projectiles.length - 1;
+            if (i !== last) {
+                const swapped = projectiles[last];
+                projectiles[last] = p;
+                projectiles[i] = swapped;
+            }
+            projectiles.pop();
+            _releaseProjectile(p);
         }
     }
 }
@@ -1733,7 +1833,17 @@ function drawProjectiles(ctx, camX, camY) {
         for (let i = _gunSmokePuffs.length - 1; i >= 0; i--) {
             const s = _gunSmokePuffs[i];
             s.x += s.vx; s.y += s.vy; s.vy -= 0.03; s.life--; s.size += 0.4;
-            if (s.life <= 0) { _gunSmokePuffs.splice(i, 1); continue; }
+            if (s.life <= 0) {
+                const last = _gunSmokePuffs.length - 1;
+                if (i !== last) {
+                    const swapped = _gunSmokePuffs[last];
+                    _gunSmokePuffs[last] = s;
+                    _gunSmokePuffs[i] = swapped;
+                }
+                _gunSmokePuffs.pop();
+                _releaseGunSmoke(s);
+                continue;
+            }
             const alpha = s.life / s.maxLife;
             ctx.globalAlpha = alpha * 0.6;
             ctx.fillStyle = s.color;
@@ -1773,6 +1883,48 @@ function shootArrow() {
 
 // ===== PHASE 5: GUN SMOKE PUFF SYSTEM =====
 const _gunSmokePuffs = [];
+const _gunSmokePool = [];
+
+function _acquireGunSmoke(template) {
+    if (!template) return template;
+    if (!PERF_FLAGS.smokePooling) {
+        _trackPoolMetric('smoke', 'freshAlloc');
+        return { ...template, __pooledSmoke: false };
+    }
+    const s = _gunSmokePool.pop();
+    if (s) {
+        _trackPoolMetric('smoke', 'pooledAlloc');
+        s.x = template.x;
+        s.y = template.y;
+        s.vx = template.vx;
+        s.vy = template.vy;
+        s.size = template.size;
+        s.life = template.life;
+        s.maxLife = template.maxLife;
+        s.color = template.color;
+        s.__pooledSmoke = true;
+        return s;
+    }
+    _trackPoolMetric('smoke', 'freshAlloc');
+    return { ...template, __pooledSmoke: true };
+}
+
+function _releaseGunSmoke(s) {
+    if (!s || !s.__pooledSmoke || !PERF_FLAGS.smokePooling) return;
+    _trackPoolMetric('smoke', 'release');
+    _gunSmokePool.push(s);
+}
+
+const _nativeGunSmokePush = Array.prototype.push;
+_gunSmokePuffs.push = function phase3PooledSmokePush(...items) {
+    if (!items || items.length === 0) return this.length;
+    const converted = new Array(items.length);
+    for (let i = 0; i < items.length; i++) {
+        const item = items[i];
+        converted[i] = (item && item.__pooledSmoke) ? item : _acquireGunSmoke(item);
+    }
+    return _nativeGunSmokePush.apply(this, converted);
+};
 
 function spawnGunSmoke(x, y, angle) {
     // Cartoon-style expanding smoke puffs at muzzle
@@ -2129,6 +2281,46 @@ function renderWings(ctx, camX, camY) {
 
 // ===== PHASE 9: WEATHER RENDERING =====
 const weatherParticles = [];
+const _weatherParticlePool = [];
+
+function _acquireWeatherParticle(template) {
+    if (!template) return template;
+    if (!PERF_FLAGS.weatherPooling) {
+        _trackPoolMetric('weather', 'freshAlloc');
+        return { ...template, __pooledWeather: false };
+    }
+    const p = _weatherParticlePool.pop();
+    if (p) {
+        _trackPoolMetric('weather', 'pooledAlloc');
+        p.x = template.x;
+        p.y = template.y;
+        p.vx = template.vx;
+        p.vy = template.vy;
+        p.life = template.life;
+        p.type = template.type;
+        p.__pooledWeather = true;
+        return p;
+    }
+    _trackPoolMetric('weather', 'freshAlloc');
+    return { ...template, __pooledWeather: true };
+}
+
+function _releaseWeatherParticle(p) {
+    if (!p || !p.__pooledWeather || !PERF_FLAGS.weatherPooling) return;
+    _trackPoolMetric('weather', 'release');
+    _weatherParticlePool.push(p);
+}
+
+const _nativeWeatherPush = Array.prototype.push;
+weatherParticles.push = function phase3PooledWeatherPush(...items) {
+    if (!items || items.length === 0) return this.length;
+    const converted = new Array(items.length);
+    for (let i = 0; i < items.length; i++) {
+        const item = items[i];
+        converted[i] = (item && item.__pooledWeather) ? item : _acquireWeatherParticle(item);
+    }
+    return _nativeWeatherPush.apply(this, converted);
+};
 function updateWeatherParticles() {
     if (typeof currentWeather === 'undefined') return;
     // Spawn particles
@@ -2171,7 +2363,14 @@ function updateWeatherParticles() {
         p.x += p.vx; p.y += p.vy;
         p.life--;
         if (p.life <= 0 || p.y > 500 || p.x > 820 || p.x < -20) {
-            weatherParticles.splice(i, 1);
+            const last = weatherParticles.length - 1;
+            if (i !== last) {
+                const swapped = weatherParticles[last];
+                weatherParticles[last] = p;
+                weatherParticles[i] = swapped;
+            }
+            weatherParticles.pop();
+            _releaseWeatherParticle(p);
         }
     }
     // Cap particles

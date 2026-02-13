@@ -623,7 +623,42 @@
         try { init(); } catch (e) { console.error('Init error:', e); GameUtils.showBrowserError(); return; }
         console.log('[Backrooms] init() returned successfully');
         setupExtraSpawnTimers();
-        HorrorAudio.startDrone(55, 'dark'); HorrorAudio.startHeartbeat(60);
+
+        // Initialize AI systems
+        if (typeof SGAIAI !== 'undefined') {
+            SGAIAI.init();
+
+            // Start AI Game Master session
+            const aiFeatures = SGAIAI.getFeatures();
+            if (aiFeatures.aiGameMaster) {
+                SGAIAI.startGameSession('backrooms-pacman', {
+                    minTension: 0.1,
+                    maxTension: 0.9,
+                    targetPacing: 0.3,
+                    horrorIntensity: 0.7,
+                });
+            }
+
+            // Record behavior
+            SGAIAI.recordBehavior({ type: 'game_start', game: 'backrooms-pacman' });
+        }
+
+        // Enhanced audio: Start dynamic music if available (tier-based)
+        if (typeof HorrorAudioEnhanced !== 'undefined' && HorrorAudioEnhanced.getFeatures().dynamicMusic) {
+            HorrorAudioEnhanced.init();
+            HorrorAudioEnhanced.startDynamicMusic('tension');
+            HorrorAudioEnhanced.startHeartbeat(60);
+        } else {
+            // Fallback to basic audio
+            HorrorAudio.startDrone(55, 'dark');
+            HorrorAudio.startHeartbeat(60);
+        }
+
+        // Show subtitle for game start
+        if (typeof HorrorAudioEnhanced !== 'undefined') {
+            HorrorAudioEnhanced.showSubtitle('objective_new', { text: 'Collect all pellets to escape...' });
+        }
+
         setTimeout(function () {
             ctrl.classList.add('hiding');
             setTimeout(function () {
@@ -640,7 +675,15 @@
 
     function restartGame() {
         cloneMaze();
-        pellets.forEach(function (p) { scene.remove(p); }); pellets = []; totalPellets = 0; collectedPellets = 0;
+        pellets.forEach(function (p) {
+            // Disable lights before removing to minimize shader recompilation
+            if (p.children) {
+                for (var ci = 0; ci < p.children.length; ci++) {
+                    if (p.children[ci].isLight) p.children[ci].intensity = 0;
+                }
+            }
+            scene.remove(p);
+        }); pellets = []; totalPellets = 0; collectedPellets = 0;
         yaw = 0; pitch = 0; lastYaw = 0; lastPitch = 0; keys = {}; isRunning = false; camShake = 0;
 
         // Cleanup sounds
@@ -750,9 +793,11 @@
         var headBob = isMoving ? Math.sin(bobT) * bobAmp : 0;
         var headTilt = isMoving ? Math.cos(bobT * 0.5) * (isRunning ? 0.015 : 0.005) : 0;
 
-        camera.position.x = playerPos.x;
-        camera.position.z = playerPos.z;
-        camera.position.y = 1.6 + headBob;
+        // Smooth camera follow via exponential lerp
+        var lerpFactor = 1 - Math.pow(0.0001, dt);
+        camera.position.x += (playerPos.x - camera.position.x) * lerpFactor;
+        camera.position.z += (playerPos.z - camera.position.z) * lerpFactor;
+        camera.position.y += ((1.6 + headBob) - camera.position.y) * lerpFactor;
 
         // Camera shake from proximity
         if (camShake > 0) {
@@ -956,6 +1001,25 @@
         var bpm = Math.min(180, Math.max(50, 200 - pacDist * 5));
         HorrorAudio.setHeartbeatBPM(Math.round(bpm));
 
+        // Visual Enhancements: Set intensity based on Pac-Man proximity
+        // 0 = far away, 1 = very close (danger)
+        var visualIntensity = Math.max(0, Math.min(1, (15 - pacDist) / 15));
+        GameUtils.setIntensityLevel(visualIntensity);
+
+        // Dynamic Music: Set intensity based on danger
+        if (typeof HorrorAudioEnhanced !== 'undefined' && HorrorAudioEnhanced.setMusicIntensity) {
+            HorrorAudioEnhanced.setMusicIntensity(visualIntensity);
+
+            // Change music theme based on distance
+            if (pacDist < 5 && visualIntensity > 0.7) {
+                HorrorAudioEnhanced.setMusicTheme('chase');
+            } else if (pacDist < 10) {
+                HorrorAudioEnhanced.setMusicTheme('tension');
+            } else {
+                HorrorAudioEnhanced.setMusicTheme('ambient');
+            }
+        }
+
         // Camera shake & distortion
         var shakeAmt = Math.max(0, (8 - pacDist) / 8) * (ud.rageMode ? 1.5 : 1);
         if (shakeAmt > camShake) camShake = shakeAmt;
@@ -997,12 +1061,30 @@
             p.rotation.y += 0.02;
             var dx = p.position.x - playerPos.x, dz = p.position.z - playerPos.z;
             if (Math.sqrt(dx * dx + dz * dz) < 1.2) {
-                p.userData.collected = true; scene.remove(p); collectedPellets++;
-                HorrorAudio.playCollect(); updateHUD();
-                if (window.ChallengeManager) {
-                    ChallengeManager.notify('backrooms-pacman', 'pellets', 1);
-                    ChallengeManager.notify('backrooms-pacman', 'score', collectedPellets * 100);
+                p.userData.collected = true;
+                // IMPORTANT: Do NOT scene.remove(p) — removing a mesh with a child
+                // PointLight changes the scene light count, forcing Three.js to
+                // recompile ALL shaders (MeshStandardMaterial), causing a freeze.
+                // Instead, hide the pellet and disable its light.
+                p.visible = false;
+                if (p.children) {
+                    for (var ci = 0; ci < p.children.length; ci++) {
+                        if (p.children[ci].isLight) p.children[ci].intensity = 0;
+                    }
                 }
+                collectedPellets++;
+                try {
+                    HorrorAudio.playCollect();
+                } catch (e) { console.warn('[Backrooms] playCollect error:', e); }
+                try {
+                    updateHUD();
+                } catch (e) { console.warn('[Backrooms] updateHUD error:', e); }
+                try {
+                    if (window.ChallengeManager) {
+                        ChallengeManager.notify('backrooms-pacman', 'pellets', 1);
+                        ChallengeManager.notify('backrooms-pacman', 'score', collectedPellets * 100);
+                    }
+                } catch (e) { console.warn('[Backrooms] ChallengeManager error:', e); }
                 if (collectedPellets >= totalPellets) gameWin();
             }
         }
@@ -1186,6 +1268,36 @@
     // ---- GAME OVER / WIN ----
     function gameOver() {
         gameActive = false; GameUtils.setState(GameUtils.STATE.GAME_OVER);
+
+        // Visual Enhancements: Death effect
+        GameUtils.onPlayerDeath();
+
+        // AI System: End session with loss and record death
+        if (typeof SGAIAI !== 'undefined') {
+            const aiFeatures = SGAIAI.getFeatures();
+            if (aiFeatures.aiGameMaster) {
+                SGAIAI.endGameSession({
+                    gameId: 'backrooms-pacman',
+                    won: false,
+                    playtime: gameElapsed,
+                    time: gameElapsed,
+                });
+            }
+            SGAIAI.recordBehavior({ type: 'game_death', game: 'backrooms-pacman' });
+            SGAIAI.recordDifficultyEvent('death');
+
+            // Analyze fear response if personalized horror is enabled
+            if (aiFeatures.personalizedHorror) {
+                SGAIAI.analyzeFearResponse({
+                    fearType: 'chase',
+                    intensity: 0.9,
+                    playerResponse: {
+                        quitAfter: false,
+                    },
+                });
+            }
+        }
+
         HorrorAudio.playJumpScare(); setTimeout(function () { HorrorAudio.playDeath(); }, 400);
         HorrorAudio.stopHeartbeat(); HorrorAudio.stopDrone();
         try { document.exitPointerLock(); } catch (e) { }
@@ -1199,6 +1311,22 @@
 
     function gameWin() {
         gameActive = false; GameUtils.setState(GameUtils.STATE.WIN);
+
+        // AI System: End session with win
+        if (typeof SGAIAI !== 'undefined') {
+            const aiFeatures = SGAIAI.getFeatures();
+            if (aiFeatures.aiGameMaster) {
+                SGAIAI.endGameSession({
+                    gameId: 'backrooms-pacman',
+                    won: true,
+                    playtime: gameElapsed,
+                    time: gameElapsed,
+                });
+            }
+            SGAIAI.recordBehavior({ type: 'game_win', game: 'backrooms-pacman' });
+            SGAIAI.recordDifficultyEvent('objective_complete');
+        }
+
         HorrorAudio.playWin(); HorrorAudio.stopHeartbeat(); HorrorAudio.stopDrone();
         try { document.exitPointerLock(); } catch (e) { }
         document.getElementById('game-win-screen').style.display = 'flex';
@@ -1251,6 +1379,10 @@
         spawnWarningEl.innerHTML = '<div style="font-size:2.5rem;color:#ff2200;text-shadow:0 0 30px #ff0000,0 0 60px #880000;animation:pulse 0.5s ease-in-out 3;">⚠️ ANOTHER HUNTER HAS SPAWNED ⚠️</div>' +
             '<div style="font-size:1.2rem;color:#ff6644;margin-top:8px;">' + count + ' Pac-M' + (count > 1 ? 'en' : 'an') + ' hunting you</div>';
         spawnWarningEl.style.opacity = '1';
+
+        // Visual Enhancements: Jumpscare effect
+        GameUtils.onJumpscare();
+
         HorrorAudio.playJumpScare();
         setTimeout(function () {
             if (spawnWarningEl) spawnWarningEl.style.opacity = '0';
@@ -1270,49 +1402,105 @@
 
     // ---- GAME LOOP ----
     var lastTime = 0;
+    var lastFrameTime = 0; // For freeze detection
+
+    // Freeze detection watchdog — restarts game loop if stalled > 2s
+    setInterval(function () {
+        if (!gameActive) return;
+        var now = performance.now();
+        if (lastFrameTime > 0 && (now - lastFrameTime) > 2000) {
+            console.warn('[Backrooms] Freeze detected! Restarting game loop...');
+            lastTime = now;
+            try { requestAnimationFrame(animate); } catch (e) { /* safety */ }
+        }
+    }, 1000);
+
     function animate(time) {
         if (!gameActive) return;
         requestAnimationFrame(animate);
         if (!time) time = performance.now();
         var dt = Math.min((time - lastTime) / 1000, 0.05);
         lastTime = time; if (dt <= 0) return;
+        lastFrameTime = time; // Track for freeze detection
 
-        if (window.ChallengeManager) {
-            ChallengeManager.notify('backrooms-pacman', 'time', gameElapsed);
+        try {
+            if (window.ChallengeManager) {
+                ChallengeManager.notify('backrooms-pacman', 'time', gameElapsed);
+            }
+
+            // AI Game Master update (if available)
+            if (typeof SGAIAI !== 'undefined' && SGAIAI.getFeatures().aiGameMaster) {
+                const directorInstructions = SGAIAI.updateGameMaster({
+                    player: {
+                        health: 100, // This game doesn't have health
+                        inDanger: visualIntensity > 0.5,
+                        inSafeZone: false,
+                        position: { x: playerPos.x, z: playerPos.z },
+                    },
+                    enemies: {
+                        nearby: 1 + extraPacmans.length,
+                    },
+                    environment: {
+                        dark: true,
+                    },
+                }, dt);
+
+                // Apply director recommendations
+                if (directorInstructions && directorInstructions.recommendations) {
+                    directorInstructions.recommendations.forEach(rec => {
+                        if (rec.system === 'horror' && rec.params) {
+                            // Could trigger personalized horror events
+                        }
+                    });
+                }
+            }
+
+            // Dynamic Difficulty (if available)
+            if (typeof SGAIAI !== 'undefined' && SGAIAI.getFeatures().dynamicDifficulty !== 'basic') {
+                SGAIAI.recordDifficultyEvent('time_in_danger', {
+                    inDanger: visualIntensity > 0.6,
+                });
+            }
+
+            updatePlayer(dt);
+            updatePacman(dt);
+            updatePellets();
+            updateFlickeringLights(dt);
+            updateBlackout(dt);
+            updateExtraSpawns(dt);
+            updateDust(dt);
+            updateHUD();
+            drawMinimap();
+        } catch (loopErr) {
+            console.error('[Backrooms] Game loop error (recovered):', loopErr);
         }
-
-        updatePlayer(dt);
-        updatePacman(dt);
-        updatePellets();
-        updateFlickeringLights(dt);
-        updateBlackout(dt);
-        updateExtraSpawns(dt);
-        updateDust(dt);
-        updateHUD();
-        drawMinimap();
 
         // Render with Motion Blur
-        var dy = yaw - lastYaw;
-        var dp = pitch - lastPitch;
-        // Handle wrap-around for yaw
-        if (Math.abs(dy) > Math.PI) dy = dy > 0 ? dy - Math.PI * 2 : dy + Math.PI * 2;
+        try {
+            var dy = yaw - lastYaw;
+            var dp = pitch - lastPitch;
+            // Handle wrap-around for yaw
+            if (Math.abs(dy) > Math.PI) dy = dy > 0 ? dy - Math.PI * 2 : dy + Math.PI * 2;
 
-        if (blurMaterial) {
-            // Strength multiplier
-            var s = 0.5;
-            blurMaterial.uniforms.uVelocity.value.set(dy * s, dp * s);
-        }
-        lastYaw = yaw;
-        lastPitch = pitch;
+            if (blurMaterial) {
+                // Strength multiplier
+                var s = 0.5;
+                blurMaterial.uniforms.uVelocity.value.set(dy * s, dp * s);
+            }
+            lastYaw = yaw;
+            lastPitch = pitch;
 
-        if (blurTarget) {
-            renderer.setRenderTarget(blurTarget);
-            renderer.render(scene, camera);
-            renderer.setRenderTarget(null);
-            blurMaterial.uniforms.tDiffuse.value = blurTarget.texture;
-            renderer.render(blurScene, blurCamera);
-        } else {
-            renderer.render(scene, camera);
+            if (blurTarget) {
+                renderer.setRenderTarget(blurTarget);
+                renderer.render(scene, camera);
+                renderer.setRenderTarget(null);
+                blurMaterial.uniforms.tDiffuse.value = blurTarget.texture;
+                renderer.render(blurScene, blurCamera);
+            } else {
+                renderer.render(scene, camera);
+            }
+        } catch (renderErr) {
+            console.error('[Backrooms] Render error (recovered):', renderErr);
         }
     }
 })();

@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <meta name="description"
+        content="ScaryGamesAI Subscriptions — Choose your nightmare tier. Unlock cheats, exclusive games, and more.">
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="ScaryGamesAI">
+    <meta property="og:title" content="Subscribe — ScaryGamesAI">
+    <meta property="og:description" content="Choose your nightmare tier and unlock exclusive games, cosmetics, and powers.">
+    <meta property="og:image" content="https://scarygames.ai/assets/og-image.png">
+    <meta property="og:url" content="https://scarygames.ai/subscription.html">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Subscribe — ScaryGamesAI">
+    <meta name="twitter:description" content="Choose your nightmare tier and unlock exclusive games, cosmetics, and powers.">
+    <meta name="twitter:image" content="https://scarygames.ai/assets/og-image.png">
+    <link rel="canonical" href="https://scarygames.ai/subscription.html">
+    <link rel="alternate" hreflang="en" href="https://scarygames.ai/subscription.html">
+    <link rel="alternate" hreflang="x-default" href="https://scarygames.ai/subscription.html">
+    <title>Subscribe — ScaryGamesAI</title>
+    <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "name": "Subscribe — ScaryGamesAI",
+          "url": "https://scarygames.ai/subscription.html",
+          "description": "Choose your nightmare tier and unlock exclusive games, cosmetics, and powers.",
+          "isPartOf": {
+            "@type": "WebSite",
+            "name": "ScaryGamesAI",
+            "url": "https://scarygames.ai/"
+          }
+        }
+    </script>
+    <link rel="manifest" href="/assets/manifest-BkXN0yik.json">
+  <script type="module" crossorigin src="/assets/js/chunks/styles-C37ZYxfD.js"></script>
+  <script type="module" crossorigin src="/assets/js/chunks/shell-j7F2CuES.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/css/styles-CoPMDZEA.css">
+  <link rel="stylesheet" crossorigin href="/assets/css/subscription-DMeFGZTs.css">
+</head>
+
+<body>
+    <!-- Skip link for accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    
+    <!-- Dynamic Background Layers -->
+    <div class="bg-fog"></div>
+    <div class="bg-grain"></div>
+    <div class="reality-warp" id="reality-warp"></div>
+    <div id="particle-container"></div>
+
+    <!-- Flash Sale Banner -->
+    <div id="flash-sale-banner" class="promo-banner" style="display: none;"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar" role="navigation" aria-label="Main navigation">
+        <div class="nav-inner">
+            <a href="/" class="nav-logo">Scary<span>Games</span>AI</a>
+            <ul class="nav-links">
+                <li><a href="/">Home</a></li>
+                <li><a href="/games.html">Games</a></li>
+                <li><a href="/challenges.html">Challenges</a></li>
+                <li><a href="/achievements.html">Achievements</a></li>
+                <li><a href="/leaderboards.html">Leaderboards</a></li>
+                <li><a href="/subscription.html" class="active" aria-current="page">Subscribe</a></li>
+                <li><a href="/store.html">Store</a></li>
+                <li><a href="/#about">About</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="main-content" id="main-content" role="main">
+        
+        <!-- Limited Spots Urgency -->
+        <div id="limited-spots" class="scroll-animate"></div>
+
+        <!-- Subscription Hero -->
+        <section class="sub-hero">
+            <div class="sub-hero-particles" id="sub-particles"></div>
+            <h1 class="sub-hero-title">Choose Your Fate</h1>
+            <p class="sub-hero-subtitle">BIND YOUR SOUL</p>
+            <p class="sub-hero-desc">
+                Select a pact. Gain access to more realms, forbidden knowledge, dark masks, and eldritch power.
+                The deeper you descend, the more reality bends to your will.
+            </p>
+            
+            <!-- Live Activity Ticker -->
+            <div id="activity-ticker" class="scroll-animate"></div>
+            
+            <!-- Subscriber Counter -->
+            <div class="cult-feed-container scroll-animate">
+                <div class="subscriber-counter" id="subscriber-counter">
+                    <span class="counter-text">Join</span>
+                    <span class="counter-number" id="counter-number">1,247</span>
+                    <span class="counter-text">+ souls still breathing...</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Personal Grimoire Dashboard (Phase 3) -->
+        <section class="container" id="personal-grimoire-section" style="display: none;">
+            <div id="personal-grimoire"></div>
+        </section>
+
+        <!-- Battle Pass Widget (Phase 2) -->
+        <section class="container">
+            <div id="battle-pass-widget" class="scroll-animate"></div>
+        </section>
+
+        <!-- Billing Toggle / Altar -->
+        <section class="container">
+            <div class="billing-toggle-wrap scroll-animate">
+                <span class="billing-label billing-label-active" id="label-monthly">Monthly Sacrifice</span>
+                <button class="billing-toggle" id="billing-toggle" aria-label="Toggle billing cycle">
+                    <span class="billing-toggle-thumb"></span>
+                </button>
+                <span class="billing-label" id="label-annual">Annual Pact (-17%)</span>
+                <span class="billing-save-badge">Save $16</span>
+            </div>
+            <p id="personalized-discount-reason" aria-live="polite" style="text-align: center; color: #00ff88; margin-top: 10px;"></p>
+        </section>
+
+        <!-- Pricing Cards -->
+        <section class="container" style="padding-bottom: 60px;">
+            <div class="pricing-grid">
+
+                <!-- SURVIVOR — Bronze -->
+                <div class="pricing-card bronze scroll-animate" data-tilt>
+                    <div class="pricing-card-inner">
+                        <div class="card-canvas-wrap"><canvas class="card-canvas" id="canvas-bronze"></canvas></div>
+                        <div class="pricing-tier-icon">🩹</div>
+                        <h3 class="pricing-tier-name bronze-text">Survivor</h3>
+                        <p class="pricing-tier-label">You're Not Dead Yet</p>
+                        <div class="pricing-price" id="price-survivor">
+                            <span class="pricing-currency">$</span>
+                            <span class="pricing-amount" data-monthly="2" data-annual="20">2</span>
+                            <span class="pricing-period" data-monthly="/mo" data-annual="/yr">/mo</span>
+                        </div>
+                        <div class="pricing-annual-note" style="display:none;">~$1.67/mo — billed annually</div>
+                        <ul class="pricing-features">
+                            <li class="feature-yes"><span class="feature-icon">✦</span> 7 Premium Games Unlocked</li>
+                            <li class="feature-yes"><span class="feature-icon">✦</span> 2 Character Skins</li>
+                            <li class="feature-yes"><span class="feature-icon">✦</span> Blood Splatter Effects</li>
+                            <li class="feature-yes"><span class="feature-icon">✦</span> Adaptive AI Enemies</li>
+                            <li class="feature-yes"><span class="feature-icon">✦</span> Dynamic Music (2 Layers)</li>
+                            <li class="feature-yes"><span class="feature-icon">✦</span> 50% Battle Pass XP Boost</li>
+                            <li class="feature-yes"><span class="feature-icon">✦</span> Sound Occlusion (3D Audio)</li>
+                            <li class="feature-yes"><span class="feature-icon">✦</span> Ad-Free Experience</li>
+                        </ul>
+                        <button class="sub-btn sub-btn-bronze" data-tier="survivor">
+                            <span class="sub-btn-text">Bind Soul</span>
+                            <span class="sub-btn-glow"></span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- HUNTER — Silver (Featured) -->
+                <div class="pricing-card silver featured scroll-animate" data-tilt>
+                    <div class="pricing-badge">🜏 MOST CHOSEN</div>
+                    <div class="pricing-card-inner">
+                        <div class="card-canvas-wrap"><canvas class="card-canvas" id="canvas-silver"></canvas></div>
+                        <div class="pricing-tier-icon">🗡️</div>
+                        <h3 class="pricing-tier-name silver-text">Hunter</h3>
+                        <p class="pricing-tier-label">Hunt or Be Hunted</p>
+                        <div class="pricing-price" id="price-hunter">
+                            <span class="pricing-currency">$</span>
+                            <span class="pricing-amount" data-monthly="5" data-annual="50">5</span>
+                            <span class="pricing-period" data-monthly="/mo" data-annual="/yr">/mo</span>
+                        </div>
+                        <div class="pricing-annual-note" style="display:none;">~$4.17/mo — billed annually</div>
+                        <ul class="pricing-features">
+                            <li class="feature-yes"><span class="feature-icon">✦</span> All 18 Games Unlocked</li>
+                            <li class="feature-yes"><span class="feature-icon">💠</span> Ray Tracing Graphics</li>
+                            <li class="feature-yes"><span class="feature-icon">✦</span> 8 Character Skins + 5 Effects</li>
+                            <li class="feature-yes"><span class="feature-icon">✦</span> Personalized Horror System</li>
+                            <li class="feature-yes"><span class="feature-icon">✦</span> AI Game Master (Adaptive Story)</li>
+                            <li class="feature-yes"><span class="feature-icon">✦</span> Dynamic Music (4 Layers)</li>
+                            <li class="feature-yes"><span class="feature-icon">✦</span> Voice Chat Support</li>
+                            <li class="feature-yes"><span class="feature-icon">✦</span> 100% Battle Pass XP Boost</li>
+                        </ul>
+                        <button class="sub-btn sub-btn-silver" data-tier="hunter">
+                            <span class="sub-btn-text">Bind Soul</span>
+                            <span class="sub-btn-glow"></span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ELDER GOD — Gold -->
+                <div class="pricing-card gold scroll-animate" data-tilt>
+                    <div class="pricing-badge">🜏 ULTIMATE POWER</div>
+                    <div class="pricing-card-inner">
+                        <div class="card-canvas-wrap"><canvas class="card-canvas" id="canvas-gold"></canvas></div>
+                        <div class="pricing-tier-icon">🜏</div>
+                        <h3 class="pricing-tier-name gold-text">Elder God</h3>
+                        <p class="pricing-tier-label">Reality Bends to You</p>
+                        <div class="pricing-price" id="price-elder">
+                            <span class="pricing-currency">$</span>
+                            <span class="pricing-amount" data-monthly="8" data-annual="80">8</span>
+                            <span class="pricing-period" data-monthly="/mo" data-annual="/yr">/mo</span>
+                        </div>
+                        <div class="pricing-annual-note" style="display:none;">~$6.67/mo — billed annually</div>
+                        <ul class="pricing-features">
+                            <li class="feature-yes"><span class="feature-icon">★</span> Everything in Hunter + More</li>
+                            <li class="feature-yes"><span class="feature-icon">✨</span> Path Tracing Graphics</li>
+                            <li class="feature-yes"><span class="feature-icon">★</span> All Skins, Effects & Cosmetics</li>
+                            <li class="feature-yes"><span class="feature-icon">★</span> Personal AI Horror Curator</li>
+                            <li class="feature-yes"><span class="feature-icon">★</span> Early Access to New Games</li>
+                            <li class="feature-yes"><span class="feature-icon">★</span> HDR + Ultra Audio (10 Languages)</li>
+                            <li class="feature-yes"><span class="feature-icon">★</span> 200% Battle Pass XP Boost</li>
+                            <li class="feature-yes"><span class="feature-icon">★</span> Exclusive Elder God Store Items</li>
+                        </ul>
+                        <button class="sub-btn sub-btn-gold" data-tier="elder">
+                            <span class="sub-btn-text">Bind Soul</span>
+                            <span class="sub-btn-glow"></span>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Referral Widget (Phase 2) -->
+        <section class="container">
+            <div id="referral-widget" class="scroll-animate"></div>
+        </section>
+
+        <!-- Community Goals (Phase 4) -->
+        <section class="container">
+            <h2 class="comparison-title scroll-animate">The Great Ascension</h2>
+            <div id="community-goals" class="scroll-animate"></div>
+        </section>
+
+        <!-- Cult Leaderboard (Phase 4) -->
+        <section class="container">
+            <h2 class="comparison-title scroll-animate">The Eternal Rankings</h2>
+            <div id="cult-leaderboard" class="scroll-animate"></div>
+        </section>
+
+        <!-- Platform Sync (Phase 5) -->
+        <section class="container">
+            <div id="platform-sync" class="scroll-animate"></div>
+        </section>
+
+        <!-- Comparison Table -->
+        <section class="container" style="padding-bottom: 60px;">
+            <div class="comparison-section scroll-animate">
+                <h2 class="comparison-title">The Price of Power</h2>
+                <div class="comparison-table-wrap">
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th>Feature</th>
+                                <th class="bronze-text">🩹 Survivor</th>
+                                <th class="silver-text">🗡️ Hunter</th>
+                                <th class="gold-text">🜏 Elder God</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Monthly Price</td>
+                                <td>$2/mo</td>
+                                <td>$5/mo</td>
+                                <td>$8/mo</td>
+                            </tr>
+                            <tr>
+                                <td>Games Unlocked</td>
+                                <td>7 Premium Games</td>
+                                <td>All 18 Games</td>
+                                <td>All 18 + Early Access</td>
+                            </tr>
+                            <tr>
+                                <td>Graphics Quality</td>
+                                <td>Standard</td>
+                                <td class="feature-yes">Ray Tracing</td>
+                                <td class="feature-yes">Path Tracing</td>
+                            </tr>
+                            <tr>
+                                <td>Character Skins</td>
+                                <td>2 Skins</td>
+                                <td>8 Skins + 5 Effects</td>
+                                <td>All Unlocked</td>
+                            </tr>
+                            <tr>
+                                <td>Visual Effects</td>
+                                <td>Blood Splatter</td>
+                                <td>+ Motion Blur, Bloom</td>
+                                <td>+ HDR, Particles (300)</td>
+                            </tr>
+                            <tr>
+                                <td>Audio Quality</td>
+                                <td>Dynamic Music (2 Layers)</td>
+                                <td>4 Layers + Voice Chat</td>
+                                <td>6 Layers + 10 Languages</td>
+                            </tr>
+                            <tr>
+                                <td>AI Features</td>
+                                <td>Adaptive Enemies</td>
+                                <td>+ Game Master</td>
+                                <td>+ Personal Curator</td>
+                            </tr>
+                            <tr>
+                                <td>Battle Pass XP</td>
+                                <td>50% Boost</td>
+                                <td>100% Boost</td>
+                                <td>200% Boost</td>
+                            </tr>
+                            <tr>
+                                <td>Store Discount</td>
+                                <td>5% Off</td>
+                                <td>10% Off</td>
+                                <td>15% Off + Exclusive Items</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- Testimonials -->
+        <section class="container" style="padding-bottom: 60px;">
+            <h2 class="comparison-title scroll-animate">Whispers from the Void</h2>
+            <div class="testimonials-grid">
+                <div class="testimonial-card scroll-animate">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-quote">"The AI recommendations on Elder God tier literally read my mind. It suggested Web of Terror exactly when I was ready for spider horror. Iä! Iä!"</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar testimonial-avatar-gold">👤</div>
+                        <div>
+                            <span class="testimonial-name">DarkPlayer99</span>
+                            <span class="testimonial-tier gold-text">🜏 Elder God</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card scroll-animate">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-quote">"The Battle Pass keeps me coming back every day. I'm level 42 now and the exclusive mini-games are genuinely terrifying. Worth every penny."</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar testimonial-avatar-silver">👤</div>
+                        <div>
+                            <span class="testimonial-name">NightCrawl</span>
+                            <span class="testimonial-tier silver-text">🗡️ Hunter</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card scroll-animate">
+                    <div class="testimonial-stars">★★★★☆</div>
+                    <p class="testimonial-quote">"For just $2 a month, I get access to solid cursed games and the Survivor badge. Perfect for casual scares. The referral system got me 2 free weeks!"</p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar testimonial-avatar-bronze">👤</div>
+                        <div>
+                            <span class="testimonial-name">CasualFright</span>
+                            <span class="testimonial-tier bronze-text">🩹 Survivor</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FAQ Accordion -->
+        <section class="container" style="padding-bottom: 100px;">
+            <h2 class="comparison-title scroll-animate">Forbidden Knowledge</h2>
+            <div class="faq-list">
+                <div class="faq-item scroll-animate">
+                    <button class="faq-question">
+                        <span>How does the Battle Pass work?</span>
+                        <span class="faq-chevron">▾</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Your Battle Pass levels up as you gain XP from playing games, logging in daily, completing challenges, and maintaining your subscription. Each level unlocks exclusive rewards like custom cursors, profile frames, mini-games, and even free subscription time. Higher tiers earn XP faster!</p>
+                    </div>
+                </div>
+                <div class="faq-item scroll-animate">
+                    <button class="faq-question">
+                        <span>What are AI Horror Recommendations?</span>
+                        <span class="faq-chevron">▾</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Our AI analyzes your play patterns, fear responses, and preferences to create a personalized Horror Profile. It recommends games based on your terror tolerance, preferred play times, and genre preferences. Elder God tier gets a Personal Horror Curator that can even generate custom challenges!</p>
+                    </div>
+                </div>
+                <div class="faq-item scroll-animate">
+                    <button class="faq-question">
+                        <span>How do referrals work?</span>
+                        <span class="faq-chevron">▾</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Share your unique summoning code with friends. When they subscribe, you both get rewards: they get 20% off their first month, and you earn account credit (up to permanent 20% discounts for 10+ referrals). Top summoners get exclusive "Cult Leader" status and badges.</p>
+                    </div>
+                </div>
+                <div class="faq-item scroll-animate">
+                    <button class="faq-question">
+                        <span>What are Community Goals?</span>
+                        <span class="faq-chevron">▾</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>As our cult grows, we unlock content for everyone! At 1,000 subscribers we unlock new themes, at 5,000 exclusive mini-games, and at 50,000 an entirely new horror game. Your subscription helps the entire community!</p>
+                    </div>
+                </div>
+                <div class="faq-item scroll-animate">
+                    <button class="faq-question">
+                        <span>Can I ascend or descend my pact anytime?</span>
+                        <span class="faq-chevron">▾</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Yes! You can upgrade or downgrade at any time. When upgrading, you'll gain immediate access to all new abilities and your Battle Pass gets an XP boost. When downgrading, your current powers stay active until the end of your billing cycle.</p>
+                    </div>
+                </div>
+                <div class="faq-item scroll-animate">
+                    <button class="faq-question">
+                        <span>What's included in cross-platform sync?</span>
+                        <span class="faq-chevron">▾</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Your subscription, progress, Battle Pass level, achievements, and unlocked content sync across Web, Mobile, Desktop, and (for Elder God tier) VR. Play on your phone during the day, continue on PC at night. Your horror follows you everywhere...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tier Lore Cards -->
+        <section class="container" style="padding-bottom: 80px;">
+            <h2 class="comparison-title scroll-animate">The Path of Power</h2>
+            <div class="tier-lore-grid">
+                <div class="tier-lore-card survivor-lore scroll-animate">
+                    <div class="lore-icon">🩹</div>
+                    <h3>The Survivor's Path</h3>
+                    <p>You wake in darkness, clutching only a dying flashlight. Three cursed games await—can you endure? Bandage your wounds and pray. The night is long, and something is watching.</p>
+                    <div class="lore-flavor">"I just want to make it until dawn..."</div>
+                </div>
+                <div class="tier-lore-card hunter-lore scroll-animate">
+                    <div class="lore-icon">🗡️</div>
+                    <h3>The Hunter's Oath</h3>
+                    <p>The moon is your ally, silver your weapon. No longer prey, you stalk the shadows. Eight realms bow to your blade. You see what others cannot. You hunt what hunts others.</p>
+                    <div class="lore-flavor">"I am the thing that goes bump in the night."</div>
+                </div>
+                <div class="tier-lore-card elder-lore scroll-animate">
+                    <div class="lore-icon">🜏</div>
+                    <h3>The Elder's Ascension</h3>
+                    <p>Reality frays at your touch. All dimensions open their gates. You wield forbidden knowledge like a whip, shape the void like clay. Lesser beings whisper your name in terror.</p>
+                    <div class="lore-flavor">"Iä! Iä! The stars align for ME!"</div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="footer" role="contentinfo">
+        <div class="footer-inner">
+            <p>&copy; 2026 ScaryGamesAI — Enter at your own risk. 💀</p>
+        </div>
+    </footer>
+
+    <!-- Audio Control -->
+    <button class="audio-toggle" id="audio-toggle" title="Toggle Ambient Horror" aria-label="Toggle ambient horror audio">
+        <span class="audio-icon">🔇</span>
+        <span class="audio-label">Silence</span>
+    </button>
+
+    <!-- Ritual Modal -->
+    <div class="ritual-modal-overlay" id="ritual-modal">
+        <div class="ritual-modal">
+            <div class="ritual-circle">
+                <div class="ritual-rune">🜏</div>
+                <div class="ritual-glow"></div>
+            </div>
+            <h2 class="ritual-title" id="ritual-title">PACT SEALED</h2>
+            <p class="ritual-message" id="ritual-message">Your soul has been bound.</p>
+            <div class="ritual-timer" id="ritual-timer">00:00:00</div>
+            <p class="ritual-flavor" id="ritual-flavor">The darkness remembers.</p>
+            <button class="ritual-close" id="ritual-close">Enter the Void</button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/js/main.js"></script>
+    <script src="/js/subscription-system.js"></script>
+    
+    <script>
+        // Legacy support for existing functionality
+        (function () {
+            // Billing Toggle
+            const billingToggle = document.getElementById('billing-toggle');
+            const lblM = document.getElementById('label-monthly');
+            const lblA = document.getElementById('label-annual');
+            let isAnnual = false;
+
+            if (billingToggle) {
+                billingToggle.addEventListener('click', () => {
+                    isAnnual = !isAnnual;
+                    billingToggle.classList.toggle('active', isAnnual);
+                    lblM?.classList.toggle('billing-label-active', !isAnnual);
+                    lblA?.classList.toggle('billing-label-active', isAnnual);
+
+                    document.querySelectorAll('.pricing-amount').forEach(el => {
+                        const v = isAnnual ? el.dataset.annual : el.dataset.monthly;
+                        el.classList.add('price-flip');
+                        setTimeout(() => { 
+                            el.textContent = v; 
+                            el.classList.remove('price-flip'); 
+                        }, 200);
+                    });
+                    
+                    document.querySelectorAll('.pricing-period').forEach(el => {
+                        el.textContent = isAnnual ? el.dataset.annual : el.dataset.monthly;
+                    });
+                    
+                    document.querySelectorAll('.pricing-annual-note').forEach(el => {
+                        el.style.display = isAnnual ? 'block' : 'none';
+                    });
+                });
+            }
+
+            // FAQ Accordion
+            document.querySelectorAll('.faq-question').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const item = btn.parentElement;
+                    const wasOpen = item.classList.contains('open');
+                    document.querySelectorAll('.faq-item.open').forEach(i => i.classList.remove('open'));
+                    if (!wasOpen) item.classList.add('open');
+                });
+            });
+
+            // 3D Card Tilt
+            document.querySelectorAll('[data-tilt]').forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = (e.clientX - rect.left) / rect.width;
+                    const y = (e.clientY - rect.top) / rect.height;
+                    const tiltX = (y - 0.5) * -12;
+                    const tiltY = (x - 0.5) * 12;
+                    const baseScale = card.classList.contains('featured') ? 'scale(1.05)' : '';
+                    card.style.transform = `${baseScale} perspective(800px) rotateX(${tiltX}deg) rotateY(${tiltY}deg) translateY(-6px)`;
+                });
+                
+                card.addEventListener('mouseleave', () => {
+                    const baseScale = card.classList.contains('featured') ? 'scale(1.05)' : '';
+                    card.style.transform = baseScale;
+                });
+            });
+
+            // Animated Card Canvases
+            function animateBronze(canvas) {
+                const ctx = canvas.getContext('2d');
+                let t = 0;
+                const embers = [];
+                for (let i = 0; i < 25; i++) {
+                    embers.push({ 
+                        x: Math.random(), 
+                        y: Math.random(), 
+                        s: Math.random() * 2 + 1, 
+                        v: Math.random() * 0.004 + 0.002 
+                    });
+                }
+                
+                function draw() {
+                    const w = canvas.width = canvas.parentElement.offsetWidth;
+                    const h = canvas.height = canvas.parentElement.offsetHeight;
+                    ctx.fillStyle = '#0a0500';
+                    ctx.fillRect(0, 0, w, h);
+
+                    // Flashlight sweep
+                    const sweepAngle = Math.sin(t * 0.5) * 0.4;
+                    const beamGrd = ctx.createRadialGradient(w/2, h*0.8, 5, w/2 + Math.sin(sweepAngle)*30, h*0.5, h*0.8);
+                    beamGrd.addColorStop(0, 'rgba(255, 250, 220, 0.4)');
+                    beamGrd.addColorStop(1, 'transparent');
+                    ctx.fillStyle = beamGrd;
+                    ctx.fillRect(0, 0, w, h);
+
+                    // Embers
+                    embers.forEach(e => {
+                        e.y -= e.v;
+                        if (e.y < 0) e.y = 1;
+                        ctx.fillStyle = `rgba(255, ${100 + Math.floor(Math.random() * 100)}, 20, 0.7)`;
+                        ctx.beginPath();
+                        ctx.arc(e.x * w, e.y * h, e.s, 0, Math.PI * 2);
+                        ctx.fill();
+                    });
+
+                    t += 0.016;
+                    requestAnimationFrame(draw);
+                }
+                draw();
+            }
+
+            function animateSilver(canvas) {
+                const ctx = canvas.getContext('2d');
+                let t = 0;
+                
+                function draw() {
+                    const w = canvas.width = canvas.parentElement.offsetWidth;
+                    const h = canvas.height = canvas.parentElement.offsetHeight;
+                    ctx.fillStyle = '#0a0a12';
+                    ctx.fillRect(0, 0, w, h);
+
+                    // Moonlight
+                    const moonX = w * 0.7;
+                    const moonY = h * 0.2;
+                    const grd = ctx.createRadialGradient(moonX, moonY, 5, moonX, moonY, h * 0.8);
+                    grd.addColorStop(0, 'rgba(220, 230, 255, 0.25)');
+                    grd.addColorStop(1, 'transparent');
+                    ctx.fillStyle = grd;
+                    ctx.fillRect(0, 0, w, h);
+
+                    // Silver sparks
+                    for (let i = 0; i < 20; i++) {
+                        const x = (Math.sin(t + i) + 1) * w / 2;
+                        const y = (Math.cos(t * 0.5 + i) + 1) * h / 2;
+                        ctx.fillStyle = `rgba(200, 220, 255, ${0.3 + Math.sin(t * 2 + i) * 0.3})`;
+                        ctx.beginPath();
+                        ctx.arc(x, y, 1.5, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+
+                    t += 0.016;
+                    requestAnimationFrame(draw);
+                }
+                draw();
+            }
+
+            function animateGold(canvas) {
+                const ctx = canvas.getContext('2d');
+                let t = 0;
+                
+                function draw() {
+                    const w = canvas.width = canvas.parentElement.offsetWidth;
+                    const h = canvas.height = canvas.parentElement.offsetHeight;
+                    const cx = w / 2, cy = h * 0.45;
+                    
+                    // Cosmic void background
+                    const voidGrd = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(w, h));
+                    voidGrd.addColorStop(0, 'rgba(20, 10, 40, 0.9)');
+                    voidGrd.addColorStop(1, 'rgba(5, 0, 15, 1)');
+                    ctx.fillStyle = voidGrd;
+                    ctx.fillRect(0, 0, w, h);
+
+                    // Rotating flame ring
+                    const ringR = 28 + Math.sin(t * 2) * 4;
+                    for (let i = 0; i < 12; i++) {
+                        const angle = (i / 12) * Math.PI * 2 + t * 0.8;
+                        const fx = cx + Math.cos(angle) * ringR;
+                        const fy = cy + Math.sin(angle) * ringR;
+                        const size = 4 + Math.sin(t * 5 + i) * 2;
+                        const fgrd = ctx.createRadialGradient(fx, fy, 0, fx, fy, size);
+                        fgrd.addColorStop(0, 'rgba(255, 215, 0, 0.6)');
+                        fgrd.addColorStop(1, 'transparent');
+                        ctx.fillStyle = fgrd;
+                        ctx.beginPath();
+                        ctx.arc(fx, fy, size, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+
+                    // Central eye
+                    const eyePulse = 1 + Math.sin(t * 3) * 0.1;
+                    ctx.fillStyle = 'rgba(204, 68, 255, 0.8)';
+                    ctx.beginPath();
+                    ctx.arc(cx, cy, 6 * eyePulse, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    t += 0.016;
+                    requestAnimationFrame(draw);
+                }
+                draw();
+            }
+
+            // Init canvases
+            const cb = document.getElementById('canvas-bronze');
+            const cs = document.getElementById('canvas-silver');
+            const cg = document.getElementById('canvas-gold');
+            if (cb) animateBronze(cb);
+            if (cs) animateSilver(cs);
+            if (cg) animateGold(cg);
+
+            // Counter Animation
+            const counterEl = document.getElementById('counter-number');
+            if (counterEl) {
+                const targetCount = 1247;
+                let counted = false;
+
+                const animateCounter = () => {
+                    if (counted) return;
+                    counted = true;
+                    const duration = 2000;
+                    const start = performance.now();
+                    
+                    function step(now) {
+                        const elapsed = now - start;
+                        const progress = Math.min(elapsed / duration, 1);
+                        const eased = 1 - (1 - progress) * (1 - progress);
+                        counterEl.textContent = Math.floor(eased * targetCount).toLocaleString();
+                        if (progress < 1) requestAnimationFrame(step);
+                    }
+                    requestAnimationFrame(step);
+                };
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(e => { 
+                        if (e.isIntersecting) { 
+                            animateCounter(); 
+                            observer.disconnect(); 
+                        } 
+                    });
+                }, { threshold: 0.5 });
+                
+                observer.observe(document.getElementById('subscriber-counter'));
+            }
+
+            // Flash sale banner display
+            const flashBanner = document.getElementById('flash-sale-banner');
+            if (flashBanner) {
+                flashBanner.style.display = 'block';
+            }
+        })();
+    </script>
+  <script src="/js/page-shell.js"></script>
+</body>
+
+</html>

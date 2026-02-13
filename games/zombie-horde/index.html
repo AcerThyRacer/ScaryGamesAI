@@ -3,8 +3,53 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <title>Zombie Horde — ScaryGamesAI</title>
+    <meta name="description" content="Plan your defense and hold off endless undead waves in a brutal horror strategy fight.">
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+    <link rel="canonical" href="https://scarygames.ai/games/zombie-horde/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="ScaryGamesAI">
+    <meta property="og:title" content="Zombie Horde — ScaryGamesAI">
+    <meta property="og:description" content="Plan your defense and hold off endless undead waves in a brutal horror strategy fight.">
+    <meta property="og:url" content="https://scarygames.ai/games/zombie-horde/">
+    <meta property="og:image" content="https://scarygames.ai/assets/og-game-fallback.svg?game=zombie-horde">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Zombie Horde — ScaryGamesAI">
+    <meta name="twitter:description" content="Plan your defense and hold off endless undead waves in a brutal horror strategy fight.">
+    <meta name="twitter:image" content="https://scarygames.ai/assets/og-game-fallback.svg?game=zombie-horde">
+    <link rel="manifest" href="/manifest.json">
+    <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "VideoGame",
+          "name": "Zombie Horde",
+          "description": "Plan your defense and hold off endless undead waves in a brutal horror strategy fight.",
+          "genre": [
+            "Horror",
+            "Strategy",
+            "Survival"
+          ],
+          "applicationCategory": "Game",
+          "operatingSystem": "Web Browser",
+          "url": "https://scarygames.ai/games/zombie-horde/",
+          "image": [
+            "https://scarygames.ai/assets/og-game-fallback.svg?game=zombie-horde"
+          ],
+          "publisher": {
+            "@type": "Organization",
+            "name": "ScaryGamesAI",
+            "url": "https://scarygames.ai/"
+          },
+          "isPartOf": {
+            "@type": "WebSite",
+            "name": "ScaryGamesAI",
+            "url": "https://scarygames.ai/"
+          }
+        }
+    </script>
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="/css/game-responsive.css">
     <link rel="stylesheet" href="/css/mobile-controls.css">
@@ -20,6 +65,7 @@
             margin: 0 auto;
         }
     </style>
+    <link rel="stylesheet" href="/css/mobile-enhancements.css" id="mc-enhance-css">
 </head>
 
 <body>
@@ -43,7 +89,7 @@
             </div>
         </div>
         <div class="game-container" id="game-container">
-            <canvas id="game-canvas"></canvas>
+            <canvas id="game-canvas" aria-label="Zombie Horde strategy game canvas - click to place or select, WASD to pan, Q/E to rotate"></canvas>
             <div class="game-hud" id="game-hud" style="display:none;">
                 <div class="hud-score" id="hud-wave">Wave: 1</div>
                 <div class="hud-score" id="hud-gold">Gold: 100</div>
@@ -69,6 +115,20 @@
     <script src="/js/mobile-tutorial.js"></script>
     <script src="/js/mobile-settings.js"></script>
     <script src="/js/device-testing.js"></script>
+    
+    <!-- Mobile Support -->
+    <script src="/js/mobile-setup.js" id="mobile-setup-js"></script>
+    <script src="/js/mobile-controls.js" id="mc-js"></script>
+    <script src="/js/mobile-game-bindings.js" id="mc-bindings-js"></script>
+    <script src="/js/mobile-universal-init.js" id="mc-init-js"></script>
+    <script src="/js/mobile-patcher.js" id="mc-patcher-js"></script>
+    <!-- End Mobile Support -->
+    
+    <!-- Accessibility, Memory & Performance -->
+    <script src="/js/accessibility-manager.js" id="a11y-js"></script>
+    <script src="/js/memory-manager.js" id="mem-js"></script>
+    <script src="/js/performance-optimizer.js" id="perf-js"></script>
+    <!-- End Core Systems -->
     <script src="game.js"></script>
 </body>
 

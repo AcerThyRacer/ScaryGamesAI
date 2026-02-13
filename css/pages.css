@@ -1,0 +1,18 @@
+/* ============================================
+   ScaryGamesAI — Page-Level Styles
+   High-level page scopes + safe defaults
+   ============================================ */
+
+body.store-page {
+  background: linear-gradient(180deg, #0a0a12 0%, #12121a 100%);
+  min-height: 100vh;
+}
+
+.bg-fog,
+.bg-grain {
+  pointer-events: none;
+}
+
+.hero {
+  min-height: calc(100vh - var(--nav-height));
+}

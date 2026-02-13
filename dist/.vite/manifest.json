@@ -1,0 +1,50 @@
+{
+  "_runtime-effects-BOjjhhrF.js": {
+    "file": "assets/js/chunks/runtime-effects-BOjjhhrF.js",
+    "name": "runtime-effects",
+    "isDynamicEntry": true
+  },
+  "_shell-j7F2CuES.js": {
+    "file": "assets/js/chunks/shell-j7F2CuES.js",
+    "name": "shell",
+    "dynamicImports": [
+      "js/image-optimizer.js",
+      "_runtime-effects-BOjjhhrF.js",
+      "_runtime-effects-BOjjhhrF.js",
+      "_runtime-effects-BOjjhhrF.js",
+      "_runtime-effects-BOjjhhrF.js",
+      "js/image-optimizer.js",
+      "_runtime-effects-BOjjhhrF.js",
+      "_runtime-effects-BOjjhhrF.js"
+    ]
+  },
+  "_styles-!~{00b}~.js": {
+    "file": "assets/css/styles-CoPMDZEA.css",
+    "src": "_styles-!~{00b}~.js"
+  },
+  "_styles-C37ZYxfD.js": {
+    "file": "assets/js/chunks/styles-C37ZYxfD.js",
+    "name": "styles",
+    "css": [
+      "assets/css/styles-CoPMDZEA.css"
+    ]
+  },
+  "challenges.html": {
+    "file": "assets/css/challenges-CLjmEqMg.css",
+    "src": "challenges.html"
+  },
+  "js/image-optimizer.js": {
+    "file": "assets/js/chunks/image-optimizer-KH0Ov_yg.js",
+    "name": "image-optimizer",
+    "src": "js/image-optimizer.js",
+    "isDynamicEntry": true
+  },
+  "manifest.json": {
+    "file": "assets/manifest-BkXN0yik.json",
+    "src": "manifest.json"
+  },
+  "subscription.html": {
+    "file": "assets/css/subscription-DMeFGZTs.css",
+    "src": "subscription.html"
+  }
+}

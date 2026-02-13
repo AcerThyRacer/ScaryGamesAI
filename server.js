@@ -6,88 +6,137 @@
 const express = require('express');
 const http = require('http');
 const path = require('path');
-const fs = require('fs');
 const cors = require('cors');
+const helmet = require('helmet');
+const compression = require('compression');
+const { validateEnvironment } = require('./config/env');
+const observability = require('./services/observability');
+
+validateEnvironment();
+observability.init();
 
 // Initialize express
 const app = express();
 const server = http.createServer(app);
 
-const PORT = process.env.PORT || 9999;
+const PORT = parseInt(process.env.PORT || '9999', 10);
 
 // Middleware
-app.use(cors());
+const isProduction = process.env.NODE_ENV === 'production';
+const allowedOrigins = new Set(
+    (process.env.CORS_ALLOWED_ORIGINS || '')
+        .split(',')
+        .map((origin) => origin.trim())
+        .filter(Boolean)
+);
+
+const corsOptions = {
+    origin(origin, callback) {
+        if (!origin) return callback(null, true);
+
+        if (allowedOrigins.size === 0) {
+            if (!isProduction) return callback(null, true);
+            return callback(new Error('CORS origin not allowed'));
+        }
+
+        if (allowedOrigins.has(origin)) {
+            return callback(null, true);
+        }
+
+        return callback(new Error('CORS origin not allowed'));
+    },
+    credentials: true,
+    methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
+    optionsSuccessStatus: 204
+};
+
+app.use(helmet({
+    contentSecurityPolicy: false,
+    crossOriginEmbedderPolicy: false
+}));
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
+app.use(compression({ threshold: 1024 }));
+
+// Stripe webhooks must receive raw body for signature verification.
+app.use('/api/webhooks/stripe', express.raw({ type: 'application/json' }));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+app.use('/api', observability.httpMetricsMiddleware());
+
+// API cache policy alignment for origin and edge behavior.
+app.use('/api', (req, res, next) => {
+    if (req.method === 'GET' && req.path === '/health') {
+        res.setHeader('Cache-Control', 'public, max-age=15, stale-while-revalidate=30');
+    } else {
+        res.setHeader('Cache-Control', 'no-store');
+    }
+    next();
+});
 
 // API Routes
 const apiRoutes = require('./api');
 app.use('/api', apiRoutes);
 
 // Static file serving
-const MIME_TYPES = {
-    '.html': 'text/html',
-    '.css': 'text/css',
-    '.js': 'application/javascript',
-    '.json': 'application/json',
-    '.png': 'image/png',
-    '.jpg': 'image/jpeg',
-    '.gif': 'image/gif',
-    '.svg': 'image/svg+xml',
-    '.ico': 'image/x-icon',
-    '.mp3': 'audio/mpeg',
-    '.wav': 'audio/wav',
-    '.ogg': 'audio/ogg',
-    '.woff': 'font/woff',
-    '.woff2': 'font/woff2',
-    '.mp4': 'video/mp4',
-    '.webm': 'video/webm'
-};
+const cacheableAssetExts = new Set(['.css', '.js', '.png', '.jpg', '.jpeg', '.gif', '.svg', '.ico', '.mp3', '.wav', '.ogg', '.woff', '.woff2', '.mp4', '.webm', '.json', '.webp', '.avif']);
+const hashedAssetNameRe = /-[A-Za-z0-9_-]{8,}\./;
 
-// Serve static files with proper MIME types
-app.use((req, res, next) => {
-    // Skip API routes
-    if (req.url.startsWith('/api')) return next();
+function setStaticCacheHeaders(res, filePath) {
+    const ext = path.extname(filePath).toLowerCase();
+    const basename = path.basename(filePath);
+    const isHashedAsset = hashedAssetNameRe.test(basename);
 
-    let filePath = path.join(__dirname, req.url === '/' ? 'index.html' : req.url);
+    res.setHeader('X-Content-Type-Options', 'nosniff');
 
-    // If path is a directory, try index.html inside it
-    if (fs.existsSync(filePath) && fs.statSync(filePath).isDirectory()) {
-        filePath = path.join(filePath, 'index.html');
+    if (cacheableAssetExts.has(ext)) {
+        if (isHashedAsset) {
+            res.setHeader('Cache-Control', 'public, max-age=31536000, immutable');
+        } else {
+            res.setHeader('Cache-Control', 'public, max-age=300, stale-while-revalidate=120');
+        }
+        return;
     }
 
-    const ext = path.extname(filePath).toLowerCase();
-    const contentType = MIME_TYPES[ext] || 'application/octet-stream';
+    if (ext === '.html' || !ext) {
+        res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
+        return;
+    }
 
-    fs.readFile(filePath, (err, content) => {
-        if (err) {
-            if (err.code === 'ENOENT') {
-                // Try to serve index.html for SPA routing
-                const indexPath = path.join(__dirname, 'index.html');
-                fs.readFile(indexPath, (err2, indexContent) => {
-                    if (err2) {
-                        res.status(404).send('<h1>404 - Not Found</h1>');
-                    } else {
-                        res.setHeader('Content-Type', 'text/html');
-                        res.send(indexContent);
-                    }
-                });
-            } else {
-                res.status(500).send(`Server Error: ${err.code}`);
-            }
-        } else {
-            res.setHeader('Content-Type', contentType);
-            res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
-            res.setHeader('Pragma', 'no-cache');
-            res.setHeader('Expires', '0');
-            res.send(content);
-        }
+    res.setHeader('Cache-Control', 'no-cache, no-store, must-revalidate');
+    res.setHeader('Pragma', 'no-cache');
+    res.setHeader('Expires', '0');
+}
+
+app.use(express.static(__dirname, {
+    setHeaders: setStaticCacheHeaders,
+    fallthrough: true
+}));
+
+app.get('*', (req, res, next) => {
+    if (req.path.startsWith('/api')) return next();
+
+    res.setHeader('Cache-Control', 'public, max-age=0, must-revalidate');
+    res.sendFile(path.join(__dirname, 'index.html'), (err) => {
+        if (err) next(err);
     });
 });
 
 // Error handling
 app.use((err, req, res, next) => {
-    console.error('Server error:', err);
+    observability.captureException(err, {
+        tags: {
+            surface: 'server-express'
+        },
+        extra: {
+            path: req?.path,
+            method: req?.method
+        }
+    });
+
+    console.error('Server error:', err?.message || 'Unknown error');
     res.status(500).json({ error: 'Internal server error' });
 });
 
@@ -121,6 +170,27 @@ function initializeDemoData() {
         console.log('✅ Community goals initialized');
     }
 }
+
+let shuttingDown = false;
+async function gracefulShutdown(signal) {
+    if (shuttingDown) return;
+    shuttingDown = true;
+
+    console.log(`\n[server] Received ${signal}. Shutting down gracefully...`);
+
+    server.close(async () => {
+        try {
+            await observability.shutdown();
+        } finally {
+            process.exit(0);
+        }
+    });
+
+    setTimeout(() => process.exit(1), 10000).unref();
+}
+
+process.on('SIGTERM', () => gracefulShutdown('SIGTERM'));
+process.on('SIGINT', () => gracefulShutdown('SIGINT'));
 
 // Start server
 server.listen(PORT, () => {

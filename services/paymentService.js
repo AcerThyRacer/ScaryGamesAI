@@ -5,6 +5,45 @@
 
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY || 'sk_test_placeholder');
 const db = require('../models/database');
+const postgres = require('../models/postgres');
+const { appendAuditEvent, executeIdempotentMutation, makeId } = require('./economyMutationService');
+const dataAccess = require('../models/data-access');
+
+const ACHIEVEMENT_TIER_REWARDS = {
+    bronze: { souls: 100, gemDust: 5, bloodGems: 0 },
+    silver: { souls: 500, gemDust: 15, bloodGems: 0 },
+    gold: { souls: 2000, gemDust: 0, bloodGems: 50 },
+    platinum: { souls: 10000, gemDust: 0, bloodGems: 200 }
+};
+
+const DEFAULT_ACHIEVEMENT_META = {
+    first_blood: { tier: 'bronze', hidden: false },
+    tier_hopper: { tier: 'silver', hidden: false }
+};
+
+function normalizeAchievementTier(tier) {
+    const normalized = String(tier || '').trim().toLowerCase();
+    if (Object.prototype.hasOwnProperty.call(ACHIEVEMENT_TIER_REWARDS, normalized)) {
+        return normalized;
+    }
+    return 'bronze';
+}
+
+function resolveAchievementReward(achievementMeta = {}) {
+    const tier = normalizeAchievementTier(achievementMeta.tier);
+    const hidden = achievementMeta.hidden === true;
+    const multiplier = hidden ? 2 : 1;
+    const base = ACHIEVEMENT_TIER_REWARDS[tier];
+
+    return {
+        tier,
+        hidden,
+        multiplier,
+        souls: base.souls * multiplier,
+        gemDust: base.gemDust * multiplier,
+        bloodGems: base.bloodGems * multiplier
+    };
+}
 
 const PRICE_IDS = {
     survivor: {
@@ -305,19 +344,458 @@ class PaymentService {
     /**
      * Unlock achievement
      */
-    async unlockAchievement(userId, achievementId) {
-        const existing = db.findOne('achievements', { 
-            userId, 
-            achievementId 
-        });
-        
-        if (existing) return existing;
+    async unlockAchievement(userId, achievementId, achievementMeta = null) {
+        if (!userId || !achievementId) {
+            const err = new Error('userId and achievementId are required');
+            err.code = 'INVALID_ACHIEVEMENT_UNLOCK_INPUT';
+            throw err;
+        }
 
-        return db.create('achievements', {
+        const normalizedAchievementId = String(achievementId).trim();
+        if (!normalizedAchievementId) {
+            const err = new Error('achievementId is required');
+            err.code = 'INVALID_ACHIEVEMENT_UNLOCK_INPUT';
+            throw err;
+        }
+
+        const resolvedMeta = {
+            ...(DEFAULT_ACHIEVEMENT_META[normalizedAchievementId] || {}),
+            ...(achievementMeta || {})
+        };
+        const reward = resolveAchievementReward(resolvedMeta);
+
+        if (postgres.isEnabled()) {
+            const requestPayload = {
+                userId,
+                achievementId: normalizedAchievementId,
+                tier: reward.tier,
+                hidden: reward.hidden
+            };
+
+            const mutation = await executeIdempotentMutation({
+                scope: 'achievement.unlock',
+                idempotencyKey: `achievement_unlock:${userId}:${normalizedAchievementId}`,
+                requestPayload,
+                actorUserId: userId,
+                targetUserId: userId,
+                entityType: 'achievement',
+                entityId: `${userId}:${normalizedAchievementId}`,
+                eventType: 'achievement.unlock',
+                perfChannel: 'achievement.unlock',
+                mutationFn: async () => {
+                    await postgres.query('BEGIN');
+                    try {
+                        const userResult = await postgres.query(
+                            'SELECT id, souls, blood_gems, gem_dust FROM users WHERE id = $1 LIMIT 1 FOR UPDATE',
+                            [userId]
+                        );
+                        const user = userResult.rows[0];
+                        if (!user) {
+                            const err = new Error('User not found');
+                            err.code = 'USER_NOT_FOUND';
+                            throw err;
+                        }
+
+                        const existing = await postgres.query(
+                            `
+                                SELECT id, user_id, achievement_id, unlocked_at
+                                FROM achievements
+                                WHERE user_id = $1 AND achievement_id = $2
+                                LIMIT 1
+                                FOR UPDATE
+                            `,
+                            [userId, normalizedAchievementId]
+                        );
+
+                        if (existing.rows[0]) {
+                            await postgres.query('COMMIT');
+                            return {
+                                achievementId: normalizedAchievementId,
+                                unlocked: false,
+                                alreadyUnlocked: true,
+                                reward: { souls: 0, gemDust: 0, bloodGems: 0 },
+                                rewardMeta: {
+                                    tier: reward.tier,
+                                    hidden: reward.hidden,
+                                    multiplier: reward.multiplier
+                                },
+                                balances: {
+                                    souls: Number(user.souls || 0),
+                                    gemDust: Number(user.gem_dust || 0),
+                                    bloodGems: Number(user.blood_gems || 0)
+                                },
+                                resourceType: 'achievement_unlock',
+                                resourceId: `${userId}:${normalizedAchievementId}`
+                            };
+                        }
+
+                        const newSouls = Number(user.souls || 0) + reward.souls;
+                        const newGemDust = Number(user.gem_dust || 0) + reward.gemDust;
+                        const newBloodGems = Number(user.blood_gems || 0) + reward.bloodGems;
+
+                        await postgres.query(
+                            `
+                                INSERT INTO achievements (
+                                    id,
+                                    user_id,
+                                    achievement_id,
+                                    tier,
+                                    is_hidden,
+                                    unlocked_at,
+                                    created_at,
+                                    updated_at
+                                )
+                                VALUES ($1, $2, $3, $4, $5, NOW(), NOW(), NOW())
+                            `,
+                            [makeId('ach'), userId, normalizedAchievementId, reward.tier, reward.hidden]
+                        );
+
+                        await postgres.query(
+                            `
+                                UPDATE users
+                                SET souls = $2,
+                                    gem_dust = $3,
+                                    blood_gems = $4,
+                                    updated_at = NOW()
+                                WHERE id = $1
+                            `,
+                            [userId, newSouls, newGemDust, newBloodGems]
+                        );
+
+                        await appendAuditEvent({
+                            actorUserId: userId,
+                            targetUserId: userId,
+                            entityType: 'currency',
+                            entityId: userId,
+                            eventType: 'currency.credit',
+                            idempotencyKey: `achievement_unlock:${userId}:${normalizedAchievementId}`,
+                            metadata: {
+                                reason: 'achievement_unlock',
+                                achievementId: normalizedAchievementId,
+                                tier: reward.tier,
+                                hidden: reward.hidden,
+                                multiplier: reward.multiplier,
+                                souls: reward.souls,
+                                gemDust: reward.gemDust,
+                                bloodGems: reward.bloodGems
+                            }
+                        });
+
+                        await postgres.query('COMMIT');
+
+                        return {
+                            achievementId: normalizedAchievementId,
+                            unlocked: true,
+                            alreadyUnlocked: false,
+                            reward: {
+                                souls: reward.souls,
+                                gemDust: reward.gemDust,
+                                bloodGems: reward.bloodGems
+                            },
+                            rewardMeta: {
+                                tier: reward.tier,
+                                hidden: reward.hidden,
+                                multiplier: reward.multiplier
+                            },
+                            balances: {
+                                souls: newSouls,
+                                gemDust: newGemDust,
+                                bloodGems: newBloodGems
+                            },
+                            resourceType: 'achievement_unlock',
+                            resourceId: `${userId}:${normalizedAchievementId}`
+                        };
+                    } catch (error) {
+                        await postgres.query('ROLLBACK');
+                        throw error;
+                    }
+                }
+            });
+
+            return mutation.responseBody;
+        }
+
+        const existing = db.findOne('achievements', {
             userId,
-            achievementId,
+            achievementId: normalizedAchievementId
+        });
+
+        if (existing) {
+            return {
+                achievementId: normalizedAchievementId,
+                unlocked: false,
+                alreadyUnlocked: true,
+                reward: { souls: 0, gemDust: 0, bloodGems: 0 },
+                rewardMeta: {
+                    tier: reward.tier,
+                    hidden: reward.hidden,
+                    multiplier: reward.multiplier
+                }
+            };
+        }
+
+        const user = db.findById('users', userId);
+        if (user) {
+            db.update('users', user.id, {
+                souls: Number(user.souls || 0) + reward.souls,
+                gem_dust: Number(user.gem_dust || 0) + reward.gemDust,
+                blood_gems: Number(user.blood_gems || 0) + reward.bloodGems
+            });
+        }
+
+        const achievement = db.create('achievements', {
+            userId,
+            achievementId: normalizedAchievementId,
+            tier: reward.tier,
+            isHidden: reward.hidden,
             unlockedAt: new Date().toISOString()
         });
+
+        return {
+            ...achievement,
+            achievementId: normalizedAchievementId,
+            unlocked: true,
+            alreadyUnlocked: false,
+            reward: {
+                souls: reward.souls,
+                gemDust: reward.gemDust,
+                bloodGems: reward.bloodGems
+            },
+            rewardMeta: {
+                tier: reward.tier,
+                hidden: reward.hidden,
+                multiplier: reward.multiplier
+            }
+        };
+    }
+
+    async giftSubscription({
+        senderUserId,
+        recipientUserId,
+        tier,
+        billingCycle,
+        message = null,
+        idempotencyKey = null,
+        requestId = null
+    }) {
+        if (!senderUserId || !recipientUserId) throw new Error('senderUserId and recipientUserId are required');
+        if (senderUserId === recipientUserId) {
+            const err = new Error('Cannot gift subscription to yourself');
+            err.code = 'SELF_GIFT_FORBIDDEN';
+            throw err;
+        }
+
+        const validTiers = new Set(['survivor', 'hunter', 'elder']);
+        const validCycles = new Set(['monthly', 'annual']);
+        if (!validTiers.has(tier)) {
+            const err = new Error('Invalid subscription tier');
+            err.code = 'INVALID_TIER';
+            throw err;
+        }
+        if (!validCycles.has(billingCycle)) {
+            const err = new Error('Invalid billing cycle');
+            err.code = 'INVALID_BILLING_CYCLE';
+            throw err;
+        }
+
+        if (postgres.isEnabled()) {
+            const extensionDays = billingCycle === 'annual' ? 365 : 30;
+
+            await postgres.query('BEGIN');
+            try {
+                const recipientUser = await postgres.query(
+                    'SELECT id FROM users WHERE id = $1 LIMIT 1 FOR UPDATE',
+                    [recipientUserId]
+                );
+                if (!recipientUser.rows[0]) {
+                    const err = new Error('Recipient user not found');
+                    err.code = 'RECIPIENT_NOT_FOUND';
+                    throw err;
+                }
+
+                const existingActive = await postgres.query(
+                    `
+                      SELECT id, expires_at
+                      FROM subscriptions
+                      WHERE user_id = $1
+                        AND status = 'active'
+                      ORDER BY expires_at DESC NULLS LAST
+                      LIMIT 1
+                      FOR UPDATE
+                    `,
+                    [recipientUserId]
+                );
+
+                const now = new Date();
+                const base = existingActive.rows[0]?.expires_at
+                    && new Date(existingActive.rows[0].expires_at) > now
+                    ? new Date(existingActive.rows[0].expires_at)
+                    : now;
+                base.setDate(base.getDate() + extensionDays);
+                const expiresAt = base.toISOString();
+
+                if (existingActive.rows[0]) {
+                    await postgres.query(
+                        `
+                          UPDATE subscriptions
+                          SET tier = $2,
+                              billing_cycle = $3,
+                              expires_at = $4,
+                              updated_at = NOW()
+                          WHERE id = $1
+                        `,
+                        [existingActive.rows[0].id, tier, billingCycle, expiresAt]
+                    );
+                } else {
+                    await postgres.query(
+                        `
+                          INSERT INTO subscriptions (
+                            id, user_id, tier, billing_cycle, status, started_at, expires_at,
+                            streak_days, total_days, created_at, updated_at
+                          )
+                          VALUES ($1, $2, $3, $4, 'active', NOW(), $5, 0, 0, NOW(), NOW())
+                        `,
+                        [makeId('sub'), recipientUserId, tier, billingCycle, expiresAt]
+                    );
+                }
+
+                const giftId = makeId('gift');
+                await postgres.query(
+                    `
+                      INSERT INTO gift_transactions (
+                        id, gift_type, sender_user_id, recipient_user_id,
+                        subscription_tier, subscription_billing_cycle, status,
+                        message, metadata, delivered_at, created_at, updated_at
+                      )
+                      VALUES (
+                        $1, 'subscription', $2, $3, $4, $5, 'delivered',
+                        $6, $7::jsonb, NOW(), NOW(), NOW()
+                      )
+                    `,
+                    [
+                        giftId,
+                        senderUserId,
+                        recipientUserId,
+                        tier,
+                        billingCycle,
+                        message,
+                        JSON.stringify({ source: 'subscription_gift', giftedBy: senderUserId })
+                    ]
+                );
+
+                await appendAuditEvent({
+                    actorUserId: senderUserId,
+                    targetUserId: recipientUserId,
+                    entityType: 'subscription',
+                    entityId: recipientUserId,
+                    eventType: 'subscription.gift.granted',
+                    requestId,
+                    idempotencyKey,
+                    metadata: {
+                        tier,
+                        billingCycle,
+                        extensionDays
+                    }
+                });
+
+                await postgres.query('COMMIT');
+
+                return {
+                    success: true,
+                    giftId,
+                    recipientUserId,
+                    tier,
+                    billingCycle,
+                    expiresAt
+                };
+            } catch (error) {
+                await postgres.query('ROLLBACK');
+                throw error;
+            }
+        }
+
+        // JSON fallback for backward compatibility in non-PG mode.
+        const now = new Date();
+        const expiresAt = new Date(now);
+        if (billingCycle === 'annual') expiresAt.setFullYear(expiresAt.getFullYear() + 1);
+        else expiresAt.setMonth(expiresAt.getMonth() + 1);
+
+        db.create('subscriptions', {
+            userId: recipientUserId,
+            tier,
+            billingCycle,
+            status: 'active',
+            startedAt: now.toISOString(),
+            expiresAt: expiresAt.toISOString(),
+            giftedBy: senderUserId,
+            giftMessage: message || null
+        });
+
+        return {
+            success: true,
+            giftId: `gift_${Date.now()}`,
+            recipientUserId,
+            tier,
+            billingCycle,
+            expiresAt: expiresAt.toISOString()
+        };
+    }
+
+    async recordRevenuePurchaseTransaction({
+        userId,
+        stream,
+        skuKey,
+        orderId,
+        amount,
+        currency = 'USD',
+        requestId = null,
+        idempotencyKey = null,
+        metadata = {}
+    }) {
+        if (!postgres.isEnabled()) {
+            return {
+                success: true,
+                provider: 'json',
+                skipped: true
+            };
+        }
+
+        const tx = await dataAccess.createPaymentTransaction({
+            id: makeId('pay_txn'),
+            orderId,
+            provider: 'internal_stub',
+            providerTransactionId: null,
+            status: 'succeeded',
+            amount: Math.max(0, parseInt(amount, 10) || 0),
+            currency,
+            requestPayload: { stream, skuKey },
+            responsePayload: { approved: true, mode: 'server_authoritative' },
+            processedAt: new Date().toISOString()
+        });
+
+        await appendAuditEvent({
+            actorUserId: userId,
+            targetUserId: userId,
+            entityType: 'payment_transaction',
+            entityId: tx?.id || null,
+            eventType: 'revenue.purchase.transaction_recorded',
+            requestId,
+            idempotencyKey,
+            metadata: {
+                stream,
+                skuKey,
+                orderId,
+                amount,
+                currency,
+                ...metadata
+            }
+        });
+
+        return {
+            success: true,
+            provider: 'internal_stub',
+            transactionId: tx?.id || null
+        };
     }
 
     capitalize(str) {

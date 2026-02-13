@@ -7,15 +7,50 @@
   "scripts": {
     "start": "node server.js",
     "dev": "SET NODE_ENV=development && node server.js",
+    "dev:vite": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
     "setup": "node scripts/setup.js",
-    "seed": "node scripts/seed.js"
+    "seed": "node scripts/seed.js",
+    "db:migrate": "node scripts/run-migrations.js",
+    "db:verify": "node scripts/verify-migrations.js",
+    "db:backfill:phase6": "node scripts/backfill-phase6.js",
+    "assets:convert": "node scripts/convert-images.js",
+    "assets:atlas": "node scripts/generate-texture-atlas.js",
+    "assets:optimize": "npm run assets:convert && npm run assets:atlas",
+    "ci:bundle-budget": "node scripts/check-bundle-budgets.js",
+    "ci:guardrails": "node scripts/check-runtime-guardrails.js",
+    "ci:quality": "npm run lint && npm run test:unit && npm run test:integration && npm run test:e2e && npm run build && npm run ci:bundle-budget && npm run ci:guardrails",
+    "branch:protect": "node scripts/enforce-branch-protection.js",
+    "lint": "node scripts/lint-basic.js",
+    "test": "node --test tests/*.test.js",
+    "test:unit": "node --test tests/*.test.js",
+    "test:integration": "node --test tests/integration*.test.js",
+    "test:e2e": "node --test tests/e2e*.test.js",
+    "test:phase5:monetization": "node --test tests/phase5.monetization.test.js"
   },
   "dependencies": {
-    "express": "^4.18.2",
+    "@opentelemetry/api": "^1.9.0",
+    "@opentelemetry/auto-instrumentations-node": "^0.57.0",
+    "@opentelemetry/exporter-trace-otlp-http": "^0.57.0",
+    "@opentelemetry/sdk-node": "^0.57.0",
+    "@sentry/node": "^8.37.1",
+    "compression": "^1.8.1",
     "cors": "^2.8.5",
+    "express": "^4.18.2",
+    "express-rate-limit": "^8.2.1",
+    "helmet": "^8.1.0",
+    "ioredis": "^5.7.0",
+    "jsonwebtoken": "^9.0.3",
+    "pg": "^8.16.3",
     "stripe": "^14.5.0"
   },
-  "devDependencies": {},
+  "optionalDependencies": {
+    "sharp": "^0.33.5"
+  },
+  "devDependencies": {
+    "vite": "^5.4.21"
+  },
   "engines": {
     "node": ">=18.0.0"
   },
