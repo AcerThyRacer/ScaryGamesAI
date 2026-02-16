@@ -1,1 +1,34 @@
-[]
+[
+  {
+    "id": "x24w0tu30mlo0qqd5",
+    "createdAt": "2026-02-15T17:27:54.617Z",
+    "updatedAt": "2026-02-15T17:27:54.617Z",
+    "target": 1000,
+    "reward": "New Horror Theme",
+    "description": "Unlock the Blood Moon theme for all users"
+  },
+  {
+    "id": "opr17pg0hmlo0qqd5",
+    "createdAt": "2026-02-15T17:27:54.617Z",
+    "updatedAt": "2026-02-15T17:27:54.617Z",
+    "target": 5000,
+    "reward": "Exclusive Mini-Game",
+    "description": "Unlock the Secret Laboratory mini-game"
+  },
+  {
+    "id": "ow9ow6x6smlo0qqd5",
+    "createdAt": "2026-02-15T17:27:54.617Z",
+    "updatedAt": "2026-02-15T17:27:54.617Z",
+    "target": 10000,
+    "reward": "Community-Designed Boss",
+    "description": "Vote on and fight a community-created boss"
+  },
+  {
+    "id": "4fqaa6wk6mlo0qqd6",
+    "createdAt": "2026-02-15T17:27:54.618Z",
+    "updatedAt": "2026-02-15T17:27:54.618Z",
+    "target": 50000,
+    "reward": "Full New Game",
+    "description": "Unlock an entirely new horror game"
+  }
+]

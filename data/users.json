@@ -1,1 +1,10 @@
-[]
+[
+  {
+    "id": "demo-user",
+    "createdAt": "2026-02-15T17:27:54.611Z",
+    "updatedAt": "2026-02-15T17:27:54.616Z",
+    "username": "DemoUser",
+    "email": "demo@scarygames.ai",
+    "authToken": "demo-token"
+  }
+]

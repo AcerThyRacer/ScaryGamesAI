@@ -597,16 +597,54 @@ const ScaryStore = (function () {
     // ═══════════════════════════════════════════════════════════════
 
     function init() {
-        loadState();
+        // Styles first so UI doesn't degrade to unstyled markup if storage is blocked.
         injectStyles();
+        loadState();
         console.log('[ScaryStore] Initialized');
+
+        // Cross-tab sync: if another tab purchases/equips something, reflect it here.
+        if (window.SGAIStateBus && typeof window.SGAIStateBus.on === 'function') {
+            window.SGAIStateBus.on(function (msg, remote) {
+                if (!remote || !msg || msg.type !== 'STATE_UPDATED') return;
+                if (msg.source === 'store') return;
+
+                // Reload store state from storage and refresh visible UI.
+                loadState();
+                try { updateBalanceDisplay(); } catch (e) { }
+
+                if (storeContainer && storeContainer.classList.contains('open')) {
+                    try {
+                        const activeTab = storeContainer?.querySelector('.store-tab.active')?.dataset?.tab || 'featured';
+                        renderTab(activeTab);
+                    } catch (e) { }
+                }
+            });
+        }
     }
 
     function getUserTier() {
         try {
-            const tier = localStorage.getItem('sgai-sub-tier') || 'none';
-            if (tier === 'lite' || tier === 'pro' || tier === 'max') return tier;
-            return 'none';
+            const raw = localStorage.getItem('sgai-tier') || localStorage.getItem('sgai-sub-tier') || 'none';
+            const tier = String(raw).toLowerCase().trim();
+
+            const normalized = {
+                none: 'none',
+                free: 'none',
+
+                lite: 'lite',
+                survivor: 'lite',
+                plus: 'lite',
+
+                pro: 'pro',
+                hunter: 'pro',
+
+                max: 'max',
+                elder: 'max',
+                'elder god': 'max',
+                vip: 'max',
+            };
+
+            return normalized[tier] || 'none';
         } catch (_) {
             return 'none';
         }
@@ -640,10 +678,6 @@ const ScaryStore = (function () {
             badge.setAttribute('title', `Subscription tier: ${badgeMeta.label}`);
         }
 
-        // Tier-based CSS variables (kept in JS to avoid forcing global CSS changes)
-        const windowEl = storeContainer.querySelector('.store-window');
-        if (!windowEl) return;
-
         const vars = {
             none: {
                 accent: '#cc1122',
@@ -672,25 +706,55 @@ const ScaryStore = (function () {
         };
 
         const theme = vars[tier] || vars.none;
-        windowEl.style.setProperty('--store-accent', theme.accent);
-        windowEl.style.setProperty('--store-accent-2', theme.accent2);
-        windowEl.style.setProperty('--store-tier-glow', theme.glow);
-        windowEl.style.setProperty('--store-sparkle', theme.sparkle);
+
+        const applyVars = (el) => {
+            if (!el || !el.style) return;
+            el.style.setProperty('--store-accent', theme.accent);
+            el.style.setProperty('--store-accent-2', theme.accent2);
+            el.style.setProperty('--store-tier-glow', theme.glow);
+            el.style.setProperty('--store-sparkle', theme.sparkle);
+        };
+
+        applyVars(storeContainer);
+        applyVars(storeContainer.querySelector('.store-window'));
+    }
+
+    function safeLocalStorageGet(key) {
+        try {
+            return localStorage.getItem(key);
+        } catch (e) {
+            // Can throw in some embedded/sandboxed contexts (or when storage is disabled).
+            console.warn('[ScaryStore] localStorage unavailable (get):', e?.message || e);
+            return null;
+        }
+    }
+
+    function safeLocalStorageSet(key, value) {
+        try {
+            localStorage.setItem(key, value);
+            return true;
+        } catch (e) {
+            console.warn('[ScaryStore] localStorage unavailable (set):', e?.message || e);
+            return false;
+        }
     }
 
     function loadState() {
-        const saved = localStorage.getItem('sgai-store-state');
-        if (saved) {
-            try {
-                state = JSON.parse(saved);
-            } catch (e) {
-                console.error('[ScaryStore] Failed to load state:', e);
-            }
+        const saved = safeLocalStorageGet('sgai-store-state');
+        if (!saved) return;
+
+        try {
+            state = JSON.parse(saved);
+        } catch (e) {
+            console.error('[ScaryStore] Failed to load state:', e);
         }
     }
 
     function saveState() {
-        localStorage.setItem('sgai-store-state', JSON.stringify(state));
+        var ok = safeLocalStorageSet('sgai-store-state', JSON.stringify(state));
+        if (ok && window.SGAIStateBus && typeof window.SGAIStateBus.broadcastStateUpdated === 'function') {
+            window.SGAIStateBus.broadcastStateUpdated({ source: 'store' });
+        }
     }
 
     function generateIdempotencyKey(scope) {
@@ -699,7 +763,7 @@ const ScaryStore = (function () {
     }
 
     function getAuthToken() {
-        return localStorage.getItem('sgai-token') || 'demo-token';
+        return safeLocalStorageGet('sgai-token') || 'demo-token';
     }
 
     function buildHeaders(extra = {}) {
@@ -989,14 +1053,25 @@ const ScaryStore = (function () {
     // ═══════════════════════════════════════════════════════════════
 
     function openStore(tab = 'featured') {
+        // Defensive: if init() was blocked by storage/CSP/etc, ensure styles still apply.
+        injectStyles();
+
         if (!storeContainer) {
             createStoreContainer();
         }
 
+        applyTierTheme();
+
         storeContainer.classList.add('open');
         document.body.style.overflow = 'hidden';
+
         renderTab(tab);
+
+        // Accessibility: focus something inside the dialog.
+        storeContainer.querySelector('.store-close')?.focus?.({ preventScroll: true });
+
         refreshBackendSnapshots({ silent: true }).then(() => {
+            applyTierTheme();
             const activeTab = storeContainer?.querySelector('.store-tab.active')?.dataset?.tab || tab;
             renderTab(activeTab);
         }).catch(() => {
@@ -1015,39 +1090,58 @@ const ScaryStore = (function () {
         storeContainer = document.createElement('div');
         storeContainer.id = 'scary-store-container';
         storeContainer.innerHTML = `
-            <div class="store-overlay" onclick="ScaryStore.closeStore()"></div>
-            <div class="store-window">
+            <div class="store-overlay"></div>
+            <div class="store-window" role="dialog" aria-modal="true" aria-labelledby="store-modal-title" tabindex="-1">
                 <div class="store-header">
-                    <h1 class="store-title">🛒 Scary Store</h1>
+                    <div class="store-header-left">
+                        <h1 class="store-title" id="store-modal-title">🛒 Scary Store</h1>
+                        <span class="store-tier-badge" data-store-tier-badge="true">FREE</span>
+                    </div>
                     <div class="store-balance">
                         <span class="balance-souls">👻 <span id="store-souls">${state.balance.souls}</span></span>
                         <span class="balance-gems">💎 <span id="store-gems">${state.balance.gems}</span></span>
                     </div>
-                    <button class="store-close" onclick="ScaryStore.closeStore()">×</button>
+                    <button class="store-close" type="button" aria-label="Close store">×</button>
                 </div>
-                <div class="store-tabs">
-                    <button class="store-tab active" data-tab="featured">⭐ Featured</button>
-                    <button class="store-tab" data-tab="battlepass">❄️ Battle Pass</button>
-                    <button class="store-tab" data-tab="skins">👤 Skins</button>
-                    <button class="store-tab" data-tab="effects">✨ Effects</button>
-                    <button class="store-tab" data-tab="bundles">📦 Bundles</button>
-                    <button class="store-tab" data-tab="currency">💎 Currency</button>
-                    <button class="store-tab" data-tab="gifts">🎁 Gifts</button>
+                <div class="store-tabs" role="tablist" aria-label="Store sections">
+                    <button class="store-tab active" type="button" data-tab="featured" role="tab" aria-selected="true">⭐ Featured</button>
+                    <button class="store-tab" type="button" data-tab="battlepass" role="tab" aria-selected="false">❄️ Battle Pass</button>
+                    <button class="store-tab" type="button" data-tab="skins" role="tab" aria-selected="false">👤 Skins</button>
+                    <button class="store-tab" type="button" data-tab="effects" role="tab" aria-selected="false">✨ Effects</button>
+                    <button class="store-tab" type="button" data-tab="bundles" role="tab" aria-selected="false">📦 Bundles</button>
+                    <button class="store-tab" type="button" data-tab="currency" role="tab" aria-selected="false">💎 Currency</button>
+                    <button class="store-tab" type="button" data-tab="gifts" role="tab" aria-selected="false">🎁 Gifts</button>
                 </div>
-                <div class="store-content" id="store-content"></div>
+                <div class="store-content" id="store-content" role="tabpanel"></div>
             </div>
         `;
 
         document.body.appendChild(storeContainer);
 
+        storeContainer.querySelector('.store-overlay')?.addEventListener('click', closeStore);
+        storeContainer.querySelector('.store-close')?.addEventListener('click', closeStore);
+
+        // Close on escape (only when open)
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && storeContainer?.classList.contains('open')) {
+                closeStore();
+            }
+        });
+
         // Tab event listeners
         storeContainer.querySelectorAll('.store-tab').forEach(tab => {
             tab.addEventListener('click', () => {
-                storeContainer.querySelectorAll('.store-tab').forEach(t => t.classList.remove('active'));
+                storeContainer.querySelectorAll('.store-tab').forEach(t => {
+                    t.classList.remove('active');
+                    t.setAttribute('aria-selected', 'false');
+                });
                 tab.classList.add('active');
+                tab.setAttribute('aria-selected', 'true');
                 renderTab(tab.dataset.tab);
             });
         });
+
+        applyTierTheme();
     }
 
     function renderTab(tab) {
@@ -1276,8 +1370,8 @@ const ScaryStore = (function () {
     // ═══════════════════════════════════════════════════════════════
 
     function renderSkins(container) {
-        const userTier = localStorage.getItem('sgai-sub-tier') || 'none';
-        const tierLevel = { none: 0, lite: 1, pro: 2, max: 3 }[userTier];
+        const userTier = getUserTier();
+        const tierLevel = { none: 0, lite: 1, pro: 2, max: 3 }[userTier] ?? 0;
 
         container.innerHTML = `
             <div class="store-section">
@@ -1294,8 +1388,8 @@ const ScaryStore = (function () {
     // ═══════════════════════════════════════════════════════════════
 
     function renderEffects(container) {
-        const userTier = localStorage.getItem('sgai-sub-tier') || 'none';
-        const tierLevel = { none: 0, lite: 1, pro: 2, max: 3 }[userTier];
+        const userTier = getUserTier();
+        const tierLevel = { none: 0, lite: 1, pro: 2, max: 3 }[userTier] ?? 0;
 
         container.innerHTML = `
             <div class="store-section">
@@ -1330,8 +1424,8 @@ const ScaryStore = (function () {
     // ═══════════════════════════════════════════════════════════════
 
     function renderBundles(container) {
-        const userTier = localStorage.getItem('sgai-sub-tier') || 'none';
-        const tierLevel = { none: 0, lite: 1, pro: 2, max: 3 }[userTier];
+        const userTier = getUserTier();
+        const tierLevel = { none: 0, lite: 1, pro: 2, max: 3 }[userTier] ?? 0;
 
         container.innerHTML = `
             <div class="store-section">
@@ -1466,7 +1560,7 @@ const ScaryStore = (function () {
                 <div class="bundle-name">${bundle.name}</div>
                 <div class="bundle-desc">${bundle.description}</div>
                 <div class="bundle-items">
-                    ${bundle.items.map(item => `<span class="bundle-item-tag">${item.type}</span>`).join('')}
+                    ${bundle.items.map(item => `<span class="bundle-item-tag">${item.type}</span>`).join(' ')}
                 </div>
                 ${isLocked ? `
                     <div class="bundle-locked">Requires ${bundle.tier === 'lite' ? 'Survivor' : bundle.tier === 'pro' ? 'Hunter' : 'Elder God'}</div>
@@ -1688,7 +1782,7 @@ const ScaryStore = (function () {
             pro: 2,
             max: 3,
         };
-        const userTier = localStorage.getItem('sgai-sub-tier') || 'none';
+        const userTier = getUserTier();
         const bonus = tierBonus[userTier] || 1;
 
         state.battlePass.xp += Math.floor(amount * bonus);
@@ -1728,7 +1822,7 @@ const ScaryStore = (function () {
         });
 
         // Apply tier discount
-        const userTier = localStorage.getItem('sgai-sub-tier') || 'none';
+        const userTier = getUserTier();
         const tierDiscount = TIER_DISCOUNTS[userTier] || 0;
 
         return Math.max(maxDiscount, tierDiscount);

@@ -21,7 +21,7 @@
     <link rel="canonical" href="https://scarygames.ai/store.html">
     <link rel="alternate" hreflang="en" href="https://scarygames.ai/store.html">
     <link rel="alternate" hreflang="x-default" href="https://scarygames.ai/store.html">
-    <title>Store — ScaryGamesAI</title>
+    <title>Store — ScaryGamesAI</title>
     <script type="application/ld+json">
         {
           "@context": "https://schema.org",
@@ -36,208 +36,273 @@
           }
         }
     </script>
-    <link rel="manifest" href="/assets/manifest-BkXN0yik.json">
-  <script type="module" crossorigin src="/assets/js/chunks/styles-C37ZYxfD.js"></script>
-  <script type="module" crossorigin src="/assets/js/chunks/shell-j7F2CuES.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/css/styles-CoPMDZEA.css">
+    <link rel="manifest" href="/assets/manifest-CClJyXmJ.json">
+  <script type="module" crossorigin src="/assets/js/chunks/search-DtE-2Mxs.js"></script>
+  <script type="module" crossorigin src="/assets/js/chunks/shell-BInXxBSp.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/css/search-EH9a9Mc2.css">
+  <link rel="stylesheet" crossorigin href="/assets/css/store-dIt8aW3p.css">
 </head>
 
 <body class="store-page">
-    <!-- Skip link for accessibility -->
     <a href="#main-content" class="skip-link">Skip to main content</a>
-    
+
     <div class="bg-fog"></div>
     <div class="bg-grain"></div>
 
-    <nav class="navbar" role="navigation" aria-label="Main navigation">
-        <div class="nav-inner">
-            <a href="/" class="nav-logo">Scary<span>Games</span>AI</a>
-            <ul class="nav-links">
-                <li><a href="/">Home</a></li>
-                <li><a href="/games.html">Games</a></li>
-                <li><a href="/challenges.html">Challenges</a></li>
-                <li><a href="/achievements.html">Achievements</a></li>
-                <li><a href="/leaderboards.html">Leaderboards</a></li>
-                <li><a href="/subscription.html">Subscribe</a></li>
-                <li><a href="/store.html" class="active">Store</a></li>
-                <li><a href="/#about">About</a></li>
-            </ul>
-        </div>
-    </nav>
+    <sgai-navbar></sgai-navbar>
 
     <main class="main-content" id="main-content" role="main">
-        <!-- Store Hero -->
-        <section class="container" style="padding-top: 100px; padding-bottom: 40px;">
-            <div style="text-align: center; max-width: 600px; margin: 0 auto;">
-                <h1 style="font-size: 3rem; margin-bottom: 16px;">🛒 Scary Store</h1>
-                <p style="color: #888; font-size: 1.1rem; margin-bottom: 32px;">
-                    Customize your horror experience with exclusive skins, effects, and the Winter Battle Pass!
-                </p>
-                <button id="open-store-btn" class="hero-cta" style="display: inline-flex; align-items: center; gap: 8px;">
-                    <span class="hero-cta-pulse"></span>
-                    Open Store
-                </button>
+        <section class="container store-hero-premium" aria-labelledby="store-hero-title">
+            <div class="store-hero-copy">
+                <p class="store-eyebrow">The Forbidden Market</p>
+                <h1 id="store-hero-title">Claim relic-tier cosmetics forged for nightmares.</h1>
+                <p class="store-hero-subcopy">Unlock elite skins, violent effects, and prestige bundles that reshape every run across the ScaryGamesAI universe.</p>
+                <div class="store-hero-actions">
+                    <button id="open-store-btn" class="hero-cta hero-cta-primary">
+                        <span class="hero-cta-pulse"></span>
+                        Open Store
+                    </button>
+                    <button class="hero-cta hero-cta-secondary" type="button" onclick="ScaryStore.openStore('bundles')">View Bundles</button>
+                </div>
+                <div class="store-hero-chips" aria-label="Store highlights">
+                    <span class="store-chip">100+ Cosmetics</span>
+                    <span class="store-chip">Live Deals</span>
+                    <span class="store-chip">Premium Pass</span>
+                </div>
+            </div>
+            <div class="store-hero-visual" aria-hidden="true">
+                <article class="hero-premium-card hero-premium-card-main">
+                    <p class="hero-card-tag">Mythic Bundle</p>
+                    <h2>Ritual Ascension Pack</h2>
+                    <p>Legendary skin, void finisher, profile frame, and instant tier jump.</p>
+                    <button class="hero-card-inline-cta" type="button" onclick="ScaryStore.openStore('bundles')">Inspect Bundle</button>
+                </article>
+                <article class="hero-premium-card hero-premium-card-side">
+                    <p class="hero-card-tag">Live Drop</p>
+                    <h3>Phantom Crown Aura</h3>
+                    <p>Ends in 19h</p>
+                </article>
             </div>
         </section>
 
-        <!-- Quick Links -->
-        <section class="container" style="padding-bottom: 40px;">
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
-                <!-- Battle Pass Card -->
-                <div class="quick-link-card" onclick="ScaryStore.openStore('battlepass')" style="
-                    background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(139, 92, 246, 0.1));
-                    border: 1px solid rgba(6, 182, 212, 0.3);
-                    border-radius: 16px;
-                    padding: 32px;
-                    cursor: pointer;
-                    transition: all 0.3s;
-                " onmouseover="this.style.transform='translateY(-4px)'; this.style.borderColor='rgba(6, 182, 212, 0.6)'"
-                   onmouseout="this.style.transform=''; this.style.borderColor='rgba(6, 182, 212, 0.3)'">
-                    <div style="font-size: 3rem; margin-bottom: 16px;">❄️</div>
-                    <h2 style="margin: 0 0 8px; color: #fff;">Winter Battle Pass</h2>
-                    <p style="color: #888; margin: 0 0 16px;">100 Tiers • 70+ Rewards • Limited Time</p>
-                    <span style="color: #06b6d4; font-weight: 600;">View Pass →</span>
-                </div>
+        <section class="container store-featured-grid" aria-labelledby="featured-offers-title">
+            <header class="store-section-header">
+                <p class="store-section-kicker">Featured first</p>
+                <h2 id="featured-offers-title">High-Value Bundles & Limited Offers</h2>
+                <p>Maximum value sets prioritized for first-scroll conversion.</p>
+            </header>
+            <div class="featured-offers-grid">
+                <article class="featured-offer-card featured-offer-hero">
+                    <p class="offer-rarity offer-rarity-legendary">Legendary Bundle</p>
+                    <h3>Catacomb Sovereign Collection</h3>
+                    <p>5 premium items, animated profile effects, and pass tier boosts.</p>
+                    <div class="offer-pricing">
+                        <span class="offer-price-original">4,800 Gems</span>
+                        <span class="offer-price-current">2,999 Gems</span>
+                        <span class="offer-discount">-38%</span>
+                    </div>
+                    <button type="button" class="store-cta store-cta-premium" onclick="ScaryStore.openStore('bundles')">Unlock Bundle</button>
+                </article>
 
-                <!-- Skins Card -->
-                <div class="quick-link-card" onclick="ScaryStore.openStore('skins')" style="
-                    background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(249, 115, 22, 0.1));
-                    border: 1px solid rgba(239, 68, 68, 0.3);
-                    border-radius: 16px;
-                    padding: 32px;
-                    cursor: pointer;
-                    transition: all 0.3s;
-                " onmouseover="this.style.transform='translateY(-4px)'; this.style.borderColor='rgba(239, 68, 68, 0.6)'"
-                   onmouseout="this.style.transform=''; this.style.borderColor='rgba(239, 68, 68, 0.3)'">
-                    <div style="font-size: 3rem; margin-bottom: 16px;">👤</div>
-                    <h2 style="margin: 0 0 8px; color: #fff;">Character Skins</h2>
-                    <p style="color: #888; margin: 0 0 16px;">25+ Unique skins from Survivor to Elder God</p>
-                    <span style="color: #ef4444; font-weight: 600;">Browse Skins →</span>
-                </div>
+                <article class="featured-offer-card">
+                    <p class="offer-rarity offer-rarity-epic">Epic Deal</p>
+                    <h3>Blood Architect Skin</h3>
+                    <p>Precision rune armor with custom elimination effect.</p>
+                    <div class="offer-pricing">
+                        <span class="offer-price-original">1,400 Gems</span>
+                        <span class="offer-price-current">899 Gems</span>
+                    </div>
+                    <button type="button" class="store-cta" onclick="ScaryStore.openStore('featured')">View Deal</button>
+                </article>
 
-                <!-- Effects Card -->
-                <div class="quick-link-card" onclick="ScaryStore.openStore('effects')" style="
-                    background: linear-gradient(135deg, rgba(168, 85, 247, 0.1), rgba(59, 130, 246, 0.1));
-                    border: 1px solid rgba(168, 85, 247, 0.3);
-                    border-radius: 16px;
-                    padding: 32px;
-                    cursor: pointer;
-                    transition: all 0.3s;
-                " onmouseover="this.style.transform='translateY(-4px)'; this.style.borderColor='rgba(168, 85, 247, 0.6)'"
-                   onmouseout="this.style.transform=''; this.style.borderColor='rgba(168, 85, 247, 0.3)'">
-                    <div style="font-size: 3rem; margin-bottom: 16px;">✨</div>
-                    <h2 style="margin: 0 0 8px; color: #fff;">Visual Effects</h2>
-                    <p style="color: #888; margin: 0 0 16px;">Trails, auras, death effects & more</p>
-                    <span style="color: #a855f7; font-weight: 600;">View Effects →</span>
-                </div>
+                <article class="featured-offer-card">
+                    <p class="offer-rarity offer-rarity-mythic">Mythic Drop</p>
+                    <h3>Abyss Gate Finisher</h3>
+                    <p>One-hit execution portal with arena-wide sound cue.</p>
+                    <div class="offer-pricing">
+                        <span class="offer-price-original">2,200 Gems</span>
+                        <span class="offer-price-current">1,450 Gems</span>
+                    </div>
+                    <button type="button" class="store-cta" onclick="ScaryStore.openStore('effects')">Preview Effect</button>
+                </article>
 
-                <!-- Bundles Card -->
-                <div class="quick-link-card" onclick="ScaryStore.openStore('bundles')" style="
-                    background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(16, 185, 129, 0.1));
-                    border: 1px solid rgba(34, 197, 94, 0.3);
-                    border-radius: 16px;
-                    padding: 32px;
-                    cursor: pointer;
-                    transition: all 0.3s;
-                " onmouseover="this.style.transform='translateY(-4px)'; this.style.borderColor='rgba(34, 197, 94, 0.6)'"
-                   onmouseout="this.style.transform=''; this.style.borderColor='rgba(34, 197, 94, 0.3)'">
-                    <div style="font-size: 3rem; margin-bottom: 16px;">📦</div>
-                    <h2 style="margin: 0 0 8px; color: #fff;">Bundles</h2>
-                    <p style="color: #888; margin: 0 0 16px;">Save up to 50% with curated bundles</p>
-                    <span style="color: #22c55e; font-weight: 600;">View Bundles →</span>
-                </div>
-
-                <!-- Currency Card -->
-                <div class="quick-link-card" onclick="ScaryStore.openStore('currency')" style="
-                    background: linear-gradient(135deg, rgba(251, 191, 36, 0.1), rgba(245, 158, 11, 0.1));
-                    border: 1px solid rgba(251, 191, 36, 0.3);
-                    border-radius: 16px;
-                    padding: 32px;
-                    cursor: pointer;
-                    transition: all 0.3s;
-                " onmouseover="this.style.transform='translateY(-4px)'; this.style.borderColor='rgba(251, 191, 36, 0.6)'"
-                   onmouseout="this.style.transform=''; this.style.borderColor='rgba(251, 191, 36, 0.3)'">
-                    <div style="font-size: 3rem; margin-bottom: 16px;">💎</div>
-                    <h2 style="margin: 0 0 8px; color: #fff;">Blood Gems</h2>
-                    <p style="color: #888; margin: 0 0 16px;">Premium currency for exclusive items</p>
-                    <span style="color: #fbbf24; font-weight: 600;">Buy Gems →</span>
-                </div>
-
-                <!-- Gifts Card -->
-                <div class="quick-link-card" onclick="ScaryStore.openStore('gifts')" style="
-                    background: linear-gradient(135deg, rgba(244, 63, 94, 0.1), rgba(236, 72, 153, 0.1));
-                    border: 1px solid rgba(244, 63, 94, 0.3);
-                    border-radius: 16px;
-                    padding: 32px;
-                    cursor: pointer;
-                    transition: all 0.3s;
-                " onmouseover="this.style.transform='translateY(-4px)'; this.style.borderColor='rgba(244, 63, 94, 0.6)'"
-                   onmouseout="this.style.transform=''; this.style.borderColor='rgba(244, 63, 94, 0.3)'">
-                    <div style="font-size: 3rem; margin-bottom: 16px;">🎁</div>
-                    <h2 style="margin: 0 0 8px; color: #fff;">Gift Subscriptions</h2>
-                    <p style="color: #888; margin: 0 0 16px;">Give the gift of horror</p>
-                    <span style="color: #f43f5e; font-weight: 600;">Send Gift →</span>
-                </div>
+                <article class="featured-offer-card">
+                    <p class="offer-rarity offer-rarity-legendary">Bundle Deal</p>
+                    <h3>Hunter’s Recovery Crate</h3>
+                    <p>Boosters, soul packs, and curated skin rotation.</p>
+                    <div class="offer-pricing">
+                        <span class="offer-price-original">1,950 Gems</span>
+                        <span class="offer-price-current">1,099 Gems</span>
+                    </div>
+                    <button type="button" class="store-cta" onclick="ScaryStore.openStore('bundles')">Claim Crate</button>
+                </article>
             </div>
         </section>
 
-        <!-- Featured Section -->
-        <section class="container" style="padding-bottom: 60px;">
-            <h2 style="text-align: center; margin-bottom: 24px; color: #fff;">❄️ Winter Battle Pass Highlights</h2>
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
-                <div style="background: rgba(255,255,255,0.03); border-radius: 12px; padding: 20px; text-align: center;">
-                    <div style="font-size: 2.5rem; margin-bottom: 8px;">❄️</div>
-                    <div style="font-weight: 700; color: #fff;">Frost Demon Skin</div>
-                    <div style="color: #888; font-size: 0.85rem;">Tier 25</div>
-                </div>
-                <div style="background: rgba(255,255,255,0.03); border-radius: 12px; padding: 20px; text-align: center;">
-                    <div style="font-size: 2.5rem; margin-bottom: 8px;">👸</div>
-                    <div style="font-weight: 700; color: #fff;">Ice Queen Skin</div>
-                    <div style="color: #fbbf24; font-size: 0.85rem;">Tier 50 (Premium)</div>
-                </div>
-                <div style="background: rgba(255,255,255,0.03); border-radius: 12px; padding: 20px; text-align: center;">
-                    <div style="font-size: 2.5rem; margin-bottom: 8px;">🦣</div>
-                    <div style="font-weight: 700; color: #fff;">Yeti Beast Skin</div>
-                    <div style="color: #fbbf24; font-size: 0.85rem;">Tier 75 (Premium)</div>
-                </div>
-                <div style="background: rgba(255,255,255,0.03); border-radius: 12px; padding: 20px; text-align: center;">
-                    <div style="font-size: 2.5rem; margin-bottom: 8px;">😈</div>
-                    <div style="font-weight: 700; color: #fff;">Krampus Skin</div>
-                    <div style="color: #f43f5e; font-size: 0.85rem;">Tier 100 (Premium)</div>
-                </div>
+        <section class="container store-category-rail" aria-labelledby="store-categories-title">
+            <header class="store-section-header">
+                <h2 id="store-categories-title">Categories</h2>
+                <p>Jump directly to your target tab.</p>
+            </header>
+            <div class="category-pill-row" role="toolbar" aria-label="Store category tabs">
+                <button type="button" class="category-pill" onclick="ScaryStore.openStore('battlepass')"><span>❄️</span>Battle Pass</button>
+                <button type="button" class="category-pill" onclick="ScaryStore.openStore('skins')"><span>👤</span>Skins</button>
+                <button type="button" class="category-pill" onclick="ScaryStore.openStore('effects')"><span>✨</span>Effects</button>
+                <button type="button" class="category-pill" onclick="ScaryStore.openStore('bundles')"><span>📦</span>Bundles</button>
+                <button type="button" class="category-pill" onclick="ScaryStore.openStore('currency')"><span>💎</span>Currency</button>
+                <button type="button" class="category-pill" onclick="ScaryStore.openStore('gifts')"><span>🎁</span>Gifts</button>
             </div>
         </section>
 
-        <!-- Stats -->
-        <section class="container" style="padding-bottom: 60px;">
-            <div style="display: flex; justify-content: center; gap: 60px; flex-wrap: wrap; text-align: center;">
-                <div>
-                    <div style="font-size: 2.5rem; font-weight: 700; color: #fff;">100+</div>
-                    <div style="color: #888;">Cosmetics</div>
+        <section class="container store-premium-showcase" aria-labelledby="premium-showcase-title">
+            <header class="store-section-header">
+                <p class="store-section-kicker">Aspirational inventory</p>
+                <h2 id="premium-showcase-title">Premium Showcase</h2>
+                <p>Elite cosmetics with lore-backed identity and rarity prestige.</p>
+            </header>
+            <div class="premium-showcase-grid">
+                <article class="premium-showcase-card premium-card-tall">
+                    <span class="offer-rarity offer-rarity-epic">Epic</span>
+                    <h3>Veilrunner Operative</h3>
+                    <p class="premium-lore">"Walked through chapel smoke and returned wearing silence."</p>
+                    <button type="button" class="store-cta" onclick="ScaryStore.openStore('skins')">Preview Skin</button>
+                </article>
+                <article class="premium-showcase-card">
+                    <span class="offer-rarity offer-rarity-legendary">Legendary</span>
+                    <h3>Funeral Bell Trail</h3>
+                    <p class="premium-lore">"Every step tolls a warning no survivor believes."</p>
+                    <button type="button" class="store-cta" onclick="ScaryStore.openStore('effects')">Preview Effect</button>
+                </article>
+                <article class="premium-showcase-card premium-card-tall">
+                    <span class="offer-rarity offer-rarity-mythic">Mythic</span>
+                    <h3>Throne of Ash Avatar</h3>
+                    <p class="premium-lore">"A profile frame carved from a king that never died."</p>
+                    <button type="button" class="store-cta" onclick="ScaryStore.openStore('featured')">View Item</button>
+                </article>
+                <article class="premium-showcase-card">
+                    <span class="offer-rarity offer-rarity-legendary">Legendary</span>
+                    <h3>Null Choir Emote</h3>
+                    <p class="premium-lore">"A ritual gesture that mutes every light in range."</p>
+                    <button type="button" class="store-cta" onclick="ScaryStore.openStore('featured')">View Item</button>
+                </article>
+                <article class="premium-showcase-card">
+                    <span class="offer-rarity offer-rarity-epic">Epic</span>
+                    <h3>Black Ice Banner</h3>
+                    <p class="premium-lore">"Raised only by players who finish the pass in blood."</p>
+                    <button type="button" class="store-cta" onclick="ScaryStore.openStore('battlepass')">View Pass Loot</button>
+                </article>
+            </div>
+        </section>
+
+        <section class="container store-battlepass-strip" aria-labelledby="battlepass-strip-title">
+            <div class="battlepass-strip-panel battlepass-strip-left">
+                <p class="store-section-kicker">Seasonal pass</p>
+                <h2 id="battlepass-strip-title">Winter Covenant Pass</h2>
+                <ul>
+                    <li>300 tiers of escalating rarity rewards</li>
+                    <li>Mythic checkpoints at Tier 100, 200, and 300</li>
+                    <li>Bonus gems, titles, and prestige unlocks</li>
+                </ul>
+            </div>
+            <div class="battlepass-strip-panel battlepass-strip-center" aria-label="Battle pass reward milestones">
+                <div class="pass-milestone">
+                    <span>Tier 100</span>
+                    <strong>Krampus Ascendant</strong>
                 </div>
-                <div>
-                    <div style="font-size: 2.5rem; font-weight: 700; color: #fff;">25+</div>
-                    <div style="color: #888;">Skins</div>
+                <div class="pass-milestone">
+                    <span>Tier 200</span>
+                    <strong>Warden of Black Ice</strong>
                 </div>
-                <div>
-                    <div style="font-size: 2.5rem; font-weight: 700; color: #fff;">100</div>
-                    <div style="color: #888;">Battle Pass Tiers</div>
+                <div class="pass-milestone">
+                    <span>Tier 250</span>
+                    <strong>Abyssal Crown Title</strong>
                 </div>
-                <div>
-                    <div style="font-size: 2.5rem; font-weight: 700; color: #fff;">15%</div>
-                    <div style="color: #888;">Elder God Discount</div>
+                <div class="pass-milestone">
+                    <span>Tier 300</span>
+                    <strong>Winter Covenant Mythic</strong>
                 </div>
+            </div>
+            <div class="battlepass-strip-panel battlepass-strip-right">
+                <button type="button" class="store-cta store-cta-frost" onclick="ScaryStore.openStore('battlepass')">View Pass</button>
+                <button type="button" class="store-cta" onclick="ScaryStore.openStore('featured')">Open Store</button>
+            </div>
+        </section>
+
+        <section class="container store-urgency-bar" aria-labelledby="store-deals-title">
+            <header class="store-section-header">
+                <p class="store-section-kicker">Scarcity command</p>
+                <h2 id="store-deals-title">Urgency & Deals</h2>
+            </header>
+            <div class="urgency-grid">
+                <article class="urgency-timer-card" aria-live="polite">
+                    <p>Flash window closes in</p>
+                    <strong>07:14:52</strong>
+                    <span>Reset at midnight UTC</span>
+                </article>
+                <article class="urgency-deal-card">
+                    <p class="offer-rarity offer-rarity-legendary">-45%</p>
+                    <h3>Crypt Stalker Kit</h3>
+                    <p>Skin + aura + banner</p>
+                </article>
+                <article class="urgency-deal-card">
+                    <p class="offer-rarity offer-rarity-epic">-30%</p>
+                    <h3>Night Ops Utility Pack</h3>
+                    <p>Effects + profile upgrades</p>
+                </article>
+                <button type="button" class="store-cta store-cta-deal" onclick="ScaryStore.openStore('featured')">Claim Deals</button>
+            </div>
+        </section>
+
+        <section class="container store-social-proof" aria-labelledby="store-social-proof-title">
+            <header class="store-section-header">
+                <h2 id="store-social-proof-title">Trusted by the Midnight Queue</h2>
+            </header>
+            <div class="social-metrics-grid">
+                <article class="social-metric">
+                    <strong>100+</strong>
+                    <span>Cosmetics Available</span>
+                </article>
+                <article class="social-metric">
+                    <strong>42K+</strong>
+                    <span>Active Buyers</span>
+                </article>
+                <article class="social-metric">
+                    <strong>18K+</strong>
+                    <span>Premium Pass Owners</span>
+                </article>
+                <article class="social-metric">
+                    <strong>4.8/5</strong>
+                    <span>Average Store Rating</span>
+                </article>
+            </div>
+            <div class="social-quotes-grid" aria-label="Community quotes">
+                <blockquote>
+                    “Best premium bundle cadence in any indie horror platform.”
+                    <cite>— Top 100 Survivor</cite>
+                </blockquote>
+                <blockquote>
+                    “The pass rewards actually feel exclusive, not filler.”
+                    <cite>— Battle Pass Grinder</cite>
+                </blockquote>
+                <blockquote>
+                    “Instant unlocks and no checkout friction. Exactly what I want.”
+                    <cite>— Elder God Subscriber</cite>
+                </blockquote>
+            </div>
+            <div class="trust-chip-row" aria-label="Store trust assurances">
+                <span class="store-chip">Secure checkout</span>
+                <span class="store-chip">Instant unlock</span>
+                <span class="store-chip">Cross-game cosmetic support</span>
             </div>
         </section>
     </main>
 
-    <footer class="footer" role="contentinfo">
-        <div class="footer-inner">
-            <p>&copy; 2026 ScaryGamesAI — Enter at your own risk. 💀</p>
-        </div>
-    </footer>
+    <sgai-footer></sgai-footer>
 
+    <script src="/js/sgai-components.js" defer></script>
+    <script src="/js/state-bus.js" defer></script>
     <script src="/js/store-system.js"></script>
+    <script src="/js/search-system.js"></script>
     <script src="/js/page-shell.js"></script>
     <script src="/js/main.js"></script>
     <script>

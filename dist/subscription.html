@@ -22,7 +22,7 @@
     <link rel="canonical" href="https://scarygames.ai/subscription.html">
     <link rel="alternate" hreflang="en" href="https://scarygames.ai/subscription.html">
     <link rel="alternate" hreflang="x-default" href="https://scarygames.ai/subscription.html">
-    <title>Subscribe — ScaryGamesAI</title>
+    <title>Subscribe — ScaryGamesAI</title>
     <script type="application/ld+json">
         {
           "@context": "https://schema.org",
@@ -37,10 +37,10 @@
           }
         }
     </script>
-    <link rel="manifest" href="/assets/manifest-BkXN0yik.json">
-  <script type="module" crossorigin src="/assets/js/chunks/styles-C37ZYxfD.js"></script>
-  <script type="module" crossorigin src="/assets/js/chunks/shell-j7F2CuES.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/css/styles-CoPMDZEA.css">
+    <link rel="manifest" href="/assets/manifest-CClJyXmJ.json">
+  <script type="module" crossorigin src="/assets/js/chunks/search-DtE-2Mxs.js"></script>
+  <script type="module" crossorigin src="/assets/js/chunks/shell-BInXxBSp.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/css/search-EH9a9Mc2.css">
   <link rel="stylesheet" crossorigin href="/assets/css/subscription-DMeFGZTs.css">
 </head>
 
@@ -58,21 +58,7 @@
     <div id="flash-sale-banner" class="promo-banner" style="display: none;"></div>
 
     <!-- Navigation -->
-    <nav class="navbar" role="navigation" aria-label="Main navigation">
-        <div class="nav-inner">
-            <a href="/" class="nav-logo">Scary<span>Games</span>AI</a>
-            <ul class="nav-links">
-                <li><a href="/">Home</a></li>
-                <li><a href="/games.html">Games</a></li>
-                <li><a href="/challenges.html">Challenges</a></li>
-                <li><a href="/achievements.html">Achievements</a></li>
-                <li><a href="/leaderboards.html">Leaderboards</a></li>
-                <li><a href="/subscription.html" class="active" aria-current="page">Subscribe</a></li>
-                <li><a href="/store.html">Store</a></li>
-                <li><a href="/#about">About</a></li>
-            </ul>
-        </div>
-    </nav>
+    <sgai-navbar></sgai-navbar>
 
     <main class="main-content" id="main-content" role="main">
         
@@ -449,11 +435,7 @@
 
     </main>
 
-    <footer class="footer" role="contentinfo">
-        <div class="footer-inner">
-            <p>&copy; 2026 ScaryGamesAI — Enter at your own risk. 💀</p>
-        </div>
-    </footer>
+    <sgai-footer></sgai-footer>
 
     <!-- Audio Control -->
     <button class="audio-toggle" id="audio-toggle" title="Toggle Ambient Horror" aria-label="Toggle ambient horror audio">
@@ -543,35 +525,53 @@
                 });
             });
 
-            // Animated Card Canvases
-            function animateBronze(canvas) {
+            // Animated Card Canvases (viewport throttled)
+            function makeViewportCanvasAnimator(canvas, drawFrame) {
                 const ctx = canvas.getContext('2d');
                 let t = 0;
-                const embers = [];
-                for (let i = 0; i < 25; i++) {
-                    embers.push({ 
-                        x: Math.random(), 
-                        y: Math.random(), 
-                        s: Math.random() * 2 + 1, 
-                        v: Math.random() * 0.004 + 0.002 
-                    });
-                }
-                
-                function draw() {
+                let rafId = 0;
+                let running = false;
+
+                function loop() {
+                    if (!running) return;
+                    if (document.hidden) { rafId = requestAnimationFrame(loop); return; }
                     const w = canvas.width = canvas.parentElement.offsetWidth;
                     const h = canvas.height = canvas.parentElement.offsetHeight;
+                    drawFrame(ctx, w, h, t);
+                    t += 0.016;
+                    rafId = requestAnimationFrame(loop);
+                }
+
+                return {
+                    start: () => {
+                        if (running) return;
+                        running = true;
+                        rafId = requestAnimationFrame(loop);
+                    },
+                    stop: () => {
+                        running = false;
+                        if (rafId) cancelAnimationFrame(rafId);
+                        rafId = 0;
+                    }
+                };
+            }
+
+            function animateBronze(canvas) {
+                const embers = [];
+                for (let i = 0; i < 25; i++) {
+                    embers.push({ x: Math.random(), y: Math.random(), s: Math.random() * 2 + 1, v: Math.random() * 0.004 + 0.002 });
+                }
+                return makeViewportCanvasAnimator(canvas, (ctx, w, h, t) => {
                     ctx.fillStyle = '#0a0500';
                     ctx.fillRect(0, 0, w, h);
 
-                    // Flashlight sweep
                     const sweepAngle = Math.sin(t * 0.5) * 0.4;
-                    const beamGrd = ctx.createRadialGradient(w/2, h*0.8, 5, w/2 + Math.sin(sweepAngle)*30, h*0.5, h*0.8);
+                    const beamGrd = ctx.createRadialGradient(w / 2, h * 0.8, 5, w / 2 + Math.sin(sweepAngle) * 30, h * 0.5, h * 0.8);
                     beamGrd.addColorStop(0, 'rgba(255, 250, 220, 0.4)');
                     beamGrd.addColorStop(1, 'transparent');
                     ctx.fillStyle = beamGrd;
                     ctx.fillRect(0, 0, w, h);
 
-                    // Embers
                     embers.forEach(e => {
                         e.y -= e.v;
                         if (e.y < 0) e.y = 1;
@@ -580,24 +580,14 @@
                         ctx.arc(e.x * w, e.y * h, e.s, 0, Math.PI * 2);
                         ctx.fill();
                     });
-
-                    t += 0.016;
-                    requestAnimationFrame(draw);
-                }
-                draw();
+                });
             }
 
             function animateSilver(canvas) {
-                const ctx = canvas.getContext('2d');
-                let t = 0;
-                
-                function draw() {
-                    const w = canvas.width = canvas.parentElement.offsetWidth;
-                    const h = canvas.height = canvas.parentElement.offsetHeight;
+                return makeViewportCanvasAnimator(canvas, (ctx, w, h, t) => {
                     ctx.fillStyle = '#0a0a12';
                     ctx.fillRect(0, 0, w, h);
 
-                    // Moonlight
                     const moonX = w * 0.7;
                     const moonY = h * 0.2;
                     const grd = ctx.createRadialGradient(moonX, moonY, 5, moonX, moonY, h * 0.8);
@@ -606,7 +596,6 @@
                     ctx.fillStyle = grd;
                     ctx.fillRect(0, 0, w, h);
 
-                    // Silver sparks
                     for (let i = 0; i < 20; i++) {
                         const x = (Math.sin(t + i) + 1) * w / 2;
                         const y = (Math.cos(t * 0.5 + i) + 1) * h / 2;
@@ -615,30 +604,18 @@
                         ctx.arc(x, y, 1.5, 0, Math.PI * 2);
                         ctx.fill();
                     }
-
-                    t += 0.016;
-                    requestAnimationFrame(draw);
-                }
-                draw();
+                });
             }
 
             function animateGold(canvas) {
-                const ctx = canvas.getContext('2d');
-                let t = 0;
-                
-                function draw() {
-                    const w = canvas.width = canvas.parentElement.offsetWidth;
-                    const h = canvas.height = canvas.parentElement.offsetHeight;
+                return makeViewportCanvasAnimator(canvas, (ctx, w, h, t) => {
                     const cx = w / 2, cy = h * 0.45;
-                    
-                    // Cosmic void background
                     const voidGrd = ctx.createRadialGradient(cx, cy, 0, cx, cy, Math.max(w, h));
                     voidGrd.addColorStop(0, 'rgba(20, 10, 40, 0.9)');
                     voidGrd.addColorStop(1, 'rgba(5, 0, 15, 1)');
                     ctx.fillStyle = voidGrd;
                     ctx.fillRect(0, 0, w, h);
 
-                    // Rotating flame ring
                     const ringR = 28 + Math.sin(t * 2) * 4;
                     for (let i = 0; i < 12; i++) {
                         const angle = (i / 12) * Math.PI * 2 + t * 0.8;
@@ -654,26 +631,38 @@
                         ctx.fill();
                     }
 
-                    // Central eye
                     const eyePulse = 1 + Math.sin(t * 3) * 0.1;
                     ctx.fillStyle = 'rgba(204, 68, 255, 0.8)';
                     ctx.beginPath();
                     ctx.arc(cx, cy, 6 * eyePulse, 0, Math.PI * 2);
                     ctx.fill();
-
-                    t += 0.016;
-                    requestAnimationFrame(draw);
-                }
-                draw();
+                });
             }
 
             // Init canvases
             const cb = document.getElementById('canvas-bronze');
             const cs = document.getElementById('canvas-silver');
             const cg = document.getElementById('canvas-gold');
-            if (cb) animateBronze(cb);
-            if (cs) animateSilver(cs);
-            if (cg) animateGold(cg);
+            const animators = new Map();
+            if (cb) animators.set(cb, animateBronze(cb));
+            if (cs) animators.set(cs, animateSilver(cs));
+            if (cg) animators.set(cg, animateGold(cg));
+
+            const canvasObserver = new IntersectionObserver((entries) => {
+                entries.forEach((e) => {
+                    const a = animators.get(e.target);
+                    if (!a) return;
+                    if (e.isIntersecting) a.start();
+                    else a.stop();
+                });
+            }, { threshold: 0.35 });
+
+            animators.forEach((_, canvas) => canvasObserver.observe(canvas));
+
+            document.addEventListener('visibilitychange', () => {
+                if (!document.hidden) return;
+                animators.forEach((a) => a.stop());
+            });
 
             // Counter Animation
             const counterEl = document.getElementById('counter-number');
@@ -716,7 +705,10 @@
             }
         })();
     </script>
-  <script src="/js/page-shell.js"></script>
+  <script src="/js/sgai-components.js" defer></script>
+  <script src="/js/state-bus.js" defer></script>
+  <script src="/js/page-shell.js"></script>
+  <script src="/js/search-system.js"></script>
 </body>
 
 </html>

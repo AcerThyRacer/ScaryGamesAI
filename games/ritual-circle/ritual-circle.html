@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <title>Ritual Circle — ScaryGamesAI</title>
+    <meta name="description" content="Cast desperate spells and defend the ritual circle against waves of dark entities.">
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+    <link rel="canonical" href="https://scarygames.ai/games/ritual-circle/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="ScaryGamesAI">
+    <meta property="og:title" content="Ritual Circle — ScaryGamesAI">
+    <meta property="og:description" content="Cast desperate spells and defend the ritual circle against waves of dark entities.">
+    <meta property="og:url" content="https://scarygames.ai/games/ritual-circle/">
+    <meta property="og:image" content="https://scarygames.ai/assets/og-game-fallback.svg?game=ritual-circle">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Ritual Circle — ScaryGamesAI">
+    <meta name="twitter:description" content="Cast desperate spells and defend the ritual circle against waves of dark entities.">
+    <meta name="twitter:image" content="https://scarygames.ai/assets/og-game-fallback.svg?game=ritual-circle">
+    <link rel="manifest" href="/manifest.json">
+    <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "VideoGame",
+          "name": "Ritual Circle",
+          "description": "Cast desperate spells and defend the ritual circle against waves of dark entities.",
+          "genre": [
+            "Horror",
+            "Action",
+            "Defense"
+          ],
+          "applicationCategory": "Game",
+          "operatingSystem": "Web Browser",
+          "url": "https://scarygames.ai/games/ritual-circle/",
+          "image": [
+            "https://scarygames.ai/assets/og-game-fallback.svg?game=ritual-circle"
+          ],
+          "publisher": {
+            "@type": "Organization",
+            "name": "ScaryGamesAI",
+            "url": "https://scarygames.ai/"
+          },
+          "isPartOf": {
+            "@type": "WebSite",
+            "name": "ScaryGamesAI",
+            "url": "https://scarygames.ai/"
+          }
+        }
+    </script>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/game-responsive.css">
+    <link rel="stylesheet" href="/css/mobile-controls.css">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #000;
+        }
+
+        #game-canvas {
+            display: block;
+            width: 100vw;
+            height: 100vh;
+            cursor: crosshair;
+        }
+    </style>
+    <link rel="stylesheet" href="/css/mobile-enhancements.css" id="mc-enhance-css">
+</head>
+
+<body>
+    <div class="game-page">
+        <a href="/games.html" class="back-link" id="back-link">← Back to Games</a>
+
+        <div class="start-screen" id="start-screen">
+            <h1>Ritual Circle</h1>
+            <p class="game-desc">Defend the summoning circle from waves of cultists and demons. Place occult traps, cast
+                devastating spells, and complete the ancient ritual. 10 waves stand between you and ultimate power.</p>
+            <button class="start-btn" id="start-btn">BEGIN THE RITUAL</button>
+        </div>
+
+        <div class="controls-overlay" id="controls-overlay" style="display:none;">
+            <div class="controls-content">
+                <h2>Controls</h2>
+                <div class="control-item"><span class="control-key">Click</span> Cast Exorcism Bolt</div>
+                <div class="control-item"><span class="control-key">1</span> Salt Line Trap (10 mana)</div>
+                <div class="control-item"><span class="control-key">2</span> Holy Water Trap (20 mana)</div>
+                <div class="control-item"><span class="control-key">3</span> Sigil Ward (30 mana)</div>
+                <div class="control-item"><span class="control-key">Space</span> Fire Wall (50 mana)</div>
+                <p class="controls-start-hint">Starting in a moment...</p>
+            </div>
+        </div>
+
+        <div class="game-container" id="game-container">
+            <canvas id="game-canvas" aria-label="Ritual Circle spell defense game canvas - click to cast, WASD to move, Q/E to switch spells"></canvas>
+            <div class="game-hud" id="game-hud" style="display:none;">
+                <div>
+                    <div class="hud-score" id="hud-wave" style="font-size:1.2rem;">⚔️ Wave 1 / 10</div>
+                    <div class="hud-score" id="hud-mana" style="font-size:1rem;color:#8888ff;">✨ Mana: 100</div>
+                    <div class="hud-score" id="hud-circle" style="font-size:1rem;color:#ff8800;">🔮 Circle: 100%</div>
+                </div>
+                <div class="hud-controls">
+                    <div class="hud-score" id="hud-kills" style="font-size:1rem;">💀 Kills: 0</div>
+                    <button class="hud-btn" id="fullscreen-btn">⛶ Fullscreen</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-end-screen game-over" id="game-over-screen" style="display:none;">
+            <h1>THE RITUAL FAILED</h1>
+            <p id="death-msg">The circle was destroyed...</p>
+            <button class="play-btn" onclick="location.reload()">▶ Try Again</button>
+            <a href="/games.html" style="display:block;margin-top:16px;color:#888;">← Back to Games</a>
+        </div>
+
+        <div class="game-end-screen game-win" id="game-win-screen" style="display:none;">
+            <h1>RITUAL COMPLETE!</h1>
+            <p id="win-msg">The ancient power is yours!</p>
+            <button class="play-btn" onclick="location.reload()">▶ Play Again</button>
+            <a href="/games.html" style="display:block;margin-top:16px;color:#888;">← Back to Games</a>
+        </div>
+    </div>
+
+    <script src="/js/game-utils.js"></script>
+    <script src="/js/state-bus.js"></script>
+    <script src="/js/audio.js"></script>
+    <script src="/js/quality-enhancer.js"></script>
+    <script src="/js/visual-utils.js"></script>
+    <script src="/js/cinematic-overlay.js"></script>
+    <script src="/js/quality-fx.js"></script>
+    <script src="/js/quality-settings.js"></script>
+    <script src="/js/mobile-controls.js"></script>
+    <script src="/js/mobile-game-bindings.js"></script>
+    <script src="/js/mobile-tutorial.js"></script>
+    <script src="/js/mobile-settings.js"></script>
+    <script src="/js/device-testing.js"></script>
+    
+    <!-- Mobile Support -->
+    <script src="/js/mobile-setup.js" id="mobile-setup-js"></script>
+    <script src="/js/mobile-controls.js" id="mc-js"></script>
+    <script src="/js/mobile-game-bindings.js" id="mc-bindings-js"></script>
+    <script src="/js/mobile-universal-init.js" id="mc-init-js"></script>
+    <script src="/js/mobile-patcher.js" id="mc-patcher-js"></script>
+    <!-- End Mobile Support -->
+    
+    <!-- Accessibility, Memory & Performance -->
+    <script src="/js/accessibility-manager.js" id="a11y-js"></script>
+    <script src="/js/memory-manager.js" id="mem-js"></script>
+    <script src="/js/performance-optimizer.js" id="perf-js"></script>
+    <!-- End Core Systems -->
+    <script src="ritual-circle.js"></script>
+</body>
+
+</html>

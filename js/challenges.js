@@ -292,7 +292,11 @@
     }
 
     function saveState() {
-        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) { }
+        var ok = false;
+        try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); ok = true; } catch (e) { }
+        if (ok && window.SGAIStateBus && typeof window.SGAIStateBus.broadcastStateUpdated === 'function') {
+            window.SGAIStateBus.broadcastStateUpdated({ source: 'challenges' });
+        }
     }
 
     function getTodayString() {
@@ -1196,6 +1200,21 @@
 
     loadState();
     initFriends();
+
+    // Cross-tab sync: if store/game updates challenge state, rerender the current UI.
+    if (window.SGAIStateBus && typeof window.SGAIStateBus.on === 'function') {
+        window.SGAIStateBus.on(function (msg, remote) {
+            if (!remote || !msg || msg.type !== 'STATE_UPDATED') return;
+            if (msg.source === 'challenges') return;
+
+            loadState();
+            try {
+                if (window.ChallengesUI && typeof window.ChallengesUI.render === 'function') {
+                    window.ChallengesUI.render();
+                }
+            } catch (e) { }
+        });
+    }
 
     window.ChallengeManager = {
         state: state,

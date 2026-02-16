@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <title>Blood Tetris — ScaryGamesAI</title>
+    <meta name="description" content="Stack cursed blocks in a fast, blood-soaked twist on classic puzzle survival.">
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+    <link rel="canonical" href="https://scarygames.ai/games/blood-tetris/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="ScaryGamesAI">
+    <meta property="og:title" content="Blood Tetris — ScaryGamesAI">
+    <meta property="og:description" content="Stack cursed blocks in a fast, blood-soaked twist on classic puzzle survival.">
+    <meta property="og:url" content="https://scarygames.ai/games/blood-tetris/">
+    <meta property="og:image" content="https://scarygames.ai/assets/og-game-fallback.svg?game=blood-tetris">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Blood Tetris — ScaryGamesAI">
+    <meta name="twitter:description" content="Stack cursed blocks in a fast, blood-soaked twist on classic puzzle survival.">
+    <meta name="twitter:image" content="https://scarygames.ai/assets/og-game-fallback.svg?game=blood-tetris">
+    <link rel="manifest" href="/manifest.json">
+    <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "VideoGame",
+          "name": "Blood Tetris",
+          "description": "Stack cursed blocks in a fast, blood-soaked twist on classic puzzle survival.",
+          "genre": [
+            "Horror",
+            "Puzzle",
+            "Arcade"
+          ],
+          "applicationCategory": "Game",
+          "operatingSystem": "Web Browser",
+          "url": "https://scarygames.ai/games/blood-tetris/",
+          "image": [
+            "https://scarygames.ai/assets/og-game-fallback.svg?game=blood-tetris"
+          ],
+          "publisher": {
+            "@type": "Organization",
+            "name": "ScaryGamesAI",
+            "url": "https://scarygames.ai/"
+          },
+          "isPartOf": {
+            "@type": "WebSite",
+            "name": "ScaryGamesAI",
+            "url": "https://scarygames.ai/"
+          }
+        }
+    </script>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/game-responsive.css">
+    <link rel="stylesheet" href="/css/mobile-controls.css">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #0a0000;
+        }
+
+        #game-canvas {
+            display: block;
+            margin: 0 auto;
+            background: #0a0000;
+        }
+    </style>
+    <link rel="stylesheet" href="/css/mobile-enhancements.css" id="mc-enhance-css">
+</head>
+
+<body>
+    <div class="game-page">
+        <a href="/games.html" class="back-link" id="back-link">← Back to Games</a>
+
+        <div class="start-screen" id="start-screen">
+            <h1>Blood Tetris</h1>
+            <p class="game-desc">Stack bones, eyeballs, and organs. Clear lines before the blood rises. How long can you
+                survive?</p>
+            <button class="start-btn" id="start-btn">START GAME</button>
+        </div>
+
+        <div class="controls-overlay" id="controls-overlay" style="display:none;">
+            <div class="controls-content">
+                <h2>Controls</h2>
+                <div class="control-item"><span class="control-key">← →</span> Move</div>
+                <div class="control-item"><span class="control-key">↑</span> Rotate</div>
+                <div class="control-item"><span class="control-key">↓</span> Soft Drop</div>
+                <div class="control-item"><span class="control-key">Space</span> Hard Drop</div>
+                <div class="control-item"><span class="control-key">ESC</span> Pause</div>
+                <p class="controls-start-hint">Starting in a moment...</p>
+            </div>
+        </div>
+
+        <div class="game-container" id="game-container">
+            <canvas id="game-canvas" aria-label="Blood Tetris puzzle game canvas - use Arrow Keys to move and rotate, Space for hard drop"></canvas>
+            <div class="game-hud" id="game-hud" style="display:none;">
+                <div class="hud-score" id="hud-score">Score: 0</div>
+                <div class="hud-score" id="hud-level">Level: 1</div>
+                <div class="hud-score" id="hud-lines">Lines: 0</div>
+            </div>
+        </div>
+
+        <div class="game-end-screen game-over" id="game-over-screen" style="display:none;">
+            <h1>GAME OVER</h1>
+            <p id="final-score">Score: 0</p>
+            <button class="play-btn">▶ Try Again</button>
+            <a href="/games.html" style="display:block;margin-top:16px;color:#888;">← Back to Games</a>
+        </div>
+    </div>
+
+    <script src="/js/game-utils.js"></script>
+    <script src="/js/state-bus.js"></script>
+    <script src="/js/audio.js"></script>
+    <script src="/js/quality-enhancer.js"></script>
+    <script src="/js/visual-utils.js"></script>
+    <script src="/js/cinematic-overlay.js"></script>
+    <script src="/js/quality-fx.js"></script>
+    <script src="/js/quality-settings.js"></script>
+    <script src="/js/mobile-controls.js"></script>
+    <script src="/js/mobile-game-bindings.js"></script>
+    <script src="/js/mobile-tutorial.js"></script>
+    <script src="/js/mobile-settings.js"></script>
+    <script src="/js/device-testing.js"></script>
+    
+    <!-- Mobile Support -->
+    <script src="/js/mobile-setup.js" id="mobile-setup-js"></script>
+    <script src="/js/mobile-controls.js" id="mc-js"></script>
+    <script src="/js/mobile-game-bindings.js" id="mc-bindings-js"></script>
+    <script src="/js/mobile-universal-init.js" id="mc-init-js"></script>
+    <script src="/js/mobile-patcher.js" id="mc-patcher-js"></script>
+    <!-- End Mobile Support -->
+    
+    <!-- Accessibility, Memory & Performance -->
+    <script src="/js/accessibility-manager.js" id="a11y-js"></script>
+    <script src="/js/memory-manager.js" id="mem-js"></script>
+    <script src="/js/performance-optimizer.js" id="perf-js"></script>
+    <!-- End Core Systems -->
+    <script src="blood-tetris.js"></script>
+</body>
+
+</html>

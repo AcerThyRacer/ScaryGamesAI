@@ -208,6 +208,32 @@
             pinchZoom: true
         },
 
+        // Top-down arena shooter (diep-style)
+        'crypt-tanks': {
+            type: 'fps', // joystick -> WASD, look -> mousemove, attack -> mouse click
+            buttons: [
+                { id: 'attack', icon: '💥', label: 'Fire' },
+                { id: 'interact', icon: '🕯️', label: 'Power' }
+            ],
+            touchLook: true,
+            swipeControls: false,
+            pinchZoom: false
+        },
+
+        // Total War-style RTS (Rome prequel)
+        'total-zombies-rome': {
+            type: 'strategy',
+            buttons: [
+                { id: 'turret1', icon: '1️⃣', label: '' },
+                { id: 'turret2', icon: '2️⃣', label: '' },
+                { id: 'turret3', icon: '3️⃣', label: '' },
+                { id: 'turret4', icon: '4️⃣', label: '' }
+            ],
+            touchLook: false,
+            swipeControls: false,
+            pinchZoom: true
+        },
+
         // Platformer
         'cursed-depths': {
             type: 'platformer',
@@ -256,6 +282,10 @@
 
     console.log('[MobileBindings] Identified game:', gameId);
     var config = GAME_CONFIGS[gameId];
+    if (!config) {
+        console.log('[MobileBindings] No config for game:', gameId, 'skipping binding');
+        return;
+    }
 
     // ── INITIALIZE MOBILE CONTROLS ─────────────────────────────────
     function initMobileControls() {

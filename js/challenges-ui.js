@@ -575,7 +575,7 @@
                 rerollBtn = '<button class="chal-btn chal-btn-reroll" onclick="window.ChallengesUI.reroll(' +
                     index + ')" title="Reroll Challenge" aria-label="Reroll this challenge">🎲</button>';
             }
-            var playUrl = '/games/' + def.gameId + '/';
+            var playUrl = '/games/' + def.gameId + '/' + def.gameId + '.html';
             btnHtml = '<div class="chal-btn-group">' + rerollBtn +
                 '<a href="' + playUrl + '" class="chal-btn chal-btn-play" aria-label="Play ' + getGameName(def.gameId) + '">PLAY ▶</a></div>';
         }
@@ -710,7 +710,7 @@
             btnHtml = '<button class="chal-btn chal-btn-claim" onclick="window.ChallengesUI.claimMonthly()">' +
                 'CLAIM ' + finalReward + ' CP</button>';
         } else {
-            var playUrl = '/games/' + def.gameId + '/';
+            var playUrl = '/games/' + def.gameId + '/' + def.gameId + '.html';
             btnHtml = '<a href="' + playUrl + '" class="chal-btn chal-btn-play">PLAY ▶</a>';
         }
 
@@ -860,7 +860,7 @@
             btnHtml = '<button class="chal-btn chal-btn-claim" onclick="window.ChallengesUI.claimCursed()">' +
                 'BREAK THE CURSE — Claim ' + def.reward + ' CP</button>';
         } else if (cursed.accepted) {
-            var playUrl = '/games/' + def.gameId + '/';
+            var playUrl = '/games/' + def.gameId + '/' + def.gameId + '.html';
             btnHtml = '<div class="cursed-active-status">⛓️ Curse Active</div>' +
                 '<a href="' + playUrl + '" class="chal-btn chal-btn-play">PLAY ▶</a>';
         } else {

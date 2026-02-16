@@ -1,32 +1,32 @@
 {
-  "_runtime-effects-BOjjhhrF.js": {
-    "file": "assets/js/chunks/runtime-effects-BOjjhhrF.js",
+  "_runtime-effects-B3_12znp.js": {
+    "file": "assets/js/chunks/runtime-effects-B3_12znp.js",
     "name": "runtime-effects",
     "isDynamicEntry": true
   },
-  "_shell-j7F2CuES.js": {
-    "file": "assets/js/chunks/shell-j7F2CuES.js",
+  "_search-!~{00b}~.js": {
+    "file": "assets/css/search-EH9a9Mc2.css",
+    "src": "_search-!~{00b}~.js"
+  },
+  "_search-DtE-2Mxs.js": {
+    "file": "assets/js/chunks/search-DtE-2Mxs.js",
+    "name": "search",
+    "css": [
+      "assets/css/search-EH9a9Mc2.css"
+    ]
+  },
+  "_shell-BInXxBSp.js": {
+    "file": "assets/js/chunks/shell-BInXxBSp.js",
     "name": "shell",
     "dynamicImports": [
       "js/image-optimizer.js",
-      "_runtime-effects-BOjjhhrF.js",
-      "_runtime-effects-BOjjhhrF.js",
-      "_runtime-effects-BOjjhhrF.js",
-      "_runtime-effects-BOjjhhrF.js",
+      "_runtime-effects-B3_12znp.js",
+      "_runtime-effects-B3_12znp.js",
+      "_runtime-effects-B3_12znp.js",
+      "_runtime-effects-B3_12znp.js",
       "js/image-optimizer.js",
-      "_runtime-effects-BOjjhhrF.js",
-      "_runtime-effects-BOjjhhrF.js"
-    ]
-  },
-  "_styles-!~{00b}~.js": {
-    "file": "assets/css/styles-CoPMDZEA.css",
-    "src": "_styles-!~{00b}~.js"
-  },
-  "_styles-C37ZYxfD.js": {
-    "file": "assets/js/chunks/styles-C37ZYxfD.js",
-    "name": "styles",
-    "css": [
-      "assets/css/styles-CoPMDZEA.css"
+      "_runtime-effects-B3_12znp.js",
+      "_runtime-effects-B3_12znp.js"
     ]
   },
   "challenges.html": {
@@ -40,8 +40,12 @@
     "isDynamicEntry": true
   },
   "manifest.json": {
-    "file": "assets/manifest-BkXN0yik.json",
+    "file": "assets/manifest-CClJyXmJ.json",
     "src": "manifest.json"
+  },
+  "store.html": {
+    "file": "assets/css/store-dIt8aW3p.css",
+    "src": "store.html"
   },
   "subscription.html": {
     "file": "assets/css/subscription-DMeFGZTs.css",

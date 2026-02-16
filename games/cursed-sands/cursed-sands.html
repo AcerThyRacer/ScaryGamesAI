@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <title>Cursed Sands — ScaryGamesAI</title>
+    <meta name="description" content="Explore a cursed desert of tombs, storms, and ancient guardians in a survival horror journey.">
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+    <link rel="canonical" href="https://scarygames.ai/games/cursed-sands/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="ScaryGamesAI">
+    <meta property="og:title" content="Cursed Sands — ScaryGamesAI">
+    <meta property="og:description" content="Explore a cursed desert of tombs, storms, and ancient guardians in a survival horror journey.">
+    <meta property="og:url" content="https://scarygames.ai/games/cursed-sands/">
+    <meta property="og:image" content="https://scarygames.ai/assets/og-game-fallback.svg?game=cursed-sands">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Cursed Sands — ScaryGamesAI">
+    <meta name="twitter:description" content="Explore a cursed desert of tombs, storms, and ancient guardians in a survival horror journey.">
+    <meta name="twitter:image" content="https://scarygames.ai/assets/og-game-fallback.svg?game=cursed-sands">
+    <link rel="manifest" href="/manifest.json">
+    <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "VideoGame",
+          "name": "Cursed Sands",
+          "description": "Explore a cursed desert of tombs, storms, and ancient guardians in a survival horror journey.",
+          "genre": [
+            "Horror",
+            "Open World",
+            "Survival"
+          ],
+          "applicationCategory": "Game",
+          "operatingSystem": "Web Browser",
+          "url": "https://scarygames.ai/games/cursed-sands/",
+          "image": [
+            "https://scarygames.ai/assets/og-game-fallback.svg?game=cursed-sands"
+          ],
+          "publisher": {
+            "@type": "Organization",
+            "name": "ScaryGamesAI",
+            "url": "https://scarygames.ai/"
+          },
+          "isPartOf": {
+            "@type": "WebSite",
+            "name": "ScaryGamesAI",
+            "url": "https://scarygames.ai/"
+          }
+        }
+    </script>
+        <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/game-responsive.css">
+    <link rel="stylesheet" href="/css/mobile-controls.css">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #000;
+        }
+
+        #game-canvas {
+            display: block;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .hud-row {
+            display: flex;
+            gap: 18px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        #hud-sanity-bar,
+        #hud-battery-bar {
+            height: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 200, 100, 0.4);
+            border-radius: 5px;
+            overflow: hidden;
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        #hud-sanity-bar {
+            width: 120px;
+        }
+
+        #hud-battery-bar {
+            width: 60px;
+            border-color: rgba(100, 200, 255, 0.4);
+            height: 8px;
+            border-radius: 4px;
+        }
+
+        #hud-sanity-fill {
+            height: 100%;
+            width: 100%;
+            background: linear-gradient(90deg, #ff4444, #ffaa00, #44ff44);
+            transition: width 0.3s;
+        }
+
+        #hud-battery-fill {
+            height: 100%;
+            width: 100%;
+            background: linear-gradient(90deg, #ff4444, #44aaff);
+            transition: width 0.3s;
+        }
+
+        #hud-compass {
+            font-size: 14px;
+            color: #ddc080;
+            text-shadow: 0 0 6px rgba(200, 160, 80, 0.5);
+        }
+
+        .sanity-vignette {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 90;
+            transition: opacity 0.5s;
+            opacity: 0;
+            background: radial-gradient(ellipse at center, transparent 40%, rgba(80, 0, 0, 0.6) 100%);
+            mix-blend-mode: multiply;
+        }
+
+        .sandstorm-overlay {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 89;
+            opacity: 0;
+            transition: opacity 1s;
+            background: radial-gradient(ellipse at center, rgba(180, 150, 80, 0.3) 0%, rgba(120, 90, 40, 0.6) 100%);
+        }
+
+        /* Interaction prompt */
+        #interact-prompt {
+            position: fixed;
+            bottom: 20%;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #ffd700;
+            font: 600 16px Inter, sans-serif;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+            padding: 8px 20px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 8px;
+            display: none;
+            z-index: 95;
+            text-align: center;
+        }
+
+        /* Notification toast */
+        #notify-toast {
+            position: fixed;
+            top: 10%;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #fff;
+            font: 500 15px Inter, sans-serif;
+            padding: 10px 24px;
+            background: rgba(20, 10, 5, 0.85);
+            border: 1px solid rgba(255, 200, 100, 0.3);
+            border-radius: 10px;
+            display: none;
+            z-index: 96;
+            text-align: center;
+            max-width: 400px;
+            transition: opacity 0.5s;
+        }
+
+        /* Codex overlay */
+        #codex-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.92);
+            z-index: 200;
+            display: none;
+            overflow-y: auto;
+            padding: 40px;
+            font-family: Inter, sans-serif;
+            color: #ddc080;
+        }
+
+        #codex-overlay h2 {
+            text-align: center;
+            font-size: 28px;
+            color: #ffd700;
+            margin-bottom: 24px;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+        }
+
+        .codex-close {
+            position: fixed;
+            top: 16px;
+            right: 24px;
+            font-size: 28px;
+            color: #ffd700;
+            cursor: pointer;
+            z-index: 201;
+            background: none;
+            border: none;
+        }
+
+        .codex-tabs {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .codex-tab {
+            padding: 8px 18px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            background: rgba(255, 215, 0, 0.05);
+            color: #ddc080;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .codex-tab.active {
+            background: rgba(255, 215, 0, 0.2);
+            color: #ffd700;
+        }
+
+        .codex-section {
+            display: none;
+        }
+
+        .codex-section.active {
+            display: block;
+        }
+
+        .codex-entry {
+            background: rgba(255, 215, 0, 0.05);
+            border: 1px solid rgba(255, 215, 0, 0.15);
+            border-radius: 8px;
+            padding: 14px;
+            margin-bottom: 10px;
+        }
+
+        .codex-entry h4 {
+            color: #ffd700;
+            margin: 0 0 6px 0;
+        }
+
+        .codex-entry p {
+            margin: 0;
+            font-size: 13px;
+            line-height: 1.5;
+            color: #bba870;
+        }
+
+        .codex-entry.locked {
+            opacity: 0.3;
+        }
+
+        /* Quest log in codex */
+        .quest-entry {
+            background: rgba(100, 200, 255, 0.05);
+            border: 1px solid rgba(100, 200, 255, 0.15);
+            border-radius: 8px;
+            padding: 14px;
+            margin-bottom: 10px;
+        }
+
+        .quest-entry h4 {
+            color: #66ccff;
+            margin: 0 0 4px 0;
+        }
+
+        .quest-entry .quest-status {
+            font-size: 12px;
+            margin-top: 4px;
+        }
+
+        .quest-status.active {
+            color: #ffaa00;
+        }
+
+        .quest-status.complete {
+            color: #44ff44;
+        }
+
+        .quest-status.locked {
+            color: #666;
+        }
+
+        /* Merchant overlay */
+        #merchant-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 200;
+            display: none;
+            padding: 40px;
+            font-family: Inter, sans-serif;
+            color: #ddc080;
+        }
+
+        #merchant-overlay h2 {
+            text-align: center;
+            font-size: 26px;
+            color: #ffd700;
+            margin-bottom: 6px;
+        }
+
+        .merchant-subtitle {
+            text-align: center;
+            color: #bba870;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        .merchant-gold {
+            text-align: center;
+            font-size: 18px;
+            color: #ffd700;
+            margin-bottom: 20px;
+        }
+
+        .merchant-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 12px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .merchant-item {
+            background: rgba(255, 215, 0, 0.06);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 8px;
+            padding: 14px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .merchant-item:hover {
+            background: rgba(255, 215, 0, 0.12);
+            transform: translateY(-2px);
+        }
+
+        .merchant-item.sold {
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        .merchant-item h4 {
+            color: #ffd700;
+            margin: 0 0 6px 0;
+            font-size: 15px;
+        }
+
+        .merchant-item p {
+            color: #bba870;
+            font-size: 12px;
+            margin: 0 0 8px 0;
+        }
+
+        .merchant-item .price {
+            color: #ffaa00;
+            font-weight: 600;
+        }
+
+        .merchant-close {
+            position: fixed;
+            top: 16px;
+            right: 24px;
+            font-size: 28px;
+            color: #ffd700;
+            cursor: pointer;
+            z-index: 201;
+            background: none;
+            border: none;
+        }
+
+        /* Cutscene */
+        #cutscene-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 300;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        #cutscene-text {
+            color: #ddc080;
+            font: 500 20px Inter, sans-serif;
+            text-align: center;
+            max-width: 600px;
+            line-height: 1.6;
+            padding: 20px;
+            text-shadow: 0 0 15px rgba(200, 160, 80, 0.3);
+        }
+
+        #cutscene-skip {
+            color: #888;
+            font-size: 13px;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+
+        /* Trap warning */
+        #trap-warning {
+            position: fixed;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #ff4444;
+            font: 700 24px Inter, sans-serif;
+            text-shadow: 0 0 20px rgba(255, 0, 0, 0.6);
+            display: none;
+            z-index: 95;
+            text-align: center;
+            animation: trapPulse 0.5s ease-in-out infinite;
+        }
+
+        @keyframes trapPulse {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        /* Treasure popup */
+        #treasure-popup {
+            position: fixed;
+            top: 30%;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #ffd700;
+            font: 600 18px Inter, sans-serif;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+            display: none;
+            z-index: 95;
+            text-align: center;
+            padding: 12px 24px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 10px;
+        }
+
+        /* Phase 3: Weapon bar */
+        #weapon-bar {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 6px;
+            z-index: 94;
+        }
+
+        .weapon-slot {
+            width: 50px;
+            height: 50px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid rgba(255, 215, 0, 0.2);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            position: relative;
+            opacity: 0.4;
+            transition: all 0.2s;
+        }
+
+        .weapon-slot.unlocked {
+            opacity: 0.7;
+        }
+
+        .weapon-slot.active {
+            border-color: #ffd700;
+            opacity: 1;
+            box-shadow: 0 0 12px rgba(255, 215, 0, 0.4);
+        }
+
+        .weapon-slot .slot-key {
+            position: absolute;
+            top: 2px;
+            left: 4px;
+            font-size: 10px;
+            color: #888;
+        }
+
+        .weapon-slot .slot-ammo {
+            position: absolute;
+            bottom: 2px;
+            right: 4px;
+            font-size: 9px;
+            color: #ffaa00;
+        }
+
+        /* Phase 3: Inventory overlay */
+        #inventory-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.92);
+            z-index: 200;
+            display: none;
+            padding: 40px;
+            font-family: Inter, sans-serif;
+            color: #ddc080;
+        }
+
+        #inventory-overlay h2 {
+            text-align: center;
+            color: #ffd700;
+            margin-bottom: 20px;
+        }
+
+        .inv-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 70px);
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .inv-slot {
+            width: 70px;
+            height: 70px;
+            background: rgba(255, 215, 0, 0.06);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .inv-slot:hover {
+            background: rgba(255, 215, 0, 0.12);
+        }
+
+        .inv-slot .inv-qty {
+            font-size: 10px;
+            color: #ffaa00;
+        }
+
+        .inv-materials {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            justify-content: center;
+            margin-bottom: 20px;
+        }
+
+        .mat-item {
+            font-size: 13px;
+            color: #bba870;
+            padding: 4px 10px;
+            background: rgba(255, 215, 0, 0.06);
+            border-radius: 6px;
+        }
+
+        .craft-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 8px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .craft-card {
+            background: rgba(255, 215, 0, 0.06);
+            border: 1px solid rgba(255, 215, 0, 0.15);
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .craft-card:hover {
+            background: rgba(255, 215, 0, 0.12);
+        }
+
+        .craft-card.disabled {
+            opacity: 0.3;
+            pointer-events: none;
+        }
+
+        .craft-card h4 {
+            color: #ffd700;
+            margin: 0 0 4px;
+            font-size: 13px;
+        }
+
+        .craft-card p {
+            color: #888;
+            font-size: 11px;
+            margin: 0;
+        }
+
+        /* Phase 3: Upgrade overlay */
+        #upgrade-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.92);
+            z-index: 200;
+            display: none;
+            padding: 40px;
+            overflow-y: auto;
+            font-family: Inter, sans-serif;
+            color: #ddc080;
+        }
+
+        #upgrade-overlay h2 {
+            text-align: center;
+            color: #ffd700;
+            margin-bottom: 6px;
+        }
+
+        .upgrade-tokens {
+            text-align: center;
+            color: #ffaa00;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        .upgrade-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 10px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .upgrade-card {
+            background: rgba(255, 215, 0, 0.06);
+            border: 1px solid rgba(255, 215, 0, 0.15);
+            border-radius: 8px;
+            padding: 14px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .upgrade-card:hover {
+            background: rgba(255, 215, 0, 0.12);
+        }
+
+        .upgrade-card.maxed {
+            border-color: #44ff44;
+            opacity: 0.6;
+        }
+
+        /* Phase 5: Boss HP bar */
+        #boss-bar {
+            position: fixed;
+            top: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: min(400px, 90vw);
+            text-align: center;
+            z-index: 96;
+            display: none;
+            font-family: Inter, sans-serif;
+        }
+
+        #boss-name {
+            color: #ff4444;
+            font-size: 14px;
+            font-weight: 700;
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+            margin-bottom: 4px;
+        }
+
+        #boss-hp-track {
+            width: 100%;
+            height: 8px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 68, 68, 0.3);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        #boss-hp-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff2200, #ff6600);
+            transition: width 0.3s;
+        }
+
+        #boss-phase {
+            color: #ffaa00;
+            font-size: 11px;
+            margin-top: 2px;
+        }
+
+        /* Phase 5: Mode select */
+        .mode-select {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin: 16px 0 10px;
+        }
+
+        .mode-btn {
+            padding: 8px 20px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 8px;
+            background: rgba(255, 215, 0, 0.06);
+            color: #ddc080;
+            font: 600 13px Inter, sans-serif;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .mode-btn:hover,
+        .mode-btn.active {
+            background: rgba(255, 215, 0, 0.15);
+            border-color: #ffd700;
+            color: #ffd700;
+        }
+
+        /* Phase 5: Leaderboard overlay */
+        #leaderboard-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.92);
+            z-index: 200;
+            display: none;
+            padding: 40px;
+            overflow-y: auto;
+            font-family: Inter, sans-serif;
+            color: #ddc080;
+        }
+
+        #leaderboard-overlay h2 {
+            text-align: center;
+            color: #ffd700;
+            margin-bottom: 10px;
+        }
+
+        #leaderboard-overlay table {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        #leaderboard-overlay th {
+            color: #ffd700;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.15);
+            padding: 4px 8px;
+        }
+
+        #leaderboard-overlay td {
+            padding: 4px 8px;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.05);
+        }
+
+        /* Phase 5: Cosmetics overlay */
+        #cosmetics-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.92);
+            z-index: 200;
+            display: none;
+            padding: 40px;
+            overflow-y: auto;
+            font-family: Inter, sans-serif;
+            color: #ddc080;
+        }
+
+        #cosmetics-overlay h2 {
+            text-align: center;
+            color: #ffd700;
+            margin-bottom: 16px;
+        }
+
+        /* Phase 5: Survival HUD */
+        #survival-hud {
+            position: fixed;
+            top: 50px;
+            right: 20px;
+            z-index: 95;
+            display: none;
+            font-family: Inter, sans-serif;
+            color: #ffd700;
+            text-shadow: 0 0 8px rgba(255, 215, 0, 0.4);
+            text-align: right;
+            font-size: 14px;
+        }
+
+        /* Phase 5: Daily modifiers badge area */
+        #daily-mods {
+            position: fixed;
+            top: 50px;
+            left: 20px;
+            z-index: 95;
+            display: none;
+            font-family: Inter, sans-serif;
+        }
+
+        /* Phase 5: NG+ badge */
+        .ngplus-badge {
+            display: inline-block;
+            padding: 2px 10px;
+            background: rgba(170, 0, 255, 0.15);
+            border: 1px solid rgba(170, 0, 255, 0.4);
+            border-radius: 6px;
+            color: #cc66ff;
+            font-size: 12px;
+            margin-left: 8px;
+        }
+
+        /* Phase 6: Temperature / Hydration bars */
+        #hud-temp,
+        #hud-hydration,
+        #hud-wind,
+        #hud-breath,
+        #hud-clothing {
+            font-size: 12px;
+        }
+
+        #hud-temp .bar-fill {
+            background: linear-gradient(90deg, #4488ff, #ff4400);
+            height: 100%;
+            transition: width 0.5s;
+        }
+
+        #hud-hydration .bar-fill {
+            background: linear-gradient(90deg, #ff4400, #44aaff);
+            height: 100%;
+            transition: width 0.5s;
+        }
+
+        .env-bar {
+            display: inline-block;
+            width: 60px;
+            height: 6px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 3px;
+            vertical-align: middle;
+            overflow: hidden;
+            margin-left: 4px;
+        }
+
+        /* Phase 6: Heatstroke overlay */
+        #heatstroke-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 90;
+            pointer-events: none;
+            background: radial-gradient(circle, transparent 40%, rgba(255, 80, 0, 0.3));
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        /* Phase 6: Hypothermia overlay */
+        #hypothermia-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 90;
+            pointer-events: none;
+            background: radial-gradient(circle, transparent 40%, rgba(100, 150, 255, 0.3));
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        /* Phase 6: Breath timer */
+        #breath-bar {
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 6px;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 3px;
+            overflow: hidden;
+            z-index: 95;
+            display: none;
+        }
+
+        #breath-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff4444, #44aaff);
+            transition: width 0.3s;
+        }
+
+        /* Phase 6: Quicksand warning */
+        #quicksand-warning {
+            position: fixed;
+            bottom: 110px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #ff8844;
+            font: 600 14px Inter, sans-serif;
+            text-shadow: 0 0 10px rgba(255, 100, 0, 0.5);
+            z-index: 95;
+            display: none;
+        }
+
+        .upgrade-card h4 {
+            color: #ffd700;
+            margin: 0 0 4px;
+            font-size: 14px;
+        }
+
+        .upgrade-card p {
+            color: #888;
+            font-size: 12px;
+            margin: 0 0 6px;
+        }
+
+        .upgrade-card .level-dots {
+            color: #ffaa00;
+            font-size: 16px;
+            letter-spacing: 2px;
+        }
+
+        /* Phase 4: Eclipse overlay */
+        #eclipse-overlay {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 88;
+            background: rgba(10, 0, 20, 0.7);
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        /* Phase 4: Face flash */
+        #face-flash {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 350;
+            display: none;
+            background: radial-gradient(circle at 50% 45%, rgba(200, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.95) 60%);
+        }
+
+        #face-flash::after {
+            content: '👁️';
+            font-size: 120px;
+            position: absolute;
+            top: 35%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Director stress indicator */
+        #stress-bar {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            width: 6px;
+            height: 80px;
+            z-index: 93;
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 3px;
+        }
+
+        #stress-fill {
+            width: 100%;
+            border-radius: 3px;
+            background: linear-gradient(0deg, #44ff44, #ffaa00, #ff4444);
+            position: absolute;
+            bottom: 0;
+            transition: height 0.5s;
+        }
+    </style>
+    <link rel="stylesheet" href="/css/mobile-enhancements.css" id="mc-enhance-css">
+</head>
+
+<body>
+    <div class="game-page">
+        <a href="/games.html" class="back-link" id="back-link">← Back to Games</a>
+        <div class="start-screen" id="start-screen">
+            <h1>Cursed Sands</h1>
+            <p class="game-desc">Ancient Egypt. Cursed deserts. A scorching sun that gives way to moonlit terror.
+                Explore pyramids, temples, the Nile, and vast underground tombs. Collect 7 sacred artifacts before the
+                ancient guardians claim your soul.</p>
+            <div class="mode-select">
+                <button class="mode-btn active" data-mode="story" id="mode-story">📖 Story</button>
+                <button class="mode-btn" data-mode="survival" id="mode-survival">🏰 Survival</button>
+                <button class="mode-btn" data-mode="daily" id="mode-daily">📅 Daily</button>
+            </div>
+            <button class="start-btn" id="start-btn">START GAME</button>
+            <div style="margin-top:10px;display:flex;gap:8px;justify-content:center">
+                <button class="mode-btn" id="btn-leaderboard-menu" style="font-size:11px">🏆 Leaderboards</button>
+                <button class="mode-btn" id="btn-cosmetics-menu" style="font-size:11px">✨ Cosmetics</button>
+            </div>
+        </div>
+        <div class="controls-overlay" id="controls-overlay" style="display:none;">
+            <div class="controls-content">
+                <h2>Controls</h2>
+                <div class="control-item"><span class="control-key">W A S D</span> Move</div>
+                <div class="control-item"><span class="control-key">Mouse</span> Look Around</div>
+                <div class="control-item"><span class="control-key">Shift</span> Sprint</div>
+                <div class="control-item"><span class="control-key">F</span> Toggle Torch</div>
+                <div class="control-item"><span class="control-key">E</span> Interact</div>
+                <div class="control-item"><span class="control-key">J</span> Codex / Quest Log</div>
+                <div class="control-item"><span class="control-key">I</span> Inventory & Crafting</div>
+                <div class="control-item"><span class="control-key">U</span> Upgrades (Ankh Tokens)</div>
+                <div class="control-item"><span class="control-key">1-5</span> Switch Weapon</div>
+                <div class="control-item"><span class="control-key">LMB</span> Attack / Use Weapon</div>
+                <div class="control-item"><span class="control-key">RMB</span> Block / Parry</div>
+                <div class="control-item"><span class="control-key">ESC</span> Pause / Close Menu</div>
+                <p class="controls-start-hint">The sands await...</p>
+            </div>
+        </div>
+        <div class="game-container" id="game-container">
+            <canvas id="game-canvas" aria-label="Cursed Sands desert survival game canvas - use WASD to move, Mouse to look and attack"></canvas>
+            <div class="sanity-vignette" id="sanity-vignette"></div>
+            <div class="sandstorm-overlay" id="sandstorm-overlay"></div>
+            <div id="interact-prompt"></div>
+            <div id="notify-toast"></div>
+            <div id="trap-warning">⚠️ TRAP!</div>
+            <div id="treasure-popup"></div>
+            <div id="eclipse-overlay"></div>
+            <div id="face-flash"></div>
+            <!-- Phase 5: Boss HP bar -->
+            <div id="boss-bar">
+                <div id="boss-name"></div>
+                <div id="boss-hp-track">
+                    <div id="boss-hp-fill" style="width:100%"></div>
+                </div>
+                <div id="boss-phase"></div>
+            </div>
+            <!-- Phase 5: Survival HUD -->
+            <div id="survival-hud">
+                <div id="surv-wave">Wave: 0</div>
+                <div id="surv-kills">Kills: 0</div>
+                <div id="surv-time">Time: 0s</div>
+            </div>
+            <!-- Phase 5: Daily modifiers -->
+            <div id="daily-mods"></div>
+            <!-- Phase 6: Overlays -->
+            <div id="heatstroke-overlay"></div>
+            <div id="hypothermia-overlay"></div>
+            <div id="breath-bar">
+                <div id="breath-fill" style="width:100%"></div>
+            </div>
+            <div id="quicksand-warning">⚠️ QUICKSAND! Tap SPACE to escape!</div>
+            <div class="game-hud" id="game-hud" style="display:none;">
+                <div class="hud-row">
+                    <div class="hud-score" id="hud-time">☀️ 6:00 AM</div>
+                    <div class="hud-score" id="hud-compass">🧭 N</div>
+                    <div class="hud-score" id="hud-artifacts">🏺 Artifacts: 0/7</div>
+                    <div class="hud-score" id="hud-gold">💰 0</div>
+                    <div class="hud-score" id="hud-ankh" style="display:none;">☥ 0</div>
+                    <div class="hud-score" id="hud-depth" style="display:none;">⬇️ Underground</div>
+                    <div class="hud-score" id="hud-weather"></div>
+                </div>
+                <div class="hud-row">
+                    <div class="hud-score">🧠 <span id="hud-sanity-bar"><span id="hud-sanity-fill"></span></span></div>
+                    <div class="hud-score">🔦 <span id="hud-battery-bar"><span id="hud-battery-fill"></span></span>
+                    </div>
+                    <div class="hud-score" id="hud-quest" style="display:none;">📜 --</div>
+                    <div class="hud-score" id="hud-weapon" style="display:none;">⚔️ --</div>
+                </div>
+                <!-- Phase 6: Environment row -->
+                <div class="hud-row">
+                    <div class="hud-score" id="hud-temp">🌡️ 25°C <span class="env-bar"><span class="bar-fill"
+                                style="width:50%"></span></span></div>
+                    <div class="hud-score" id="hud-hydration">💧 100% <span class="env-bar"><span class="bar-fill"
+                                style="width:100%"></span></span></div>
+                    <div class="hud-score" id="hud-wind">💨 3m/s N</div>
+                    <div class="hud-score" id="hud-clothing">👘 Linen</div>
+                </div>
+            </div>
+            <!-- Phase 3: Weapon bar -->
+            <div id="weapon-bar">
+                <div class="weapon-slot" data-weapon="khopesh" id="ws-khopesh"><span class="slot-key">1</span>⚔️</div>
+                <div class="weapon-slot" data-weapon="torch_throw" id="ws-torch"><span class="slot-key">2</span>🔥<span
+                        class="slot-ammo" id="wa-torch"></span></div>
+                <div class="weapon-slot" data-weapon="shield" id="ws-shield"><span class="slot-key">3</span>🛡️</div>
+                <div class="weapon-slot" data-weapon="bow" id="ws-bow"><span class="slot-key">4</span>🏹<span
+                        class="slot-ammo" id="wa-bow"></span></div>
+                <div class="weapon-slot" data-weapon="staff" id="ws-staff"><span class="slot-key">5</span>✨</div>
+            </div>
+            <!-- Stress bar -->
+            <div id="stress-bar">
+                <div id="stress-fill" style="height:50%"></div>
+            </div>
+        </div>
+        <!-- Codex -->
+        <div id="codex-overlay">
+            <button class="codex-close" id="codex-close">✕</button>
+            <h2>📜 Codex of the Ancients</h2>
+            <div class="codex-tabs">
+                <div class="codex-tab active" data-tab="lore">Hieroglyphs</div>
+                <div class="codex-tab" data-tab="quests">Quests</div>
+                <div class="codex-tab" data-tab="bestiary">Bestiary</div>
+            </div>
+            <div id="codex-lore" class="codex-section active"></div>
+            <div id="codex-quests" class="codex-section"></div>
+            <div id="codex-bestiary" class="codex-section"></div>
+        </div>
+        <!-- Merchant -->
+        <div id="merchant-overlay">
+            <button class="merchant-close" id="merchant-close">✕</button>
+            <h2>🏪 Khamun's Wares</h2>
+            <p class="merchant-subtitle">"The desert takes much... but Khamun gives, for a price."</p>
+            <div class="merchant-gold" id="merchant-gold">💰 Gold: 0</div>
+            <div class="merchant-grid" id="merchant-grid"></div>
+        </div>
+        <!-- Cutscene -->
+        <div id="cutscene-overlay">
+            <div id="cutscene-text"></div>
+            <div id="cutscene-skip">Press SPACE to skip</div>
+        </div>
+        <!-- Phase 3: Inventory -->
+        <div id="inventory-overlay">
+            <button class="codex-close" id="inv-close">✕</button>
+            <h2>🎒 Inventory</h2>
+            <div class="inv-grid" id="inv-grid"></div>
+            <div class="inv-materials" id="inv-materials"></div>
+            <h3 style="text-align:center;color:#ffd700;margin:16px 0 10px;">⚒️ Crafting</h3>
+            <div class="craft-grid" id="craft-grid"></div>
+        </div>
+        <!-- Phase 3: Upgrades -->
+        <div id="upgrade-overlay">
+            <button class="codex-close" id="upg-close">✕</button>
+            <h2>☥ Ankh Upgrades</h2>
+            <div class="upgrade-tokens" id="upg-tokens">☥ Tokens: 0</div>
+            <div class="upgrade-grid" id="upgrade-grid"></div>
+        </div>
+        <!-- Phase 5: Leaderboard -->
+        <div id="leaderboard-overlay">
+            <button class="codex-close" id="lb-close">✕</button>
+            <h2>🏆 Leaderboards</h2>
+            <div id="leaderboard-content"></div>
+        </div>
+        <!-- Phase 5: Cosmetics -->
+        <div id="cosmetics-overlay">
+            <button class="codex-close" id="cos-close">✕</button>
+            <h2>✨ Cosmetics</h2>
+            <div id="cosmetic-content"></div>
+        </div>
+        <!-- End screens -->
+        <div class="game-end-screen game-over" id="game-over-screen" style="display:none;">
+            <h1>THE CURSE CLAIMS YOU</h1>
+            <p>Your soul is bound to the sands for eternity...</p>
+            <button class="play-btn">▶ Try Again</button>
+            <a href="/games.html" style="display:block;margin-top:16px;color:#888;">← Back to Games</a>
+        </div>
+        <div class="game-end-screen game-win" id="game-win-screen" style="display:none;">
+            <h1 id="win-title">THE CURSE IS BROKEN</h1>
+            <p id="win-desc">You gathered all sacred artifacts and escaped the curse of the Pharaohs.</p>
+            <button class="play-btn">▶ Play Again</button>
+            <button class="play-btn" id="btn-ngplus"
+                style="background:rgba(170,0,255,0.15);border-color:rgba(170,0,255,0.4);color:#cc66ff;margin-top:8px;">☥
+                New Game+</button>
+            <a href="/games.html" style="display:block;margin-top:16px;color:#888;">← Back to Games</a>
+        </div>
+    </div>
+    <!-- Three.js from CDN - Consider self-hosting for production with SRI hash -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" crossorigin="anonymous"></script>
+    <script src="/js/game-utils.js"></script>
+    <script src="/js/state-bus.js"></script>
+    <script src="/js/audio.js"></script>
+    <script src="/js/quality-enhancer.js"></script>
+    <script src="/js/visual-utils.js"></script>
+    <script src="/js/cinematic-overlay.js"></script>
+    <script src="/js/quality-fx.js"></script>
+    <script src="/js/quality-settings.js"></script>
+    <script src="tombs.js"></script>
+    <script src="story.js"></script>
+    <script src="combat.js"></script>
+    <script src="horror-director.js"></script>
+    <script src="endgame.js"></script>
+    <script src="biomes.js"></script>
+    <script src="world-gen.js"></script>
+    <script src="desert-physics.js"></script>
+    <script src="rpg-system.js"></script>
+    <script src="enemy-ecosystem.js"></script>
+    <script src="visual-engine.js"></script>
+    <script src="audio-engine.js"></script>
+    <script src="meta-progression.js"></script>
+    <script src="/js/mobile-controls.js"></script>
+    <script src="/js/mobile-game-bindings.js"></script>
+    <script src="/js/mobile-tutorial.js"></script>
+    <script src="/js/mobile-settings.js"></script>
+    <script src="/js/device-testing.js"></script>
+    
+    <!-- Mobile Support -->
+    <script src="/js/mobile-setup.js" id="mobile-setup-js"></script>
+    <script src="/js/mobile-controls.js" id="mc-js"></script>
+    <script src="/js/mobile-game-bindings.js" id="mc-bindings-js"></script>
+    <script src="/js/mobile-universal-init.js" id="mc-init-js"></script>
+    <script src="/js/mobile-patcher.js" id="mc-patcher-js"></script>
+    <!-- End Mobile Support -->
+    
+    <!-- Accessibility, Memory & Performance -->
+    <script src="/js/accessibility-manager.js" id="a11y-js"></script>
+    <script src="/js/memory-manager.js" id="mem-js"></script>
+    <script src="/js/performance-optimizer.js" id="perf-js"></script>
+    <!-- End Core Systems -->
+    <script src="cursed-sands.js"></script>
+</body>
+
+</html>

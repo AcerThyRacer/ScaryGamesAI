@@ -12,6 +12,17 @@ const compression = require('compression');
 const { validateEnvironment } = require('./config/env');
 const observability = require('./services/observability');
 
+// Load .env automatically in development so OAuth vars (client_id/redirect_uri) work out of the box.
+// In production, the environment should be injected by the host and .env loading is typically disabled.
+if (process.env.NODE_ENV !== 'production') {
+    try {
+        // eslint-disable-next-line global-require
+        require('dotenv').config();
+    } catch {
+        // dotenv is optional; if not installed, dev can still use shell env vars.
+    }
+}
+
 validateEnvironment();
 observability.init();
 

@@ -125,6 +125,36 @@
         });
     }
 
+    function ensureAuthSlot() {
+        const nav = document.querySelector('.navbar');
+        if (!nav) return;
+
+        const links = nav.querySelector('.nav-links');
+        if (!links) return;
+
+        if (document.getElementById('sgai-auth-slot')) return;
+
+        const li = document.createElement('li');
+        li.id = 'sgai-auth-slot';
+        li.className = 'nav-auth-slot';
+        links.appendChild(li);
+    }
+
+    function registerAuthUiClient() {
+        if (document.querySelector('script[data-auth-ui-client="true"]')) return;
+
+        var inject = function () {
+            var script = document.createElement('script');
+            script.src = '/js/auth-ui.js';
+            script.async = true;
+            script.dataset.authUiClient = 'true';
+            document.head.appendChild(script);
+        };
+
+        // Auth is nav-critical: inject immediately (not idle) once DOM is ready.
+        inject();
+    }
+
     function normalizeMainLandmark() {
         const main = document.querySelector('main');
         if (!main) return;
@@ -353,6 +383,7 @@
         normalizeMainLandmark();
         ensureSkipLink();
         enforceNavigationLinkOrder();
+        ensureAuthSlot();
         normalizeNavigation();
         setupMotionPreferences();
         improveKeyboardSupport();
@@ -361,6 +392,7 @@
         createAccessibilityPanel();
         registerServiceWorker();
         registerObservabilityClient();
+        registerAuthUiClient();
     }
 
     if (document.readyState === 'loading') {

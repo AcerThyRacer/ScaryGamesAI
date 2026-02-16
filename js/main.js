@@ -33,7 +33,7 @@ const GAMES = [
         desc: 'Trapped in the backrooms. A giant Pac-Man hunts you through endless yellow corridors. Collect all pellets to escape — or be consumed.',
         tags: ['3D', 'First Person', 'Horror'],
         tagClasses: ['tag-3d', 'tag-fps', 'tag-horror'],
-        url: '/games/backrooms-pacman/',
+        url: '/games/backrooms-pacman/backrooms-pacman.html',
         color: '#ccaa00',
         bgColor: '#2a2400',
         difficulty: 3, category: 'action', requiredTier: 'none',
@@ -44,7 +44,7 @@ const GAMES = [
         desc: 'Your torch is dying. Shadow creatures lurk just beyond the light. Find the keys, unlock the doors, and escape the dungeon before darkness consumes you.',
         tags: ['2D', 'Horror', 'Survival'],
         tagClasses: ['tag-2d', 'tag-horror', 'tag-survival'],
-        url: '/games/shadow-crawler/',
+        url: '/games/shadow-crawler/shadow-crawler.html',
         color: '#8b5cf6',
         bgColor: '#1a1030',
         difficulty: 2, category: 'action', requiredTier: 'none',
@@ -55,7 +55,7 @@ const GAMES = [
         desc: 'Dive into the deepest ocean trench. Ancient creatures circle in the darkness below. Collect artifacts before your oxygen runs out.',
         tags: ['3D', 'First Person', 'Horror'],
         tagClasses: ['tag-3d', 'tag-fps', 'tag-horror'],
-        url: '/games/the-abyss/',
+        url: '/games/the-abyss/the-abyss.html',
         color: '#06b6d4',
         bgColor: '#0a1a2a',
         difficulty: 3, category: 'action', requiredTier: 'none',
@@ -66,7 +66,7 @@ const GAMES = [
         desc: 'An endless nightmare you can\'t wake from. Run through twisted landscapes, dodge horrifying obstacles, and survive as long as you can.',
         tags: ['2D', 'Horror', 'Survival'],
         tagClasses: ['tag-2d', 'tag-horror', 'tag-survival'],
-        url: '/games/nightmare-run/',
+        url: '/games/nightmare-run/nightmare-run.html',
         color: '#ff6b35',
         bgColor: '#2a1400',
         difficulty: 2, category: 'action', requiredTier: 'pro',
@@ -77,7 +77,7 @@ const GAMES = [
         desc: 'A massive Yeti is chasing you through frozen mountains. Dodge obstacles, sprint for your life, and survive the blizzard. Don\'t look back.',
         tags: ['3D', 'Horror', 'Survival'],
         tagClasses: ['tag-3d', 'tag-horror', 'tag-survival'],
-        url: '/games/yeti-run/',
+        url: '/games/yeti-run/yeti-run.html',
         color: '#88ccff',
         bgColor: '#0a1520',
         difficulty: 3, category: 'action', requiredTier: 'pro',
@@ -89,7 +89,7 @@ const GAMES = [
         desc: 'Stack bones, eyeballs, and organs. Clear lines as blood rises from below. How long can you survive the crimson tide?',
         tags: ['2D', 'Puzzle', 'Horror'],
         tagClasses: ['tag-2d', 'tag-puzzle', 'tag-horror'],
-        url: '/games/blood-tetris/',
+        url: '/games/blood-tetris/blood-tetris.html',
         color: '#cc2222',
         bgColor: '#1a0505',
         difficulty: 2, category: 'puzzle', isNew: true, requiredTier: 'pro',
@@ -100,7 +100,7 @@ const GAMES = [
         desc: 'Use the spirit board to communicate with trapped souls. Spell their names to free them — anger them and face terrible consequences.',
         tags: ['2D', 'Puzzle', 'Horror'],
         tagClasses: ['tag-2d', 'tag-puzzle', 'tag-horror'],
-        url: '/games/seance/',
+        url: '/games/seance/seance.html',
         color: '#cc8833',
         bgColor: '#1a0e05',
         difficulty: 2, category: 'puzzle', isNew: true, requiredTier: 'pro',
@@ -111,7 +111,7 @@ const GAMES = [
         desc: 'Explore 5 rooms of a cursed dollhouse. Find items, solve puzzles, and escape before the living dolls catch you.',
         tags: ['2D', 'Puzzle', 'Horror'],
         tagClasses: ['tag-2d', 'tag-puzzle', 'tag-horror'],
-        url: '/games/dollhouse/',
+        url: '/games/dollhouse/dollhouse.html',
         color: '#cc7788',
         bgColor: '#1a0a0a',
         difficulty: 3, category: 'puzzle', isNew: true, requiredTier: 'pro',
@@ -122,7 +122,7 @@ const GAMES = [
         desc: 'Waves of undead swarm from all sides. Place turrets and barricades to defend your base. Upgrade between waves to survive.',
         tags: ['2D', 'Strategy', 'Horror'],
         tagClasses: ['tag-2d', 'tag-strategy', 'tag-horror'],
-        url: '/games/zombie-horde/',
+        url: '/games/zombie-horde/zombie-horde.html',
         color: '#44aa44',
         bgColor: '#0a1a0a',
         difficulty: 3, category: 'strategy', isNew: true, requiredTier: 'max',
@@ -133,7 +133,7 @@ const GAMES = [
         desc: 'A never-ending elevator descent. Each floor reveals a new horror. Find Floor 0 before your sanity runs out.',
         tags: ['3D', 'First Person', 'Psychological'],
         tagClasses: ['tag-3d', 'tag-fps', 'tag-psychological'],
-        url: '/games/the-elevator/',
+        url: '/games/the-elevator/the-elevator.html',
         color: '#8888cc',
         bgColor: '#0a0a15',
         difficulty: 4, category: 'action', isNew: true, requiredTier: 'max',
@@ -144,7 +144,7 @@ const GAMES = [
         desc: 'Night watch at a haunted cemetery. Investigate disturbances, avoid ghosts, and survive until dawn breaks.',
         tags: ['3D', 'Stealth', 'Horror'],
         tagClasses: ['tag-3d', 'tag-stealth', 'tag-horror'],
-        url: '/games/graveyard-shift/',
+        url: '/games/graveyard-shift/graveyard-shift.html',
         color: '#446688',
         bgColor: '#050510',
         difficulty: 4, category: 'stealth', isNew: true, requiredTier: 'max',
@@ -155,7 +155,7 @@ const GAMES = [
         desc: 'Spider-infested mines. Navigate procedural tunnels filled with webs, avoid spider swarms, and find all keys to escape.',
         tags: ['3D', 'First Person', 'Horror'],
         tagClasses: ['tag-3d', 'tag-fps', 'tag-horror'],
-        url: '/games/web-of-terror/',
+        url: '/games/web-of-terror/web-of-terror.html',
         color: '#aa6633',
         bgColor: '#0a0800',
         difficulty: 5, category: 'action', isNew: true, requiredTier: 'max',
@@ -166,7 +166,7 @@ const GAMES = [
         desc: 'Command your medieval army in epic Total War-style battles against an undead zombie horde. Select troops, form battle lines, and crush the enemy!',
         tags: ['3D', 'Strategy', 'Horror'],
         tagClasses: ['tag-3d', 'tag-strategy', 'tag-horror'],
-        url: '/games/total-zombies-medieval/',
+        url: '/games/total-zombies-medieval/total-zombies-medieval.html',
         color: '#cc6622',
         bgColor: '#1a0e05',
         difficulty: 4, category: 'strategy', isNew: true, requiredTier: 'max',
@@ -177,7 +177,7 @@ const GAMES = [
         desc: 'A Terraria-style 2D sandbox horror game. Dig into cursed earth, mine ores, craft weapons, fight demons, and survive 5 terrifying biomes. How deep can you go?',
         tags: ['2D', 'Sandbox', 'Horror'],
         tagClasses: ['tag-2d', 'tag-survival', 'tag-horror'],
-        url: '/games/cursed-depths/',
+        url: '/games/cursed-depths/cursed-depths.html',
         color: '#CC1133',
         bgColor: '#0a0008',
         difficulty: 4, category: 'action', isNew: true, requiredTier: 'none',
@@ -189,7 +189,7 @@ const GAMES = [
         desc: "You're the night security guard at an abandoned pizzeria. Monitor cameras, close doors, manage power, and survive five nights against four killer animatronics.",
         tags: ['2D', 'Horror', 'FNAF'],
         tagClasses: ['tag-2d', 'tag-horror', 'tag-survival'],
-        url: '/games/freddys-nightmare/',
+        url: '/games/freddys-nightmare/freddys-nightmare.html',
         color: '#8B4513',
         bgColor: '#1a0e05',
         difficulty: 4, category: 'action', isNew: true, requiredTier: 'none',
@@ -200,7 +200,7 @@ const GAMES = [
         desc: 'Explore a procedurally generated abandoned asylum. Find 3 fuse boxes, collect medical records, and escape before the patients catch you. Watch your sanity.',
         tags: ['2D', 'Horror', 'Exploration'],
         tagClasses: ['tag-2d', 'tag-horror', 'tag-survival'],
-        url: '/games/haunted-asylum/',
+        url: '/games/haunted-asylum/haunted-asylum.html',
         color: '#44aa66',
         bgColor: '#0a1a0e',
         difficulty: 3, category: 'action', isNew: true, requiredTier: 'none',
@@ -211,7 +211,7 @@ const GAMES = [
         desc: 'Defend a summoning circle from 10 waves of cultists and demons. Place occult traps, cast exorcism spells, and complete the ancient ritual.',
         tags: ['2D', 'Strategy', 'Horror'],
         tagClasses: ['tag-2d', 'tag-strategy', 'tag-horror'],
-        url: '/games/ritual-circle/',
+        url: '/games/ritual-circle/ritual-circle.html',
         color: '#9944ff',
         bgColor: '#0f0520',
         difficulty: 3, category: 'strategy', isNew: true, requiredTier: 'pro',
@@ -222,10 +222,32 @@ const GAMES = [
         desc: 'Ancient Egypt. Cursed deserts beneath a scorching sun. Explore pyramids, temples, and the Nile. Collect 7 sacred artifacts before mummies, Anubis guards, and sandstorms claim your soul.',
         tags: ['3D', 'Open World', 'Horror'],
         tagClasses: ['tag-3d', 'tag-survival', 'tag-horror'],
-        url: '/games/cursed-sands/',
+        url: '/games/cursed-sands/cursed-sands.html',
         color: '#d4a843',
         bgColor: '#1a1508',
         difficulty: 5, category: 'action', isNew: true, requiredTier: 'none',
+    },
+    {
+        id: 'crypt-tanks',
+        title: 'Crypt Tanks',
+        desc: 'A creepy diep-style arena. Devour cursed shapes, level up, evolve into nightmare tank forms, and survive the whispering dark.',
+        tags: ['2D', 'Arena', 'Horror'],
+        tagClasses: ['tag-2d', 'tag-survival', 'tag-horror'],
+        url: '/games/crypt-tanks/crypt-tanks.html',
+        color: '#66ffcc',
+        bgColor: '#05110f',
+        difficulty: 4, category: 'action', isNew: true, requiredTier: 'none',
+    },
+    {
+        id: 'total-zombies-rome',
+        title: 'Total Zombies: Rome',
+        desc: 'A Rome-themed prequel. Command legionaries, velites, and equites through 5 battles as the first undead plague rises on the frontier.',
+        tags: ['3D', 'Strategy', 'Horror'],
+        tagClasses: ['tag-3d', 'tag-strategy', 'tag-horror'],
+        url: '/games/total-zombies-rome/total-zombies-rome.html',
+        color: '#cc2222',
+        bgColor: '#1a0606',
+        difficulty: 4, category: 'strategy', isNew: true, requiredTier: 'max',
     },
 ];
 
@@ -1136,6 +1158,7 @@ function animateFeaturedCanvas() {
     window.addEventListener('resize', resize);
 
     let time = 0;
+    let last = performance.now();
     const corridors = [];
     for (let i = 0; i < 12; i++) {
         corridors.push({
@@ -1146,7 +1169,11 @@ function animateFeaturedCanvas() {
         });
     }
 
-    function draw() {
+    function draw(now) {
+        const dt = Math.min(0.05, Math.max(0, (now - last) / 1000));
+        last = now;
+        time += dt;
+
         const w = canvas.width, h = canvas.height;
         ctx.fillStyle = '#1a1800';
         ctx.fillRect(0, 0, w, h);
@@ -1200,10 +1227,9 @@ function animateFeaturedCanvas() {
         ctx.fillStyle = grd;
         ctx.fillRect(0, 0, w, h);
 
-        time += 0.016;
         requestAnimationFrame(draw);
     }
-    draw();
+    requestAnimationFrame(draw);
 }
 
 // ============ BACKGROUND VIDEO ROTATION ============
@@ -1219,11 +1245,11 @@ function initVideoRotation() {
         return;
     }
 
-    const canUseWebmVp9 = !!video1.canPlayType('video/webm; codecs="vp9"');
     const sources = [
-        { modern: '/assets/hero-video.webm', fallback: '/assets/hero-video.mp4' },
-        { modern: '/assets/yeti-chase.webm', fallback: '/assets/yeti-chase.mp4' },
-        { modern: '/assets/forest-monster-chase.webm', fallback: '/assets/forest-monster-chase.mp4' },
+        // MP4 only (repo currently ships MP4 assets; WebM variants may not exist).
+        '/assets/hero-video.mp4',
+        '/assets/yeti-chase.mp4',
+        '/assets/forest-monster-chase.mp4',
     ];
 
     // Shuffle array using Fisher-Yates
@@ -1244,35 +1270,30 @@ function initVideoRotation() {
             queue = shuffle(sources);
             queueIndex = 0;
         }
-        const selected = queue[queueIndex++];
-        return canUseWebmVp9 ? selected.modern : selected.fallback;
+        return queue[queueIndex++];
     }
 
     function primeVideoElement(video, src) {
-        const fallbackSrc = src.replace(/\.webm$/i, '.mp4');
         video.src = src;
-        video.dataset.fallbackSrc = fallbackSrc;
+        // Ensure autoplay rules are satisfied (especially iOS/Safari).
+        video.muted = true;
+        video.playsInline = true;
+        video.autoplay = true;
+        if (!video.hasAttribute('muted')) video.setAttribute('muted', '');
+        if (!video.hasAttribute('playsinline')) video.setAttribute('playsinline', '');
+        if (!video.hasAttribute('webkit-playsinline')) video.setAttribute('webkit-playsinline', '');
+        if (!video.hasAttribute('autoplay')) video.setAttribute('autoplay', '');
+        if (!video.hasAttribute('preload')) video.setAttribute('preload', 'metadata');
+        try { video.load(); } catch (e) { }
     }
 
     // Assign initial videos
     primeVideoElement(video1, nextSource());
     primeVideoElement(video2, nextSource());
 
-    // Keep network pressure low until the hero is visible
-    video1.preload = 'metadata';
-    video2.preload = 'metadata';
-
-    function attachFallback(video) {
-        video.addEventListener('error', () => {
-            const fallback = video.dataset.fallbackSrc;
-            if (!fallback || video.src.endsWith(fallback)) return;
-            video.src = fallback;
-            video.load();
-        });
-    }
-
-    attachFallback(video1);
-    attachFallback(video2);
+    // Ensure video1 has active class from the start (it may be lost when src is set)
+    video1.classList.add('active');
+    video2.classList.remove('active');
 
     let started = false;
 
@@ -1280,11 +1301,16 @@ function initVideoRotation() {
         if (started) return;
         started = true;
 
-        // Start the first video
+        // Ensure the active class is set correctly
         video1.classList.add('active');
         video2.classList.remove('active');
-        video1.play().catch(() => { });
+        // Hint the browser to buffer enough to start immediately.
+        video1.preload = 'auto';
+        try { video1.load(); } catch (e) { }
+        video1.play().catch(() => { /* may require user gesture on some platforms */ });
     }
+
+    startPlayback();
 
     if ('IntersectionObserver' in window) {
         const hero = document.querySelector('.hero') || document.body;
@@ -1297,14 +1323,14 @@ function initVideoRotation() {
             });
         }, { threshold: 0.15 });
         io.observe(hero);
-    } else {
-        startPlayback();
     }
 
     function crossfade(from, to) {
         // Start loading/seeking the next video to frame 0
+        to.preload = 'auto';
+        try { to.load(); } catch (e) { }
         to.currentTime = 0;
-        to.play().catch(() => { });
+        to.play().catch(() => { /* may require user gesture */ });
 
         // Crossfade: fade out active, fade in next
         from.classList.remove('active');
@@ -1315,12 +1341,28 @@ function initVideoRotation() {
         setTimeout(() => {
             from.pause();
             primeVideoElement(from, nextSource());
-            from.load();
         }, 1600);
     }
 
     video1.addEventListener('ended', () => crossfade(video1, video2));
     video2.addEventListener('ended', () => crossfade(video2, video1));
+
+    // Autoplay safety: if playback is blocked, retry once on user gesture.
+    function armGestureFallback() {
+        const tryPlay = () => {
+            try { video1.play().catch(() => { }); } catch (e) { }
+        };
+        window.addEventListener('pointerdown', tryPlay, { capture: true, passive: true, once: true });
+        window.addEventListener('touchstart', tryPlay, { capture: true, passive: true, once: true });
+        window.addEventListener('keydown', tryPlay, { capture: true, once: true });
+    }
+
+    setTimeout(() => {
+        // If we started but it's still paused, assume autoplay was blocked.
+        if (!started) return;
+        if (!video1.paused) return;
+        armGestureFallback();
+    }, 1200);
 }
 
 // Hero live count animation

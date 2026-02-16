@@ -1528,7 +1528,7 @@ const SGAIAI = (function () {
             quite: 1.2,
             somewhat: 0.8,
             slightly: 0.6,
-            a bit: 0.7,
+            'a bit': 0.7,
             not: -1,
             never: -1,
         },
@@ -1852,6 +1852,17 @@ const SGAIAI = (function () {
             features = TIER_AI_FEATURES[tier] || TIER_AI_FEATURES.none;
         },
         getFeatures: () => ({ ...features }),
+        getFeatureTier: (featureName) => {
+            // Phase 5 features require lite tier minimum
+            const phase5Features = ['phase5', 'gameRefinement', 'bugFixing', 'featureExpansion', 
+                                   'styleTransfer', 'audioGeneration', 'voiceNarration', 
+                                   'gameAnalyzer', 'balanceCalculator', 'playtestSimulator'];
+            if (phase5Features.includes(featureName)) {
+                return currentTier !== 'none' ? currentTier : 'none';
+            }
+            return currentTier;
+        },
+        getTier: () => currentTier,
 
         // Procedural Content Generation
         PCG: PCG,

@@ -31,11 +31,13 @@
             'the-abyss': { type: 'fps', scaleStrategy: 'fullscreen' },
             'the-elevator': { type: 'fps', scaleStrategy: 'fullscreen' },
             'total-zombies-medieval': { type: 'strategy', scaleStrategy: 'fit', aspectRatio: 700/700 },
+            'total-zombies-rome': { type: 'strategy', scaleStrategy: 'fit', aspectRatio: 700/700 },
             'web-of-terror': { type: 'fps', scaleStrategy: 'fullscreen' },
             'yeti-run': { type: 'fps', scaleStrategy: 'fullscreen' },
             'zombie-horde': { type: 'strategy', scaleStrategy: 'fit', aspectRatio: 700/700 },
             'cursed-depths': { type: 'platformer', scaleStrategy: 'fullscreen' },
             'cursed-sands': { type: 'fps', scaleStrategy: 'fullscreen' },
+            'crypt-tanks': { type: 'topdown', scaleStrategy: 'fullscreen' },
         },
         
         currentGame: null,

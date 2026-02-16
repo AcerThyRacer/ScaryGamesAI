@@ -154,17 +154,69 @@ function normalizeUserFromStore(user) {
   return { id: user.id, username: user.username || 'Player', email: user.email || null };
 }
 
+function normalizeEmail(email) {
+  return String(email || '').trim().toLowerCase();
+}
+
+function normalizeUsername(username) {
+  return String(username || '').trim();
+}
+
+function validEmail(email) {
+  const e = normalizeEmail(email);
+  if (!e) return false;
+  // Pragmatic validation (not RFC-perfect) to avoid obvious junk.
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
+}
+
+async function verifySteamOpenIdResponse(steamOpenId) {
+  const obj = steamOpenId && typeof steamOpenId === 'object' ? steamOpenId : null;
+  if (!obj) return false;
+
+  // If we don't have a signed OpenID response, we can't verify it.
+  const hasSignature = obj['openid.sig'] || obj.sig || obj['openid.signed'] || obj.signed;
+  if (!hasSignature) return false;
+
+  const params = new URLSearchParams();
+  for (const [k, v] of Object.entries(obj)) {
+    if (v == null) continue;
+    params.set(String(k), String(v));
+  }
+  params.set('openid.mode', 'check_authentication');
+
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 8000);
+  try {
+    const response = await fetch('https://steamcommunity.com/openid/login', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/x-www-form-urlencoded',
+        accept: 'text/plain'
+      },
+      body: params,
+      signal: controller.signal
+    });
+
+    const text = await response.text();
+    return response.ok && /is_valid\s*:\s*true/i.test(text);
+  } catch {
+    return false;
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
 router.post('/login', async (req, res) => {
   try {
     const { email, username } = req.body || {};
     let user = null;
 
     if (email) {
-      user = db.findOne('users', { email: String(email).toLowerCase() });
+      user = db.findOne('users', { email: normalizeEmail(email) });
     }
 
     if (!user && username) {
-      user = db.findOne('users', { username: String(username) });
+      user = db.findOne('users', { username: normalizeUsername(username) });
     }
 
     if (!user && process.env.NODE_ENV !== 'production') {
@@ -202,6 +254,54 @@ router.post('/login', async (req, res) => {
     return res.json({ success: true, user: { id: user.id, username: user.username, email: user.email || null }, tokens });
   } catch (error) {
     return internalAuthError(req, res, 500, 'AUTH_LOGIN_FAILED', error, 'Login failed');
+  }
+});
+
+router.post('/register', async (req, res) => {
+  try {
+    const email = normalizeEmail(req.body?.email);
+    const username = normalizeUsername(req.body?.username);
+
+    if (!validEmail(email)) return authError(res, 400, 'AUTH_REGISTER_EMAIL_INVALID', 'Valid email is required');
+    if (!username) return authError(res, 400, 'AUTH_REGISTER_USERNAME_REQUIRED', 'Username is required');
+
+    const existingByEmail = db.findOne('users', { email });
+    if (existingByEmail) return authError(res, 409, 'AUTH_REGISTER_EMAIL_TAKEN', 'Email is already registered');
+
+    const existingByUsername = db.findOne('users', { username });
+    if (existingByUsername) return authError(res, 409, 'AUTH_REGISTER_USERNAME_TAKEN', 'Username is already taken');
+
+    const created = db.create('users', {
+      email,
+      username
+    });
+
+    const tokens = await authService.issueTokenPair(created, {
+      ipAddress: clientIp(req),
+      userAgent: req.header('user-agent') || null,
+      mfaVerified: false
+    });
+
+    await audit('register', 'succeeded', req, created.id, { sessionId: tokens.sessionId, amr: tokens.amr || ['pwd'] });
+
+    if (useCookieAuth()) {
+      setRefreshCookie(req, res, tokens.refreshToken, tokens.refreshExpiresIn);
+      return res.json({
+        success: true,
+        user: { id: created.id, username: created.username, email: created.email || null },
+        tokens: {
+          accessToken: tokens.accessToken,
+          sessionId: tokens.sessionId,
+          expiresIn: tokens.expiresIn,
+          refreshExpiresIn: tokens.refreshExpiresIn,
+          amr: tokens.amr || ['pwd']
+        }
+      });
+    }
+
+    return res.json({ success: true, user: { id: created.id, username: created.username, email: created.email || null }, tokens });
+  } catch (error) {
+    return internalAuthError(req, res, 500, 'AUTH_REGISTER_FAILED', error, 'Registration failed');
   }
 });
 
@@ -321,28 +421,108 @@ router.get('/oauth/:provider/start', async (req, res) => {
     const { state, verifier, providerConfig } = await authService.createOAuthState(provider, returnTo);
 
     if (provider === 'steam') {
+      // Steam uses OpenID 2.0. We generate a complete OpenID redirect URL here so the frontend can just navigate.
+      // Ensure redirect URI includes a stable `provider=steam` so our static callback page can route the response.
+      const configured = providerConfig.redirectUri || '';
+      const redirectUri = configured || `${process.env.DOMAIN || ''}/oauth/callback.html?provider=steam`;
+      let returnToUrl;
+      try {
+        returnToUrl = new URL(redirectUri);
+      } catch {
+        returnToUrl = new URL('/oauth/callback.html?provider=steam', process.env.DOMAIN || 'http://localhost:9999');
+      }
+      returnToUrl.searchParams.set('state', state);
+
+      const realm = (() => {
+        try {
+          const domain = process.env.DOMAIN ? new URL(process.env.DOMAIN).origin : null;
+          if (domain) return domain;
+        } catch {}
+        try {
+          return new URL(returnToUrl.toString()).origin;
+        } catch {}
+        return process.env.DOMAIN || 'http://localhost:9999';
+      })();
+
+      const openidUrl = new URL(providerConfig.authUrl);
+      openidUrl.searchParams.set('openid.ns', 'http://specs.openid.net/auth/2.0');
+      openidUrl.searchParams.set('openid.mode', 'checkid_setup');
+      openidUrl.searchParams.set('openid.return_to', returnToUrl.toString());
+      openidUrl.searchParams.set('openid.realm', realm);
+      openidUrl.searchParams.set('openid.identity', 'http://specs.openid.net/auth/2.0/identifier_select');
+      openidUrl.searchParams.set('openid.claimed_id', 'http://specs.openid.net/auth/2.0/identifier_select');
+
       return res.json({
         success: true,
         provider,
         state,
         verifier,
-        authUrl: providerConfig.authUrl,
+        authUrl: openidUrl.toString(),
         mode: 'openid',
-        message: 'Steam OpenID handshake should be completed at edge/auth gateway.'
+        message: 'Steam OpenID redirect generated.'
       });
     }
 
+    const clientId = String(providerConfig.clientId || '').trim();
+    if (!clientId) {
+      const hint = provider === 'google'
+        ? 'OAUTH_GOOGLE_CLIENT_ID'
+        : provider === 'discord'
+          ? 'OAUTH_DISCORD_CLIENT_ID'
+          : 'OAUTH_<PROVIDER>_CLIENT_ID';
+      const err = new Error(`${String(provider).toUpperCase()} OAuth is not configured (missing client_id). Set ${hint}.`);
+      err.code = 'AUTH_OAUTH_PROVIDER_NOT_CONFIGURED';
+      err.status = 400;
+      throw err;
+    }
+
+    const origin = (() => {
+      try {
+        if (process.env.DOMAIN) return new URL(process.env.DOMAIN).origin;
+      } catch {}
+      const proto = String(req.get('x-forwarded-proto') || req.protocol || 'http').split(',')[0].trim();
+      const host = String(req.get('x-forwarded-host') || req.get('host') || 'localhost:9999').split(',')[0].trim();
+      return `${proto}://${host}`;
+    })();
+
+    let redirectUri = String(providerConfig.redirectUri || '').trim();
+    if (!redirectUri) {
+      redirectUri = `${origin}/oauth/callback.html?provider=${encodeURIComponent(provider)}`;
+    }
+
+    try {
+      // Normalize relative redirect URIs against our computed origin.
+      redirectUri = new URL(redirectUri, origin).toString();
+    } catch {
+      const hint = provider === 'google'
+        ? 'OAUTH_GOOGLE_REDIRECT_URI'
+        : provider === 'discord'
+          ? 'OAUTH_DISCORD_REDIRECT_URI'
+          : 'OAUTH_<PROVIDER>_REDIRECT_URI';
+      const err = new Error(`${String(provider).toUpperCase()} OAuth redirect_uri is invalid. Set ${hint} to a valid URL.`);
+      err.code = 'AUTH_OAUTH_REDIRECT_URI_INVALID';
+      err.status = 400;
+      throw err;
+    }
+
     const url = new URL(providerConfig.authUrl);
-    url.searchParams.set('client_id', providerConfig.clientId || '');
-    url.searchParams.set('redirect_uri', providerConfig.redirectUri || '');
+    url.searchParams.set('client_id', clientId);
+    url.searchParams.set('redirect_uri', redirectUri);
     url.searchParams.set('response_type', 'code');
     url.searchParams.set('scope', providerConfig.scope);
     url.searchParams.set('state', state);
 
     return res.json({ success: true, provider, state, verifier, authUrl: url.toString() });
   } catch (error) {
-    logAuthError(req, error.code || 'AUTH_OAUTH_START_FAILED', error);
-    return authError(res, 400, error.code || 'AUTH_OAUTH_START_FAILED', 'OAuth start failed');
+    const code = error.code || 'AUTH_OAUTH_START_FAILED';
+    logAuthError(req, code, error);
+
+    const status = Number.isFinite(error.status) ? error.status : 400;
+    const safeMessage = (code === 'AUTH_OAUTH_PROVIDER_NOT_CONFIGURED' || code === 'AUTH_OAUTH_REDIRECT_URI_INVALID')
+      ? (error.message || 'OAuth start failed')
+      : 'OAuth start failed';
+
+    return authError(res, status, code, safeMessage);
   }
 });
 
@@ -378,7 +558,27 @@ router.post('/oauth/:provider/callback', async (req, res) => {
     let resolvedProfile = providerProfile && typeof providerProfile === 'object' ? providerProfile : {};
 
     if (provider === 'steam' && steamOpenId && !providerUserId) {
-      const claimedId = String(steamOpenId.claimed_id || steamOpenId.claimedId || '').trim();
+      // In production, require OpenID response verification (no edge gateway needed).
+      const hasSig = steamOpenId && typeof steamOpenId === 'object' && (steamOpenId['openid.sig'] || steamOpenId['openid.signed'] || steamOpenId.sig || steamOpenId.signed);
+      if (process.env.NODE_ENV === 'production') {
+        if (!hasSig) {
+          await audit('oauth.callback', 'failed', req, intendedUserId, { provider, reason: 'STEAM_OPENID_SIGNATURE_MISSING' });
+          return authError(res, 400, 'AUTH_OAUTH_STEAM_OPENID_SIGNATURE_MISSING', 'Steam OpenID signature is required');
+        }
+      }
+
+      // Verify whenever we have a signed response (dev + prod). Tests can still pass by sending claimed_id only.
+      if (hasSig) {
+        const ok = await verifySteamOpenIdResponse(steamOpenId);
+        if (!ok) {
+          await audit('oauth.callback', 'failed', req, intendedUserId, { provider, reason: 'STEAM_OPENID_INVALID' });
+          return authError(res, 401, 'AUTH_OAUTH_STEAM_OPENID_INVALID', 'Invalid Steam OpenID response');
+        }
+      }
+
+      const claimedId = String(
+        steamOpenId['openid.claimed_id'] || steamOpenId.claimed_id || steamOpenId.claimedId || ''
+      ).trim();
       const steamMatch = claimedId.match(/\/openid\/id\/(\d+)\/?$/i);
       if (!steamMatch || !steamMatch[1]) {
         await audit('oauth.callback', 'failed', req, intendedUserId, {

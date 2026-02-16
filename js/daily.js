@@ -61,7 +61,7 @@
             date: today,
             gameId: GAME_IDS[gameIdx],
             gameTitle: GAME_TITLES[GAME_IDS[gameIdx]],
-            gameUrl: '/games/' + GAME_IDS[gameIdx] + '/',
+            gameUrl: '/games/' + GAME_IDS[gameIdx] + '/' + GAME_IDS[gameIdx] + '.html',
             modifier: MODIFIERS[modIdx],
         };
     }

@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <meta name="description" content="AI-powered game builder using Ollama - Create custom horror games">
+    <meta name="robots" content="noindex, nofollow">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Ollama Game Builder — ScaryGamesAI">
+    <meta property="og:description" content="Create custom horror games using AI">
+    <title>Ollama Game Builder — ScaryGamesAI</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/ollama-builder.css">
+    <link rel="manifest" href="/manifest.json">
+</head>
+
+<body>
+    <!-- Skip link for accessibility -->
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+
+    <div class="bg-fog"></div>
+    <div class="bg-grain"></div>
+
+    <sgai-navbar></sgai-navbar>
+
+    <!-- Tutorial Overlay -->
+    <div class="tutorial-overlay" id="tutorial-overlay">
+        <div class="tutorial-card">
+            <div class="tutorial-icon" id="tutorial-icon">🎮</div>
+            <h3 class="tutorial-title" id="tutorial-title">Welcome to Game Builder</h3>
+            <p class="tutorial-content" id="tutorial-content">Create AI-powered horror games instantly. Select a template or write your own prompt.</p>
+            <div class="tutorial-progress" id="tutorial-progress">
+                <!-- Populated by JS -->
+            </div>
+            <div class="tutorial-nav">
+                <button class="tutorial-skip" id="tutorial-skip">Skip</button>
+                <button class="tutorial-next" id="tutorial-next">Next</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help Button -->
+    <button class="help-floating-btn" id="help-floating-btn" title="Help & Shortcuts">?</button>
+
+    <main class="main-content" id="main-content" role="main">
+        <section class="container">
+            <div class="section-header">
+                <h2>Ollama Game Builder</h2>
+                <p>Create custom horror games using AI. Powered by Ollama.</p>
+            </div>
+
+            <!-- Access Check -->
+            <div id="access-check"></div>
+
+            <!-- Builder Content -->
+            <div id="builder-content" style="display: none;">
+                <!-- Ollama Status -->
+                <div class="ollama-status" id="ollama-status">
+                    <div class="ollama-status-icon">🤖</div>
+                    <div class="ollama-status-text">
+                        <h4>Checking Ollama...</h4>
+                        <p>Detecting local Ollama installation</p>
+                    </div>
+                </div>
+
+                <!-- Model Selector -->
+                <div class="model-selector">
+                    <label for="model-select">Select AI Model</label>
+                    <select id="model-select">
+                        <option value="">Loading models...</option>
+                    </select>
+                    <div class="model-info" id="model-info" style="display: none;">
+                        <span>💡 Tip: Larger models generate better games but take longer</span>
+                    </div>
+                </div>
+
+                <!-- Template Selector -->
+                <div class="template-selector">
+                    <label>Choose a Game Type</label>
+                    <div class="template-tabs" id="template-tabs">
+                        <button class="template-tab active" data-category="genre">Game Types</button>
+                        <button class="template-tab" data-category="horror">Horror Themes</button>
+                        <button class="template-tab" data-category="custom">Custom</button>
+                    </div>
+                    <div class="template-cards" id="template-cards">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Difficulty Selector -->
+                <div class="difficulty-selector">
+                    <button class="difficulty-btn" data-difficulty="easy">
+                        <div>Easy</div>
+                        <small>Relaxed</small>
+                    </button>
+                    <button class="difficulty-btn active" data-difficulty="medium">
+                        <div>Medium</div>
+                        <small>Balanced</small>
+                    </button>
+                    <button class="difficulty-btn" data-difficulty="hard">
+                        <div>Hard</div>
+                        <small>Challenging</small>
+                    </button>
+                    <button class="difficulty-btn" data-difficulty="extreme">
+                        <div>Extreme</div>
+                        <small>Maximum</small>
+                    </button>
+                </div>
+
+                <!-- Customization Panel -->
+                <div class="customization-panel" id="customization-panel" style="display: none;">
+                    <h4>Customize Your Game</h4>
+                    <div class="customization-grid">
+                        <div class="customization-item">
+                            <label>Setting</label>
+                            <select id="custom-setting">
+                                <option value="">Random</option>
+                            </select>
+                        </div>
+                        <div class="customization-item">
+                            <label>Primary Threat</label>
+                            <select id="custom-threat">
+                                <option value="">Random</option>
+                            </select>
+                        </div>
+                        <div class="customization-item">
+                            <label>Visual Style</label>
+                            <select id="custom-visual">
+                                <option value="">Random</option>
+                            </select>
+                        </div>
+                        <div class="customization-item">
+                            <label>Special Mechanic</label>
+                            <select id="custom-mechanic">
+                                <option value="">None</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Prompt Input -->
+                <div class="prompt-section">
+                    <label for="game-prompt">Describe Your Game</label>
+                    <textarea 
+                        id="game-prompt" 
+                        class="prompt-textarea" 
+                        placeholder="Describe the game you want to create. For example: 'Create a horror maze game where the player must escape before time runs out...'"
+                    ></textarea>
+                </div>
+
+                <!-- Recommended Prompts -->
+                <div class="recommended-prompts" id="recommended-section">
+                    <h4>Quick Start Ideas</h4>
+                    <div class="prompt-cards" id="prompt-cards">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Advanced Options -->
+                <div class="advanced-options">
+                    <button class="advanced-toggle" id="advanced-toggle">
+                        <span class="advanced-toggle-icon">▼</span>
+                        Advanced Options
+                    </button>
+                    <div class="advanced-options-content" id="advanced-content">
+                        <div class="advanced-options-grid">
+                            <div class="advanced-option">
+                                <label>Temperature (Creativity)</label>
+                                <input type="range" id="opt-temperature" min="0.1" max="1.5" step="0.1" value="0.7">
+                                <span class="advanced-option-value" id="temp-value">0.7</span>
+                            </div>
+                            <div class="advanced-option">
+                                <label>Top P (Focus)</label>
+                                <input type="range" id="opt-topp" min="0.5" max="1" step="0.05" value="0.9">
+                                <span class="advanced-option-value" id="topp-value">0.9</span>
+                            </div>
+                            <div class="advanced-option">
+                                <label>Max Response (Tokens)</label>
+                                <input type="range" id="opt-tokens" min="2000" max="16000" step="1000" value="8000">
+                                <span class="advanced-option-value" id="tokens-value">8000</span>
+                            </div>
+                            <div class="advanced-option">
+                                <label>Timeout (seconds)</label>
+                                <input type="range" id="opt-timeout" min="60" max="300" step="30" value="180">
+                                <span class="advanced-option-value" id="timeout-value">180s</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Generate Button -->
+                <button class="generate-btn" id="generate-btn" disabled>
+                    <span class="btn-text">Generate Game</span>
+                </button>
+
+                <!-- Retry Options (shown after failure) -->
+                <div class="generate-options" id="retry-options" style="display: none;">
+                    <button class="retry-btn" id="retry-btn">
+                        <span>🔄</span> Retry with Same Settings
+                    </button>
+                    <button class="retry-btn" id="compare-models-btn">
+                        <span>📊</span> Compare Models
+                    </button>
+                </div>
+
+                <!-- Generation Progress -->
+                <div class="generation-progress" id="generation-progress" style="display: none;">
+                    <div class="streaming-indicator">
+                        <span class="streaming-dot"></span>
+                        <span>Generating your game...</span>
+                    </div>
+                    <h4>Generating Your Game...</h4>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" id="progress-bar" style="width: 0%;"></div>
+                    </div>
+                    <div class="progress-stats">
+                        <span id="progress-status">Initializing...</span>
+                        <span id="progress-tokens">Tokens: 0</span>
+                    </div>
+                    <div class="generation-preview" id="generation-preview"></div>
+                </div>
+
+                <!-- Validation Results -->
+                <div class="validation-results" id="validation-results" style="display: none;">
+                    <!-- Populated by JavaScript -->
+                </div>
+
+                <!-- Model Comparison Results -->
+                <div class="model-comparison" id="model-comparison" style="display: none;">
+                    <h4>Model Comparison Results</h4>
+                    <div class="model-results" id="model-results">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+
+                <!-- Prompt History -->
+                <div class="prompt-history" id="prompt-history" style="display: none;">
+                    <div class="prompt-history-header">
+                        <h4>Recent Prompts</h4>
+                        <button class="clear-history-btn" id="clear-history">Clear History</button>
+                    </div>
+                    <div class="prompt-history-list" id="prompt-history-list">
+                        <!-- Populated by JavaScript -->
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <sgai-footer></sgai-footer>
+
+    <!-- Result Modal -->
+    <div class="modal-overlay" id="result-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Game Generated!</h3>
+                <button class="modal-close" id="modal-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>Your custom game has been generated. Would you like to play it now or save it to your custom games?</p>
+                <div id="result-validation-summary"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-secondary" id="save-only-btn">Save Only</button>
+                <button class="btn-primary" id="play-now-btn">Play Now</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Player -->
+    <div class="game-player-container" id="game-player" style="display: none;">
+        <div class="game-player-header">
+            <span class="game-player-title" id="player-title">Custom Game</span>
+            <button class="game-player-close" id="player-close">Exit Game</button>
+        </div>
+        <iframe class="game-player-frame" id="game-frame" src=""></iframe>
+    </div>
+
+    <script src="/js/sgai-components.js" defer></script>
+    <script src="/js/state-bus.js" defer></script>
+    <script src="/js/page-shell.js" defer></script>
+    <script src="/js/ollama-integration.js" defer></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Check tutorial status first
+            initTutorial();
+            
+            // Setup keyboard shortcuts
+            initKeyboardShortcuts();
+            
+            const accessCheck = document.getElementById('access-check');
+            const builderContent = document.getElementById('builder-content');
+            
+            // Check if user has max tier
+            if (!OllamaIntegration.hasMaxTier()) {
+                accessCheck.innerHTML = `
+                    <div class="access-denied">
+                        <div class="access-denied-icon">🔒</div>
+                        <h2>Premium Feature</h2>
+                        <p>The Ollama Game Builder is available exclusively for Elder God tier subscribers. Upgrade now to unlock AI-powered game creation!</p>
+                        <a href="/subscription.html" class="upgrade-btn">
+                            <span>Upgrade to Elder God</span>
+                            <span>🜏</span>
+                        </a>
+                    </div>
+                `;
+                return;
+            }
+
+            builderContent.style.display = 'block';
+
+            // Initialize the builder
+            await initOllamaBuilder();
+        });
+
+        async function initOllamaBuilder() {
+            const statusEl = document.getElementById('ollama-status');
+            const modelSelect = document.getElementById('model-select');
+            const modelInfo = document.getElementById('model-info');
+            const templateCardsEl = document.getElementById('template-cards');
+            const promptTextarea = document.getElementById('game-prompt');
+            const promptCardsEl = document.getElementById('prompt-cards');
+            const generateBtn = document.getElementById('generate-btn');
+            const progressEl = document.getElementById('generation-progress');
+            const progressBar = document.getElementById('progress-bar');
+            const progressStatus = document.getElementById('progress-status');
+            const progressTokens = document.getElementById('progress-tokens');
+            const previewEl = document.getElementById('generation-preview');
+            const validationEl = document.getElementById('validation-results');
+            const retryOptions = document.getElementById('retry-options');
+
+            // Check Ollama status
+            const ollamaRunning = await OllamaIntegration.checkOllamaStatus();
+            
+            if (ollamaRunning) {
+                statusEl.className = 'ollama-status detected';
+                statusEl.innerHTML = `
+                    <div class="ollama-status-icon">✅</div>
+                    <div class="ollama-status-text">
+                        <h4>Ollama Detected</h4>
+                        <p>Ready to generate games</p>
+                    </div>
+                `;
+            } else {
+                statusEl.className = 'ollama-status not-detected';
+                statusEl.innerHTML = `
+                    <div class="ollama-status-icon">❌</div>
+                    <div class="ollama-status-text">
+                        <h4>Ollama Not Detected</h4>
+                        <p>Please install and run Ollama to use this feature</p>
+                    </div>
+                `;
+                generateBtn.disabled = true;
+                return;
+            }
+
+            // Load models
+            const models = await OllamaIntegration.getModels();
+            
+            if (models.length === 0) {
+                modelSelect.innerHTML = '<option value="">No models found</option>';
+                generateBtn.disabled = true;
+                return;
+            }
+
+            modelSelect.innerHTML = models.map(m => 
+                `<option value="${m.name}">${m.name}</option>`
+            ).join('');
+            modelInfo.style.display = 'inline-flex';
+            generateBtn.disabled = false;
+
+            // Load templates
+            renderTemplates();
+
+            // Load recommended prompts
+            const recommended = OllamaIntegration.getRecommendedPrompts();
+            promptCardsEl.innerHTML = recommended.map(p => `
+                <div class="prompt-card" data-prompt="${escapeHtml(p.prompt)}" data-title="${escapeHtml(p.title)}">
+                    <div class="prompt-card-title">${p.title}</div>
+                    <div class="prompt-card-preview">${p.prompt.substring(0, 80)}...</div>
+                </div>
+            `).join('');
+
+            // Load customization options
+            loadCustomizationOptions();
+
+            // Load prompt history
+            loadPromptHistory();
+
+            // Setup event listeners
+            setupEventListeners();
+
+            // ============ RENDER TEMPLATES ============
+            function renderTemplates(category = 'genre') {
+                const templates = OllamaIntegration.getPromptTemplates();
+                
+                if (category === 'genre') {
+                    templateCardsEl.innerHTML = Object.entries(templates.genres).map(([id, t]) => `
+                        <div class="template-card" data-template="${id}">
+                            <span class="template-card-badge">✓</span>
+                            <div class="template-card-icon">${t.icon}</div>
+                            <div class="template-card-title">${t.name}</div>
+                            <div class="template-card-desc">${t.description || ''}</div>
+                        </div>
+                    `).join('');
+                } else if (category === 'horror') {
+                    templateCardsEl.innerHTML = Object.entries(templates.genres).map(([id, t]) => `
+                        <div class="template-card" data-template="${id}" data-category="horror">
+                            <span class="template-card-badge">✓</span>
+                            <div class="template-card-icon">${t.icon}</div>
+                            <div class="template-card-title">${t.name}</div>
+                            <div class="template-card-desc">${t.description}</div>
+                        </div>
+                    `).join('');
+                } else {
+                    // Custom - show all game types
+                    templateCardsEl.innerHTML = `
+                        <div class="template-card" data-template="custom" data-category="custom">
+                            <span class="template-card-badge">✓</span>
+                            <div class="template-card-icon">✏️</div>
+                            <div class="template-card-title">Custom Prompt</div>
+                            <div class="template-card-desc">Write your own prompt from scratch</div>
+                        </div>
+                    `;
+                }
+
+                // Add click handlers
+                templateCardsEl.querySelectorAll('.template-card').forEach(card => {
+                    card.addEventListener('click', function() {
+                        const templateId = this.dataset.template;
+                        const cat = this.dataset.category;
+                        
+                        // Update selection
+                        templateCardsEl.querySelectorAll('.template-card').forEach(c => c.classList.remove('selected'));
+                        this.classList.add('selected');
+                        
+                        if (cat === 'custom' || templateId === 'custom') {
+                            document.getElementById('customization-panel').style.display = 'none';
+                            promptTextarea.value = '';
+                            promptTextarea.focus();
+                        } else {
+                            document.getElementById('customization-panel').style.display = 'block';
+                            // Pre-fill prompt based on template
+                            updatePromptFromTemplate(templateId);
+                        }
+                    });
+                });
+            }
+
+            // ============ LOAD CUSTOMIZATION OPTIONS ============
+            function loadCustomizationOptions() {
+                const templates = OllamaIntegration.getPromptTemplates();
+                
+                const settingSelect = document.getElementById('custom-setting');
+                const threatSelect = document.getElementById('custom-threat');
+                const visualSelect = document.getElementById('custom-visual');
+                const mechanicSelect = document.getElementById('custom-mechanic');
+                
+                settingSelect.innerHTML = '<option value="">Random</option>' + 
+                    templates.settings.map(s => `<option value="${s}">${capitalizeFirst(s)}</option>`).join('');
+                
+                threatSelect.innerHTML = '<option value="">Random</option>' + 
+                    templates.threats.map(t => `<option value="${t}">${capitalizeFirst(t)}</option>`).join('');
+                
+                visualSelect.innerHTML = '<option value="">Random</option>' + 
+                    templates.visualStyles.map(v => `<option value="${v}">${capitalizeFirst(v)}</option>`).join('');
+                
+                mechanicSelect.innerHTML = '<option value="">None</option>' + 
+                    templates.mechanics.map(m => `<option value="${m}">${capitalizeFirst(m)}</option>`).join('');
+            }
+
+            // ============ UPDATE PROMPT FROM TEMPLATE ============
+            function updatePromptFromTemplate(templateId) {
+                const difficulty = document.querySelector('.difficulty-btn.active')?.dataset.difficulty || 'medium';
+                
+                const customizations = {
+                    setting: document.getElementById('custom-setting').value,
+                    threat: document.getElementById('custom-threat').value,
+                    visualStyle: document.getElementById('custom-visual').value,
+                    mechanic: document.getElementById('custom-mechanic').value,
+                    difficulty: difficulty
+                };
+                
+                const prompt = OllamaIntegration.buildPromptFromTemplate(templateId, customizations);
+                if (prompt) {
+                    promptTextarea.value = prompt;
+                }
+            }
+
+            // ============ SETUP EVENT LISTENERS ============
+            function setupEventListeners() {
+                // Template tabs
+                document.querySelectorAll('.template-tab').forEach(tab => {
+                    tab.addEventListener('click', function() {
+                        document.querySelectorAll('.template-tab').forEach(t => t.classList.remove('active'));
+                        this.classList.add('active');
+                        renderTemplates(this.dataset.category);
+                    });
+                });
+
+                // Difficulty buttons
+                document.querySelectorAll('.difficulty-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        document.querySelectorAll('.difficulty-btn').forEach(b => b.classList.remove('active'));
+                        this.classList.add('active');
+                        
+                        // Update prompt with new difficulty if template selected
+                        const selectedTemplate = document.querySelector('.template-card.selected');
+                        if (selectedTemplate && selectedTemplate.dataset.template !== 'custom') {
+                            updatePromptFromTemplate(selectedTemplate.dataset.template);
+                        }
+                    });
+                });
+
+                // Customization changes
+                ['custom-setting', 'custom-threat', 'custom-visual', 'custom-mechanic'].forEach(id => {
+                    document.getElementById(id).addEventListener('change', () => {
+                        const selectedTemplate = document.querySelector('.template-card.selected');
+                        if (selectedTemplate && selectedTemplate.dataset.template !== 'custom') {
+                            updatePromptFromTemplate(selectedTemplate.dataset.template);
+                        }
+                    });
+                });
+
+                // Prompt card clicks
+                promptCardsEl.addEventListener('click', function(e) {
+                    const card = e.target.closest('.prompt-card');
+                    if (card) {
+                        promptTextarea.value = card.dataset.prompt;
+                    }
+                });
+
+                // Advanced options toggle
+                document.getElementById('advanced-toggle').addEventListener('click', function() {
+                    this.classList.toggle('open');
+                    document.getElementById('advanced-content').classList.toggle('open');
+                });
+
+                // Advanced option sliders
+                document.getElementById('opt-temperature').addEventListener('input', function() {
+                    document.getElementById('temp-value').textContent = this.value;
+                });
+                document.getElementById('opt-topp').addEventListener('input', function() {
+                    document.getElementById('topp-value').textContent = this.value;
+                });
+                document.getElementById('opt-tokens').addEventListener('input', function() {
+                    document.getElementById('tokens-value').textContent = this.value;
+                });
+                document.getElementById('opt-timeout').addEventListener('input', function() {
+                    document.getElementById('timeout-value').textContent = this.value + 's';
+                });
+
+                // Generate button
+                let generatedGame = null;
+                let lastPrompt = '';
+
+                generateBtn.addEventListener('click', async function() {
+                    const prompt = promptTextarea.value.trim();
+                    const model = modelSelect.value;
+
+                    if (!prompt) {
+                        alert('Please enter a prompt or select a template.');
+                        return;
+                    }
+
+                    if (!model) {
+                        alert('Please select an AI model.');
+                        return;
+                    }
+
+                    lastPrompt = prompt;
+
+                    // Get advanced options
+                    const options = {
+                        timeout: parseInt(document.getElementById('opt-timeout').value) * 1000,
+                        temperature: parseFloat(document.getElementById('opt-temperature').value),
+                        topP: parseFloat(document.getElementById('opt-topp').value),
+                        maxTokens: parseInt(document.getElementById('opt-tokens').value)
+                    };
+
+                    // Show progress
+                    generateBtn.classList.add('loading');
+                    generateBtn.disabled = true;
+                    generateBtn.innerHTML = '<span class="spinner"></span><span class="btn-text">Generating...</span>';
+                    progressEl.style.display = 'block';
+                    validationEl.style.display = 'none';
+                    previewEl.textContent = '';
+                    progressBar.style.width = '0%';
+                    progressStatus.textContent = 'Starting generation...';
+                    progressTokens.textContent = 'Tokens: 0';
+
+                    try {
+                        let tokenCount = 0;
+                        const gameHtml = await OllamaIntegration.generateGame(
+                            prompt,
+                            model,
+                            options,
+                            (chunk, tokens) => {
+                                tokenCount = tokens;
+                                const preview = chunk.slice(-800);
+                                previewEl.textContent = preview;
+                                progressBar.style.width = Math.min(90, 50 + tokens * 0.5) + '%';
+                                progressStatus.textContent = 'Generating game code...';
+                                progressTokens.textContent = `Tokens: ${tokens}`;
+                            }
+                        );
+
+                        progressBar.style.width = '100%';
+                        progressStatus.textContent = 'Validating game...';
+                        
+                        // Validate the generated game
+                        const validation = OllamaIntegration.validateGame(gameHtml);
+                        
+                        // Show validation results
+                        showValidationResults(validation);
+                        
+                        // Parse and save game
+                        const titleMatch = prompt.match(/^Create\s+(?:a|an)\s+([^\.]+)/i);
+                        const title = titleMatch ? titleMatch[1] : 'Generated Game';
+                        generatedGame = OllamaIntegration.parseGeneratedGame(gameHtml, title, validation);
+                        
+                        // Add to history
+                        OllamaIntegration.addToPromptHistory(prompt);
+                        loadPromptHistory();
+
+                        // Show modal
+                        showResultModal(generatedGame, validation);
+
+                    } catch (error) {
+                        console.error('Generation failed:', error);
+                        alert('Failed to generate game: ' + error.message);
+                        retryOptions.style.display = 'flex';
+                    } finally {
+                        generateBtn.classList.remove('loading');
+                        generateBtn.disabled = false;
+                        generateBtn.innerHTML = '<span class="btn-text">Generate Game</span>';
+                    }
+                });
+
+                // Retry button
+                document.getElementById('retry-btn').addEventListener('click', function() {
+                    retryOptions.style.display = 'none';
+                    promptTextarea.value = lastPrompt;
+                    generateBtn.click();
+                });
+
+                // Compare models button
+                document.getElementById('compare-models-btn').addEventListener('click', async function() {
+                    retryOptions.style.display = 'none';
+                    const models = Array.from(modelSelect.options).map(o => o.value);
+                    
+                    if (models.length < 2) {
+                        alert('Need at least 2 models to compare.');
+                        return;
+                    }
+
+                    generateBtn.classList.add('loading');
+                    generateBtn.disabled = true;
+                    progressEl.style.display = 'block';
+                    progressStatus.textContent = 'Comparing models...';
+                    
+                    const comparisonEl = document.getElementById('model-comparison');
+                    const resultsEl = document.getElementById('model-results');
+                    comparisonEl.style.display = 'block';
+                    resultsEl.innerHTML = '';
+
+                    try {
+                        const results = await OllamaIntegration.generateWithMultipleModels(
+                            lastPrompt,
+                            models,
+                            (chunk) => {
+                                previewEl.textContent = chunk.slice(-500);
+                            },
+                            (modelName, result) => {
+                                const div = document.createElement('div');
+                                div.className = `model-result ${result.success ? 'success' : 'error'}`;
+                                div.innerHTML = `
+                                    <span class="model-result-icon">${result.success ? '✅' : '❌'}</span>
+                                    <span class="model-result-name">${modelName}</span>
+                                    <span class="model-result-stats">${result.success ? result.duration + 'ms' : result.error}</span>
+                                    <span class="model-result-score">${result.validation ? result.validation.score + '%' : ''}</span>
+                                `;
+                                resultsEl.appendChild(div);
+                            }
+                        );
+
+                        // Auto-select best model
+                        const best = Object.entries(results)
+                            .filter(([_, r]) => r.success)
+                            .sort((a, b) => (b[1].validation?.score || 0) - (a[1].validation?.score || 0))[0];
+                        
+                        if (best) {
+                            modelSelect.value = best[0];
+                        }
+
+                    } catch (error) {
+                        console.error('Comparison failed:', error);
+                    } finally {
+                        generateBtn.classList.remove('loading');
+                        generateBtn.disabled = false;
+                    }
+                });
+
+                // Modal handlers
+                const modal = document.getElementById('result-modal');
+                const modalClose = document.getElementById('modal-close');
+                const saveOnlyBtn = document.getElementById('save-only-btn');
+                const playNowBtn = document.getElementById('play-now-btn');
+
+                function showResultModal(game, validation) {
+                    // Add validation summary to modal
+                    const summaryEl = document.getElementById('result-validation-summary');
+                    const scoreClass = validation.score >= 80 ? 'excellent' : validation.score >= 50 ? 'good' : 'poor';
+                    summaryEl.innerHTML = `
+                        <div class="validation-results">
+                            <div class="validation-header">
+                                <span class="validation-title">Game Quality Score</span>
+                                <span class="validation-score ${scoreClass}">${validation.score}%</span>
+                            </div>
+                            ${validation.warnings.length > 0 ? `<p style="font-size: 12px; color: rgba(255,255,255,0.6);">${validation.warnings.length} warnings (game should still work)</p>` : ''}
+                        </div>
+                    `;
+                    modal.classList.add('active');
+                }
+
+                modalClose.addEventListener('click', function() {
+                    modal.classList.remove('active');
+                });
+
+                modal.addEventListener('click', function(e) {
+                    if (e.target === modal) {
+                        modal.classList.remove('active');
+                    }
+                });
+
+                saveOnlyBtn.addEventListener('click', function() {
+                    OllamaIntegration.saveCustomGame(generatedGame);
+                    modal.classList.remove('active');
+                    promptTextarea.value = '';
+                    alert('Game saved to your custom games!');
+                });
+
+                playNowBtn.addEventListener('click', function() {
+                    OllamaIntegration.saveCustomGame(generatedGame);
+                    modal.classList.remove('active');
+                    playGame(generatedGame);
+                });
+
+                // Clear history
+                document.getElementById('clear-history').addEventListener('click', function() {
+                    if (confirm('Clear all prompt history?')) {
+                        OllamaIntegration.clearPromptHistory();
+                        loadPromptHistory();
+                    }
+                });
+
+                // Game player
+                const gamePlayer = document.getElementById('game-player');
+                const gameFrame = document.getElementById('game-frame');
+                const playerTitle = document.getElementById('player-title');
+                const playerClose = document.getElementById('player-close');
+
+                window.playGame = function(game) {
+                    playerTitle.textContent = game.title;
+                    
+                    // Sanitize before playing
+                    const sanitized = OllamaIntegration.sanitizeGameHtml(game.html);
+                    
+                    // Create blob URL for the game
+                    const blob = new Blob([sanitized], { type: 'text/html' });
+                    const url = URL.createObjectURL(blob);
+                    
+                    gameFrame.src = url;
+                    gamePlayer.style.display = 'block';
+                };
+
+                playerClose.addEventListener('click', function() {
+                    gamePlayer.style.display = 'none';
+                    gameFrame.src = '';
+                });
+            }
+
+            // ============ VALIDATION RESULTS ============
+            function showValidationResults(validation) {
+                const validationEl = document.getElementById('validation-results');
+                const scoreClass = validation.score >= 80 ? 'excellent' : validation.score >= 50 ? 'good' : 'poor';
+                
+                let html = `
+                    <div class="validation-header">
+                        <span class="validation-title">Validation Results</span>
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <span class="validation-badge ${validation.valid ? 'valid' : 'invalid'}">
+                                ${validation.valid ? '✓ Playable' : '⚠ Issues Found'}
+                            </span>
+                            <span class="validation-score ${scoreClass}">${validation.score}%</span>
+                        </div>
+                    </div>
+                `;
+
+                if (validation.issues.length > 0) {
+                    html += `
+                        <div class="validation-section">
+                            <div class="validation-section-title">Issues</div>
+                            <ul class="validation-issues">
+                                ${validation.issues.map(i => `<li>${i}</li>`).join('')}
+                            </ul>
+                        </div>
+                    `;
+                }
+
+                if (validation.warnings.length > 0) {
+                    html += `
+                        <div class="validation-section">
+                            <div class="validation-section-title">Warnings</div>
+                            <ul class="validation-warnings">
+                                ${validation.warnings.map(w => `<li>${w}</li>`).join('')}
+                            </ul>
+                        </div>
+                    `;
+                }
+
+                html += `
+                    <div class="validation-section">
+                        <div class="validation-section-title">Game Info</div>
+                        <div class="validation-metadata">
+                            <div class="validation-meta-item">
+                                <div class="validation-meta-label">Complexity</div>
+                                <div class="validation-meta-value">${validation.metadata.estimatedComplexity}</div>
+                            </div>
+                            <div class="validation-meta-item">
+                                <div class="validation-meta-label">Size</div>
+                                <div class="validation-meta-value">${Math.round(validation.metadata.title.length / 100)}KB</div>
+                            </div>
+                            <div class="validation-meta-item">
+                                <div class="validation-meta-label">Canvas</div>
+                                <div class="validation-meta-value">${validation.metadata.canvasWidth}x${validation.metadata.canvasHeight}</div>
+                            </div>
+                            <div class="validation-meta-item">
+                                <div class="validation-meta-label">Features</div>
+                                <div class="validation-meta-value">
+                                    ${validation.metadata.hasSound ? '🔊 ' : ''}
+                                    ${validation.metadata.hasParticles ? '✨ ' : ''}
+                                    ${validation.metadata.hasMultipleLevels ? '📶 ' : 'Single'}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                validationEl.innerHTML = html;
+                validationEl.style.display = 'block';
+            }
+
+            // ============ LOAD PROMPT HISTORY ============
+            function loadPromptHistory() {
+                const history = OllamaIntegration.getPromptHistory();
+                const historySection = document.getElementById('prompt-history');
+                const historyList = document.getElementById('prompt-history-list');
+                const promptTextarea = document.getElementById('game-prompt');
+
+                if (history.length === 0) {
+                    historySection.style.display = 'none';
+                    return;
+                }
+
+                historySection.style.display = 'block';
+                historyList.innerHTML = history.slice(0, 5).map(item => `
+                    <div class="prompt-history-item" data-prompt="${escapeHtml(item.prompt)}">
+                        <div class="prompt-history-text">${item.prompt.substring(0, 100)}...</div>
+                        <div class="prompt-history-date">${formatDate(item.timestamp)}</div>
+                    </div>
+                `).join('');
+
+                // Add click handlers
+                historyList.querySelectorAll('.prompt-history-item').forEach(item => {
+                    item.addEventListener('click', function() {
+                        promptTextarea.value = this.dataset.prompt;
+                        window.scrollTo({ top: promptTextarea.offsetTop - 100, behavior: 'smooth' });
+                    });
+                });
+            }
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function capitalizeFirst(str) {
+            return str.split(' ').map(word => 
+                word.charAt(0).toUpperCase() + word.slice(1)
+            ).join(' ');
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            const now = new Date();
+            const diff = now - date;
+            
+            if (diff < 60000) return 'Just now';
+            if (diff < 3600000) return Math.floor(diff / 60000) + ' min ago';
+            if (diff < 86400000) return Math.floor(diff / 3600000) + ' hours ago';
+            
+            return date.toLocaleDateString('en-US', { 
+                month: 'short',
+                day: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        // ============ TUTORIAL SYSTEM ============
+        let tutorialStep = 0;
+        const tutorialSteps = [
+            { icon: '🎮', title: 'Welcome to Game Builder', content: 'Create AI-powered horror games instantly. Select a template or write your own prompt.' },
+            { icon: '📋', title: 'Choose a Game Type', content: 'Pick from 8 game types like Endless Runner, Maze Escape, or Zombie Shooter. Each comes with customizable options.' },
+            { icon: '⚡', title: 'Set Difficulty', content: 'Choose Easy, Medium, Hard, or Extreme. Higher difficulties create tougher challenges for players.' },
+            { icon: '🎨', title: 'Customize Your Game', content: 'Add your own setting, enemies, visual style, and special mechanics for a unique experience.' },
+            { icon: '🚀', title: 'Generate & Play', content: 'Click Generate and watch AI create your game. Play immediately or save to your collection!' }
+        ];
+
+        function initTutorial() {
+            // Check if tutorial should run
+            if (!OllamaIntegration.isTutorialCompleted()) {
+                showTutorialStep(0);
+            }
+            
+            // Setup tutorial button handlers
+            document.getElementById('tutorial-skip').addEventListener('click', closeTutorial);
+            document.getElementById('tutorial-next').addEventListener('click', nextTutorialStep);
+            
+            // Setup floating help button
+            document.getElementById('help-floating-btn').addEventListener('click', showHelpModal);
+        }
+
+        function showTutorialStep(step) {
+            tutorialStep = step;
+            const stepData = tutorialSteps[step];
+            
+            document.getElementById('tutorial-icon').textContent = stepData.icon;
+            document.getElementById('tutorial-title').textContent = stepData.title;
+            document.getElementById('tutorial-content').textContent = stepData.content;
+            
+            // Update progress dots
+            const progressEl = document.getElementById('tutorial-progress');
+            progressEl.innerHTML = tutorialSteps.map((_, i) => 
+                `<div class="tutorial-progress-dot ${i === step ? 'active' : ''} ${i < step ? 'completed' : ''}"></div>`
+            ).join('');
+            
+            // Update button text
+            document.getElementById('tutorial-next').textContent = step === tutorialSteps.length - 1 ? 'Finish' : 'Next';
+            document.getElementById('tutorial-skip').textContent = step === tutorialSteps.length - 1 ? 'Done' : 'Skip';
+            
+            document.getElementById('tutorial-overlay').classList.add('active');
+        }
+
+        function nextTutorialStep() {
+            if (tutorialStep < tutorialSteps.length - 1) {
+                showTutorialStep(tutorialStep + 1);
+            } else {
+                closeTutorial();
+            }
+        }
+
+        function closeTutorial() {
+            document.getElementById('tutorial-overlay').classList.remove('active');
+            OllamaIntegration.completeTutorial();
+        }
+
+        // ============ KEYBOARD SHORTCUTS ============
+        function initKeyboardShortcuts() {
+            document.addEventListener('keydown', function(e) {
+                // Ctrl+G - Generate
+                if (e.ctrlKey && e.key === 'g') {
+                    e.preventDefault();
+                    document.getElementById('generate-btn').click();
+                }
+                
+                // Ctrl+H - Toggle history
+                if (e.ctrlKey && e.key === 'h') {
+                    e.preventDefault();
+                    const history = document.getElementById('prompt-history');
+                    if (history) {
+                        history.style.display = history.style.display === 'none' ? 'block' : 'none';
+                    }
+                }
+                
+                // Ctrl+? - Show help
+                if (e.ctrlKey && e.key === '?') {
+                    e.preventDefault();
+                    showHelpModal();
+                }
+                
+                // Escape - Close modals
+                if (e.key === 'Escape') {
+                    document.querySelectorAll('.modal-overlay.active').forEach(modal => {
+                        modal.classList.remove('active');
+                    });
+                }
+            });
+        }
+
+        function showHelpModal() {
+            const shortcuts = OllamaIntegration.getKeyboardShortcuts();
+            let shortcutsHtml = '';
+            
+            for (const [key, desc] of Object.entries(shortcuts)) {
+                shortcutsHtml += `
+                    <div class="shortcut-item">
+                        <span class="shortcut-key">${key}</span>
+                        <span class="shortcut-desc">${desc}</span>
+                    </div>
+                `;
+            }
+            
+            const tips = OllamaIntegration.getPromptTips();
+            let tipsHtml = tips.map(tip => `<li>${tip}</li>`).join('');
+            
+            // Create help modal content
+            let helpModal = document.getElementById('help-modal-ollama');
+            if (!helpModal) {
+                helpModal = document.createElement('div');
+                helpModal.id = 'help-modal-ollama';
+                helpModal.className = 'modal-overlay';
+                helpModal.innerHTML = `
+                    <div class="modal-content help-modal">
+                        <div class="modal-header">
+                            <h3>Help & Shortcuts</h3>
+                            <button class="modal-close" id="help-close-ollama">&times;</button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="help-section">
+                                <h4>Keyboard Shortcuts</h4>
+                                <div class="shortcuts-grid" id="shortcuts-grid-ollama"></div>
+                            </div>
+                            <div class="help-section">
+                                <h4>Tips for Better Prompts</h4>
+                                <ul class="tips-list" id="tips-list-ollama"></ul>
+                            </div>
+                            <div class="help-section">
+                                <h4>Example Prompts</h4>
+                                <div class="example-prompts" id="example-prompts-ollama"></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(helpModal);
+                
+                document.getElementById('help-close-ollama').addEventListener('click', function() {
+                    helpModal.classList.remove('active');
+                });
+                
+                helpModal.addEventListener('click', function(e) {
+                    if (e.target === helpModal) {
+                        helpModal.classList.remove('active');
+                    }
+                });
+            }
+            
+            document.getElementById('shortcuts-grid-ollama').innerHTML = shortcutsHtml;
+            document.getElementById('tips-list-ollama').innerHTML = tipsHtml;
+            
+            // Example prompts
+            const examplePrompts = OllamaIntegration.getExamplePrompts();
+            document.getElementById('example-prompts-ollama').innerHTML = examplePrompts.map(prompt => `
+                <div class="example-prompt" data-prompt="${escapeHtml(prompt)}">
+                    <div class="example-prompt-text">${prompt.substring(0, 120)}...</div>
+                </div>
+            `).join('');
+            
+            // Add click handlers for example prompts
+            document.getElementById('example-prompts-ollama').querySelectorAll('.example-prompt').forEach(el => {
+                el.addEventListener('click', function() {
+                    const prompt = this.dataset.prompt;
+                    document.getElementById('game-prompt').value = prompt;
+                    helpModal.classList.remove('active');
+                    window.scrollTo({ top: document.getElementById('game-prompt').offsetTop - 100, behavior: 'smooth' });
+                });
+            });
+            
+            helpModal.classList.add('active');
+        }
+    </script>
+</body>
+</html>

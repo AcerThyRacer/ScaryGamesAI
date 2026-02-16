@@ -326,70 +326,83 @@ const MicroInteractions = (function () {
             requestAnimationFrame(renderTrail);
             return;
         }
+
+        // Time-based update so trail stays smooth at any refresh rate.
+        if (renderTrail._lastTs === undefined) renderTrail._lastTs = performance.now();
+        const now = performance.now();
+        const dt = Math.min(0.05, Math.max(0, (now - renderTrail._lastTs) / 1000));
+        renderTrail._lastTs = now;
+        const scale = dt * 60; // preserve legacy tuning (was per-frame at ~60fps)
+        const decayPow = (base) => Math.pow(base, scale);
+        const chanceAtLeastOnce = (pPerFrame) => 1 - Math.pow(1 - pPerFrame, scale);
+
         const w = trailCachedW;
         const h = trailCachedH;
         trailCtx.clearRect(0, 0, w, h);
 
         for (let i = trailDots.length - 1; i >= 0; i--) {
             const d = trailDots[i];
-            d.life -= 0.03;
+            d.life -= 0.03 * scale;
 
             // Behavior-specific physics
             switch (d.behavior) {
                 case 'drip':
-                    d.x += d.vx; d.y += d.vy; d.vy += 0.06;
+                    d.x += d.vx * scale; d.y += d.vy * scale; d.vy += 0.06 * scale;
                     break;
                 case 'fizz':
-                    d.x += d.vx; d.y += d.vy;
-                    d.vx *= 0.96; d.vy *= 0.96;
+                    d.x += d.vx * scale; d.y += d.vy * scale;
+                    d.vx *= decayPow(0.96); d.vy *= decayPow(0.96);
                     break;
                 case 'sparkle':
-                    d.x += d.vx * d.life; d.y += d.vy * d.life;
+                    d.x += d.vx * d.life * scale; d.y += d.vy * d.life * scale;
                     break;
                 case 'float':
-                    d.x += d.vx + Math.sin(d.life * 8) * 0.5;
-                    d.y += d.vy;
+                    d.x += (d.vx + Math.sin(d.life * 8) * 0.5) * scale;
+                    d.y += d.vy * scale;
                     break;
                 case 'orbit':
-                    d.angle += d.orbitSpeed;
-                    d.x = d.x + Math.cos(d.angle) * d.orbitR * 0.03;
-                    d.y = d.y + Math.sin(d.angle) * d.orbitR * 0.03;
-                    d.orbitR *= 0.99;
+                    d.angle += d.orbitSpeed * scale;
+                    d.x = d.x + Math.cos(d.angle) * d.orbitR * 0.03 * scale;
+                    d.y = d.y + Math.sin(d.angle) * d.orbitR * 0.03 * scale;
+                    d.orbitR *= decayPow(0.99);
                     break;
                 case 'rise':
-                    d.x += d.vx; d.y += d.vy;
-                    d.vx += (Math.random() - 0.5) * 0.2;
+                    d.x += d.vx * scale; d.y += d.vy * scale;
+                    d.vx += (Math.random() - 0.5) * 0.2 * scale;
                     break;
                 case 'glitch':
-                    if (Math.random() > 0.7) { d.x += (Math.random() - 0.5) * 8; d.y += (Math.random() - 0.5) * 8; }
+                    if (Math.random() < chanceAtLeastOnce(0.3)) {
+                        d.x += (Math.random() - 0.5) * 8 * Math.min(1.5, scale);
+                        d.y += (Math.random() - 0.5) * 8 * Math.min(1.5, scale);
+                    }
                     break;
                 case 'bubble':
-                    d.x += d.vx + Math.sin(d.life * 10) * 0.3;
-                    d.y += d.vy;
-                    d.size *= 1.005;
+                    d.x += (d.vx + Math.sin(d.life * 10) * 0.3) * scale;
+                    d.y += d.vy * scale;
+                    d.size *= decayPow(1.005);
                     break;
                 case 'spiral':
-                    d.angle += d.spiralSpeed;
-                    d.spiralR += 0.3;
-                    d.x += Math.cos(d.angle) * d.spiralR * 0.05;
-                    d.y += Math.sin(d.angle) * d.spiralR * 0.05;
+                    d.angle += d.spiralSpeed * scale;
+                    d.spiralR += 0.3 * scale;
+                    d.x += Math.cos(d.angle) * d.spiralR * 0.05 * scale;
+                    d.y += Math.sin(d.angle) * d.spiralR * 0.05 * scale;
                     break;
                 case 'leaf':
-                    d.wobble += 0.1;
-                    d.x += d.vx + Math.sin(d.wobble) * 1.2;
-                    d.y += d.vy;
-                    d.vx *= 0.98;
+                    d.wobble += 0.1 * scale;
+                    d.x += (d.vx + Math.sin(d.wobble) * 1.2) * scale;
+                    d.y += d.vy * scale;
+                    d.vx *= decayPow(0.98);
                     break;
                 case 'zap':
-                    d.x += d.vx; d.y += d.vy;
-                    d.vx *= 0.85; d.vy *= 0.85;
+                    d.x += d.vx * scale; d.y += d.vy * scale;
+                    d.vx *= decayPow(0.85); d.vy *= decayPow(0.85);
                     break;
                 case 'ash':
-                    d.x += d.vx + Math.sin(d.life * 5) * 0.3;
-                    d.y += d.vy;
+                    d.x += (d.vx + Math.sin(d.life * 5) * 0.3) * scale;
+                    d.y += d.vy * scale;
                     break;
                 default:
-                    d.x += d.vx; d.y += d.vy; d.vy += 0.05;
+                    d.x += d.vx * scale; d.y += d.vy * scale; d.vy += 0.05 * scale;
             }
 
             if (d.life <= 0) { trailDots.splice(i, 1); continue; }

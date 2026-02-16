@@ -50,6 +50,38 @@ var BackroomsEnhancements = (function() {
             return maze;
         },
 
+        // Async generation: yields back to the browser periodically so we can animate loading UI.
+        // This preserves the sync API above for small mazes and older call sites.
+        generateAsync: function(seed, level, opts) {
+            opts = opts || {};
+            var self = this;
+
+            self.currentSeed = seed;
+            self.currentLevel = level;
+
+            var rng = self.seededRandom(seed + level);
+            var rows = 15 + Math.floor(level / 3) * 2; // Bigger mazes at higher levels
+            var cols = 17 + Math.floor(level / 3) * 2;
+
+            // Ensure odd dimensions for proper maze
+            if (rows % 2 === 0) rows++;
+            if (cols % 2 === 0) cols++;
+
+            rows = Math.min(rows, 31); // Max size
+            cols = Math.min(cols, 31);
+
+            var onProgress = typeof opts.onProgress === 'function' ? opts.onProgress : null;
+
+            return self.generateMazeAsync(rows, cols, rng, onProgress).then(function(maze) {
+                maze = self.addPellets(maze, rng);
+                maze = self.addSpecialItems(maze, rng, level);
+                maze = self.addHidingSpots(maze, rng, level);
+
+                self.generatedMazes.push({ seed: seed, level: level, maze: maze });
+                return maze;
+            });
+        },
+
         // Seeded random number generator
         seededRandom: function(seed) {
             var s = seed;
@@ -131,6 +163,121 @@ var BackroomsEnhancements = (function() {
             }
 
             return maze;
+        },
+
+        generateMazeAsync: function(rows, cols, rng, onProgress) {
+            function idle(cb) {
+                if (typeof requestIdleCallback !== 'undefined') {
+                    requestIdleCallback(function(deadline) { cb(deadline && deadline.timeRemaining ? deadline.timeRemaining() : 8); });
+                } else {
+                    setTimeout(function() { cb(8); }, 0);
+                }
+            }
+
+            function run(gen) {
+                return new Promise(function(resolve, reject) {
+                    function step() {
+                        idle(function(budgetMs) {
+                            var start = (typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now();
+                            try {
+                                while (true) {
+                                    var res = gen.next();
+                                    if (res.done) return resolve(res.value);
+
+                                    // Consume time budget (rough; good enough for UI responsiveness)
+                                    var now = (typeof performance !== 'undefined' && performance.now) ? performance.now() : Date.now();
+                                    if ((now - start) >= Math.max(4, budgetMs * 0.8)) break;
+                                }
+                            } catch (e) {
+                                return reject(e);
+                            }
+                            step();
+                        });
+                    }
+                    step();
+                });
+            }
+
+            function* genMaze() {
+                // Initialize with all walls
+                var maze = [];
+                for (var r = 0; r < rows; r++) {
+                    maze[r] = [];
+                    for (var c = 0; c < cols; c++) {
+                        maze[r][c] = 1;
+                    }
+                    if ((r & 7) === 7) yield { phase: 'init', r: r, rows: rows };
+                }
+
+                // Carve passages using iterative backtracking (yielding)
+                var stack = [];
+                var startR = 1;
+                var startC = 1;
+                maze[startR][startC] = 0;
+                stack.push({ r: startR, c: startC });
+
+                var directions = [
+                    { dr: -2, dc: 0 },
+                    { dr: 2, dc: 0 },
+                    { dr: 0, dc: -2 },
+                    { dr: 0, dc: 2 }
+                ];
+
+                var carveSteps = 0;
+                while (stack.length > 0) {
+                    var current = stack[stack.length - 1];
+                    var neighbors = [];
+
+                    for (var i = 0; i < directions.length; i++) {
+                        var d = directions[i];
+                        var nr = current.r + d.dr;
+                        var nc = current.c + d.dc;
+                        if (nr > 0 && nr < rows - 1 && nc > 0 && nc < cols - 1 && maze[nr][nc] === 1) {
+                            neighbors.push({ r: nr, c: nc, dr: d.dr / 2, dc: d.dc / 2 });
+                        }
+                    }
+
+                    if (neighbors.length > 0) {
+                        var next = neighbors[Math.floor(rng() * neighbors.length)];
+                        maze[current.r + next.dr][current.c + next.dc] = 0;
+                        maze[next.r][next.c] = 0;
+                        stack.push({ r: next.r, c: next.c });
+                    } else {
+                        stack.pop();
+                    }
+
+                    carveSteps++;
+                    if ((carveSteps & 255) === 255) {
+                        if (onProgress) onProgress({ phase: 'carve', progress: 0.2 + Math.min(0.6, carveSteps / (rows * cols * 4)) });
+                        yield { phase: 'carve', steps: carveSteps };
+                    }
+                }
+
+                // Random openings pass (yielding)
+                var openSteps = 0;
+                for (var rr = 2; rr < rows - 2; rr++) {
+                    for (var cc = 2; cc < cols - 2; cc++) {
+                        if (maze[rr][cc] === 1 && rng() < 0.1) {
+                            var adjacent = 0;
+                            if (maze[rr - 1][cc] === 0) adjacent++;
+                            if (maze[rr + 1][cc] === 0) adjacent++;
+                            if (maze[rr][cc - 1] === 0) adjacent++;
+                            if (maze[rr][cc + 1] === 0) adjacent++;
+                            if (adjacent >= 2 && adjacent <= 3) maze[rr][cc] = 0;
+                        }
+                        openSteps++;
+                        if ((openSteps & 1023) === 1023) {
+                            if (onProgress) onProgress({ phase: 'openings', progress: 0.85 });
+                            yield { phase: 'openings', steps: openSteps };
+                        }
+                    }
+                }
+
+                if (onProgress) onProgress({ phase: 'done', progress: 1.0 });
+                return maze;
+            }
+
+            return run(genMaze());
         },
 
         // Add pellets to the maze

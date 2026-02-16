@@ -23,6 +23,7 @@
   <link rel="alternate" hreflang="x-default" href="https://scarygames.ai/">
   <title>ScaryGamesAI — Enter The Darkness</title>
   <link rel="stylesheet" href="/css/styles.css">
+  <link rel="stylesheet" href="/css/search.css">
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -46,8 +47,8 @@
   
   <!-- Full-screen background videos (rotate on end) -->
   <div class="bg-video-wrap">
-    <video id="bg-video-1" muted playsinline class="bg-video active"></video>
-    <video id="bg-video-2" muted playsinline class="bg-video"></video>
+    <video id="bg-video-1" muted playsinline autoplay class="bg-video active"></video>
+    <video id="bg-video-2" muted playsinline autoplay class="bg-video"></video>
     <div class="bg-video-scanlines"></div>
     <div class="bg-video-vignette"></div>
     <div class="bg-video-darken"></div>
@@ -55,21 +56,7 @@
   <div class="bg-fog"></div>
   <div class="bg-grain"></div>
 
-  <nav class="navbar" role="navigation" aria-label="Main navigation">
-    <div class="nav-inner">
-      <a href="/" class="nav-logo">ScaryGames</a>
-      <ul class="nav-links">
-        <li><a href="/" class="active">Home</a></li>
-        <li><a href="/games.html">Games</a></li>
-        <li><a href="/challenges.html">Challenges</a></li>
-        <li><a href="/achievements.html">Achievements</a></li>
-        <li><a href="/leaderboards.html">Leaderboards</a></li>
-        <li><a href="/subscription.html">Subscribe</a></li>
-        <li><a href="/store.html">Store</a></li>
-        <li><a href="#about">About</a></li>
-      </ul>
-    </div>
-  </nav>
+  <sgai-navbar></sgai-navbar>
 
   <main class="main-content" id="main-content" role="main">
     <!-- Hero (Enhanced) -->
@@ -139,7 +126,7 @@
               <span class="tag tag-fps">First Person</span>
               <span class="tag tag-horror">Horror</span>
             </div>
-            <a href="/games/backrooms-pacman/" class="play-btn">▶ Play Now</a>
+            <a href="/games/backrooms-pacman/backrooms-pacman.html" class="play-btn">▶ Play Now</a>
           </div>
           <div class="featured-game-visual" id="featured-canvas"></div>
         </div>
@@ -293,16 +280,18 @@
     </section>
   </main>
 
-  <footer class="footer" role="contentinfo">
-    <div class="footer-inner">
-      <p>&copy; 2026 ScaryGamesAI — Enter at your own risk. 💀</p>
-    </div>
-  </footer>
+  <sgai-footer></sgai-footer>
 
+  <script src="/js/sgai-components.js" defer></script>
+  <script src="/js/state-bus.js" defer></script>
   <script src="/js/visual-enhancements.js" defer></script>
   <script src="/js/audio-enhanced.js" defer></script>
   <script src="/js/ai-system.js" defer></script>
   <script src="/js/store-system.js" defer></script>
+  <script src="/js/search-system.js" defer></script>
+  <script src="/js/theme-system.js" defer></script>
+  <script src="/js/i18n.js" defer></script>
+  <script src="/js/social-features.js" defer></script>
   <script src="/js/page-shell.js" defer></script>
   <script src="/js/main.js" defer></script>
   <script src="/js/profiles.js" defer></script>
@@ -311,6 +300,15 @@
   <script src="/js/daily.js" defer></script>
   <script src="/js/social.js" defer></script>
   <script src="/js/customizer.js" defer></script>
+  <!-- Phase 5: Advanced AI Features -->
+  <script src="/js/phase5-ai-features.js" defer></script>
+  <script src="/js/phase5-ui.js" defer></script>
+  <!-- Phase 6: Business & Monetization -->
+  <script src="/js/premium-features.js" defer></script>
+  <!-- Phase 7: Platform Integration -->
+  <script src="/js/platform-integration.js" defer></script>
+  <!-- Phase 8: Quality Assurance -->
+  <script src="/js/quality-assurance.js" defer></script>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       var dc = document.getElementById('daily-challenge-card');

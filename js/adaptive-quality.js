@@ -71,6 +71,8 @@ const AdaptiveQuality = (function () {
         'ritual-circle': { base: 'ULTRA', mobile: 'HIGH' },
         'zombie-horde': { base: 'ULTRA', mobile: 'HIGH' },
         'total-zombies-medieval': { base: 'HIGH', mobile: 'MEDIUM' },
+        'total-zombies-rome': { base: 'HIGH', mobile: 'MEDIUM' },
+        'crypt-tanks': { base: 'ULTRA', mobile: 'HIGH' },
     };
 
     // ── Constants ──────────────────────────────────────

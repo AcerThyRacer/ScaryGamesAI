@@ -23,6 +23,7 @@
     <link rel="alternate" hreflang="x-default" href="https://scarygames.ai/achievements.html">
     <title>Achievements — ScaryGamesAI</title>
     <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/search.css">
     <script type="application/ld+json">
         {
           "@context": "https://schema.org",
@@ -45,30 +46,15 @@
     <a href="#main-content" class="skip-link">Skip to main content</a>
     
     <div class="bg-fog"></div>
-    <nav class="navbar" role="navigation" aria-label="Main navigation">
-        <div class="nav-inner">
-            <a href="/" class="nav-logo">Scary<span>Games</span>AI</a>
-            <ul class="nav-links">
-                <li><a href="/">Home</a></li>
-                <li><a href="/games.html">Games</a></li>
-                <li><a href="/challenges.html">Challenges</a></li>
-                <li><a href="/achievements.html" class="active" aria-current="page">Achievements</a></li>
-                <li><a href="/leaderboards.html">Leaderboards</a></li>
-                <li><a href="/subscription.html">Subscribe</a></li>
-                <li><a href="/store.html">Store</a></li>
-                <li><a href="/#about">About</a></li>
-            </ul>
-        </div>
-    </nav>
+    <sgai-navbar></sgai-navbar>
     <main class="main-content" id="main-content" role="main" style="padding-top:100px;max-width:900px;margin:0 auto;">
         <div id="achievement-gallery"></div>
     </main>
-    <footer class="footer" role="contentinfo">
-        <div class="footer-inner">
-            <p>&copy; 2026 ScaryGamesAI — Enter at your own risk. 💀</p>
-        </div>
-    </footer>
+    <sgai-footer></sgai-footer>
+    <script src="/js/sgai-components.js" defer></script>
+    <script src="/js/state-bus.js" defer></script>
     <script src="/js/page-shell.js"></script>
+    <script src="/js/search-system.js"></script>
     <script src="/js/profiles.js"></script>
     <script src="/js/achievements.js"></script>
     <script src="/js/customizer.js"></script>

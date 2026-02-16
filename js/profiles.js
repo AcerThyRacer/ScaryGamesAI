@@ -98,6 +98,9 @@
 
     // ---- Profile UI ----
     function createProfileButton() {
+        // Auth UI (Phase 6) owns the navbar profile surface.
+        if (document.getElementById('sgai-auth-slot') || document.getElementById('sgai-auth-widget')) return;
+
         var nav = document.querySelector('.nav-links') || document.querySelector('nav');
         if (!nav) return;
 
@@ -228,6 +231,11 @@
             });
         }
     }
+
+    // Allow other UI (ex: auth dropdown) to open the legacy profile modal without injecting a navbar button.
+    window.PlayerProfileUIOpen = function () {
+        openProfileModal();
+    };
 
     function closeProfileModal() {
         var modal = document.getElementById('profile-modal');

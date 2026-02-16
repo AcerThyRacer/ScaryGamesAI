@@ -21,7 +21,7 @@
     <link rel="canonical" href="https://scarygames.ai/leaderboards.html">
     <link rel="alternate" hreflang="en" href="https://scarygames.ai/leaderboards.html">
     <link rel="alternate" hreflang="x-default" href="https://scarygames.ai/leaderboards.html">
-    <title>Leaderboards — ScaryGamesAI</title>
+    <title>Leaderboards — ScaryGamesAI</title>
     <script type="application/ld+json">
         {
           "@context": "https://schema.org",
@@ -36,10 +36,10 @@
           }
         }
     </script>
-    <link rel="manifest" href="/assets/manifest-BkXN0yik.json">
-  <script type="module" crossorigin src="/assets/js/chunks/styles-C37ZYxfD.js"></script>
-  <script type="module" crossorigin src="/assets/js/chunks/shell-j7F2CuES.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/css/styles-CoPMDZEA.css">
+    <link rel="manifest" href="/assets/manifest-CClJyXmJ.json">
+  <script type="module" crossorigin src="/assets/js/chunks/search-DtE-2Mxs.js"></script>
+  <script type="module" crossorigin src="/assets/js/chunks/shell-BInXxBSp.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/css/search-EH9a9Mc2.css">
 </head>
 
 <body>
@@ -47,21 +47,7 @@
     <a href="#main-content" class="skip-link">Skip to main content</a>
     
     <div class="bg-fog"></div>
-    <nav class="navbar" role="navigation" aria-label="Main navigation">
-        <div class="nav-inner">
-            <a href="/" class="nav-logo">Scary<span>Games</span>AI</a>
-            <ul class="nav-links">
-                <li><a href="/">Home</a></li>
-                <li><a href="/games.html">Games</a></li>
-                <li><a href="/challenges.html">Challenges</a></li>
-                <li><a href="/achievements.html">Achievements</a></li>
-                <li><a href="/leaderboards.html" class="active" aria-current="page">Leaderboards</a></li>
-                <li><a href="/subscription.html">Subscribe</a></li>
-                <li><a href="/store.html">Store</a></li>
-                <li><a href="/#about">About</a></li>
-            </ul>
-        </div>
-    </nav>
+    <sgai-navbar></sgai-navbar>
     <main class="main-content" id="main-content" role="main" style="padding-top:100px;max-width:1000px;margin:0 auto;">
         <h1
             style="font-family:var(--font-display);text-align:center;font-size:2.5rem;margin-bottom:8px;color:var(--accent-red);">
@@ -70,6 +56,8 @@
         <div class="lb-tabs" id="lb-tabs"></div>
         <div id="leaderboard-container"></div>
     </main>
+    <script src="/js/sgai-components.js" defer></script>
+    <script src="/js/state-bus.js" defer></script>
     <script src="/js/page-shell.js"></script>
     <script src="/js/profiles.js"></script>
     <script src="/js/leaderboards.js"></script>
@@ -115,11 +103,8 @@
             showBoard(activeGame);
         });
     </script>
-    <footer class="footer" role="contentinfo">
-        <div class="footer-inner">
-            <p>&copy; 2026 ScaryGamesAI — Enter at your own risk. 💀</p>
-        </div>
-    </footer>
+    <sgai-footer></sgai-footer>
+    <script src="/js/search-system.js"></script>
 </body>
 
 </html>

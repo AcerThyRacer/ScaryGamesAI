@@ -62,7 +62,7 @@
 
     // Generate a dare link
     function generateDareLink(gameId, playerName, score) {
-        var base = window.location.origin + '/games/' + gameId + '/';
+        var base = window.location.origin + '/games/' + gameId + '/' + gameId + '.html';
         var params = '?dare=1&from=' + encodeURIComponent(playerName || 'Someone') +
             '&score=' + encodeURIComponent(score);
         return base + params;
@@ -131,7 +131,7 @@
         copyBtn.textContent = '📋 Copy Score';
         copyBtn.addEventListener('click', function () {
             var text = '🎮 I scored ' + score + ' in ' + gameTitle + ' on ScaryGamesAI! Can you beat me? ' +
-                window.location.origin + '/games/' + gameId + '/';
+                window.location.origin + '/games/' + gameId + '/' + gameId + '.html';
             copyToClipboard(text, function (ok) {
                 copyBtn.textContent = ok ? '✅ Copied!' : '❌ Copy Failed';
                 setTimeout(function () { copyBtn.textContent = '📋 Copy Score'; }, 2000);

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signing you in… — ScaryGamesAI</title>
+    <meta name="robots" content="noindex,nofollow">
+    <link rel="stylesheet" href="/css/styles.css">
+  </head>
+  <body>
+    <main class="main-content" id="main-content" role="main">
+      <section class="container" style="padding-top: 120px; padding-bottom: 80px; text-align:center;">
+        <h1 style="font-family: var(--font-display); letter-spacing: 2px;">Signing you in…</h1>
+        <p style="color: var(--text-secondary); margin-top: 10px;">Completing OAuth callback. You will be redirected automatically.</p>
+        <p id="oauth-error" style="display:none; max-width: 720px; margin: 18px auto 0; padding: 12px 14px; border-radius: 12px; border: 1px solid rgba(204,17,34,0.35); background: rgba(204,17,34,0.10); color: #ffd3d7;"></p>
+      </section>
+    </main>
+
+    <script src="/js/auth-ui.js"></script>
+    <script>
+      (function () {
+        var errEl = document.getElementById('oauth-error');
+        function showError(msg) {
+          if (!errEl) return;
+          errEl.style.display = 'block';
+          errEl.textContent = msg || 'OAuth callback failed';
+        }
+
+        if (!window.AuthUI || typeof window.AuthUI.handleOAuthCallbackFromUrl !== 'function') {
+          showError('Auth UI script failed to load.');
+          return;
+        }
+
+        window.AuthUI.handleOAuthCallbackFromUrl().catch(function (err) {
+          showError((err && err.message) ? err.message : 'OAuth callback failed');
+        });
+      })();
+    </script>
+  </body>
+</html>
+

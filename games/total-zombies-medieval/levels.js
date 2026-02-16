@@ -11,9 +11,9 @@ var LEVELS = [
             { type: 'cavalry', count: 15, x: -15, z: -26, sq: 2 }
         ],
         red: [
-            { type: 'swordsmen', count: 30, x: 0, z: 30, sq: 10 },
-            { type: 'swordsmen', count: 20, x: -12, z: 35, sq: 11 },
-            { type: 'cavalry', count: 10, x: 12, z: 28, sq: 12 }
+            { type: 'zombie-shambler', count: 30, x: 0, z: 30, sq: 10 },
+            { type: 'zombie-runner', count: 20, x: -12, z: 35, sq: 11 },
+            { type: 'zombie-brute', count: 10, x: 12, z: 28, sq: 12 }
         ]
     },
     {
@@ -27,9 +27,9 @@ var LEVELS = [
             { type: 'swordsmen', count: 10, x: 10, z: -20, sq: 2 }
         ],
         red: [
-            { type: 'swordsmen', count: 40, x: 0, z: 30, sq: 10 },
-            { type: 'cavalry', count: 15, x: -10, z: 35, sq: 11 },
-            { type: 'swordsmen', count: 15, x: 10, z: 32, sq: 12 }
+            { type: 'zombie-shambler', count: 40, x: 0, z: 30, sq: 10 },
+            { type: 'zombie-brute', count: 15, x: -10, z: 35, sq: 11 },
+            { type: 'zombie-runner', count: 15, x: 10, z: 32, sq: 12 }
         ]
     },
     {
@@ -43,10 +43,10 @@ var LEVELS = [
             { type: 'cavalry', count: 20, x: 8, z: -25, sq: 2 }
         ],
         red: [
-            { type: 'swordsmen', count: 35, x: 0, z: 25, sq: 10 },
-            { type: 'swordsmen', count: 25, x: -15, z: 30, sq: 11 },
-            { type: 'archers', count: 15, x: 0, z: 35, sq: 12 },
-            { type: 'cavalry', count: 10, x: 15, z: 28, sq: 13 }
+            { type: 'zombie-shambler', count: 35, x: 0, z: 25, sq: 10 },
+            { type: 'zombie-runner', count: 25, x: -15, z: 30, sq: 11 },
+            { type: 'zombie-spitter', count: 15, x: 0, z: 35, sq: 12 },
+            { type: 'zombie-brute', count: 10, x: 15, z: 28, sq: 13 }
         ]
     },
     {
@@ -60,10 +60,10 @@ var LEVELS = [
             { type: 'cavalry', count: 20, x: -20, z: -35, sq: 2 }
         ],
         red: [
-            { type: 'swordsmen', count: 30, x: 0, z: 10, sq: 10 },
-            { type: 'archers', count: 20, x: 0, z: 20, sq: 11 },
-            { type: 'swordsmen', count: 20, x: -10, z: 15, sq: 12 },
-            { type: 'cavalry', count: 15, x: 10, z: 25, sq: 13 }
+            { type: 'zombie-shambler', count: 30, x: 0, z: 10, sq: 10 },
+            { type: 'zombie-spitter', count: 20, x: 0, z: 20, sq: 11 },
+            { type: 'zombie-runner', count: 20, x: -10, z: 15, sq: 12 },
+            { type: 'zombie-brute', count: 15, x: 10, z: 25, sq: 13 }
         ]
     },
     {
@@ -77,11 +77,11 @@ var LEVELS = [
             { type: 'cavalry', count: 25, x: -20, z: -45, sq: 2 }
         ],
         red: [
-            { type: 'swordsmen', count: 35, x: 0, z: 0, sq: 10 },
-            { type: 'archers', count: 25, x: -15, z: 10, sq: 11 },
-            { type: 'swordsmen', count: 25, x: 15, z: 5, sq: 12 },
-            { type: 'cavalry', count: 20, x: 0, z: 20, sq: 13 },
-            { type: 'swordsmen', count: 15, x: 0, z: -15, sq: 14 }
+            { type: 'zombie-shambler', count: 35, x: 0, z: 0, sq: 10 },
+            { type: 'zombie-spitter', count: 25, x: -15, z: 10, sq: 11 },
+            { type: 'zombie-runner', count: 25, x: 15, z: 5, sq: 12 },
+            { type: 'zombie-brute', count: 20, x: 0, z: 20, sq: 13 },
+            { type: 'zombie-shambler', count: 15, x: 0, z: -15, sq: 14 }
         ]
     }
 ];

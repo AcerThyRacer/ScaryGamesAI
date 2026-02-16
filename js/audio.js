@@ -495,6 +495,7 @@ var HorrorAudio = (function () {
         panner.connect(sfxGain);
 
         var source = null, lfo = null, gain = null;
+        var filter = null;
         var alive = true;
 
         if (type === 'monster_breath') {
@@ -504,7 +505,7 @@ var HorrorAudio = (function () {
             source.buffer = buffer;
             source.loop = true;
 
-            var filter = ctx.createBiquadFilter();
+            filter = ctx.createBiquadFilter();
             filter.type = 'lowpass';
             filter.frequency.value = 500;
 
@@ -554,6 +555,21 @@ var HorrorAudio = (function () {
                 } else {
                     panner.setPosition(x, y, z);
                 }
+            },
+            setOccluded: function(occluded) {
+                if (!alive) return;
+                if (!filter) return;
+                // Simple occlusion: drop lowpass cutoff when blocked by walls.
+                // Target smoothing avoids zipper noise.
+                var t = ctx.currentTime;
+                var freq = occluded ? 280 : 500;
+                try {
+                    if (filter.frequency && filter.frequency.setTargetAtTime) {
+                        filter.frequency.setTargetAtTime(freq, t, 0.08);
+                    } else {
+                        filter.frequency.value = freq;
+                    }
+                } catch (e) {}
             },
             stop: function() {
                 alive = false;

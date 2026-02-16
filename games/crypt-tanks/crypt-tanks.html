@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <title>Crypt Tanks — ScaryGamesAI</title>
+    <meta name="description" content="A creepy diep-style arena shooter. Level up, evolve tanks, and survive the whispering dark.">
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+    <link rel="canonical" href="https://scarygames.ai/games/crypt-tanks/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="ScaryGamesAI">
+    <meta property="og:title" content="Crypt Tanks — ScaryGamesAI">
+    <meta property="og:description" content="A creepy diep-style arena shooter. Level up, evolve tanks, and survive the whispering dark.">
+    <meta property="og:url" content="https://scarygames.ai/games/crypt-tanks/">
+    <meta property="og:image" content="https://scarygames.ai/assets/og-game-fallback.svg?game=crypt-tanks">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Crypt Tanks — ScaryGamesAI">
+    <meta name="twitter:description" content="A creepy diep-style arena shooter. Level up, evolve tanks, and survive the whispering dark.">
+    <meta name="twitter:image" content="https://scarygames.ai/assets/og-game-fallback.svg?game=crypt-tanks">
+    <link rel="manifest" href="/manifest.json">
+    <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "VideoGame",
+          "name": "Crypt Tanks",
+          "description": "A creepy diep-style arena shooter. Level up, evolve tanks, and survive the whispering dark.",
+          "genre": [
+            "Horror",
+            "Action",
+            "Arcade"
+          ],
+          "applicationCategory": "Game",
+          "operatingSystem": "Web Browser",
+          "url": "https://scarygames.ai/games/crypt-tanks/",
+          "image": [
+            "https://scarygames.ai/assets/og-game-fallback.svg?game=crypt-tanks"
+          ],
+          "publisher": {
+            "@type": "Organization",
+            "name": "ScaryGamesAI",
+            "url": "https://scarygames.ai/"
+          },
+          "isPartOf": {
+            "@type": "WebSite",
+            "name": "ScaryGamesAI",
+            "url": "https://scarygames.ai/"
+          }
+        }
+    </script>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/game-responsive.css">
+    <link rel="stylesheet" href="/css/mobile-controls.css">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: radial-gradient(1200px 800px at 50% 35%, #0b1c18, #040806 65%, #010201);
+        }
+
+        #game-canvas {
+            display: block;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .hud-wrap {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+            display: none;
+        }
+
+        .hud-top {
+            position: absolute;
+            top: 12px;
+            left: 12px;
+            right: 12px;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .hud-pill {
+            pointer-events: none;
+            padding: 8px 10px;
+            border-radius: 10px;
+            background: rgba(0, 0, 0, 0.45);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: rgba(255, 255, 255, 0.86);
+            font-size: 12px;
+            letter-spacing: 0.3px;
+            backdrop-filter: blur(6px);
+        }
+
+        .hud-right {
+            position: absolute;
+            right: 12px;
+            top: 64px;
+            width: min(340px, 42vw);
+            display: grid;
+            gap: 8px;
+            pointer-events: none;
+        }
+
+        .stat-panel {
+            background: rgba(0, 0, 0, 0.48);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 12px;
+            padding: 10px;
+            backdrop-filter: blur(6px);
+        }
+
+        .bars {
+            display: grid;
+            gap: 8px;
+        }
+
+        .bar {
+            display: grid;
+            grid-template-columns: 18px 1fr 52px;
+            gap: 8px;
+            align-items: center;
+            color: rgba(255, 255, 255, 0.75);
+            font-size: 11px;
+        }
+
+        .bar .k {
+            width: 18px;
+            height: 18px;
+            display: grid;
+            place-items: center;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            background: rgba(255, 255, 255, 0.06);
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 700;
+            font-size: 11px;
+        }
+
+        .meter {
+            height: 8px;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, 0.08);
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.10);
+        }
+
+        .meter > div {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, rgba(102, 255, 204, 0.25), rgba(102, 255, 204, 0.9));
+            box-shadow: 0 0 18px rgba(102, 255, 204, 0.35);
+        }
+
+        .bar .v {
+            text-align: right;
+            color: rgba(255, 255, 255, 0.88);
+            font-variant-numeric: tabular-nums;
+        }
+
+        .evolve {
+            position: absolute;
+            left: 50%;
+            top: 56%;
+            transform: translate(-50%, -50%);
+            width: min(780px, 94vw);
+            background: rgba(0, 0, 0, 0.72);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 16px;
+            padding: 14px;
+            display: none;
+            pointer-events: auto;
+            backdrop-filter: blur(8px);
+        }
+
+        .evolve h2 {
+            margin: 0 0 8px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.9);
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+        }
+
+        .choices {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 10px;
+        }
+
+        .choice {
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            background: rgba(255, 255, 255, 0.05);
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .choice:hover {
+            background: rgba(102, 255, 204, 0.08);
+            border-color: rgba(102, 255, 204, 0.35);
+        }
+
+        .choice .t {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 10px;
+            color: rgba(255, 255, 255, 0.92);
+            font-weight: 800;
+            letter-spacing: 0.3px;
+            font-size: 13px;
+        }
+
+        .choice .d {
+            margin-top: 6px;
+            color: rgba(255, 255, 255, 0.72);
+            font-size: 12px;
+            line-height: 1.35;
+        }
+
+        .choice .hint {
+            margin-top: 8px;
+            color: rgba(255, 255, 255, 0.64);
+            font-size: 11px;
+        }
+
+        .danger-vignette {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 200ms linear;
+            background:
+                radial-gradient(closest-side at 50% 50%, transparent, rgba(255, 40, 40, 0.05) 40%, rgba(255, 20, 20, 0.24) 70%, rgba(0, 0, 0, 0.0) 100%),
+                radial-gradient(closest-side at 50% 50%, transparent, rgba(0, 0, 0, 0.75) 72%, rgba(0, 0, 0, 0.92) 100%);
+            mix-blend-mode: screen;
+        }
+
+        @media (max-width: 720px) {
+            .choices { grid-template-columns: 1fr; }
+            .hud-right { width: min(320px, 60vw); }
+        }
+    </style>
+    <link rel="stylesheet" href="/css/mobile-enhancements.css" id="mc-enhance-css">
+</head>
+
+<body>
+    <div class="game-page">
+        <a href="/games.html" class="back-link" id="back-link">← Back to Games</a>
+
+        <div class="start-screen" id="start-screen">
+            <h1 style="color:#66ffcc;">Crypt Tanks</h1>
+            <p class="game-desc">A creepy diep-style arena. Devour cursed shapes, level up, evolve into nightmare tank forms, and survive the whispering dark.</p>
+            <button class="start-btn" id="start-btn">ENTER THE CRYPT</button>
+        </div>
+
+        <div class="controls-overlay" id="controls-overlay" style="display:none;">
+            <div class="controls-content">
+                <h2>Controls</h2>
+                <div class="control-item"><span class="control-key">W A S D</span> Move</div>
+                <div class="control-item"><span class="control-key">Mouse</span> Aim</div>
+                <div class="control-item"><span class="control-key">Click</span> Fire (hold)</div>
+                <div class="control-item"><span class="control-key">1–8</span> Upgrade Stats</div>
+                <div class="control-item"><span class="control-key">E</span> Power (tank-specific)</div>
+                <div class="control-item"><span class="control-key">ESC</span> Pause</div>
+                <p class="controls-start-hint">Starting in a moment...</p>
+            </div>
+        </div>
+
+        <div class="game-container" id="game-container">
+            <canvas id="game-canvas" aria-label="Crypt Tanks arena shooter canvas - WASD to move, mouse to aim, click to fire"></canvas>
+            <div class="hud-wrap" id="hud-wrap">
+                <div class="hud-top">
+                    <div class="hud-pill" id="hud-left">LV <strong id="hud-lv">1</strong> • XP <strong id="hud-xp">0</strong></div>
+                    <div class="hud-pill" id="hud-mid">Tank: <strong id="hud-tank">Wretch</strong></div>
+                    <div class="hud-pill" id="hud-right">Score <strong id="hud-score">0</strong> • Best <strong id="hud-best">0</strong></div>
+                </div>
+
+                <div class="hud-right">
+                    <div class="stat-panel">
+                        <div style="display:flex; justify-content:space-between; align-items:baseline; color:rgba(255,255,255,0.9); font-weight:800; font-size:12px; letter-spacing:0.5px; text-transform:uppercase;">
+                            <span>Upgrades</span>
+                            <span style="color:rgba(255,255,255,0.75); font-weight:700;">Points: <span id="hud-pts">0</span></span>
+                        </div>
+                        <div class="bars" id="bars"></div>
+                        <div style="margin-top:10px; color:rgba(255,255,255,0.68); font-size:11px; line-height:1.35;">
+                            Tip: evolve at certain levels. If you see an evolution altar, pick fast.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="evolve" id="evolve">
+                    <h2>Evolution Offered</h2>
+                    <div class="choices" id="choices"></div>
+                </div>
+
+                <div class="danger-vignette" id="danger-vignette"></div>
+            </div>
+        </div>
+
+        <div class="game-end-screen game-over" id="game-over-screen" style="display:none;">
+            <h1>CONSUMED</h1>
+            <p id="final-stats"></p>
+            <button class="play-btn">▶ Try Again</button>
+            <a href="/games.html" style="display:block;margin-top:16px;color:#888;">← Back to Games</a>
+        </div>
+    </div>
+
+    <script src="/js/game-utils.js"></script>
+    <script src="/js/state-bus.js"></script>
+    <script src="/js/audio.js"></script>
+    <script src="/js/quality-enhancer.js"></script>
+    <script src="/js/visual-utils.js"></script>
+    <script src="/js/cinematic-overlay.js"></script>
+    <script src="/js/quality-fx.js"></script>
+    <script src="/js/quality-settings.js"></script>
+    <script src="/js/mobile-controls.js"></script>
+    <script src="/js/mobile-game-bindings.js"></script>
+    <script src="/js/mobile-universal-init.js"></script>
+    <script src="/js/mobile-patcher.js"></script>
+    <script src="/js/accessibility-manager.js"></script>
+    <script src="/js/memory-manager.js"></script>
+    <script src="/js/performance-optimizer.js"></script>
+    <script src="crypt-tanks.js"></script>
+</body>
+
+</html>
+

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <title>The Dollhouse — ScaryGamesAI</title>
+    <meta name="description" content="Uncover unsettling secrets in a haunted dollhouse filled with interactive horror puzzles.">
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+    <link rel="canonical" href="https://scarygames.ai/games/dollhouse/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="ScaryGamesAI">
+    <meta property="og:title" content="The Dollhouse — ScaryGamesAI">
+    <meta property="og:description" content="Uncover unsettling secrets in a haunted dollhouse filled with interactive horror puzzles.">
+    <meta property="og:url" content="https://scarygames.ai/games/dollhouse/">
+    <meta property="og:image" content="https://scarygames.ai/assets/og-game-fallback.svg?game=dollhouse">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="The Dollhouse — ScaryGamesAI">
+    <meta name="twitter:description" content="Uncover unsettling secrets in a haunted dollhouse filled with interactive horror puzzles.">
+    <meta name="twitter:image" content="https://scarygames.ai/assets/og-game-fallback.svg?game=dollhouse">
+    <link rel="manifest" href="/manifest.json">
+    <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "VideoGame",
+          "name": "The Dollhouse",
+          "description": "Uncover unsettling secrets in a haunted dollhouse filled with interactive horror puzzles.",
+          "genre": [
+            "Horror",
+            "Puzzle",
+            "Mystery"
+          ],
+          "applicationCategory": "Game",
+          "operatingSystem": "Web Browser",
+          "url": "https://scarygames.ai/games/dollhouse/",
+          "image": [
+            "https://scarygames.ai/assets/og-game-fallback.svg?game=dollhouse"
+          ],
+          "publisher": {
+            "@type": "Organization",
+            "name": "ScaryGamesAI",
+            "url": "https://scarygames.ai/"
+          },
+          "isPartOf": {
+            "@type": "WebSite",
+            "name": "ScaryGamesAI",
+            "url": "https://scarygames.ai/"
+          }
+        }
+    </script>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/game-responsive.css">
+    <link rel="stylesheet" href="/css/mobile-controls.css">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #0a0505;
+        }
+
+        #game-canvas {
+            display: block;
+            margin: 0 auto;
+            cursor: pointer;
+        }
+    </style>
+    <link rel="stylesheet" href="/css/mobile-enhancements.css" id="mc-enhance-css">
+</head>
+
+<body>
+    <div class="game-page">
+        <a href="/games.html" class="back-link" id="back-link">← Back to Games</a>
+        <div class="start-screen" id="start-screen">
+            <h1>The Dollhouse</h1>
+            <p class="game-desc">Explore 5 rooms of a cursed dollhouse. Find items, solve puzzles, and escape before the
+                dolls come alive.</p>
+            <button class="start-btn" id="start-btn">START GAME</button>
+        </div>
+        <div class="controls-overlay" id="controls-overlay" style="display:none;">
+            <div class="controls-content">
+                <h2>Controls</h2>
+                <div class="control-item"><span class="control-key">Click</span> Interact / Pick Up</div>
+                <div class="control-item"><span class="control-key">1-5</span> Use Inventory Item</div>
+                <div class="control-item"><span class="control-key">ESC</span> Pause</div>
+                <p class="controls-start-hint">The dolls are watching...</p>
+            </div>
+        </div>
+        <div class="game-container" id="game-container">
+            <canvas id="game-canvas" aria-label="The Dollhouse horror puzzle game canvas - click to interact, drag items, number keys to swap"></canvas>
+            <div class="game-hud" id="game-hud" style="display:none;">
+                <div class="hud-score" id="hud-room">Room: Foyer</div>
+                <div class="hud-score" id="hud-items">Items: 0</div>
+            </div>
+        </div>
+        <div class="game-end-screen game-over" id="game-over-screen" style="display:none;">
+            <h1>THE DOLLS GOT YOU</h1>
+            <p>You took too long...</p>
+            <button class="play-btn">▶ Try Again</button>
+            <a href="/games.html" style="display:block;margin-top:16px;color:#888;">← Back to Games</a>
+        </div>
+        <div class="game-end-screen game-win" id="game-win-screen" style="display:none;">
+            <h1>YOU ESCAPED!</h1>
+            <p>The dollhouse release you... this time.</p>
+            <button class="play-btn">▶ Play Again</button>
+            <a href="/games.html" style="display:block;margin-top:16px;color:#888;">← Back to Games</a>
+        </div>
+    </div>
+    <script src="/js/game-utils.js"></script>
+    <script src="/js/state-bus.js"></script>
+    <script src="/js/audio.js"></script>
+    <script src="/js/quality-enhancer.js"></script>
+    <script src="/js/visual-utils.js"></script>
+    <script src="/js/cinematic-overlay.js"></script>
+    <script src="/js/quality-fx.js"></script>
+    <script src="/js/quality-settings.js"></script>
+    <script src="/js/mobile-controls.js"></script>
+    <script src="/js/mobile-game-bindings.js"></script>
+    <script src="/js/mobile-tutorial.js"></script>
+    <script src="/js/mobile-settings.js"></script>
+    <script src="/js/device-testing.js"></script>
+    
+    <!-- Mobile Support -->
+    <script src="/js/mobile-setup.js" id="mobile-setup-js"></script>
+    <script src="/js/mobile-controls.js" id="mc-js"></script>
+    <script src="/js/mobile-game-bindings.js" id="mc-bindings-js"></script>
+    <script src="/js/mobile-universal-init.js" id="mc-init-js"></script>
+    <script src="/js/mobile-patcher.js" id="mc-patcher-js"></script>
+    <!-- End Mobile Support -->
+    
+    <!-- Accessibility, Memory & Performance -->
+    <script src="/js/accessibility-manager.js" id="a11y-js"></script>
+    <script src="/js/memory-manager.js" id="mem-js"></script>
+    <script src="/js/performance-optimizer.js" id="perf-js"></script>
+    <!-- End Core Systems -->
+    <script src="dollhouse.js"></script>
+</body>
+
+</html>

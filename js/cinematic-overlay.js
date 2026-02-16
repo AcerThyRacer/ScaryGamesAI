@@ -19,7 +19,11 @@ const CinematicOverlay = (function () {
     let cinTabVisible = true;
     const cinIsMobile = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)
         || ('ontouchstart' in window && window.innerWidth < 1024);
-    const CIN_FPS_INTERVAL = cinIsMobile ? (1000 / 30) : 0;
+    // Full refresh-rate rendering by default.
+    // Only cap if the user explicitly prefers reduced motion or save data.
+    const cinPrefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const cinSaveData = !!(navigator.connection && navigator.connection.saveData);
+    const CIN_FPS_INTERVAL = (cinPrefersReducedMotion || cinSaveData) ? (1000 / 30) : 0;
     let cinLastRender = 0;
 
     // ── Genre presets: each game maps to a preset name ──
@@ -46,11 +50,13 @@ const CinematicOverlay = (function () {
         'graveyard-shift': 'survival',
         'zombie-horde': 'survival',
         'total-zombies-medieval': 'survival',
+        'total-zombies-rome': 'survival',
         'blood-tetris': 'survival',
 
         // Cosmic / Deep
         'the-abyss': 'cosmic',
         'cursed-sands': 'cosmic',
+        'crypt-tanks': 'dungeon',
     };
 
     // ── Preset definitions ──

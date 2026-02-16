@@ -21,7 +21,7 @@
     <link rel="canonical" href="https://scarygames.ai/challenges.html">
     <link rel="alternate" hreflang="en" href="https://scarygames.ai/challenges.html">
     <link rel="alternate" hreflang="x-default" href="https://scarygames.ai/challenges.html">
-    <title>Challenges — ScaryGamesAI</title>
+    <title>Challenges — ScaryGamesAI</title>
     <script type="application/ld+json">
         {
           "@context": "https://schema.org",
@@ -36,10 +36,10 @@
           }
         }
     </script>
-    <link rel="manifest" href="/assets/manifest-BkXN0yik.json">
-  <script type="module" crossorigin src="/assets/js/chunks/styles-C37ZYxfD.js"></script>
-  <script type="module" crossorigin src="/assets/js/chunks/shell-j7F2CuES.js"></script>
-  <link rel="stylesheet" crossorigin href="/assets/css/styles-CoPMDZEA.css">
+    <link rel="manifest" href="/assets/manifest-CClJyXmJ.json">
+  <script type="module" crossorigin src="/assets/js/chunks/search-DtE-2Mxs.js"></script>
+  <script type="module" crossorigin src="/assets/js/chunks/shell-BInXxBSp.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/css/search-EH9a9Mc2.css">
   <link rel="stylesheet" crossorigin href="/assets/css/challenges-CLjmEqMg.css">
 </head>
 
@@ -51,20 +51,7 @@
     <div class="bg-grain"></div>
     <div class="challenges-vignette"></div>
 
-    <nav class="navbar" role="navigation" aria-label="Main navigation">
-        <div class="nav-inner">
-            <a href="/" class="nav-logo">Scary<span>Games</span>AI</a>
-            <ul class="nav-links">
-                <li><a href="/">Home</a></li>
-                <li><a href="/games.html">Games</a></li>
-                <li><a href="/challenges.html" class="active" aria-current="page">Challenges</a></li>
-                <li><a href="/achievements.html">Achievements</a></li>
-                <li><a href="/leaderboards.html">Leaderboards</a></li>
-                <li><a href="/subscription.html">Subscribe</a></li>
-                <li><a href="/#about">About</a></li>
-            </ul>
-        </div>
-    </nav>
+    <sgai-navbar></sgai-navbar>
 
     <main class="main-content" id="main-content" role="main">
         <!-- ===== CINEMATIC HERO ===== -->
@@ -249,13 +236,12 @@
         </section>
     </main>
 
-    <footer class="footer" role="contentinfo">
-        <div class="footer-inner">
-            <p>&copy; 2026 ScaryGamesAI — Enter at your own risk. 💀</p>
-        </div>
-    </footer>
+    <sgai-footer></sgai-footer>
 
+    <script src="/js/sgai-components.js" defer></script>
+    <script src="/js/state-bus.js" defer></script>
     <script src="/js/page-shell.js"></script>
+    <script src="/js/search-system.js"></script>
     <script src="/js/main.js"></script>
     <script src="/js/challenges.js"></script>
     <script src="/js/challenges-ui.js"></script>

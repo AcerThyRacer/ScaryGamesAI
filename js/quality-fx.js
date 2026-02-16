@@ -36,7 +36,11 @@ const QualityFX = (function () {
     };
     // Mobile uses fewer particles — same effects, lower counts
     const POOL_SCALE = isMobile ? 0.4 : 1;
-    const TARGET_FPS_INTERVAL = isMobile ? (1000 / 30) : 0; // 30fps cap on mobile
+    // Full refresh-rate rendering by default.
+    // Only cap if the user explicitly asks the OS/browser to reduce motion or save data.
+    const prefersReducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const saveData = !!(navigator.connection && navigator.connection.saveData);
+    const TARGET_FPS_INTERVAL = (prefersReducedMotion || saveData) ? (1000 / 30) : 0;
     let lastRenderTime = 0;
     // Pre-allocated noise ImageData buffer
     let noiseImageData = null;

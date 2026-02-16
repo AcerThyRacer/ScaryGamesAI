@@ -172,13 +172,147 @@ const AccessibilityManager = (function () {
         document.body.appendChild(_liveRegion);
     }
 
+    // ── Focus Trap (Modal Dialog Safety) ────────────────────────
+    var _focusTrap = {
+        active: false,
+        root: null,
+        prevActive: null,
+        onKeyDown: null,
+        onFocusIn: null,
+    };
+
+    function getFocusableElements(root) {
+        if (!root) return [];
+        var selector = [
+            'a[href]',
+            'button:not([disabled])',
+            'input:not([disabled])',
+            'select:not([disabled])',
+            'textarea:not([disabled])',
+            '[tabindex]:not([tabindex=\"-1\"])'
+        ].join(',');
+
+        var nodes = Array.prototype.slice.call(root.querySelectorAll(selector));
+        // Filter hidden/disabled-ish nodes
+        return nodes.filter(function (el) {
+            if (!el) return false;
+            if (el.hasAttribute('disabled')) return false;
+            if (el.getAttribute('aria-hidden') === 'true') return false;
+            // Rough visibility check
+            var rect = el.getBoundingClientRect ? el.getBoundingClientRect() : null;
+            if (!rect) return true;
+            return rect.width > 0 && rect.height > 0;
+        });
+    }
+
+    /**
+     * Trap focus inside a modal/root element. Call releaseFocusTrap() when closing.
+     * @param {HTMLElement} root
+     * @param {object} opts
+     * @param {HTMLElement} opts.initialFocus
+     * @param {function} opts.onEscape
+     */
+    function trapFocus(root, opts) {
+        opts = opts || {};
+        if (!root || _focusTrap.active) return;
+
+        _focusTrap.active = true;
+        _focusTrap.root = root;
+        _focusTrap.prevActive = document.activeElement;
+
+        _focusTrap.onKeyDown = function (ev) {
+            if (!_focusTrap.active) return;
+            if (!ev) return;
+
+            if (ev.key === 'Escape') {
+                if (typeof opts.onEscape === 'function') {
+                    try { opts.onEscape(); } catch (e) { }
+                }
+                return;
+            }
+
+            if (ev.key !== 'Tab') return;
+
+            var focusables = getFocusableElements(root);
+            if (focusables.length === 0) {
+                ev.preventDefault();
+                return;
+            }
+
+            var first = focusables[0];
+            var last = focusables[focusables.length - 1];
+            var active = document.activeElement;
+
+            if (ev.shiftKey) {
+                if (active === first || !root.contains(active)) {
+                    ev.preventDefault();
+                    last.focus();
+                }
+            } else {
+                if (active === last || !root.contains(active)) {
+                    ev.preventDefault();
+                    first.focus();
+                }
+            }
+        };
+
+        _focusTrap.onFocusIn = function (ev) {
+            if (!_focusTrap.active) return;
+            if (!ev || !ev.target) return;
+            if (!root.contains(ev.target)) {
+                var focusables = getFocusableElements(root);
+                if (focusables.length > 0) focusables[0].focus();
+            }
+        };
+
+        document.addEventListener('keydown', _focusTrap.onKeyDown, true);
+        document.addEventListener('focusin', _focusTrap.onFocusIn, true);
+
+        // Initial focus.
+        setTimeout(function () {
+            var target = opts.initialFocus || null;
+            if (target && typeof target.focus === 'function') {
+                try { target.focus({ preventScroll: true }); return; } catch (e) { }
+            }
+            var focusables = getFocusableElements(root);
+            if (focusables.length > 0) {
+                try { focusables[0].focus({ preventScroll: true }); } catch (e) { try { focusables[0].focus(); } catch (_) { } }
+            } else {
+                try { root.focus({ preventScroll: true }); } catch (e) { }
+            }
+        }, 0);
+    }
+
+    function releaseFocusTrap() {
+        if (!_focusTrap.active) return;
+
+        document.removeEventListener('keydown', _focusTrap.onKeyDown, true);
+        document.removeEventListener('focusin', _focusTrap.onFocusIn, true);
+
+        var prev = _focusTrap.prevActive;
+        _focusTrap.active = false;
+        _focusTrap.root = null;
+        _focusTrap.prevActive = null;
+        _focusTrap.onKeyDown = null;
+        _focusTrap.onFocusIn = null;
+
+        // Restore focus to where the user was (if still attached).
+        try {
+            if (prev && document.contains(prev) && typeof prev.focus === 'function') prev.focus({ preventScroll: true });
+        } catch (e) { }
+    }
+
     /**
      * Announce a message to screen readers
      * @param {string} message - The message to announce
      * @param {string} priority - 'polite' (default) or 'assertive'
      */
     function announce(message, priority = 'polite') {
-        if (!_settings.screenReaderEnabled || !message) return;
+        if (!message) return;
+
+        // Always keep a live region available. If the user isn't using a screen reader,
+        // this is effectively a no-op; if they are, it's critical.
+        createLiveRegion();
 
         // Prevent duplicate announcements
         if (message === _lastAnnouncement) return;
@@ -810,6 +944,8 @@ const AccessibilityManager = (function () {
     return {
         init,
         announce,
+        trapFocus,
+        releaseFocusTrap,
         showSubtitle,
         announceGameEvent,
         showPanel,

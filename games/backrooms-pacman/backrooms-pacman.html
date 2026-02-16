@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <title>Backrooms: Pac-Man — ScaryGamesAI</title>
+    <meta name="description" content="Escape a haunted maze where a giant Pac-Man hunts you through eerie backrooms corridors.">
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+    <link rel="canonical" href="https://scarygames.ai/games/backrooms-pacman/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="ScaryGamesAI">
+    <meta property="og:title" content="Backrooms: Pac-Man — ScaryGamesAI">
+    <meta property="og:description" content="Escape a haunted maze where a giant Pac-Man hunts you through eerie backrooms corridors.">
+    <meta property="og:url" content="https://scarygames.ai/games/backrooms-pacman/">
+    <meta property="og:image" content="https://scarygames.ai/assets/og-game-fallback.svg?game=backrooms-pacman">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Backrooms: Pac-Man — ScaryGamesAI">
+    <meta name="twitter:description" content="Escape a haunted maze where a giant Pac-Man hunts you through eerie backrooms corridors.">
+    <meta name="twitter:image" content="https://scarygames.ai/assets/og-game-fallback.svg?game=backrooms-pacman">
+    <link rel="manifest" href="/manifest.json">
+    <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "VideoGame",
+          "name": "Backrooms: Pac-Man",
+          "description": "Escape a haunted maze where a giant Pac-Man hunts you through eerie backrooms corridors.",
+          "genre": [
+            "Horror",
+            "Maze",
+            "Survival"
+          ],
+          "applicationCategory": "Game",
+          "operatingSystem": "Web Browser",
+          "url": "https://scarygames.ai/games/backrooms-pacman/",
+          "image": [
+            "https://scarygames.ai/assets/og-game-fallback.svg?game=backrooms-pacman"
+          ],
+          "publisher": {
+            "@type": "Organization",
+            "name": "ScaryGamesAI",
+            "url": "https://scarygames.ai/"
+          },
+          "isPartOf": {
+            "@type": "WebSite",
+            "name": "ScaryGamesAI",
+            "url": "https://scarygames.ai/"
+          }
+        }
+    </script>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/game-responsive.css">
+    <link rel="stylesheet" href="/css/mobile-controls.css">
+    <link rel="stylesheet" href="/css/game-container.css">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #000;
+        }
+
+        #game-canvas {
+            display: block;
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+    <link rel="stylesheet" href="/css/mobile-enhancements.css" id="mc-enhance-css">
+</head>
+
+<body>
+    <a href="#game-container" class="sr-only skip-link">Skip to game</a>
+    <main class="game-page" role="main">
+        <a href="/games.html" class="back-link" id="back-link" aria-label="Return to games list">← Back to Games</a>
+
+        <!-- Start Screen -->
+        <div class="start-screen" id="start-screen" role="dialog" aria-modal="false" aria-labelledby="start-title">
+            <h1 id="start-title">Backrooms: Pac-Man</h1>
+            <p class="game-desc">You're trapped in the backrooms. A giant Pac-Man is hunting you. Collect all the
+                pellets to find your way out.</p>
+
+            <!-- Difficulty Selector -->
+            <div class="difficulty-selector" id="difficulty-selector" style="margin: 20px 0; text-align: center;">
+                <label for="difficulty-select" style="color: #aaa; font-size: 0.9rem; display: block; margin-bottom: 8px;">SELECT DIFFICULTY</label>
+                <select id="difficulty-select" style="
+                    background: rgba(0,0,0,0.7);
+                    color: #fff;
+                    border: 1px solid #555;
+                    padding: 10px 20px;
+                    font-size: 1rem;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    min-width: 200px;
+                ">
+                    <option value="novice">Novice (Easy visibility)</option>
+                    <option value="standard" selected>Standard (Normal)</option>
+                    <option value="hard">Hard (Thicker fog)</option>
+                    <option value="nightmare">Nightmare (Very dark)</option>
+                    <option value="impossible">Impossible (Extreme)</option>
+                </select>
+                <div id="difficulty-description" style="color: #888; font-size: 0.8rem; margin-top: 8px; min-height: 20px;">
+                    Standard difficulty with normal fog density
+                </div>
+            </div>
+
+            <!-- Level Selector -->
+            <div class="level-selector" id="level-selector" style="margin: 20px 0; text-align: center;">
+                <label for="level-select" style="color: #aaa; font-size: 0.9rem; display: block; margin-bottom: 8px;">SELECT BACKROOMS LEVEL</label>
+                <select id="level-select" style="
+                    background: rgba(0,0,0,0.7);
+                    color: #fff;
+                    border: 1px solid #555;
+                    padding: 10px 20px;
+                    font-size: 1rem;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    min-width: 200px;
+                ">
+                    <option value="yellow" selected>Yellow Backrooms (Standard)</option>
+                    <option value="mono">Mono-Yellow (Harder)</option>
+                    <option value="infinite">Infinite (Nightmare)</option>
+                </select>
+                <div id="level-description" style="color: #888; font-size: 0.8rem; margin-top: 8px; min-height: 20px;">
+                    The classic yellow wallpaper backrooms
+                </div>
+            </div>
+
+            <button class="start-btn" id="start-btn" aria-label="Start Backrooms Pac-Man game">START GAME</button>
+        </div>
+
+        <!-- Controls Overlay -->
+        <div class="controls-overlay" id="controls-overlay" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="controls-title">
+            <div class="controls-content">
+                <h2 id="controls-title">Controls</h2>
+                <div class="control-item"><span class="control-key">W A S D</span> Move</div>
+                <div class="control-item"><span class="control-key">Mouse</span> Look Around</div>
+                <div class="control-item"><span class="control-key">Shift</span> Run</div>
+                <div class="control-item"><span class="control-key">1 2 3 4 5</span> Use gathered abilities</div>
+                <div class="control-item"><span class="control-key">ESC</span> Pause / Release Mouse</div>
+                <p class="controls-start-hint">Starting in a moment...</p>
+            </div>
+        </div>
+
+        <!-- Game Container -->
+        <div class="game-container" id="game-container">
+            <canvas id="game-canvas" aria-label="Backrooms Pac-Man game canvas - use WASD to move, mouse to look around"></canvas>
+
+            <!-- HUD -->
+            <div class="game-hud" id="game-hud" style="display:none;">
+                <div class="hud-score" id="hud-score">Pellets: 0 / 0</div>
+                <div id="hud-pacman-count"
+                    style="color:#ff4444;font-family:Creepster,cursive;font-size:1.2rem;text-shadow:0 0 10px #ff0000;margin-left:16px;">
+                </div>
+                <div id="stamina-bar-container"
+                    style="display:none;position:fixed;bottom:20px;left:50%;transform:translateX(-50%);width:200px;z-index:70;">
+                    <div style="color:#aaa;font-size:0.7rem;font-family:monospace;text-align:center;margin-bottom:4px;">
+                        SPRINT</div>
+                    <div
+                        style="background:rgba(0,0,0,0.6);border:1px solid rgba(255,255,255,0.15);border-radius:4px;height:8px;overflow:hidden;">
+                        <div id="stamina-bar-fill"
+                            style="height:100%;width:100%;background:#00cc66;transition:width 0.1s,background 0.3s;border-radius:4px;">
+                        </div>
+                    </div>
+                </div>
+                <div class="hud-controls">
+                    <button class="hud-btn" id="audio-btn" onclick="HorrorAudioEnhanced.toggleSettings()">🔊 Audio</button>
+                    <button class="hud-btn" id="fullscreen-btn">⛶ Fullscreen</button>
+                </div>
+            </div>
+
+            <!-- Minimap -->
+            <div class="minimap-container" id="minimap-container" style="display:none;">
+                <canvas id="minimap-canvas" width="180" height="180"></canvas>
+            </div>
+        </div>
+
+        <!-- Game Over -->
+        <div class="game-end-screen game-over" id="game-over-screen" style="display:none;" role="alertdialog" aria-modal="true" aria-labelledby="gameover-title" aria-describedby="gameover-desc">
+            <h1 id="gameover-title">GAME OVER</h1>
+            <p id="gameover-desc">Pac-Man consumed you...</p>
+            <button class="play-btn" id="gameover-retry-btn" aria-label="Try again">▶ Try Again</button>
+            <a href="/games.html" style="display:block;margin-top:16px;color:#888;">← Back to Games</a>
+        </div>
+
+        <!-- Win Screen -->
+        <div class="game-end-screen game-win" id="game-win-screen" style="display:none;" role="alertdialog" aria-modal="true" aria-labelledby="win-title" aria-describedby="win-desc">
+            <h1 id="win-title">YOU ESCAPED!</h1>
+            <p id="win-desc">All pellets collected. You found the way out!</p>
+            <button class="play-btn" id="win-retry-btn" aria-label="Play again">▶ Play Again</button>
+            <a href="/games.html" style="display:block;margin-top:16px;color:#888;">← Back to Games</a>
+        </div>
+    </main>
+
+    <!-- Three.js from CDN - Consider self-hosting for production with SRI hash -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" crossorigin="anonymous"></script>
+    <script src="/js/visual-enhancements.js"></script>
+    <script src="/js/audio-enhanced.js"></script>
+    <script src="/js/ai-system.js"></script>
+    <script src="/js/game-utils.js"></script>
+    <script src="/js/state-bus.js"></script>
+    <script src="/js/audio.js"></script>
+    <script src="/js/quality-enhancer.js"></script>
+    <script src="/js/visual-utils.js"></script>
+    <script src="/js/cinematic-overlay.js"></script>
+    <script src="/js/quality-fx.js"></script>
+    <script src="/js/quality-settings.js"></script>
+    <script src="/js/mobile-controls.js"></script>
+    <script src="/js/mobile-game-bindings.js"></script>
+    <script src="/js/mobile-tutorial.js"></script>
+    <script src="/js/mobile-settings.js"></script>
+    <script src="/js/device-testing.js"></script>
+    
+    <!-- Mobile Support -->
+    <script src="/js/mobile-setup.js" id="mobile-setup-js"></script>
+    <script src="/js/mobile-controls.js" id="mc-js"></script>
+    <script src="/js/mobile-game-bindings.js" id="mc-bindings-js"></script>
+    <script src="/js/mobile-universal-init.js" id="mc-init-js"></script>
+    <script src="/js/mobile-patcher.js" id="mc-patcher-js"></script>
+    <!-- End Mobile Support -->
+    
+    <!-- Accessibility, Memory & Performance -->
+    <script src="/js/accessibility-manager.js" id="a11y-js"></script>
+    <script src="/js/memory-manager.js" id="mem-js"></script>
+    <script src="/js/performance-optimizer.js" id="perf-js"></script>
+    <!-- End Core Systems -->
+    
+    <!-- Unified Game Container & Cheats System -->
+    <script src="/js/cheats-mods-system.js"></script>
+    <script src="/js/unified-game-container.js"></script>
+    
+    <script src="backrooms-pacman.js"></script>
+</body>
+
+</html>

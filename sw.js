@@ -1,4 +1,5 @@
-const SW_VERSION = 'sgai-v2';
+// Bump on behavior/asset changes to force clients off old cached JS/video URLs.
+const SW_VERSION = 'sgai-v3';
 const PRECACHE_CACHE = `${SW_VERSION}-precache`;
 const RUNTIME_STATIC_CACHE = `${SW_VERSION}-runtime-static`;
 const RUNTIME_API_CACHE = `${SW_VERSION}-runtime-api`;
@@ -20,22 +21,35 @@ const PRECACHE_URLS = [
   '/leaderboards.html',
   '/store.html',
   '/subscription.html',
+  '/ollama-builder.html',
+  '/custom-games.html',
+  '/oauth/callback.html',
   '/manifest.json',
   '/css/styles.css',
   '/css/base.css',
   '/css/components.css',
+  '/css/auth-ui.css',
   '/css/pages.css',
   '/css/utilities.css',
   '/css/store.css',
   '/css/challenges.css',
   '/css/game-responsive.css',
   '/css/mobile-controls.css',
+  '/css/ollama-builder.css',
   '/js/page-shell.js',
-  '/js/perf-entry.js',
+  '/js/auth-ui.js',
   '/js/main.js',
+  '/js/state-bus.js',
+  '/js/sgai-components.js',
   '/js/visual-enhancements.js',
   '/js/audio-enhanced.js',
-  '/js/ai-system.js'
+  '/js/ai-system.js',
+  '/js/ollama-integration.js',
+  '/js/ollama-worker.js',
+  '/js/ollama-db.js',
+  '/js/ollama-share.js',
+  '/js/ollama-community.js',
+  '/js/ollama-collab.js',
 ];
 
 // Cache size limits
@@ -43,7 +57,7 @@ const MAX_RUNTIME_CACHE_ENTRIES = 100;
 const MAX_RUNTIME_CACHE_SIZE_MB = 50;
 
 function shouldCacheResponse(response) {
-  return response && response.ok && (response.type === 'basic' || response.type === 'cors');
+  return response && response.ok && response.status !== 206 && (response.type === 'basic' || response.type === 'cors');
 }
 
 // Prune cache to prevent memory bloat
@@ -68,7 +82,7 @@ async function fromNetworkWithTimeout(request, timeoutMs) {
   return Promise.race([fetch(request), timeout]);
 }
 
-async function staleWhileRevalidate(request, cacheName) {
+async function staleWhileRevalidate(event, request, cacheName) {
   const cache = await caches.open(cacheName);
   const cached = await cache.match(request);
 
@@ -76,15 +90,14 @@ async function staleWhileRevalidate(request, cacheName) {
     .then((response) => {
       if (shouldCacheResponse(response)) {
         cache.put(request, response.clone());
-        // Prune cache periodically to prevent bloat
-        eventWaitUntilSafe(pruneCache(cacheName));
       }
       return response;
     })
     .catch(() => null);
 
   if (cached) {
-    eventWaitUntilSafe(networkPromise);
+    // Keep SW alive while we update the cache in the background.
+    try { event.waitUntil(networkPromise); } catch (_) { /* ignore */ }
     return cached;
   }
 
@@ -116,11 +129,8 @@ async function networkFirst(request, cacheName, fallbackUrl = null) {
   }
 }
 
-function eventWaitUntilSafe(promise) {
-  promise.catch(() => {
-    // Ignore background update errors
-  });
-}
+// Service worker lifecycle management:
+// Avoid long-running cache pruning during fetch events. Prune during activate instead.
 
 self.addEventListener('install', (event) => {
   event.waitUntil(
@@ -139,18 +149,23 @@ self.addEventListener('activate', (event) => {
     RUNTIME_PAGE_CACHE
   ]);
 
-  event.waitUntil(
-    caches
-      .keys()
-      .then((keys) =>
-        Promise.all(
-          keys
-            .filter((key) => key.startsWith('sgai-') && !activeCaches.has(key))
-            .map((key) => caches.delete(key))
-        )
-      )
-      .then(() => self.clients.claim())
-  );
+  event.waitUntil((async () => {
+    const keys = await caches.keys();
+    await Promise.all(
+      keys
+        .filter((key) => key.startsWith('sgai-') && !activeCaches.has(key))
+        .map((key) => caches.delete(key))
+    );
+
+    // Prune runtime caches here (safe: part of activation, not gameplay fetch).
+    await Promise.all([
+      pruneCache(RUNTIME_STATIC_CACHE),
+      pruneCache(RUNTIME_API_CACHE),
+      pruneCache(RUNTIME_PAGE_CACHE)
+    ]);
+
+    await self.clients.claim();
+  })());
 });
 
 self.addEventListener('fetch', (event) => {
@@ -176,11 +191,11 @@ self.addEventListener('fetch', (event) => {
   }
 
   if (isSameOrigin && ASSET_CACHE_RE.test(url.pathname)) {
-    event.respondWith(staleWhileRevalidate(request, RUNTIME_STATIC_CACHE));
+    event.respondWith(staleWhileRevalidate(event, request, RUNTIME_STATIC_CACHE));
     return;
   }
 
   if (isSameOrigin) {
-    event.respondWith(staleWhileRevalidate(request, RUNTIME_STATIC_CACHE));
+    event.respondWith(staleWhileRevalidate(event, request, RUNTIME_STATIC_CACHE));
   }
 });
