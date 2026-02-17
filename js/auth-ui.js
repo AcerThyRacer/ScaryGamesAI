@@ -469,10 +469,16 @@
         if (!overlay) return;
 
         overlay.addEventListener('click', (e) => {
+            // Close when clicking the overlay background OR the close button
             if (e.target === overlay) closeModal();
+            if (e.target.closest('.auth-modal-close')) closeModal();
         });
 
-        document.getElementById('sgai-auth-close')?.addEventListener('click', closeModal);
+        document.getElementById('sgai-auth-close')?.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            closeModal();
+        });
         document.getElementById('sgai-auth-tab-login')?.addEventListener('click', () => setMode('login'));
         document.getElementById('sgai-auth-tab-register')?.addEventListener('click', () => setMode('register'));
 
