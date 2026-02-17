@@ -10,7 +10,7 @@ function loadWithMocks(targetModulePath, mocks) {
   Module._load = function patchedLoad(request, parent, isMain) {
     if (Object.prototype.hasOwnProperty.call(mocks, request)) {
       return mocks[request];
-    }
+        }
     return originalLoad.call(this, request, parent, isMain);
   };
 
@@ -389,6 +389,82 @@ test('oauth callback derives steam provider user id from claimed OpenID identity
   assert.equal(res.payload?.success, true);
   assert.equal(seenProviderUserId, '76561198000000000');
   assert.equal(res.payload?.identity?.providerUserId, '76561198000000000');
+
+  process.env.OAUTH_LINKING_REQUIRE_EMAIL_MATCH = prevRequireMatch;
+});
+
+test('oauth callback auto-provisions a user when no matching account exists', async () => {
+  const prevRequireMatch = process.env.OAUTH_LINKING_REQUIRE_EMAIL_MATCH;
+  process.env.OAUTH_LINKING_REQUIRE_EMAIL_MATCH = 'true';
+
+  let userInsertCalled = false;
+  const router = loadWithMocks('../api/auth', {
+    '../services/authService': {
+      consumeOAuthState: async () => ({ provider: 'google', returnTo: '/games.html' }),
+      exchangeOAuthCode: async () => ({
+        accessToken: 'new_access',
+        refreshToken: 'new_refresh',
+        scope: 'openid email profile',
+        idToken: 'header.payload.sig'
+      }),
+      fetchOAuthProfile: async () => ({
+        providerUserId: 'google_new_user',
+        providerEmail: 'new-user@example.com',
+        profile: { sub: 'google_new_user', email: 'new-user@example.com', name: 'New User' }
+      }),
+      issueTokenPair: async () => ({
+        accessToken: 'access_new',
+        refreshToken: 'refresh_new',
+        sessionId: 'sid_new',
+        expiresIn: 900,
+        refreshExpiresIn: 2592000,
+        amr: ['pwd']
+      }),
+      verifyAccessToken: () => {
+        throw new Error('missing bearer');
+      },
+      isJtiRevoked: async () => false,
+      isSessionRevoked: async () => false,
+      touchSession: async () => {}
+    },
+    '../models/database': {
+      findOne: () => null
+    },
+    '../models/postgres': {
+      isEnabled: () => true,
+      query: async (sql) => {
+        if (sql.includes('INSERT INTO auth_audit_logs')) return { rows: [], rowCount: 1 };
+        if (sql.includes('FROM oauth_identities')) return { rows: [], rowCount: 0 };
+        if (sql.includes('SELECT id, username, email FROM users WHERE lower(email) = lower($1) LIMIT 1')) {
+          return { rows: [], rowCount: 0 };
+        }
+        if (sql.includes('INSERT INTO users (id, username, email, created_at, updated_at)')) {
+          userInsertCalled = true;
+          return { rows: [{ id: 'u_new', username: 'NewUser', email: 'new-user@example.com' }], rowCount: 1 };
+        }
+        if (sql.includes('INSERT INTO oauth_identities')) return { rows: [], rowCount: 1 };
+        return { rows: [], rowCount: 0 };
+      }
+    }
+  });
+
+  const handler = getRouteHandler(router, 'post', '/oauth/:provider/callback');
+  const req = createReq({
+    params: { provider: 'google' },
+    body: {
+      state: 'state_new_user',
+      code: 'code_new_user'
+    }
+  });
+  const res = createRes();
+
+  await handler(req, res);
+
+  assert.equal(res.statusCode, 200);
+  assert.equal(res.payload?.success, true);
+  assert.equal(res.payload?.linked, true);
+  assert.equal(res.payload?.user?.email, 'new-user@example.com');
+  assert.equal(userInsertCalled, true);
 
   process.env.OAUTH_LINKING_REQUIRE_EMAIL_MATCH = prevRequireMatch;
 });

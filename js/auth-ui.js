@@ -420,6 +420,15 @@
         if (!provider) throw new Error('Missing provider');
         if (!state) throw new Error('Missing state');
 
+        function currentOAuthRedirectUri(p) {
+            const normalized = String(p || '').toLowerCase();
+            const url = new URL(window.location.href);
+            url.hash = '';
+            url.search = '';
+            url.searchParams.set('provider', normalized);
+            return url.toString();
+        }
+
         let payload = null;
         if (provider === 'steam') {
             const steamOpenId = {};
@@ -432,7 +441,8 @@
         } else {
             const code = params.get('code') || '';
             if (!code) throw new Error('Missing code');
-            payload = await apiJson(`/api/auth/oauth/${provider}/callback`, { state, code });
+            const redirectUri = currentOAuthRedirectUri(provider);
+            payload = await apiJson(`/api/auth/oauth/${provider}/callback`, { state, code, redirectUri });
         }
 
         setAuthState({ user: payload.user || null, tokens: payload.tokens || null, identity: payload.identity || null });
@@ -471,7 +481,23 @@
         overlay.addEventListener('click', (e) => {
             // Close when clicking the overlay background OR the close button
             if (e.target === overlay) closeModal();
-            if (e.target.closest('.auth-modal-close')) closeModal();
+            const target = e.target;
+            if (target && typeof target.closest === 'function' && target.closest('.auth-modal-close')) closeModal();
+        });
+
+        overlay.addEventListener('pointerdown', (e) => {
+            const target = e.target;
+            if (!(target && typeof target.closest === 'function')) return;
+            if (target.closest('.auth-modal-close')) {
+                e.preventDefault();
+                closeModal();
+            }
+        }, true);
+
+        document.getElementById('sgai-auth-close')?.addEventListener('pointerdown', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            closeModal();
         });
 
         document.getElementById('sgai-auth-close')?.addEventListener('click', (e) => {
@@ -562,4 +588,3 @@
         init();
     }
 })();
-

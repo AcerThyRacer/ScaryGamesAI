@@ -162,6 +162,66 @@ function normalizeUsername(username) {
   return String(username || '').trim();
 }
 
+function sanitizeOAuthUsername(input) {
+  const cleaned = String(input || '')
+    .trim()
+    .replace(/\s+/g, '_')
+    .replace(/[^A-Za-z0-9_.-]/g, '')
+    .slice(0, 24);
+  return cleaned;
+}
+
+function deriveOAuthUsername(provider, providerUserId, providerEmail, profile = {}) {
+  const profileObj = profile && typeof profile === 'object' ? profile : {};
+  const emailLocal = providerEmail && String(providerEmail).includes('@')
+    ? String(providerEmail).split('@')[0]
+    : null;
+
+  const candidates = [
+    profileObj.preferred_username,
+    profileObj.username,
+    profileObj.login,
+    profileObj.global_name,
+    profileObj.name,
+    profileObj.personaname,
+    emailLocal,
+    `${provider}_${String(providerUserId || '').slice(-10)}`
+  ];
+
+  for (const candidate of candidates) {
+    const normalized = sanitizeOAuthUsername(candidate);
+    if (normalized) return normalized;
+  }
+
+  return `player_${crypto.randomBytes(4).toString('hex')}`;
+}
+
+async function createOAuthUserFromIdentity(provider, providerUserId, providerEmail, profile = {}) {
+  const userId = `usr_${crypto.randomBytes(10).toString('hex')}`;
+  const username = deriveOAuthUsername(provider, providerUserId, providerEmail, profile);
+  const email = providerEmail ? String(providerEmail).toLowerCase() : null;
+
+  try {
+    const created = await postgres.query(
+      `INSERT INTO users (id, username, email, created_at, updated_at)
+       VALUES ($1, $2, $3, NOW(), NOW())
+       RETURNING id, username, email`,
+      [userId, username, email]
+    );
+    return normalizeUserFromStore(created.rows[0] || null);
+  } catch (error) {
+    if (email) {
+      const existing = await postgres.query(
+        'SELECT id, username, email FROM users WHERE lower(email) = lower($1) LIMIT 1',
+        [email]
+      );
+      const existingUser = normalizeUserFromStore(existing.rows[0] || null);
+      if (existingUser) return existingUser;
+    }
+    throw error;
+  }
+}
+
 function validEmail(email) {
   const e = normalizeEmail(email);
   if (!e) return false;
@@ -676,6 +736,7 @@ router.post('/oauth/:provider/callback', async (req, res) => {
     }
 
     let targetUser = null;
+    let createdUserFromOAuth = false;
     if (intendedUserId) {
       const userRow = await postgres.query('SELECT id, username, email FROM users WHERE id = $1 LIMIT 1', [intendedUserId]);
       targetUser = normalizeUserFromStore(userRow.rows[0]);
@@ -689,6 +750,11 @@ router.post('/oauth/:provider/callback', async (req, res) => {
     if (!targetUser && existingIdentity) {
       const byIdentity = await postgres.query('SELECT id, username, email FROM users WHERE id = $1 LIMIT 1', [existingIdentity.user_id]);
       targetUser = normalizeUserFromStore(byIdentity.rows[0]);
+    }
+
+    if (!targetUser && !intendedUserId) {
+      targetUser = await createOAuthUserFromIdentity(provider, providerUserId, providerEmail, resolvedProfile);
+      createdUserFromOAuth = !!targetUser;
     }
 
     if (!targetUser) {
@@ -759,7 +825,8 @@ router.post('/oauth/:provider/callback', async (req, res) => {
       providerUserId,
       returnTo: statePayload.returnTo,
       sessionId: tokens.sessionId,
-      via: code ? 'provider_exchange' : 'client_asserted'
+      via: code ? 'provider_exchange' : 'client_asserted',
+      createdUser: createdUserFromOAuth
     });
 
     return res.json({
