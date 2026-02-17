@@ -286,6 +286,7 @@
         if (!overlay) return;
 
         setMode(mode);
+        overlay.dataset.loginArmed = 'false';
         overlay.hidden = false;
         document.body.classList.add('auth-modal-open');
         closeDropdown();
@@ -310,6 +311,7 @@
         const overlay = document.getElementById('sgai-auth-modal-overlay');
         if (!overlay) return;
         overlay.hidden = true;
+        overlay.dataset.loginArmed = 'false';
         showError('');
         document.body.classList.remove('auth-modal-open');
 
@@ -505,13 +507,20 @@
             e.stopPropagation();
             closeModal();
         });
-        document.getElementById('sgai-auth-tab-login')?.addEventListener('click', () => setMode('login'));
-        document.getElementById('sgai-auth-tab-register')?.addEventListener('click', () => setMode('register'));
+        document.getElementById('sgai-auth-tab-login')?.addEventListener('click', () => {
+            setMode('login');
+            overlay.dataset.loginArmed = 'true';
+        });
+        document.getElementById('sgai-auth-tab-register')?.addEventListener('click', () => {
+            setMode('register');
+            overlay.dataset.loginArmed = 'false';
+        });
 
         document.getElementById('sgai-auth-form')?.addEventListener('submit', async (e) => {
             e.preventDefault();
             showError('');
             const mode = overlay.dataset.mode || 'login';
+            const loginArmed = overlay.dataset.loginArmed === 'true';
             const submit = document.getElementById('sgai-auth-submit');
             if (submit) submit.disabled = true;
 
@@ -521,6 +530,7 @@
                     const username = document.getElementById('sgai-auth-username')?.value;
                     await submitRegister(email, username);
                 } else {
+                    if (!loginArmed) throw new Error('Click the Sign In tab to start sign in.');
                     const identifier = document.getElementById('sgai-auth-identifier')?.value;
                     await submitLogin(identifier);
                 }
@@ -534,6 +544,12 @@
         overlay.querySelectorAll('.auth-oauth-btn').forEach((btn) => {
             btn.addEventListener('click', async () => {
                 showError('');
+                const mode = overlay.dataset.mode || 'login';
+                const loginArmed = overlay.dataset.loginArmed === 'true';
+                if (mode !== 'login' || !loginArmed) {
+                    showError('Click the Sign In tab to start sign in.');
+                    return;
+                }
                 const provider = btn.getAttribute('data-provider');
                 btn.disabled = true;
                 try {
