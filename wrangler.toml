@@ -1,6 +1,0 @@
-name = "scarygamesai"
-compatibility_date = "2026-02-16"
-
-# Static assets deployment - serves files from ./dist
-[assets]
-directory = "./dist"

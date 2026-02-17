@@ -465,8 +465,40 @@ const MobileControls = (function () {
     function haptic(ms) { vibrate(ms || 20); }
 
     /** Show/hide controls */
-    function show() { if (_container) _container.style.display = ''; }
-    function hide() { if (_container) _container.style.display = 'none'; }
+    function show() {
+        if (_container) _container.style.display = '';
+        if (_isMobile) _active = true;
+    }
+    function hide() {
+        if (_container) _container.style.display = 'none';
+        _active = false;
+
+        _joystick.active = false;
+        _joystick.id = null;
+        _joystick.dx = 0;
+        _joystick.dy = 0;
+        _joystick.magnitude = 0;
+        if (_joystick.thumb) _joystick.thumb.style.transform = 'translate(0,0)';
+        if (_joystick.el) _joystick.el.classList.remove('active');
+
+        _look.active = false;
+        _look.id = null;
+        _look.dx = 0;
+        _look.dy = 0;
+
+        _swipe.active = false;
+        _swipe.id = null;
+        _swipe.dir = null;
+        _swipe.triggered = false;
+
+        for (const id in _buttons) {
+            if (!_buttons[id]) continue;
+            _buttons[id].pressed = false;
+            _buttons[id].justPressed = false;
+            _buttons[id]._touchId = null;
+            if (_buttons[id].el) _buttons[id].el.classList.remove('mc-btn-active');
+        }
+    }
 
     /** Destroy all controls */
     function destroy() {
