@@ -3,5 +3,9 @@ compatibility_date = "2026-02-16"
 main = "worker.js"
 send_metrics = false
 
+[vars]
+# API origin used by worker.js for /api/* proxying.
+API_ORIGIN = "https://scarygames.ai"
+
 [assets]
 directory = "./dist"
