@@ -1,7 +1,46 @@
 const { defineConfig } = require('vite');
 const { resolve } = require('path');
+const { cpSync, existsSync } = require('fs');
+
+// Custom plugin to copy static directories that Vite doesn't bundle
+// (plain scripts without type="module", game files, CSS, etc.)
+function copyStaticAssets() {
+  const staticDirs = ['js', 'css', 'games', 'assets', 'data', 'oauth'];
+  const staticFiles = [
+    'manifest.json',
+    'robots.txt',
+    'sitemap.xml',
+    'sw.js'
+  ];
+
+  return {
+    name: 'copy-static-assets',
+    closeBundle() {
+      const outDir = resolve(__dirname, 'dist');
+
+      // Copy directories
+      for (const dir of staticDirs) {
+        const src = resolve(__dirname, dir);
+        const dest = resolve(outDir, dir);
+        if (existsSync(src)) {
+          cpSync(src, dest, { recursive: true, force: true });
+        }
+      }
+
+      // Copy individual files
+      for (const file of staticFiles) {
+        const src = resolve(__dirname, file);
+        const dest = resolve(outDir, file);
+        if (existsSync(src)) {
+          cpSync(src, dest, { force: true });
+        }
+      }
+    }
+  };
+}
 
 module.exports = defineConfig({
+  plugins: [copyStaticAssets()],
   build: {
     target: 'es2019',
     sourcemap: process.env.SOURCE_MAPS === 'true',
