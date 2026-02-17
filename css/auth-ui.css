@@ -126,7 +126,7 @@
   position: fixed;
   inset: 0;
   background: rgba(0, 0, 0, 0.72);
-  z-index: 11000;
+  z-index: 10000000;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -148,8 +148,8 @@
   position: absolute;
   top: 12px;
   right: 12px;
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   border-radius: 10px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   background: rgba(255, 255, 255, 0.04);
@@ -158,6 +158,9 @@
   line-height: 1;
   cursor: pointer;
   z-index: 10;
+  pointer-events: auto !important;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
   transition: background 0.2s, transform 0.1s;
 }
 

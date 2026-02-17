@@ -189,7 +189,7 @@
         overlay.hidden = true;
         overlay.innerHTML = `
             <div class="auth-modal" role="dialog" aria-modal="true" aria-labelledby="sgai-auth-title">
-                <button type="button" class="auth-modal-close" id="sgai-auth-close" aria-label="Close" onclick="window.AuthUI.close()">×</button>
+                <button type="button" class="auth-modal-close" id="sgai-auth-close" aria-label="Close">×</button>
                 <h2 class="auth-modal-title" id="sgai-auth-title">Sign In</h2>
                 <div class="auth-tabs" role="tablist" aria-label="Authentication">
                     <button type="button" class="auth-tab is-active" id="sgai-auth-tab-login" role="tab" aria-selected="true">Login</button>
