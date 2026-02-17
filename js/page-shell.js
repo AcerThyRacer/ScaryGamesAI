@@ -141,18 +141,7 @@
     }
 
     function registerAuthUiClient() {
-        if (document.querySelector('script[data-auth-ui-client="true"]')) return;
-
-        var inject = function () {
-            var script = document.createElement('script');
-            script.src = '/js/auth-ui.js';
-            script.async = true;
-            script.dataset.authUiClient = 'true';
-            document.head.appendChild(script);
-        };
-
-        // Auth is nav-critical: inject immediately (not idle) once DOM is ready.
-        inject();
+        // Auth/OAuth UI intentionally disabled.
     }
 
     function normalizeMainLandmark() {
