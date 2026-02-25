@@ -4,15 +4,17 @@
  */
 
 class SubscriptionSystem {
-    constructor() {
-        this.apiBase = '/api';
-        this.userToken = localStorage.getItem('sgai-token') || 'demo-token';
-        this.currentTier = localStorage.getItem('sgai-tier') || null;
+	constructor() {
+		this.apiBase = '/api';
+		// Only use demo-token in non-production environments
+		this.userToken = localStorage.getItem('sgai-token') || (process.env.NODE_ENV !== 'production' ? 'demo-token' : '');
+		this.currentTier = localStorage.getItem('sgai-tier') || null;
         this.battlePass = null;
         this.battlePassV2 = null;
         this.userProfile = null;
         this.communityGoals = null;
         this.backendUnavailable = false;
+        this.apiUnavailable = false;
 
         this.init();
     }
@@ -31,6 +33,7 @@ class SubscriptionSystem {
             // Load subscription status
             const status = await this.apiGet('/subscriptions/status');
             this.currentTier = status.tier;
+            this.apiUnavailable = false;
 
             // Load battle pass v2 first, fallback to legacy
             try {
@@ -53,6 +56,13 @@ class SubscriptionSystem {
 
             this.updateUI();
         } catch (e) {
+            if (this.isBackendUnavailableError(e)) {
+                if (!this.apiUnavailable) {
+                    this.showToast('Backend temporarily unavailable — subscription features are offline.', 'info');
+                }
+                this.apiUnavailable = true;
+                return;
+            }
             console.error('Failed to load user data:', e);
         }
     }
@@ -62,7 +72,12 @@ class SubscriptionSystem {
     }
 
     isBackendUnavailableError(error) {
-        return error?.status === 503 || error?.code === 'PG_REQUIRED' || error?.code === 'BP_V2_REQUIRES_POSTGRES';
+        return error?.status === 502
+            || error?.status === 503
+            || error?.status === 504
+            || error?.status === 530
+            || error?.code === 'PG_REQUIRED'
+            || error?.code === 'BP_V2_REQUIRES_POSTGRES';
     }
 
     async request(endpoint, options = {}) {
@@ -76,7 +91,10 @@ class SubscriptionSystem {
         }
 
         if (!response.ok || (data && data.success === false)) {
-            const err = new Error(data?.error?.message || data?.message || `Request failed (${response.status})`);
+            const fallbackMessage = response.status === 530
+                ? 'Backend unavailable (530)'
+                : `Request failed (${response.status})`;
+            const err = new Error(data?.error?.message || data?.message || fallbackMessage);
             err.status = response.status;
             err.code = data?.error?.code || data?.code || null;
             err.payload = data;
@@ -810,9 +828,20 @@ class SubscriptionSystem {
         });
     }
 
-    async handleSubscribe(tier) {
-        const billingCycle = document.getElementById('billing-toggle')?.checked ? 'annual' : 'monthly';
-        
+	async handleSubscribe(tier) {
+		const billingCycle = document.getElementById('billing-toggle')?.checked ? 'annual' : 'monthly';
+
+		if (this.apiUnavailable) {
+			this.showToast('Backend unavailable — please try again later.', 'info');
+			return;
+		}
+
+		// Block demo-token from actual subscription attempts
+		if (!this.userToken || this.userToken === 'demo-token') {
+			this.showToast('Sign in required to subscribe.', 'info');
+			return;
+		}
+
         try {
             const result = await this.apiPost('/subscriptions/create-checkout', {
                 tier,
@@ -824,6 +853,11 @@ class SubscriptionSystem {
                 window.location.href = result.url;
             }
         } catch (e) {
+            if (this.isBackendUnavailableError(e)) {
+                this.apiUnavailable = true;
+                this.showToast('Backend unavailable — please try again later.', 'info');
+                return;
+            }
             this.showToast('Failed to initiate subscription', 'error');
         }
     }

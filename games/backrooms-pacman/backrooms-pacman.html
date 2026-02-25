@@ -118,13 +118,16 @@
                     cursor: pointer;
                     min-width: 200px;
                 ">
-                    <option value="yellow" selected>Yellow Backrooms (Standard)</option>
-                    <option value="mono">Mono-Yellow (Harder)</option>
-                    <option value="infinite">Infinite (Nightmare)</option>
-                </select>
-                <div id="level-description" style="color: #888; font-size: 0.8rem; margin-top: 8px; min-height: 20px;">
-                    The classic yellow wallpaper backrooms
-                </div>
+<option value="yellow" selected>Yellow Backrooms (Standard)</option>
+<option value="mono">Mono-Yellow (Harder)</option>
+<option value="infinite">Infinite (Nightmare)</option>
+<option value="flooded">Flooded (Dark & Wet)</option>
+<option value="construction">Construction (Industrial)</option>
+<option value="sewers" style="color:#ff4444;">⚠️ THE SEWERS (TERRIFYING)</option>
+</select>
+<div id="level-description" style="color: #888; font-size: 0.8rem; margin-top: 8px; min-height: 20px;">
+The classic yellow wallpaper backrooms
+</div>
             </div>
 
             <button class="start-btn" id="start-btn" aria-label="Start Backrooms Pac-Man game">START GAME</button>
@@ -165,16 +168,132 @@
                     </div>
                 </div>
                 <div class="hud-controls">
-                    <button class="hud-btn" id="audio-btn" onclick="HorrorAudioEnhanced.toggleSettings()">🔊 Audio</button>
-                    <button class="hud-btn" id="fullscreen-btn">⛶ Fullscreen</button>
-                </div>
+<button class="hud-btn" id="audio-btn" onclick="HorrorAudioEnhanced.toggleSettings()">🔊 Audio</button>
+      <button class="hud-btn" id="phase8-audio-btn" onclick="togglePhase8AudioSettings()">🎛️ Phase 8 Audio</button>
+      <button class="hud-btn" id="fullscreen-btn">⛶ Fullscreen</button>
+    </div>
             </div>
 
-            <!-- Minimap -->
-            <div class="minimap-container" id="minimap-container" style="display:none;">
-                <canvas id="minimap-canvas" width="180" height="180"></canvas>
-            </div>
+<!-- Minimap -->
+    <div class="minimap-container" id="minimap-container" style="display:none;">
+      <canvas id="minimap-canvas" width="180" height="180"></canvas>
+    </div>
+
+    <!-- PHASE 8: Audio Settings Panel -->
+    <div id="phase8-audio-panel" class="phase8-audio-panel" style="display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(10,10,20,0.98);border:1px solid rgba(204,17,34,0.3);border-radius:16px;padding:30px;z-index:1000001;min-width:450px;max-width:90vw;box-shadow:0 0 40px rgba(204,17,34,0.2);backdrop-filter:blur(20px);">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;padding-bottom:16px;border-bottom:1px solid rgba(255,255,255,0.1);">
+        <h2 style="margin:0;color:#cc1122;font-size:1.5rem;font-family:'Creepster',cursive;">PHASE 8 AUDIO SETTINGS</h2>
+        <button onclick="togglePhase8AudioSettings()" style="background:none;border:none;color:#888;font-size:1.5rem;cursor:pointer;padding:0;line-height:1;">&times;</button>
+      </div>
+
+      <div style="max-height:60vh;overflow-y:auto;">
+        <!-- 3D Audio Settings -->
+        <div style="margin-bottom:24px;">
+          <h3 style="color:#fff;margin:0 0 12px 0;font-size:1rem;text-transform:uppercase;letter-spacing:1px;">3D Audio</h3>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <span style="color:#aaa;font-size:0.9rem;">HRTF Spatial Audio</span>
+            <label class="phase8-toggle" style="width:48px;height:26px;background:rgba(204,17,34,0.3);border-radius:13px;position:relative;cursor:pointer;">
+              <input type="checkbox" id="phase8-hrtf" checked style="display:none;" onchange="updatePhase8AudioSetting('hrtf', this.checked)">
+              <span class="phase8-toggle-slider" style="position:absolute;width:20px;height:20px;background:#fff;border-radius:50%;top:3px;left:3px;transition:transform 0.3s;"></span>
+            </label>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <span style="color:#aaa;font-size:0.9rem;">Sound Occlusion</span>
+            <label class="phase8-toggle" style="width:48px;height:26px;background:rgba(204,17,34,0.3);border-radius:13px;position:relative;cursor:pointer;">
+              <input type="checkbox" id="phase8-occlusion" checked style="display:none;" onchange="updatePhase8AudioSetting('occlusion', this.checked)">
+              <span class="phase8-toggle-slider" style="position:absolute;width:20px;height:20px;background:#fff;border-radius:50%;top:3px;left:3px;transition:transform 0.3s;"></span>
+            </label>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <span style="color:#aaa;font-size:0.9rem;">Doppler Effect</span>
+            <label class="phase8-toggle" style="width:48px;height:26px;background:rgba(204,17,34,0.3);border-radius:13px;position:relative;cursor:pointer;">
+              <input type="checkbox" id="phase8-doppler" checked style="display:none;" onchange="updatePhase8AudioSetting('doppler', this.checked)">
+              <span class="phase8-toggle-slider" style="position:absolute;width:20px;height:20px;background:#fff;border-radius:50%;top:3px;left:3px;transition:transform 0.3s;"></span>
+            </label>
+          </div>
         </div>
+
+        <!-- Dynamic Soundtrack -->
+        <div style="margin-bottom:24px;">
+          <h3 style="color:#fff;margin:0 0 12px 0;font-size:1rem;text-transform:uppercase;letter-spacing:1px;">Dynamic Soundtrack</h3>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <span style="color:#aaa;font-size:0.9rem;">Adaptive Music</span>
+            <label class="phase8-toggle" style="width:48px;height:26px;background:rgba(204,17,34,0.3);border-radius:13px;position:relative;cursor:pointer;">
+              <input type="checkbox" id="phase8-adaptive" checked style="display:none;" onchange="updatePhase8AudioSetting('adaptive', this.checked)">
+              <span class="phase8-toggle-slider" style="position:absolute;width:20px;height:20px;background:#fff;border-radius:50%;top:3px;left:3px;transition:transform 0.3s;"></span>
+            </label>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <span style="color:#aaa;font-size:0.9rem;">Leitmotifs</span>
+            <label class="phase8-toggle" style="width:48px;height:26px;background:rgba(204,17,34,0.3);border-radius:13px;position:relative;cursor:pointer;">
+              <input type="checkbox" id="phase8-leitmotifs" checked style="display:none;" onchange="updatePhase8AudioSetting('leitmotifs', this.checked)">
+              <span class="phase8-toggle-slider" style="position:absolute;width:20px;height:20px;background:#fff;border-radius:50%;top:3px;left:3px;transition:transform 0.3s;"></span>
+            </label>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <span style="color:#aaa;font-size:0.9rem;">Silence Mechanics</span>
+            <label class="phase8-toggle" style="width:48px;height:26px;background:rgba(204,17,34,0.3);border-radius:13px;position:relative;cursor:pointer;">
+              <input type="checkbox" id="phase8-silence" checked style="display:none;" onchange="updatePhase8AudioSetting('silence', this.checked)">
+              <span class="phase8-toggle-slider" style="position:absolute;width:20px;height:20px;background:#fff;border-radius:50%;top:3px;left:3px;transition:transform 0.3s;"></span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Procedural Audio -->
+        <div style="margin-bottom:24px;">
+          <h3 style="color:#fff;margin:0 0 12px 0;font-size:1rem;text-transform:uppercase;letter-spacing:1px;">Procedural Audio</h3>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <span style="color:#aaa;font-size:0.9rem;">Voice Synthesis</span>
+            <label class="phase8-toggle" style="width:48px;height:26px;background:rgba(204,17,34,0.3);border-radius:13px;position:relative;cursor:pointer;">
+              <input type="checkbox" id="phase8-voice" checked style="display:none;" onchange="updatePhase8AudioSetting('voice', this.checked)">
+              <span class="phase8-toggle-slider" style="position:absolute;width:20px;height:20px;background:#fff;border-radius:50%;top:3px;left:3px;transition:transform 0.3s;"></span>
+            </label>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <span style="color:#aaa;font-size:0.9rem;">Enhanced Footsteps</span>
+            <label class="phase8-toggle" style="width:48px;height:26px;background:rgba(204,17,34,0.3);border-radius:13px;position:relative;cursor:pointer;">
+              <input type="checkbox" id="phase8-footsteps" checked style="display:none;" onchange="updatePhase8AudioSetting('footsteps', this.checked)">
+              <span class="phase8-toggle-slider" style="position:absolute;width:20px;height:20px;background:#fff;border-radius:50%;top:3px;left:3px;transition:transform 0.3s;"></span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Binaural Audio -->
+        <div style="margin-bottom:24px;">
+          <h3 style="color:#fff;margin:0 0 12px 0;font-size:1rem;text-transform:uppercase;letter-spacing:1px;">Binaural Audio</h3>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+            <span style="color:#aaa;font-size:0.9rem;">ASMR Mode</span>
+            <label class="phase8-toggle" style="width:48px;height:26px;background:rgba(204,17,34,0.3);border-radius:13px;position:relative;cursor:pointer;">
+              <input type="checkbox" id="phase8-asmr" style="display:none;" onchange="updatePhase8AudioSetting('asmr', this.checked)">
+              <span class="phase8-toggle-slider" style="position:absolute;width:20px;height:20px;background:#fff;border-radius:50%;top:3px;left:3px;transition:transform 0.3s;"></span>
+            </label>
+          </div>
+          <div style="margin-top:16px;">
+            <button onclick="startHRTFCalibration()" style="width:100%;padding:12px;background:rgba(204,17,34,0.2);border:1px solid rgba(204,17,34,0.4);border-radius:8px;color:#cc1122;cursor:pointer;font-size:0.9rem;transition:all 0.3s;" onmouseover="this.style.background='rgba(204,17,34,0.3)'" onmouseout="this.style.background='rgba(204,17,34,0.2)'">
+              🎧 Start HRTF Calibration
+            </button>
+            <p style="color:#666;font-size:0.8rem;margin-top:8px;text-align:center;">Calibrate audio to your ear shape for enhanced 3D sound</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top:20px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.1);text-align:center;">
+        <button onclick="resetPhase8AudioDefaults()" style="padding:8px 20px;background:rgba(255,255,255,0.1);border:none;border-radius:6px;color:#aaa;cursor:pointer;font-size:0.85rem;">Reset to Defaults</button>
+      </div>
+    </div>
+
+    <style>
+      .phase8-toggle-slider {
+        transition: transform 0.3s;
+      }
+      input:checked + .phase8-toggle-slider {
+        transform: translateX(22px);
+      }
+      input:checked ~ .phase8-toggle {
+        background: rgba(204,17,34,0.6) !important;
+      }
+    </style>
+  </div>
 
         <!-- Game Over -->
         <div class="game-end-screen game-over" id="game-over-screen" style="display:none;" role="alertdialog" aria-modal="true" aria-labelledby="gameover-title" aria-describedby="gameover-desc">
@@ -226,11 +345,183 @@
     <script src="/js/performance-optimizer.js" id="perf-js"></script>
     <!-- End Core Systems -->
     
-    <!-- Unified Game Container & Cheats System -->
-    <script src="/js/cheats-mods-system.js"></script>
-    <script src="/js/unified-game-container.js"></script>
-    
-    <script src="backrooms-pacman.js"></script>
+<!-- Unified Game Container & Cheats System -->
+<script src="/js/cheats-mods-system.js"></script>
+<script src="/js/unified-game-container.js"></script>
+
+<!-- Phase 1: Advanced Visual Systems -->
+<script src="shaders/wallDistortion.vert" type="x-shader/x-vertex" id="wall-distortion-vert"></script>
+<script src="shaders/wallDistortion.frag" type="x-shader/x-fragment" id="wall-distortion-frag"></script>
+<script src="shaders/volumetricLight.vert" type="x-shader/x-vertex" id="volumetric-light-vert"></script>
+<script src="shaders/volumetricLight.frag" type="x-shader/x-fragment" id="volumetric-light-frag"></script>
+<script src="shaders/shadowMap.vert" type="x-shader/x-vertex" id="shadow-map-vert"></script>
+<script src="shaders/shadowMap.frag" type="x-shader/x-fragment" id="shadow-map-frag"></script>
+<script src="advanced-lighting.js"></script>
+<script src="decay-system.js"></script>
+<script src="dynamic-environment.js"></script>
+
+<!-- Phase 2: AI Systems -->
+<script src="multi-agent-pacman.js"></script>
+<script src="ai-learner.js"></script>
+<script src="enemy-variants.js"></script>
+<script src="threat-assessment.js"></script>
+<script src="phase2-ai-integration.js"></script>
+
+<!-- Phase 3: Procedural Content -->
+<script src="procedural-maze.js"></script>
+<script src="biome-system.js"></script>
+<script src="roguelike-mode.js"></script>
+<!-- PHASE 3 ENHANCEMENTS -->
+<script src="wave-function-collapse.js"></script>
+<script src="biome-system-enhanced.js"></script>
+<script src="roguelike-mode-enhanced.js"></script>
+
+<!-- Phase 4: Psychological Horror -->
+<script src="sanity-system.js"></script>
+<script src="jumpscare-system.js"></script>
+<script src="stress-system.js"></script>
+<script src="horror-director.js"></script>
+<!-- PHASE 4 ENHANCEMENTS -->
+<script src="hallucination-system.js"></script>
+
+<!-- Phase 5: Multiplayer & Social -->
+<script src="multiplayer.js"></script>
+<script src="ghost-system.js"></script>
+<script src="voice-chat.js"></script>
+
+<!-- Phase 6: Abilities & Combat -->
+<script src="expanded-abilities.js"></script>
+<script src="crafting-system.js"></script>
+<script src="defensive-mechanics.js"></script>
+<script src="skill-trees.js"></script>
+
+<!-- Phase 7: Story & Progression -->
+<script src="campaign-mode.js"></script>
+<script src="story-elements.js"></script>
+<script src="quest-system.js"></script>
+<script src="character-progression.js"></script>
+
+<!-- Phase 8: Audio Revolution -->
+<script src="advanced-3d-audio.js"></script>
+<script src="dynamic-soundtrack.js"></script>
+<script src="procedural-audio.js"></script>
+<script src="binaural-audio.js"></script>
+<script src="phase8-audio-integration.js"></script>
+
+<!-- PHASE 3 & 4 INTEGRATION -->
+<script src="phase3-4-integration.js"></script>
+
+<!-- PHASE 8: Audio Settings Functions -->
+<script>
+// Phase 8 Audio Settings Panel
+var phase8AudioSettings = {
+  hrtf: true,
+  occlusion: true,
+  doppler: true,
+  adaptive: true,
+  leitmotifs: true,
+  silence: true,
+  voice: true,
+  footsteps: true,
+  asmr: false
+};
+
+function togglePhase8AudioSettings() {
+  var panel = document.getElementById('phase8-audio-panel');
+  if (panel) {
+    panel.style.display = panel.style.display === 'none' ? 'block' : 'none';
+  }
+}
+
+function updatePhase8AudioSetting(setting, value) {
+  phase8AudioSettings[setting] = value;
+
+  // Apply settings to audio systems
+  if (setting === 'hrtf' && typeof Advanced3DAudio !== 'undefined') {
+    Advanced3DAudio.config.hrtfEnabled = value;
+  } else if (setting === 'occlusion' && typeof Advanced3DAudio !== 'undefined') {
+    Advanced3DAudio.config.occlusionEnabled = value;
+  } else if (setting === 'doppler' && typeof Advanced3DAudio !== 'undefined') {
+    Advanced3DAudio.config.dopplerEnabled = value;
+  } else if (setting === 'adaptive' && typeof DynamicSoundtrack !== 'undefined') {
+    DynamicSoundtrack.config.adaptiveMusic = value;
+  } else if (setting === 'leitmotifs' && typeof DynamicSoundtrack !== 'undefined') {
+    DynamicSoundtrack.config.leitmotifsEnabled = value;
+  } else if (setting === 'silence' && typeof DynamicSoundtrack !== 'undefined') {
+    DynamicSoundtrack.config.silenceEnabled = value;
+  } else if (setting === 'voice' && typeof ProceduralAudio !== 'undefined') {
+    ProceduralAudio.setVoiceSynth({ enabled: value });
+  } else if (setting === 'asmr' && typeof BinauralAudio !== 'undefined') {
+    BinauralAudio.enableASMRMode(value);
+  }
+
+  console.log('[Phase8Audio] Setting updated:', setting, '=', value);
+
+  // Save to localStorage
+  localStorage.setItem('phase8_audio_settings', JSON.stringify(phase8AudioSettings));
+}
+
+function loadPhase8AudioSettings() {
+  var saved = localStorage.getItem('phase8_audio_settings');
+  if (saved) {
+    try {
+      var loaded = JSON.parse(saved);
+      phase8AudioSettings = Object.assign(phase8AudioSettings, loaded);
+
+      // Update UI
+      for (var key in phase8AudioSettings) {
+        var checkbox = document.getElementById('phase8-' + key);
+        if (checkbox) {
+          checkbox.checked = phase8AudioSettings[key];
+        }
+      }
+    } catch (e) {
+      console.error('[Phase8Audio] Failed to load settings:', e);
+    }
+  }
+}
+
+function resetPhase8AudioDefaults() {
+  phase8AudioSettings = {
+    hrtf: true,
+    occlusion: true,
+    doppler: true,
+    adaptive: true,
+    leitmotifs: true,
+    silence: true,
+    voice: true,
+    footsteps: true,
+    asmr: false
+  };
+
+  // Update UI
+  for (var key in phase8AudioSettings) {
+    var checkbox = document.getElementById('phase8-' + key);
+    if (checkbox) {
+      checkbox.checked = phase8AudioSettings[key];
+      updatePhase8AudioSetting(key, phase8AudioSettings[key]);
+    }
+  }
+
+  localStorage.removeItem('phase8_audio_settings');
+  console.log('[Phase8Audio] Settings reset to defaults');
+}
+
+function startHRTFCalibration() {
+  if (typeof BinauralAudio !== 'undefined' && BinauralAudio.calibrateHRTF) {
+    BinauralAudio.calibrateHRTF();
+  } else {
+    alert('Binaural audio system not available. Make sure all audio modules are loaded.');
+  }
+}
+
+// Load settings on page load
+window.addEventListener('DOMContentLoaded', function() {
+  loadPhase8AudioSettings();
+});
+</script>
+
+<script src="backrooms-pacman.js"></script>
 </body>
 
 </html>

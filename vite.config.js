@@ -1,105 +1,160 @@
-const { defineConfig } = require('vite');
-const { resolve } = require('path');
-const { cpSync, existsSync } = require('fs');
+/**
+ * Vite Configuration for ScaryGamesAI Platform
+ * Phase 1: Performance & Foundation Excellence
+ * 
+ * Features:
+ * - Code splitting per game
+ * - Tree-shaking for Three.js
+ * - Dynamic imports
+ * - Asset optimization
+ */
 
-// Custom plugin to copy static directories that Vite doesn't bundle
-// (plain scripts without type="module", game files, CSS, etc.)
-function copyStaticAssets() {
-  const staticDirs = ['js', 'css', 'games', 'assets', 'data', 'oauth'];
-  const staticFiles = [
-    'manifest.json',
-    'robots.txt',
-    'sitemap.xml',
-    'sw.js'
-  ];
+import { defineConfig } from 'vite';
+import { resolve } from 'path';
+import { viteStaticCopy } from 'vite-plugin-static-copy';
 
-  return {
-    name: 'copy-static-assets',
-    closeBundle() {
-      const outDir = resolve(__dirname, 'dist');
-
-      // Copy directories
-      for (const dir of staticDirs) {
-        const src = resolve(__dirname, dir);
-        const dest = resolve(outDir, dir);
-        if (existsSync(src)) {
-          cpSync(src, dest, { recursive: true, force: true });
-        }
-      }
-
-      // Copy individual files
-      for (const file of staticFiles) {
-        const src = resolve(__dirname, file);
-        const dest = resolve(outDir, file);
-        if (existsSync(src)) {
-          cpSync(src, dest, { force: true });
-        }
-      }
-    }
-  };
-}
-
-module.exports = defineConfig({
-  plugins: [copyStaticAssets()],
+export default defineConfig({
+  root: '.',
+  base: '/',
+  
   build: {
-    target: 'es2019',
-    sourcemap: process.env.SOURCE_MAPS === 'true',
-    cssCodeSplit: true,
+    // Output directory
+    outDir: 'dist',
+    
+    // Generate sourcemaps for production
+    sourcemap: true,
+    
+    // Minify with esbuild (faster than terser)
     minify: 'esbuild',
-    manifest: true,
-    reportCompressedSize: true,
-    modulePreload: {
-      polyfill: true
-    },
-    chunkSizeWarningLimit: 500,
+    
+    // Target modern browsers
+    target: 'es2020',
+    
+    // Rollup options for code splitting
     rollupOptions: {
       input: {
-        index: resolve(__dirname, 'index.html'),
-        games: resolve(__dirname, 'games.html'),
-        challenges: resolve(__dirname, 'challenges.html'),
-        achievements: resolve(__dirname, 'achievements.html'),
-        leaderboards: resolve(__dirname, 'leaderboards.html'),
-        store: resolve(__dirname, 'store.html'),
-        subscription: resolve(__dirname, 'subscription.html')
+        // Main entry points
+        main: resolve(__dirname, 'index.html'),
+        // Individual games (code-split)
+        hellaphobia: resolve(__dirname, 'games/hellaphobia/hellaphobia.html'),
+        backroomsPacman: resolve(__dirname, 'games/backrooms-pacman/backrooms-pacman.html'),
+        caribbeanConquest: resolve(__dirname, 'games/caribbean-conquest/index.html'),
+        abyss: resolve(__dirname, 'games/the-abyss/the-abyss.html'),
+        subliminalSpaces: resolve(__dirname, 'games/subliminal-spaces/subliminal-spaces.html')
       },
+      
       output: {
-        entryFileNames: 'assets/js/[name]-[hash].js',
-        chunkFileNames: 'assets/js/chunks/[name]-[hash].js',
-        assetFileNames: ({ name }) => {
-          if (!name) return 'assets/[name]-[hash][extname]';
-          if (name.endsWith('.css')) return 'assets/css/[name]-[hash][extname]';
-          if (/\.(png|jpe?g|gif|svg|webp|avif|ico)$/.test(name)) return 'assets/img/[name]-[hash][extname]';
-          if (/\.(woff2?|ttf|otf)$/.test(name)) return 'assets/fonts/[name]-[hash][extname]';
-          return 'assets/[name]-[hash][extname]';
+        // Split vendor chunks
+        manualChunks: {
+          three: ['three'],
+          threeAddons: ['three/examples/jsm/controls/OrbitControls.js']
         },
-        manualChunks(id) {
-          // Separate Three.js for better caching (it's large ~600KB)
-          if (id.includes('/node_modules/three')) return 'three';
-          // Separate Stripe for payment pages only
-          if (id.includes('/node_modules/stripe')) return 'stripe';
-          // Other vendor dependencies
-          if (id.includes('/node_modules/')) return 'vendor';
-
-          if (id.includes('/js/page-shell') || id.includes('/js/perf-entry')) return 'shell';
-          if (id.includes('/js/main.js')) return 'main';
-
-          if (id.includes('/games/the-abyss/js/engine/')) return 'game-abyss-engine';
-          if (id.includes('/games/the-abyss/js/')) return 'game-the-abyss';
-
-          const gameMatch = id.match(/\/games\/([^/]+)\//);
-          if (gameMatch && gameMatch[1]) {
-            return `game-${gameMatch[1]}`;
+        
+        // Chunk file naming
+        chunkFileNames: 'assets/js/[name]-[hash].js',
+        entryFileNames: 'assets/js/[name]-[hash].js',
+        assetFileNames: ({ name }) => {
+          if (/\.(png|jpe?g|svg|gif|webp)$/i.test(name ?? '')) {
+            return 'assets/images/[name]-[hash][extname]';
           }
-
-          if (id.includes('/js/adaptive-quality') || id.includes('/js/transitions') || id.includes('/js/scroll-fx') || id.includes('/js/micro-interactions')) {
-            return 'runtime-effects';
+          if (/\.css$/i.test(name ?? '')) {
+            return 'assets/css/[name]-[hash][extname]';
           }
-
-          if (id.includes('/js/challenges') || id.includes('/js/leaderboards') || id.includes('/js/achievements') || id.includes('/js/store-system') || id.includes('/js/subscription-system')) {
-            return 'features';
-          }
+          return 'assets/[name]-[hash][extname]';
         }
       }
+    },
+    
+    // Chunk size warning limit
+    chunkSizeWarningLimit: 500, // KB
+    
+    // Assets inline limit
+    assetsInlineLimit: 4096, // 4KB
+    
+    // Compress with brotli
+    cssCodeSplit: true
+  },
+  
+  optimizeDeps: {
+    // Pre-bundle Three.js
+    include: ['three'],
+    
+    // Exclude large dependencies
+    exclude: ['@ffmpeg/ffmpeg']
+  },
+  
+  server: {
+    port: 3000,
+    open: true,
+    cors: true,
+    
+    // Proxy API requests
+    proxy: {
+      '/api': {
+        target: 'http://localhost:9999',
+        changeOrigin: true
+      }
     }
-  }
+  },
+  
+  plugins: [
+    // Copy static assets
+    viteStaticCopy({
+      targets: [
+        {
+          src: 'games/*/assets/**/*',
+          dest: 'games'
+        },
+        {
+          src: 'core/**/*.{js,json}',
+          dest: 'core'
+        },
+        {
+          src: 'api/**/*.js',
+          dest: 'api'
+        }
+      ]
+    })
+  ],
+  
+  // Performance optimizations
+  esbuild: {
+    // Drop console in production
+    drop: process.env.NODE_ENV === 'production' ? ['console'] : [],
+    
+    // Legal comments only
+    legalComments: 'external',
+    
+    // Tree shaking
+    treeShaking: true
+  },
+  
+  // CSS processing
+  css: {
+    devSourcemap: true,
+    
+    // PostCSS plugins
+    postcss: {
+      plugins: [
+        {
+          postcssPlugin: 'internal:charset-removal',
+          AtRule: {
+            charset: (atRule) => {
+              if (atRule.name === 'charset') {
+                atRule.remove();
+              }
+            }
+          }
+        }
+      ]
+    }
+  },
+  
+  // Worker configuration
+  worker: {
+    format: 'es'
+  },
+  
+  // Assets
+  assetsInclude: ['**/*.glb', '**/*.gltf', '**/*.hdr', '**/*.exr']
 });

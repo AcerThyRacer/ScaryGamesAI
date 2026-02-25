@@ -13,6 +13,7 @@ const db = require('../models/database');
 const dataAccess = require('../models/data-access');
 const cacheService = require('../services/cacheService');
 const postgres = require('../models/postgres');
+const pool = require('../models/postgres').pool;
 const { executeIdempotentMutation, appendAuditEvent, makeId } = require('../services/economyMutationService');
 
 // Middleware
@@ -289,10 +290,43 @@ router.get('/pricing', authMiddleware, async (req, res) => {
 });
 
 /**
+ * Validate payment input middleware
+ */
+const validatePaymentInput = (req, res, next) => {
+    const { tier, billingCycle, amount } = req.body;
+
+    const validTiers = new Set(['survivor', 'hunter', 'elder']);
+    const validCycles = new Set(['monthly', 'annual']);
+
+    if (tier && !validTiers.has(tier)) {
+        return res.status(400).json({
+            success: false,
+            error: { code: 'INVALID_TIER', message: 'Invalid subscription tier' }
+        });
+    }
+
+    if (billingCycle && !validCycles.has(billingCycle)) {
+        return res.status(400).json({
+            success: false,
+            error: { code: 'INVALID_BILLING_CYCLE', message: 'Invalid billing cycle' }
+        });
+    }
+
+    if (amount && (typeof amount !== 'number' || amount <= 0)) {
+        return res.status(400).json({
+            success: false,
+            error: { code: 'INVALID_AMOUNT', message: 'Invalid amount' }
+        });
+    }
+
+    next();
+};
+
+/**
  * @route POST /api/subscriptions/gift
  * @desc Gift a subscription to a friend
  */
-router.post('/gift', requireMonetizationAuth, async (req, res) => {
+router.post('/gift', requireMonetizationAuth, validatePaymentInput, async (req, res) => {
     const idempotencyKey = req.header('idempotency-key')
         || req.header('x-idempotency-key')
         || req.body?.idempotencyKey;
@@ -320,16 +354,26 @@ router.post('/gift', requireMonetizationAuth, async (req, res) => {
         return res.status(400).json({ success: false, error: { code: 'SELF_GIFT_FORBIDDEN', message: 'Cannot gift to yourself' } });
     }
 
-    const validTiers = new Set(['survivor', 'hunter', 'elder']);
-    const validCycles = new Set(['monthly', 'annual']);
-    if (!validTiers.has(tier)) {
-        return res.status(400).json({ success: false, error: { code: 'INVALID_TIER', message: 'tier is invalid' } });
-    }
-    if (!validCycles.has(billingCycle)) {
-        return res.status(400).json({ success: false, error: { code: 'INVALID_BILLING_CYCLE', message: 'billingCycle is invalid' } });
-    }
-
     try {
+        // Check for duplicate transactions
+        if (postgres.isEnabled()) {
+            const existingTransaction = await postgres.query(
+                `SELECT id FROM gift_transactions
+                 WHERE idempotency_key = $1 LIMIT 1`,
+                [idempotencyKey]
+            );
+
+            if (existingTransaction.rows.length > 0) {
+                return res.status(409).json({
+                    success: false,
+                    error: {
+                        code: 'DUPLICATE_TRANSACTION',
+                        message: 'Transaction already processed'
+                    }
+                });
+            }
+        }
+
         const mutation = await executeIdempotentMutation({
             scope: 'subscriptions.gift',
             idempotencyKey,
@@ -346,59 +390,71 @@ router.post('/gift', requireMonetizationAuth, async (req, res) => {
             eventType: 'subscription_gift',
             requestId: req.header('x-request-id') || null,
             mutationFn: async () => {
-                if (postgres.isEnabled()) {
-                    // Minimal anti-abuse guard: cap daily gifts from one sender.
-                    const daily = await postgres.query(
-                        `
-                          SELECT COUNT(1)::int AS c
-                          FROM gift_transactions
-                          WHERE sender_user_id = $1
-                            AND gift_type = 'subscription'
-                            AND created_at >= NOW() - INTERVAL '1 day'
-                        `,
-                        [req.user.id]
-                    );
+                const client = await pool.connect();
+                try {
+                    await client.query('BEGIN');
 
-                    if ((daily.rows[0]?.c || 0) >= 5) {
-                        const err = new Error('Daily subscription gift cap reached');
-                        err.code = 'DAILY_SUBSCRIPTION_GIFT_CAP_REACHED';
-                        throw err;
+                    if (postgres.isEnabled()) {
+                        // Minimal anti-abuse guard: cap daily gifts from one sender.
+                        const daily = await client.query(
+                            `
+                              SELECT COUNT(1)::int AS c
+                              FROM gift_transactions
+                              WHERE sender_user_id = $1
+                                AND gift_type = 'subscription'
+                                AND created_at >= NOW() - INTERVAL '1 day'
+                            `,
+                            [req.user.id]
+                        );
+
+                        if ((daily.rows[0]?.c || 0) >= 5) {
+                            const err = new Error('Daily subscription gift cap reached');
+                            err.code = 'DAILY_SUBSCRIPTION_GIFT_CAP_REACHED';
+                            throw err;
+                        }
+
+                        // Require friendship in PG mode.
+                        const friendship = await client.query(
+                            `
+                              SELECT 1
+                              FROM user_friendships
+                              WHERE status = 'accepted'
+                                AND ((user_id = $1 AND friend_user_id = $2) OR (user_id = $2 AND friend_user_id = $1))
+                              LIMIT 1
+                            `,
+                            [req.user.id, recipientUserId]
+                        );
+
+                        if (friendship.rows.length === 0) {
+                            const err = new Error('Recipient must be a friend');
+                            err.code = 'FRIENDSHIP_REQUIRED';
+                            throw err;
+                        }
                     }
 
-                    // Require friendship in PG mode.
-                    const friendship = await postgres.query(
-                        `
-                          SELECT 1
-                          FROM user_friendships
-                          WHERE status = 'accepted'
-                            AND ((user_id = $1 AND friend_user_id = $2) OR (user_id = $2 AND friend_user_id = $1))
-                          LIMIT 1
-                        `,
-                        [req.user.id, recipientUserId]
-                    );
+                    const result = await paymentService.giftSubscription({
+                        senderUserId: req.user.id,
+                        recipientUserId,
+                        tier,
+                        billingCycle,
+                        message,
+                        idempotencyKey,
+                        requestId: req.header('x-request-id') || null
+                    });
 
-                    if (friendship.rows.length === 0) {
-                        const err = new Error('Recipient must be a friend');
-                        err.code = 'FRIENDSHIP_REQUIRED';
-                        throw err;
-                    }
+                    await client.query('COMMIT');
+                    return {
+                        ...result,
+                        resourceType: 'subscription_gift',
+                        resourceId: result.giftId
+                    };
+                } catch (error) {
+                    await client.query('ROLLBACK');
+                    console.error('[PaymentService] Transaction failed:', error);
+                    throw error;
+                } finally {
+                    client.release();
                 }
-
-                const result = await paymentService.giftSubscription({
-                    senderUserId: req.user.id,
-                    recipientUserId,
-                    tier,
-                    billingCycle,
-                    message,
-                    idempotencyKey,
-                    requestId: req.header('x-request-id') || null
-                });
-
-                return {
-                    ...result,
-                    resourceType: 'subscription_gift',
-                    resourceId: result.giftId
-                };
             }
         });
 
@@ -408,6 +464,8 @@ router.post('/gift', requireMonetizationAuth, async (req, res) => {
             replayed: mutation.replayed
         });
     } catch (error) {
+        console.error('[PaymentService] Critical error:', error);
+
         if (error.code === 'IDEMPOTENCY_PAYLOAD_MISMATCH') {
             return res.status(409).json({
                 success: false,
@@ -434,14 +492,15 @@ router.post('/gift', requireMonetizationAuth, async (req, res) => {
             RECIPIENT_NOT_FOUND: 404,
             SELF_GIFT_FORBIDDEN: 400,
             INVALID_TIER: 400,
-            INVALID_BILLING_CYCLE: 400
+            INVALID_BILLING_CYCLE: 400,
+            DUPLICATE_TRANSACTION: 409
         };
 
-        return res.status(statusByCode[error.code] || 400).json({
+        return res.status(statusByCode[error.code] || 500).json({
             success: false,
             error: {
-                code: error.code || 'SUBSCRIPTION_GIFT_FAILED',
-                message: error.message
+                code: error.code || 'INTERNAL_ERROR',
+                message: error.message || 'Payment processing failed'
             }
         });
     }

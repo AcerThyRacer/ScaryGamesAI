@@ -1123,12 +1123,15 @@ class Analytics {
 
 // Initialize when DOM ready
 document.addEventListener('DOMContentLoaded', () => {
-    window.GameTester = GameTester;
-    window.Analytics = Analytics;
-    
-    // Auto-initialize
-    window.gameTester = new GameTester();
-    window.analytics = new Analytics();
+ window.GameTester = GameTester;
+ window.Analytics = Analytics;
+ 
+ // Auto-initialize
+ window.gameTester = new GameTester();
+ window.analytics = new Analytics();
 });
 
-export default GameTester;
+// Export for different environments (fixed: removed ES6 module syntax)
+if (typeof module !== 'undefined' && module.exports) {
+ module.exports = GameTester;
+}

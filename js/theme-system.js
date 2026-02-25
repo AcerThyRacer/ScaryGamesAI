@@ -339,6 +339,38 @@
                 font-size: 12px;
                 color: var(--text-secondary);
             }
+
+            /* Writing themes section */
+            .theme-section-header {
+                width: 100%;
+                padding: 8px 0;
+                margin-top: 12px;
+                border-top: 1px solid rgba(255, 255, 255, 0.1);
+                text-align: center;
+                font-size: 14px;
+                color: var(--text-secondary);
+                font-weight: 500;
+            }
+
+            .writing-themes-container {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+                justify-content: center;
+            }
+
+            .writing-theme-option {
+                flex: 1 1 60px;
+                min-width: 60px;
+            }
+
+            .theme-option.writing-theme-option {
+                background: rgba(255, 255, 255, 0.03);
+            }
+
+            .theme-option.writing-theme-option:hover {
+                background: rgba(255, 255, 255, 0.08);
+            }
         `;
 
         document.head.appendChild(style);
@@ -351,33 +383,49 @@
     function createThemeSelector() {
         const container = document.createElement('div');
         container.className = 'theme-selector';
-        container.innerHTML = `
-            <div class="theme-option" data-theme="dark">
-                <span class="theme-option-icon">🌙</span>
-                <span class="theme-option-label">Dark</span>
+
+        // UI themes
+        const uiThemes = [
+            { id: 'dark', icon: '🌙', label: 'Dark' },
+            { id: 'light', icon: '☀️', label: 'Light' },
+            { id: 'system', icon: '💻', label: 'System' }
+        ];
+
+        // Writing themes (will be populated when ThemeWritingManager loads)
+        const writingThemes = [];
+
+        // Create UI theme options
+        let html = uiThemes.map(theme => `
+            <div class="theme-option" data-theme="${theme.id}" data-type="ui">
+                <span class="theme-option-icon">${theme.icon}</span>
+                <span class="theme-option-label">${theme.label}</span>
             </div>
-            <div class="theme-option" data-theme="light">
-                <span class="theme-option-icon">☀️</span>
-                <span class="theme-option-label">Light</span>
-            </div>
-            <div class="theme-option" data-theme="system">
-                <span class="theme-option-icon">💻</span>
-                <span class="theme-option-label">System</span>
+        `).join('');
+
+        // Add writing theme section header
+        html += `
+            <div class="theme-section-header">
+                <span>Writing Themes</span>
             </div>
         `;
+
+        // Placeholder for writing themes (will be populated later)
+        html += `<div class="writing-themes-container" id="writing-themes-container"></div>`;
+
+        container.innerHTML = html;
 
         // Update active state
         function updateActive() {
             const current = getTheme();
-            container.querySelectorAll('.theme-option').forEach(opt => {
+            container.querySelectorAll('.theme-option[data-type="ui"]').forEach(opt => {
                 opt.classList.toggle('active', opt.dataset.theme === current);
             });
         }
 
         updateActive();
 
-        // Bind clicks
-        container.querySelectorAll('.theme-option').forEach(opt => {
+        // Bind clicks for UI themes
+        container.querySelectorAll('.theme-option[data-type="ui"]').forEach(opt => {
             opt.addEventListener('click', () => {
                 setTheme(opt.dataset.theme);
                 updateActive();
@@ -386,6 +434,56 @@
 
         // Listen for external changes
         window.addEventListener('theme-change', updateActive);
+
+        // Load writing themes when ThemeWritingManager is available
+        function loadWritingThemes() {
+            if (window.ThemeWritingManager && window.ThemeWritingManager.isInitialized) {
+                // Get available writing themes
+                const themeManager = window.ThemeWritingManager;
+                const themeContainer = container.querySelector('#writing-themes-container');
+
+                // Create writing theme options
+                const writingThemeOptions = Object.entries(themeManager.THEMES).map(([key, id]) => {
+                    const config = themeManager.getThemeConfig(id);
+                    return `
+                        <div class="theme-option writing-theme-option" data-theme="${id}" data-type="writing" title="${config.description}">
+                            <span class="theme-option-icon">${config.assets?.icons?.themeIcon || '🎭'}</span>
+                            <span class="theme-option-label">${config.name}</span>
+                        </div>
+                    `;
+                }).join('');
+
+                themeContainer.innerHTML = writingThemeOptions;
+
+                // Bind clicks for writing themes
+                container.querySelectorAll('.theme-option[data-type="writing"]').forEach(opt => {
+                    opt.addEventListener('click', async () => {
+                        try {
+                            await themeManager.setTheme(opt.dataset.theme);
+                            // Highlight the selected writing theme
+                            container.querySelectorAll('.writing-theme-option').forEach(o => {
+                                o.classList.toggle('active', o.dataset.theme === opt.dataset.theme);
+                            });
+                        } catch (error) {
+                            console.error('Error setting writing theme:', error);
+                        }
+                    });
+                });
+
+                // Highlight current writing theme
+                const currentWritingTheme = themeManager.getCurrentTheme();
+                container.querySelectorAll('.writing-theme-option').forEach(opt => {
+                    opt.classList.toggle('active', opt.dataset.theme === currentWritingTheme);
+                });
+
+            } else {
+                // Try again in 100ms if ThemeWritingManager not loaded yet
+                setTimeout(loadWritingThemes, 100);
+            }
+        }
+
+        // Start loading writing themes
+        loadWritingThemes();
 
         return container;
     }
@@ -398,6 +496,63 @@
         injectStyles();
         watchSystemPreference();
         loadTheme();
+    }
+
+    // ═══════════════════════════════════════════════════════════════
+    // WRITING THEME INTEGRATION
+    // ═══════════════════════════════════════════════════════════════
+
+    // Map ThemeSystem themes to ThemeWritingManager themes
+    const THEME_MAPPING = {
+        [THEMES.dark]: 'horror',
+        [THEMES.light]: 'default',
+        [THEMES.system]: 'default'
+    };
+
+    // Initialize ThemeWritingManager when ThemeSystem initializes
+    async function initializeWritingThemes() {
+        try {
+            // Load ThemeWritingManager script
+            const script = document.createElement('script');
+            script.src = '/js/theme-writing-manager.js';
+            script.onload = async () => {
+                try {
+                    // Wait for ThemeWritingManager to initialize
+                    await new Promise(resolve => {
+                        const checkInitialized = () => {
+                            if (window.ThemeWritingManager && window.ThemeWritingManager.isInitialized) {
+                                resolve();
+                            } else {
+                                setTimeout(checkInitialized, 100);
+                            }
+                        };
+                        checkInitialized();
+                    });
+
+                    // Sync theme with ThemeWritingManager
+                    const currentTheme = getActualTheme();
+                    const writingTheme = THEME_MAPPING[currentTheme] || 'horror';
+                    await window.ThemeWritingManager.setTheme(writingTheme);
+
+                    // Listen for theme changes
+                    window.ThemeWritingManager.addThemeChangeListener((themeId, themeConfig) => {
+                        // Update UI when writing theme changes
+                        const root = document.documentElement;
+                        if (themeConfig.ui && themeConfig.ui.colors) {
+                            Object.entries(themeConfig.ui.colors).forEach(([key, value]) => {
+                                root.style.setProperty(`--color-${key}`, value);
+                            });
+                        }
+                    });
+
+                } catch (error) {
+                    console.error('Error initializing ThemeWritingManager:', error);
+                }
+            };
+            document.head.appendChild(script);
+        } catch (error) {
+            console.error('Error loading ThemeWritingManager:', error);
+        }
     }
 
     // ═══════════════════════════════════════════════════════════════
@@ -415,6 +570,9 @@
         createThemeSelector,
         injectToggleButton,
     };
+
+    // Initialize writing themes after main theme system
+    initializeWritingThemes();
 
     // Auto-init
     if (document.readyState === 'loading') {

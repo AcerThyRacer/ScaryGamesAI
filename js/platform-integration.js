@@ -44,11 +44,13 @@ class ExternalAIIntegration {
         this._init();
     }
     
-    _init() {
-        console.log('[ExternalAI] Initializing External AI Integration...');
-        this._loadSettings();
-        this._detectOllamaModels();
-    }
+ _init() {
+  console.log('[ExternalAI] Initializing External AI Integration...');
+  this._loadSettings();
+  this._detectOllamaModels().then(() => {
+   this._checkOllamaCORSStatus();
+  });
+ }
     
     _loadSettings() {
         const stored = localStorage.getItem('sgai-ai-settings');
@@ -75,19 +77,262 @@ class ExternalAIIntegration {
         localStorage.setItem('sgai-ai-settings', JSON.stringify(settings));
     }
     
-    async _detectOllamaModels() {
-        try {
-            const response = await fetch('http://localhost:11434/api/tags');
-            if (response.ok) {
-                const data = await response.json();
-                this.providers.ollama.models = data.models?.map(m => m.name) || [];
-                this.providers.ollama.defaultModel = this.providers.ollama.models[0] || 'llama2';
-            }
-        } catch (e) {
-            console.log('[ExternalAI] Ollama not running locally');
-            this.providers.ollama.models = ['llama2', 'mistral', 'codellama'];
-        }
+ async _detectOllamaModels() {
+  const ollamaEndpoint = 'http://localhost:11434';
+  const defaultModels = ['llama3.2', 'llama3.1', 'llama3', 'mistral', 'codellama', 'gemma2', 'phi3', 'llama2'];
+  
+  try {
+   // Try to fetch Ollama models with proper CORS handling
+   const response = await fetch(`${ollamaEndpoint}/api/tags`, {
+    method: 'GET',
+    headers: { 
+     'Accept': 'application/json',
+     'Content-Type': 'application/json'
+    },
+    mode: 'cors',
+    credentials: 'omit'
+   });
+   
+   if (response.ok) {
+    const data = await response.json();
+    const models = data.models?.map(m => m.name) || [];
+    
+    if (models.length > 0) {
+     this.providers.ollama.models = models;
+     this.providers.ollama.defaultModel = models[0];
+     console.log('[ExternalAI] ✅ Ollama detected with', models.length, 'models:', models.join(', '));
+     return;
     }
+   }
+  } catch (corsError) {
+   // CORS error - Ollama is running but needs CORS configuration
+   console.warn('[ExternalAI] ⚠️ Ollama detected but CORS blocked access to model list');
+   console.warn('[ExternalAI] To fix this, run Ollama with: OLLAMA_ORIGINS="*" ollama serve');
+   console.warn('[ExternalAI] Or for production: OLLAMA_ORIGINS="https://scarygaming.com" ollama serve');
+  }
+  
+  // Fallback: Try a simple connectivity check with no-cors
+  try {
+   const pingResponse = await fetch(`${ollamaEndpoint}/api/tags`, {
+    method: 'GET',
+    mode: 'no-cors'
+   });
+   
+   if (pingResponse.ok || pingResponse.type === 'opaque') {
+    console.log('[ExternalAI] ✅ Ollama is running (CORS-restricted mode)');
+    console.warn('[ExternalAI] ⚠️ Using default model list. For custom models, configure CORS on Ollama.');
+    this.providers.ollama.models = defaultModels;
+    this.providers.ollama.defaultModel = defaultModels[0];
+    return;
+   }
+  } catch (e) {
+   // Ollama not running
+  }
+  
+ // Ollama not detected
+ console.log('[ExternalAI] ℹ️ Ollama not running locally - using default configuration');
+ this.providers.ollama.models = defaultModels;
+ this.providers.ollama.defaultModel = defaultModels[0];
+}
+
+/**
+ * Check Ollama CORS status and show setup instructions if needed
+ */
+async _checkOllamaCORSStatus() {
+ const ollamaEndpoint = 'http://localhost:11434';
+ 
+ try {
+  // Try a test request to see if we can access Ollama
+  const testResponse = await fetch(`${ollamaEndpoint}/api/tags`, {
+   method: 'GET',
+   headers: { 'Accept': 'application/json' },
+   mode: 'cors'
+  });
+  
+  if (testResponse.ok) {
+   // CORS is properly configured!
+   console.log('[ExternalAI] ✅ Ollama CORS is properly configured');
+   this.providers.ollama.corsConfigured = true;
+  }
+ } catch (e) {
+  // CORS error detected - show setup instructions
+  console.warn('[ExternalAI] ⚠️ Ollama CORS Configuration Required');
+  console.warn('[ExternalAI] 📋 Setup Instructions:');
+  console.warn('[ExternalAI] 1. Stop Ollama if running');
+  console.warn('[ExternalAI] 2. Set environment variable:');
+  console.warn('[ExternalAI]    Windows: setx OLLAMA_ORIGINS "https://scarygaming.com,http://localhost:*"');
+  console.warn('[ExternalAI]    Mac/Linux: export OLLAMA_ORIGINS="https://scarygaming.com,http://localhost:*"');
+  console.warn('[ExternalAI] 3. Restart Ollama: ollama serve');
+  console.warn('[ExternalAI] 4. Refresh this page');
+  console.warn('[ExternalAI] For local testing only, you can use: OLLAMA_ORIGINS="*"');
+  
+  // Store CORS status
+  this.providers.ollama.corsConfigured = false;
+  
+  // Show UI notification
+  this._showOllamaCORSNotification();
+ }
+}
+
+/**
+ * Show UI notification for Ollama CORS setup
+ */
+_showOllamaCORSNotification() {
+ // Check if already shown
+ if (localStorage.getItem('sgai-ollama-cors-notified')) {
+  return;
+ }
+ 
+ const notification = document.createElement('div');
+ notification.id = 'ollama-cors-notification';
+ notification.style.cssText = `
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  max-width: 450px;
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+  border: 2px solid #ff6b35;
+  border-radius: 12px;
+  padding: 20px;
+  z-index: 1000000;
+  color: #fff;
+  font-family: 'Inter', sans-serif;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  animation: slideIn 0.3s ease-out;
+ `;
+ 
+ notification.innerHTML = `
+  <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 12px;">
+   <h3 style="margin: 0; color: #ff6b35; font-size: 16px;">🦙 Ollama Setup Required</h3>
+   <button onclick="this.closest('#ollama-cors-notification').remove()" style="background: none; border: none; color: #888; cursor: pointer; font-size: 20px; padding: 0; line-height: 1;">&times;</button>
+  </div>
+  <p style="margin: 0 0 12px 0; font-size: 13px; line-height: 1.5; color: #ccc;">
+   Ollama is running but CORS restrictions prevent access to your model list.
+  </p>
+  <div style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 6px; margin-bottom: 12px;">
+   <p style="margin: 0 0 8px 0; font-size: 12px; color: #ff6b35; font-weight: 600;">📋 Quick Setup:</p>
+   <code style="display: block; font-size: 11px; color: #4ecdc4; word-break: break-all;">
+    setx OLLAMA_ORIGINS "https://scarygaming.com,*"<br>
+    ollama serve
+   </code>
+  </div>
+  <div style="display: flex; gap: 8px; justify-content: flex-end;">
+   <button id="ollama-cors-dismiss" style="
+    padding: 8px 16px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 6px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 12px;
+   ">Dismiss</button>
+   <button id="ollama-cors-guide" style="
+    padding: 8px 16px;
+    background: linear-gradient(135deg, #ff6b35, #ff4444);
+    border: none;
+    border-radius: 6px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+   ">Full Guide</button>
+  </div>
+ `;
+ 
+ document.body.appendChild(notification);
+ 
+ // Add animation
+ const style = document.createElement('style');
+ style.textContent = `
+  @keyframes slideIn {
+   from { transform: translateX(100%); opacity: 0; }
+   to { transform: translateX(0); opacity: 1; }
+  }
+ `;
+ document.head.appendChild(style);
+ 
+ // Event listeners
+ document.getElementById('ollama-cors-dismiss').addEventListener('click', () => {
+  notification.remove();
+  localStorage.setItem('sgai-ollama-cors-notified', 'true');
+ });
+ 
+ document.getElementById('ollama-cors-guide').addEventListener('click', () => {
+  // Open a detailed guide
+  const guideWindow = window.open('', '_blank');
+  guideWindow.document.write(`
+   <!DOCTYPE html>
+   <html>
+   <head>
+    <title>Ollama CORS Setup Guide</title>
+    <style>
+     body { font-family: 'Inter', sans-serif; max-width: 800px; margin: 40px auto; padding: 20px; background: #1a1a2e; color: #fff; }
+     h1 { color: #ff6b35; }
+     h2 { color: #4ecdc4; margin-top: 30px; }
+     code { background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius: 4px; font-size: 14px; }
+     pre { background: rgba(0,0,0,0.3); padding: 16px; border-radius: 8px; overflow-x: auto; }
+     .step { background: rgba(255,255,255,0.05); padding: 16px; border-radius: 8px; margin: 16px 0; border-left: 4px solid #ff6b35; }
+    </style>
+   </head>
+   <body>
+    <h1>🦙 Ollama CORS Setup Guide</h1>
+    
+    <h2>What is CORS?</h2>
+    <p>CORS (Cross-Origin Resource Sharing) is a browser security feature that prevents websites from making requests to different domains without explicit permission.</p>
+    
+    <h2>Why You Need This</h2>
+    <p>Your website runs on <code>https://scarygaming.com</code> (HTTPS), but Ollama runs on <code>http://localhost:11434</code> (HTTP). Browsers block this by default for security.</p>
+    
+    <div class="step">
+     <h3>Step 1: Stop Ollama</h3>
+     <p>If Ollama is running, stop it first:</p>
+     <pre>Ctrl+C in the terminal running Ollama</pre>
+    </div>
+    
+    <div class="step">
+     <h3>Step 2: Set CORS Environment Variable</h3>
+     <p><strong>Windows (PowerShell/CMD):</strong></p>
+     <pre>setx OLLAMA_ORIGINS "https://scarygaming.com,http://localhost:*"</pre>
+     
+     <p><strong>Mac/Linux:</strong></p>
+     <pre>export OLLAMA_ORIGINS="https://scarygaming.com,http://localhost:*"</pre>
+     
+     <p><strong>For local testing only (less secure):</strong></p>
+     <pre>setx OLLAMA_ORIGINS "*"</pre>
+    </div>
+    
+    <div class="step">
+     <h3>Step 3: Restart Ollama</h3>
+     <pre>ollama serve</pre>
+    </div>
+    
+    <div class="step">
+     <h3>Step 4: Verify</h3>
+     <p>Refresh your website and check the browser console. You should see:</p>
+     <pre style="color: #4ecdc4;">[ExternalAI] ✅ Ollama CORS is properly configured</pre>
+    </div>
+    
+    <h2>Troubleshooting</h2>
+    <ul>
+     <li><strong>Still not working?</strong> Make sure you restarted Ollama AFTER setting the environment variable</li>
+     <li><strong>On Windows?</strong> You may need to restart your terminal/command prompt for environment variables to take effect</li>
+     <li><strong>Multiple users?</strong> Each user running Ollama locally needs to configure this on their machine</li>
+    </ul>
+    
+    <p style="margin-top: 40px; color: #888; font-size: 12px;">
+     For more information, see the 
+     <a href="https://github.com/ollama/ollama/blob/main/docs/faq.md#how-do-i-configure-ollama-server" target="_blank" style="color: #4ecdc4;">Ollama FAQ</a>.
+    </p>
+   </body>
+   </html>
+  `);
+ });
+ 
+ // Mark as notified after 5 seconds
+ setTimeout(() => {
+  localStorage.setItem('sgai-ollama-cors-notified', 'true');
+ }, 5000);
+}
     
     // ============================================
     // PROVIDER MANAGEMENT
@@ -1231,12 +1476,82 @@ public class GameActivity extends Activity {
             files: Object.keys(exportResult.files)
         };
         
-        return {
-            success: true,
-            downloadData,
-            note: 'ZIP creation would be handled server-side'
-        };
-    }
+ return {
+  success: true,
+  downloadData,
+  note: 'ZIP creation would be handled server-side'
+ };
+ }
+
+ /**
+  * Test Ollama connection - Public utility for debugging
+  * Can be called from console: window.externalAI.testOllamaConnection()
+  */
+ async testOllamaConnection() {
+  const endpoint = 'http://localhost:11434';
+  console.log('[ExternalAI] Testing Ollama connection...');
+  
+  try {
+   // Test 1: Basic connectivity
+   console.log('[ExternalAI] Test 1: Checking if Ollama is running...');
+   const pingResponse = await fetch(`${endpoint}/api/tags`, {
+    method: 'GET',
+    mode: 'no-cors'
+   });
+   
+   if (pingResponse.ok || pingResponse.type === 'opaque') {
+    console.log('✅ Ollama is running on localhost:11434');
+   } else {
+    console.error('❌ Ollama is not responding');
+    return { success: false, error: 'Ollama not running' };
+   }
+   
+   // Test 2: CORS-enabled request
+   console.log('[ExternalAI] Test 2: Checking CORS configuration...');
+   const corsResponse = await fetch(`${endpoint}/api/tags`, {
+    method: 'GET',
+    headers: { 'Accept': 'application/json' },
+    mode: 'cors'
+   });
+   
+   if (corsResponse.ok) {
+    const data = await corsResponse.json();
+    const models = data.models?.map(m => m.name) || [];
+    console.log('✅ CORS is properly configured');
+    console.log(`📦 Found ${models.length} model(s):`, models.join(', '));
+    
+    return {
+     success: true,
+     corsConfigured: true,
+     models: models,
+     message: 'Ollama is fully configured and ready to use!'
+    };
+   } else {
+    console.warn('⚠️ CORS is not configured properly');
+    console.warn('📋 To fix this:');
+    console.warn('   1. Stop Ollama (Ctrl+C)');
+    console.warn('   2. Run: setx OLLAMA_ORIGINS "https://scarygaming.com,*"');
+    console.warn('   3. Restart Ollama: ollama serve');
+    console.warn('   4. Refresh this page');
+    
+    return {
+     success: true,
+     corsConfigured: false,
+     message: 'Ollama is running but needs CORS configuration'
+    };
+   }
+  } catch (error) {
+   console.error('❌ Connection test failed:', error.message);
+   console.error('💡 Make sure Ollama is installed and running');
+   console.error('💡 Download Ollama from: https://ollama.ai');
+   
+   return {
+    success: false,
+    error: error.message,
+    message: 'Failed to connect to Ollama'
+   };
+  }
+ }
 }
 
 // Initialize when DOM ready

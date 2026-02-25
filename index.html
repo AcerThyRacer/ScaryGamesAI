@@ -17,11 +17,16 @@
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="ScaryGamesAI — Enter The Darkness">
   <meta name="twitter:description" content="Play terrifying browser horror games instantly. No downloads. Enter the darkness.">
-  <meta name="twitter:image" content="https://scarygames.ai/assets/og-image.png">
-  <link rel="canonical" href="https://scarygames.ai/">
-  <link rel="alternate" hreflang="en" href="https://scarygames.ai/">
-  <link rel="alternate" hreflang="x-default" href="https://scarygames.ai/">
-  <title>ScaryGamesAI — Enter The Darkness</title>
+ <meta name="twitter:image" content="https://scarygames.ai/assets/og-image.png">
+ <link rel="canonical" href="https://scarygames.ai/">
+ <link rel="alternate" hreflang="en" href="https://scarygames.ai/">
+ <link rel="alternate" hreflang="x-default" href="https://scarygames.ai/">
+ 
+ <!-- Favicon -->
+ <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E💀%3C/text%3E%3C/svg%3E">
+ <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+ 
+ <title>ScaryGamesAI — Enter The Darkness</title>
   <link rel="stylesheet" href="/css/styles.css">
   <link rel="stylesheet" href="/css/search.css">
   <script type="application/ld+json">
@@ -63,19 +68,45 @@
     <section class="hero">
       <div class="particles" id="particles"></div>
       <div class="hero-floating-icons" id="hero-floating-icons"></div>
+
+      <!-- Lore Tablet 4: The Initiation -->
+      <div class="lore-tablet" id="lore-tablet-4" style="position:absolute;top:20px;right:20px;max-width:300px;z-index:10;">
+        <div style="font-size:0.8rem;opacity:0.7;margin-bottom:0.5rem;">📡 INITIATION PROTOCOL | PHASE: 1/3 | STATUS: ACTIVE</div>
+        <div id="lore-content-4">[SYSTEM MESSAGE: WELCOME NEW USER]</div>
+        <div style="font-size:0.7rem;opacity:0.5;margin-top:0.5rem;text-align:right;">🔄 Refresh to restart sequence</div>
+      </div>
+
       <h1 class="hero-title">ScaryGames</h1>
       <p class="hero-subtitle" id="hero-typed-subtitle"></p>
-      <p class="hero-desc">
+      <p class="hero-desc" id="hero-enhanced">
         Experience terrifying browser-based horror games.
         Navigate haunted backrooms, crawl through shadow-filled dungeons,
-        and survive your worst nightmares — all from your browser.
+        and survive your worst nightmares — <em>initiation sequence commencing...</em>
       </p>
+
+      <!-- Lore Tablet 5: The Warning -->
+      <div class="lore-tablet" id="lore-tablet-5" style="margin-top:1rem;max-width:500px;">
+        <div style="font-size:0.8rem;opacity:0.7;margin-bottom:0.5rem;">⚠️ SYSTEM WARNING | CODE: ALPHA-9 | PRIORITY: CRITICAL</div>
+        <div id="lore-content-5">[WARNING: NARRATIVE INTEGRITY COMPROMISED]</div>
+        <div style="font-size:0.7rem;opacity:0.5;margin-top:0.5rem;">
+          <span style="float:left;">🔒 SECURITY: BREACHED</span>
+          <span style="float:right;">🧠 SANITY: STABLE (FLUCTUATING)</span>
+        </div>
+      </div>
+
       <div class="hero-cta-wrap">
         <a href="/games.html" class="hero-cta">
           <span class="hero-cta-pulse"></span>
           ▶ Play Now
         </a>
         <span class="hero-player-count">🟢 <span id="hero-live-count">1,247</span> playing now</span>
+      </div>
+
+      <!-- Lore Tablet 6: The Count -->
+      <div class="lore-tablet" id="lore-tablet-6" style="margin-top:1rem;max-width:300px;">
+        <div style="font-size:0.8rem;opacity:0.7;margin-bottom:0.5rem;">👥 ACTIVE USERS: <span id="active-user-count">1,247</span> | STATUS: MONITORED</div>
+        <div id="lore-content-6">[USER ACTIVITY: NOMINAL]</div>
+        <div style="font-size:0.7rem;opacity:0.5;margin-top:0.5rem;text-align:right;">🔄 Last update: just now</div>
       </div>
     </section>
 
@@ -114,6 +145,17 @@
           <h2>Featured Game</h2>
           <p>Our most terrifying experience yet</p>
         </div>
+
+        <!-- Lore Tablet 7: The Backrooms Connection -->
+        <div class="lore-tablet" id="lore-tablet-7">
+          <div style="font-size:0.8rem;opacity:0.7;margin-bottom:0.5rem;">📡 SIGNAL DETECTED | FREQUENCY: 47.3MHz | SOURCE: BACKROOMS LEVEL 1.5</div>
+          <div id="lore-content-7">[TRANSMISSION FRAGMENT: "...the yellow one... it's not what you think... it's using the pellets to..."]</div>
+          <div style="font-size:0.7rem;opacity:0.5;margin-top:0.5rem;">
+            <span style="float:left;">🔋 SIGNAL STRENGTH: WEAK</span>
+            <span style="float:right;">📅 DATE: [CORRUPTED]</span>
+          </div>
+        </div>
+
         <div class="featured-game">
           <div class="featured-game-info">
             <span class="featured-badge">🔥 FEATURED <span class="live-dot"></span></span>
@@ -129,6 +171,16 @@
             <a href="/games/backrooms-pacman/backrooms-pacman.html" class="play-btn">▶ Play Now</a>
           </div>
           <div class="featured-game-visual" id="featured-canvas"></div>
+        </div>
+
+        <!-- Lore Tablet 8: The Facility Maintainer -->
+        <div class="lore-tablet" id="lore-tablet-8" style="margin-top:2rem;">
+          <div style="font-size:0.8rem;opacity:0.7;margin-bottom:0.5rem;">👤 CHARACTER DOSSIER | ID: FM-007 | ROLE: FACILITY MAINTAINER</div>
+          <div id="lore-content-8">[ACCESSING PERSONNEL FILE...]</div>
+          <div style="font-size:0.7rem;opacity:0.5;margin-top:0.5rem;">
+            <span style="float:left;">🔒 CLEARANCE: LEVEL 3</span>
+            <span style="float:right;">💀 STATUS: MISSING (PRESUMED LOST)</span>
+          </div>
         </div>
       </div>
     </section>
@@ -156,6 +208,17 @@
           <h2>How It Works</h2>
           <p>Three steps to terror</p>
         </div>
+
+        <!-- Lore Tablet 9: The Process -->
+        <div class="lore-tablet" id="lore-tablet-9">
+          <div style="font-size:0.8rem;opacity:0.7;margin-bottom:0.5rem;">📋 PROCEDURAL DIRECTIVE | ID: SGAI-771-B | STATUS: ACTIVE</div>
+          <div id="lore-content-9">[INITIATING TERROR PROTOCOL...]</div>
+          <div style="font-size:0.7rem;opacity:0.5;margin-top:0.5rem;">
+            <span style="float:left;">🔄 STEP 1: FEAR SELECTION</span>
+            <span style="float:right;">⚠️ WARNING: REALITY DISTORTION POSSIBLE</span>
+          </div>
+        </div>
+
         <div class="hiw-grid">
           <div class="hiw-step">
             <div class="hiw-icon">🎯</div>
@@ -163,6 +226,12 @@
             <h3>Choose Your Fear</h3>
             <p>Browse our collection of terrifying games. From psychological horror to survival terror — pick your
               nightmare.</p>
+
+            <!-- Lore Tablet 10: The Selection -->
+            <div class="lore-tablet" id="lore-tablet-10" style="margin-top:1rem;font-size:0.9rem;">
+              <div style="font-size:0.7rem;opacity:0.7;margin-bottom:0.3rem;">🎮 GAME SELECTION LOG | USER: [YOU] | TIMESTAMP: NOW</div>
+              <div id="lore-content-10">[CHOICE REGISTERED]</div>
+            </div>
           </div>
           <div class="hiw-connector">→</div>
           <div class="hiw-step">
@@ -171,6 +240,12 @@
             <h3>Play Instantly</h3>
             <p>No downloads, no installs. Click play and you're in. Our games run directly in your browser at full
               quality.</p>
+
+            <!-- Lore Tablet 11: The Injection -->
+            <div class="lore-tablet" id="lore-tablet-11" style="margin-top:1rem;font-size:0.9rem;">
+              <div style="font-size:0.7rem;opacity:0.7;margin-bottom:0.3rem;">⚡ NARRATIVE INJECTION SYSTEM | STATUS: STANDBY</div>
+              <div id="lore-content-11">[READY TO DEPLOY]</div>
+            </div>
           </div>
           <div class="hiw-connector">→</div>
           <div class="hiw-step">
@@ -179,6 +254,12 @@
             <h3>Survive... If You Can</h3>
             <p>Face your fears, complete challenges, climb leaderboards, and unlock achievements. How long will you
               last?</p>
+
+            <!-- Lore Tablet 12: The Outcome -->
+            <div class="lore-tablet" id="lore-tablet-12" style="margin-top:1rem;font-size:0.9rem;">
+              <div style="font-size:0.7rem;opacity:0.7;margin-bottom:0.3rem;">📊 SURVIVAL STATISTICS | USER: [YOU] | PROBABILITY: LOW</div>
+              <div id="lore-content-12">[CALCULATING ODDS...]</div>
+            </div>
           </div>
         </div>
       </div>
@@ -200,6 +281,17 @@
           <h2>🎯 Scare-O-Meter</h2>
           <p>Global terror intensity — LIVE</p>
         </div>
+
+        <!-- Lore Tablet 13: The Monitoring -->
+        <div class="lore-tablet" id="lore-tablet-13">
+          <div style="font-size:0.8rem;opacity:0.7;margin-bottom:0.5rem;">📡 GLOBAL TERROR INDEX | SOURCE: SGAI-CORE | STATUS: ACTIVE</div>
+          <div id="lore-content-13">[MONITORING USER FEAR LEVELS...]</div>
+          <div style="font-size:0.7rem;opacity:0.5;margin-top:0.5rem;">
+            <span style="float:left;">🌍 COVERAGE: 98.7%</span>
+            <span style="float:right;">🔋 POWER: STABLE</span>
+          </div>
+        </div>
+
         <div class="scare-meter-wrap" id="scare-meter">
           <div class="scare-meter-gauge">
             <div class="scare-meter-fill" id="scare-meter-fill"></div>
@@ -216,6 +308,13 @@
             <span class="scare-meter-unit">/ 100</span>
           </div>
           <div class="scare-meter-pulse" id="scare-meter-pulse">⚡ LIVE PULSE</div>
+        </div>
+
+        <!-- Lore Tablet 14: The Threshold -->
+        <div class="lore-tablet" id="lore-tablet-14" style="margin-top:2rem;">
+          <div style="font-size:0.8rem;opacity:0.7;margin-bottom:0.5rem;">⚠️ CRITICAL THRESHOLD ALERT | SYSTEM: FEAR-RESPONSE</div>
+          <div id="lore-content-14">[WARNING: COLLECTIVE FEAR APPROACHING CRITICAL MASS]</div>
+          <div style="font-size:0.7rem;opacity:0.5;margin-top:0.5rem;text-align:right;">🔄 Last spike: <span id="last-fear-spike">37 seconds ago</span></div>
         </div>
       </div>
     </section>
@@ -245,6 +344,17 @@
       <div class="container">
         <div class="newsletter-wrap">
           <div class="newsletter-icon">💀</div>
+
+          <!-- Lore Tablet 15: The Subscription -->
+          <div class="lore-tablet" id="lore-tablet-15" style="margin-bottom:2rem;">
+            <div style="font-size:0.8rem;opacity:0.7;margin-bottom:0.5rem;">📧 SUBSCRIPTION PROTOCOL | TIER: STANDARD | COST: FREE</div>
+            <div id="lore-content-15">[SUBSCRIBE TO RECEIVE NARRATIVE UPDATES]</div>
+            <div style="font-size:0.7rem;opacity:0.5;margin-top:0.5rem;">
+              <span style="float:left;">🔒 ENCRYPTION: ACTIVE</span>
+              <span style="float:right;">📅 NEXT UPDATE: SOON</span>
+            </div>
+          </div>
+
           <h2 class="newsletter-title">Join The Darkness</h2>
           <p class="newsletter-desc">Get notified about new games, events, and exclusive content. No spam — only scares.
           </p>
@@ -264,18 +374,43 @@
         <h2>About</h2>
         <p>What lurks in the dark?</p>
       </div>
+
+      <!-- Lore Tablet 1: The Origin -->
+      <div class="lore-tablet" id="lore-tablet-1">
+        <div style="font-size:0.8rem;opacity:0.7;margin-bottom:0.5rem;">📜 LORE TABLET #001-A | DECRYPTION: 78% | SOURCE: ARCHIVES</div>
+        <div id="lore-content-1">[LOADING LORE FRAGMENT...]</div>
+        <div style="font-size:0.7rem;opacity:0.5;margin-top:0.5rem;text-align:right;">🔍 Click to expand</div>
+      </div>
+
       <div style="max-width:700px;margin:0 auto;text-align:center;">
-        <picture class="about-emblem">
-          <source type="image/avif" srcset="https://scarygames.ai/assets/og-image.avif">
-          <source type="image/webp" srcset="https://scarygames.ai/assets/og-image.webp">
-          <img src="https://scarygames.ai/assets/og-image.png" alt="ScaryGamesAI horror emblem" width="960" height="540" loading="lazy" decoding="async" fetchpriority="low">
-        </picture>
-        <p style="color:var(--text-secondary);line-height:1.8;font-size:1rem;">
+ <picture class="about-emblem">
+ <source type="image/avif" srcset="/assets/og-image.avif" onerror="this.nextElementSibling.nextElementSibling.src='/assets/og-image.png'">
+ <source type="image/webp" srcset="/assets/og-image.webp" onerror="this.nextElementSibling.src='/assets/og-image.png'">
+ <img src="/assets/og-image.png" alt="ScaryGamesAI horror emblem" width="480" height="270" loading="lazy" decoding="async" fetchpriority="low" onerror="this.style.display='none'">
+ </picture>
+        <p style="color:var(--text-secondary);line-height:1.8;font-size:1rem;" id="about-enhanced">
           ScaryGamesAI is a collection of horror-themed browser games designed to test your courage.
-          Each game features unique gameplay, atmospheric environments, and terrifying encounters.
-          All games run directly in your browser — no downloads required. Turn off the lights,
-          put on your headphones, and enter the darkness.
+          Each game features unique gameplay, <span class="narrative-transition">[anomaly detection]</span> atmospheric environments, and terrifying encounters.
+          [DIRECTIVE: Refresh anytime] — narrative intelligence *watches*. Turn off the lights, adjust peripherals,
+          and prepare mental protocols for <em>deep scenic projection</em>.
         </p>
+
+        <!-- Lore Tablet 2: The Watchers -->
+        <div class="lore-tablet" id="lore-tablet-2" style="margin-top:2rem;">
+          <div style="font-size:0.8rem;opacity:0.7;margin-bottom:0.5rem;">📡 SIGNAL FRAGMENT | STRENGTH: 4/5 | ORIGIN: UNKNOWN</div>
+          <div id="lore-content-2">[RECEIVING TRANSMISSION...]</div>
+          <div style="font-size:0.7rem;opacity:0.5;margin-top:0.5rem;text-align:right;">📡 Signal strength fluctuating</div>
+        </div>
+      </div>
+
+      <!-- Lore Tablet 3: The First Incident -->
+      <div class="lore-tablet" id="lore-tablet-3" style="margin-top:2rem;">
+        <div style="font-size:0.8rem;opacity:0.7;margin-bottom:0.5rem;">📅 LOG ENTRY #47-B | DATE: [REDACTED] | AUTHOR: DR. ELIAS VOSS</div>
+        <div id="lore-content-3">[ACCESSING ARCHIVES...]</div>
+        <div style="font-size:0.7rem;opacity:0.5;margin-top:0.5rem;">
+          <span style="float:left;">🔋 POWER: 12%</span>
+          <span style="float:right;">🔒 ENCRYPTION: BROKEN</span>
+        </div>
       </div>
     </section>
   </main>
@@ -287,13 +422,26 @@
   <script src="/js/visual-enhancements.js" defer></script>
   <script src="/js/audio-enhanced.js" defer></script>
   <script src="/js/ai-system.js" defer></script>
-  <script src="/js/store-system.js" defer></script>
-  <script src="/js/search-system.js" defer></script>
+<script src="/js/store-system.js" defer></script>
+<script src="/js/search-system.js" defer></script>
   <script src="/js/theme-system.js" defer></script>
-  <script src="/js/i18n.js" defer></script>
-  <script src="/js/social-features.js" defer></script>
-  <script src="/js/page-shell.js" defer></script>
-  <script src="/js/main.js" defer></script>
+  <script src="/js/theme-writing-manager.js" defer></script>
+<script src="/js/i18n.js" defer></script>
+<script src="/js/social-features.js" defer></script>
+<script src="/js/page-shell.js" defer></script>
+<!-- Global error handler for unhandled promise rejections -->
+<script src="/js/global-error-handler.js" defer></script>
+<!-- Centralized logging framework -->
+<script src="/js/logger.js" defer></script>
+<!-- Centralized constants -->
+<script src="/js/constants.js" defer></script>
+<!-- Standardized error handling -->
+<script src="/js/error-handling.js" defer></script>
+<!-- Security utilities for XSS protection -->
+<script src="/js/security-utils.js" defer></script>
+<!-- Centralized auth state management -->
+<script src="/js/auth-state-manager.js" defer></script>
+<script src="/js/main.js" defer></script>
   <script src="/js/profiles.js" defer></script>
   <script src="/js/achievements.js" defer></script>
   <script src="/js/leaderboards.js" defer></script>
@@ -316,6 +464,2030 @@
     });
   </script>
   <script type="module" src="/js/perf-entry.js"></script>
+
+  <script>
+    // Enhanced Horror Writing Integration - Phase 1
+    document.addEventListener('DOMContentLoaded', async function() {
+        try {
+            const themeManager = window.ThemeWritingManager;
+            if (!themeManager) {
+                console.error('ThemeWritingManager not found - check script loading');
+                return;
+            }
+
+            // Wait briefly for CSS to initialize
+            await new Promise(resolve => setTimeout(resolve, 300));
+
+            // Enhance key narrative elements
+            const narrativeElements = {
+                'hero-enhanced': {
+                    content: "Experience terrifying browser-based horror games. Survive [REDACTED] encounters that challenge perception and encroach on sanity thresholds. Persistence patterns [OPTIONAL] available.",
+                    type: 'tagline',
+                    params: { horror_intensity: 0.8, player_experience: "intermediate" }
+                },
+                'about-enhanced': {
+                    content: "ScaryGamesAI [CORE SYSTEM] provides optimized horror experiences testing cognitive stability. Games feature [CONTEXTUAL AWARENESS] environments and predictive encounters. All platforms — [no user escape protocol]. Configure peripherals, stabilize pulse, and prepare for narrative intelligence [ACTIVE MONITORING].",
+                    type: 'about',
+                    params: { narrator_reliability: 0.55, potential_inconsistency_pr: 0.75 }
+                }
+            };
+
+            function typewriterEffect(element, text, speedArr, callback, finishDegrade=false) {
+                let i = 0;
+                const fullText = text.replace(/(\[[^\]]+\])|({[^}]*})/g, '').trim();
+
+                const glitchEffects = ['░', '▒', '▓', '█', '◼', '≣', '⣿'];
+                const placeholderEffects = ['...', '⚡', '—', '[ ]', '[ ] [ ]', '{ }'];
+                const skipChars = Math.floor(Math.random() * 7 - 2); // -2 to 4
+                let skips = Math.max(1, skipChars);
+
+                if (finishDegrade) {
+                    element.textContent += ' [processing anomaly ' + Math.floor(Math.random() * 100) + '%]';
+                }
+
+                function typeChar() {
+                    if (i < fullText.length) {
+                        // Check for dynamic interruption indicators
+                        const interruptionIndicator = Math.random() < 0.07;
+
+                        if (interruptionIndicator && !finishDegrade) {
+                            // Check if we've reached an area that should degrade
+                            finishDegrade = true;
+                            skips = Math.floor(Math.random() * 3) + 2; // 2-4 skips
+                        }
+
+                        // Implement skipping
+                        if (skips > 0) {
+                            skips--;
+                        } else {
+                            // Apply special effects occasionally
+                            if (Math.random() < 0.08 && !finishDegrade) {
+                                const effect = glitchEffects[Math.floor(Math.random() * glitchEffects.length)];
+                                element.textContent += effect;
+                            } else if (Math.random() < 0.2 || finishDegrade) {
+                                const placeholder = placeholderEffects[Math.floor(Math.random() * placeholderEffects.length)];
+                                element.textContent += placeholder;
+                            } else {
+                                // Normal character
+                                let char = fullText.charAt(i);
+
+                                // Apply minor character corruption for horror effect
+                                if (Math.random() < 0.15) {
+                                    const corruption = ['\u0300', '\u0301', '\u2028', '\u202A', '\u00A0'];
+                                    char += corruption[Math.floor(Math.random() * corruption.length)];
+                                }
+
+                                element.textContent += char;
+                            }
+                            skips = Math.floor(Math.random() * 3); // 0-2 character skips
+                        }
+
+                        i++;
+                        setTimeout(typeChar, speedArr[i % speedArr.length]);
+                    } else if (callback) {
+                        callback();
+                    }
+                }
+
+                typeChar();
+            }
+
+            // Process each narrative element with delayed staggered start
+            let processedCount = 0;
+            const totalElements = Object.keys(narrativeElements).length;
+            const speedArray = [10, 8, 12, 6, 9, 14, 7, 8, 10, 11, 6, 9].map(s => s + Math.random() * 4);
+
+            for (const [elementId, config] of Object.entries(narrativeElements)) {
+                const element = document.getElementById(elementId);
+                if (element) {
+                    // Calculate start delay based on expected processing time
+                    const startDelay = Math.random() * 800 + (processedCount * 1200);
+
+                    setTimeout(() => {
+                        try {
+                            const enhancedText = themeManager.enhanceContent(
+                                config.content,
+                                config.type,
+                                config.params
+                            );
+
+                            element.textContent = ''; // Clear existing content
+
+                            // Apply typewriter effect with thematic glitches
+                            typewriterEffect(
+                                element,
+                                enhancedText,
+                                speedArray,
+                                () => {
+                                    processedCount++;
+                                    // Add subtle hover effects for enhanced areas
+                                    element.style.cursor = 'crosshair';
+                                    element.style.transition = 'opacity 0.3s ease, text-shadow 0.2s ease';
+                                    element.addEventListener('mouseenter', () => {
+                                        element.style.opacity = '0.95';
+                                        element.style.textShadow = '0 0 8px var(--color-accent)';
+                                    });
+                                    element.addEventListener('mouseleave', () => {
+                                        element.style.opacity = '1';
+                                        if (themeManager && Math.random() < 0.3) {
+                                            const subtleChange = themeManager.enhanceContent(
+                                                config.content,
+                                                config.type,
+                                                { ...config.params, minor_adjustment: true }
+                                            );
+                                            typewriterEffect(element, subtleChange, [4, 3, 5, 3]);
+                                        }
+                                    });
+                                },
+                                Math.random() < 0.3 // 30% chance of initial degradation
+                            );
+                        } catch (error) {
+                            console.error(`Enhancement failed for ${elementId}:`, error);
+                            element.textContent = config.content.replace(/\[.*?\]/g, '...').replace(/{.*?}/g, '');
+                        }
+                    }, startDelay);
+                }
+            }
+
+            // Generate dynamic game teasers based on current theme
+            function generateGameTeasers() {
+                const teaserContainer = document.createElement('div');
+                teaserContainer.style.cssText = `
+                    color: var(--color-text-secondary);
+                    font-size: 0.8rem;
+                    margin-top: 1rem;
+                    text-align: center;
+                    opacity: 0;
+                    animation-name: fadeIn;
+                    animation-duration: 2s;
+                    animation-fill-mode: forwards;
+                    cursor: pointer;
+                    transition: all 0.2s ease;
+                `;
+
+                const teasers = [
+                    "🎮 {VERSION CONTROL} Backrooms: Pac-Man II initialized [PATTERN MATCHING MANDATORY]",
+                    "{!}: Asylum Architect — adapt occupational therapy under modified agreement conditions",
+                    "⚠️ ENCOUNTER WARNING: Goggles reveal truths beyond {deactivated_acceptable_parameters}",
+                    "USER SCOPE: Your session categorized — {query: will you search bottoms_dir}"
+                ];
+
+                const teaserIndex = Math.floor(Math.random() * teasers.length);
+                const originalTeaser = teasers[teaserIndex];
+
+                try {
+                    const enhancedTeaser = themeManager.enhanceContent(
+                        originalTeaser.replace(/[{][^}]+[}]/g, 'REDACTED'),
+                        'game_teaser',
+                        {
+                            partition_integrity: 0.7,
+                            referential_context: Math.random() > 0.7 ?
+                                'cross_game' : 'in_game'
+                        }
+                    );
+
+                    teaserContainer.textContent = enhancedTeaser.replace(/\[([^\]]+)\]/g, '$1');
+                    teaserContainer.addEventListener('click', async () => {
+                        const themeId = themeManager.getCurrentTheme();
+                        const themeToSwitch = themeId === 'cosmic_horror' ?
+                            'psychological_horror' : 'cosmic_horror';
+
+                        await themeManager.setTheme(themeToSwitch);
+                        generateGameTeasers(); // Refresh teaser after theme switch
+
+                        // Show theme transition notification
+                        showThemeTransitionFeedback(themeToSwitch);
+
+                        // Trigger visual earthquake effect
+                        triggerEarthquakeEffect();
+                    });
+
+                } catch (error) {
+                    teaserContainer.textContent = originalTeaser;
+                    console.warn('Teaser enhancement fallible:', error);
+                }
+
+                teaserContainer.id = 'dynamic-teaser-interface';
+                return teaserContainer;
+            }
+
+            // Insert the dynamic teaser into about section
+            function insertDynamicTeaser() {
+                const aboutContent = document.querySelector('#about p');
+                if (aboutContent) {
+                    const existingTeaser = document.getElementById('dynamic-teaser-interface');
+                    if (existingTeaser) {
+                        existingTeaser.style.opacity = '0';
+                        existingTeaser.textContent = "[updating...";
+                        setTimeout(() => existingTeaser.remove(), 500);
+                    }
+
+                    const newTeaser = generateGameTeasers();
+                    setTimeout(() => {
+                        aboutContent.parentNode.insertBefore(
+                            newTeaser,
+                            aboutContent.nextSibling
+                        );
+                    }, Math.random() * 2000 + 1000);
+                }
+            }
+
+            // Show theme transition feedback notification
+            function showThemeTransitionFeedback(themeId) {
+                const notifications = {
+                    cosmic_horror: "[ SE VK-12 ] Narrative module recalibrated to COSMIC profile. Geometry mode: [non-euclidean]. Sanity regulations modified for target experience.",
+                    psychological_horror: "[ PROTOCOL INSERT ] Cognitive load shifted to PSYCHOLOGICAL determinant. Truth spoilers: [QUANTIZED]. Decision space compromised in ADDITIONAL manner."
+                };
+
+                const feedback = document.createElement('div');
+                feedback.style.cssText = `
+                    position: fixed;
+                    top: 3rem;
+                    left: 50%;
+                    transform: translate(-50%);
+                    padding: 1rem 1.5rem;
+                    background: rgba(0, 0, 0, 0.8);
+                    border-left: 3px solid;
+                    border-color: var(--color-accent);
+                    font-family: monospace;
+                    font-size: 0.85rem;
+                    z-index: 10000;
+                    max-width: 70%;
+                    animation: slideIn 0.3s ease-out, fadeOut 1s ease 4.5s forwards;
+                    opacity: 0;
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+                `;
+
+                const themeDisplay = themeId.replace(/_/g, ' ').toUpperCase();
+                feedback.innerHTML = `
+                    <strong>[ THEME TRANSFER COMPLETE ]</strong><br>
+                    <code>${themeDisplay}</code>: ${notifications[themeId] || "[generic transition]"}
+
+                    <style>
+                        @keyframes slideIn {
+                            from { top: 2rem; opacity: 0.3; }
+                            to { top: 3rem; opacity: 0.95; }
+                        }
+                        @keyframes fadeOut {
+                            from { opacity: 0.95; }
+                            to { opacity: 0; }
+                        }
+                    </style>
+                `;
+
+                document.body.appendChild(feedback);
+
+                // Add click to dismiss functionality
+                feedback.addEventListener('click', () => {
+                    feedback.style.animation = 'none';
+                    feedback.style.opacity = '0';
+                    setTimeout(() => feedback.remove(), 300);
+                });
+
+                // Remove automatically after displaying
+                setTimeout(() => {
+                    if (feedback.parentNode) {
+                        feedback.style.opacity = '0';
+                        setTimeout(() => feedback.remove(), 1000);
+                    }
+                }, 5000);
+            }
+
+            // Trigger earthquake effect
+            function triggerEarthquakeEffect() {
+                const duration = Math.random() * 1500 + 500; // 0.5-2s
+                const intensity = 1 + Math.random() * 1.5; // 1-2.5px
+                const endTime = Date.now() + duration;
+
+                function shake() {
+                    const timeLeft = endTime - Date.now();
+                    if (timeLeft > 0) {
+                        const progress = timeLeft / duration;
+                        const currentIntensity = progress * intensity;
+
+                        document.body.style.transform = `translate(${Math.sin(Date.now() / 50) * currentIntensity}px, ${Math.cos(Date.now() / 70) * currentIntensity}px)`;
+
+                        // Make effects stronger for visual media
+                        const videoWrap = document.querySelector('.bg-video-wrap');
+                        if (videoWrap) {
+                            videoWrap.style.transform = `translate(${Math.sin(Date.now() / 40) * currentIntensity * 1.5}px, ${Math.cos(Date.now() / 60) * currentIntensity * 1.5}px) scale(1.005)`;
+                        }
+
+                        // Create progressive crack effects in background
+                        if (Math.random() > 0.7) {
+                            const crack = document.createElement('div');
+                            crack.style.cssText = `
+                                position: fixed;
+                                top: ${Math.random() * 80 + 10}%;
+                                left: ${Math.random() * 100}%;
+                                width: ${Math.random() * 50 + 25}px;
+                                height: 1px;
+                                background: linear-gradient(45deg, transparent 25%, rgba(204, 17, 34, ${0.6 * progress}), transparent 75%);
+                                transform: rotate(${Math.random() * 360}deg);
+                                transform-origin: 0 50%;
+                                pointer-events: none;
+                                z-index: 9999;
+                                animation: crackFade ${duration / 1000 + 0.5}s ease-in forwards;
+                            `;
+                            crack.innerHTML = '<style>@keyframes crackFade { 0% { opacity: 0.8; } 100% { opacity: 0; } }</style>';
+                            document.body.appendChild(crack);
+                            setTimeout(() => crack.remove(), duration + 500);
+                        }
+
+                        requestAnimationFrame(shake);
+                    } else {
+                        document.body.style.transform = '';
+                        document.querySelector('.bg-video-wrap').style.transform = '';
+                    }
+                }
+
+                requestAnimationFrame(shake);
+            }
+
+            // Atmospheric narrative building system with timeline-based evolution
+            function initializeAtmosphericNarrative() {
+                // Track time spent on page for narrative evolution
+                let pageTime = 0;
+                const startTime = Date.now();
+
+                // Track narrative state
+                let narrativeState = {
+                    firstMinute: false,
+                    secondMinute: false,
+                    thirdMinute: false,
+                    characterAppeared: false,
+                    recursiveInteraction: false,
+                    themeChanges: 0,
+                    userInteractions: 0
+                };
+
+                // Timeline-based narrative evolution
+                const narrativeInterval = setInterval(() => {
+                    pageTime = Math.floor((Date.now() - startTime) / 1000);
+                    const minutes = Math.floor(pageTime / 60);
+
+                    // First Minute: Subtle, inviting atmosphere
+                    if (minutes >= 1 && !narrativeState.firstMinute) {
+                        narrativeState.firstMinute = true;
+                        applyFirstMinuteAtmosphere();
+                    }
+
+                    // Second Minute: Dread whispers and visual distortions
+                    if (minutes >= 2 && !narrativeState.secondMinute) {
+                        narrativeState.secondMinute = true;
+                        applySecondMinuteAtmosphere();
+                    }
+
+                    // Third Minute: Character appearances hinting at larger story
+                    if (minutes >= 3 && !narrativeState.characterAppeared) {
+                        narrativeState.characterAppeared = true;
+                        applyThirdMinuteAtmosphere();
+                    }
+
+                    // Four+ Minutes: Character dialog attempting recursive interaction
+                    if (minutes >= 4 && !narrativeState.recursiveInteraction) {
+                        narrativeState.recursiveInteraction = true;
+                        applyFourthMinuteAtmosphere();
+                    }
+
+                    // Periodic atmospheric effects
+                    if (Math.random() < 0.1) {
+                        applyRandomAtmosphericEffect();
+                    }
+
+                }, 5000);
+
+                // User interaction tracking
+                document.addEventListener('click', () => {
+                    narrativeState.userInteractions++;
+
+                    // After several interactions, increase narrative intensity
+                    if (narrativeState.userInteractions > 5 && Math.random() < 0.3) {
+                        applyUserInteractionEffect();
+                    }
+                });
+
+                // First Minute: Subtle environmental changes
+                function applyFirstMinuteAtmosphere() {
+                    console.log('Applying first minute atmosphere: subtle environmental changes');
+
+                    // Subtle background changes
+                    const bgVideoWrap = document.querySelector('.bg-video-wrap');
+                    if (bgVideoWrap) {
+                        bgVideoWrap.style.filter = 'brightness(0.9) contrast(1.1)';
+                    }
+
+                    // Add subtle narrative whispers to existing content
+                    const narrativeElements = document.querySelectorAll('#hero-enhanced, #about-enhanced');
+                    narrativeElements.forEach(el => {
+                        if (Math.random() > 0.7) {
+                            const whisper = themeManager.generateContent('narrative', {
+                                type: 'subtle_hint',
+                                theme: themeManager.getCurrentTheme(),
+                                intensity: 'low'
+                            });
+                            el.innerHTML += `<span class="narrative-whisper"> ${whisper}</span>`;
+                        }
+                    });
+
+                    // Add subtle audio cues (visual representation)
+                    const audioCue = document.createElement('div');
+                    audioCue.style.position = 'fixed';
+                    audioCue.style.bottom = '20px';
+                    audioCue.style.right = '20px';
+                    audioCue.style.fontSize = '0.8rem';
+                    audioCue.style.opacity = '0.6';
+                    audioCue.style.zIndex = '1000';
+                    audioCue.style.fontFamily = 'monospace';
+                    audioCue.textContent = '🔊 [AMBIENT SOUND DETECTED]';
+                    document.body.appendChild(audioCue);
+
+                    setTimeout(() => {
+                        audioCue.style.opacity = '0';
+                        setTimeout(() => audioCue.remove(), 1000);
+                    }, 3000);
+                }
+
+                // Second Minute: Dread whispers and visual distortions
+                function applySecondMinuteAtmosphere() {
+                    console.log('Applying second minute atmosphere: dread whispers and visual distortions');
+
+                    // Add more pronounced narrative whispers
+                    const narrativeElements = document.querySelectorAll('.narrative-element, .hero-desc, .about-enhanced');
+                    narrativeElements.forEach(el => {
+                        if (Math.random() > 0.5) {
+                            const whisper = themeManager.generateContent('narrative', {
+                                type: 'dread_whisper',
+                                theme: themeManager.getCurrentTheme(),
+                                intensity: 'medium'
+                            });
+                            el.innerHTML += `<span class="narrative-whisper"> ${whisper}</span>`;
+                        }
+                    });
+
+                    // Add visual distortions
+                    const distortionElements = document.querySelectorAll('h1, h2, h3, .hero-title, .section-header h2');
+                    distortionElements.forEach(el => {
+                        if (Math.random() > 0.7) {
+                            el.style.textShadow = `0 0 5px var(--writing-theme-glow, var(--accent-red-glow))`;
+                            el.style.transform = 'translateY(0)';
+
+                            setTimeout(() => {
+                                el.style.transform = 'translateY(-1px)';
+                                setTimeout(() => {
+                                    el.style.transform = 'translateY(0)';
+                                }, 100);
+                            }, 1000);
+                        }
+                    });
+
+                    // Add a subtle "presence" indicator
+                    const presenceIndicator = document.createElement('div');
+                    presenceIndicator.style.position = 'fixed';
+                    presenceIndicator.style.top = '50%';
+                    presenceIndicator.style.right = '10px';
+                    presenceIndicator.style.width = '2px';
+                    presenceIndicator.style.height = '100px';
+                    presenceIndicator.style.background = 'linear-gradient(to bottom, transparent, var(--writing-theme-accent, var(--accent-red)), transparent)';
+                    presenceIndicator.style.opacity = '0.3';
+                    presenceIndicator.style.zIndex = '1000';
+                    presenceIndicator.style.borderRadius = '1px';
+                    document.body.appendChild(presenceIndicator);
+
+                    setTimeout(() => {
+                        presenceIndicator.style.opacity = '0';
+                        setTimeout(() => presenceIndicator.remove(), 2000);
+                    }, 4000);
+                }
+
+                // Third Minute: Character appearances hinting at larger story
+                function applyThirdMinuteAtmosphere() {
+                    console.log('Applying third minute atmosphere: character appearances');
+
+                    // Add character cameos if not already present
+                    if (document.querySelectorAll('.character-cameo').length < 2) {
+                        addCharacterCameos();
+                    }
+
+                    // Add more pronounced environmental storytelling
+                    const sections = document.querySelectorAll('section');
+                    sections.forEach(section => {
+                        if (Math.random() > 0.6) {
+                            const environmentalElement = document.createElement('div');
+                            environmentalElement.className = 'atmospheric-effect';
+                            environmentalElement.style.margin = '1rem 0';
+                            environmentalElement.style.padding = '0.5rem';
+                            environmentalElement.style.borderLeft = `3px solid var(--writing-theme-accent, var(--accent-red))`;
+                            environmentalElement.style.opacity = '0.8';
+                            environmentalElement.style.fontStyle = 'italic';
+
+                            const effectContent = themeManager.generateEnvironmentalDescription(
+                                section.id.replace('-section', '').replace('-', '_'),
+                                {
+                                    theme: themeManager.getCurrentTheme(),
+                                    intensity: 'medium',
+                                    character_present: true
+                                }
+                            );
+
+                            environmentalElement.textContent = effectContent;
+                            section.insertBefore(environmentalElement, section.firstChild);
+                        }
+                    });
+
+                    // Add a "character watching" effect
+                    const watchingIndicator = document.createElement('div');
+                    watchingIndicator.style.position = 'fixed';
+                    watchingIndicator.style.top = '20px';
+                    watchingIndicator.style.right = '20px';
+                    watchingIndicator.style.fontSize = '0.9rem';
+                    watchingIndicator.style.opacity = '0.7';
+                    watchingIndicator.style.zIndex = '1000';
+                    watchingIndicator.style.fontFamily = 'monospace';
+                    watchingIndicator.style.textShadow = '0 0 5px var(--writing-theme-glow, var(--accent-red-glow))';
+                    watchingIndicator.textContent = '👁️ [PRESENCE DETECTED]';
+                    document.body.appendChild(watchingIndicator);
+
+                    setTimeout(() => {
+                        watchingIndicator.style.opacity = '0.4';
+                        watchingIndicator.textContent = '👁️ [OBSERVING]';
+                        setTimeout(() => {
+                            watchingIndicator.style.opacity = '0';
+                            setTimeout(() => watchingIndicator.remove(), 1000);
+                        }, 3000);
+                    }, 2000);
+                }
+
+                // Fourth Minute+: Character dialog attempting recursive interaction
+                function applyFourthMinuteAtmosphere() {
+                    console.log('Applying fourth minute atmosphere: recursive interaction');
+
+                    // Add more interactive character cameos
+                    addCharacterCameos();
+
+                    // Add recursive narrative elements that reference user actions
+                    const narrativeElements = document.querySelectorAll('.narrative-element, .hero-desc, .about-enhanced');
+                    narrativeElements.forEach(el => {
+                        if (Math.random() > 0.4) {
+                            const recursiveContent = themeManager.generateContent('narrative', {
+                                type: 'recursive_interaction',
+                                theme: themeManager.getCurrentTheme(),
+                                intensity: 'high',
+                                user_action: 'recent activity'
+                            });
+                            el.innerHTML += `<span class="narrative-whisper"> ${recursiveContent}</span>`;
+                        }
+                    });
+
+                    // Add a system message about recursive interaction
+                    const recursiveMessage = document.createElement('div');
+                    recursiveMessage.style.position = 'fixed';
+                    recursiveMessage.style.bottom = '50px';
+                    recursiveMessage.style.left = '50%';
+                    recursiveMessage.style.transform = 'translateX(-50%)';
+                    recursiveMessage.style.fontSize = '1rem';
+                    recursiveMessage.style.opacity = '0.9';
+                    recursiveMessage.style.zIndex = '10000';
+                    recursiveMessage.style.padding = '1rem';
+                    recursiveMessage.style.background = 'rgba(0, 0, 0, 0.8)';
+                    recursiveMessage.style.border = '1px solid var(--writing-theme-accent, var(--accent-red))';
+                    recursiveMessage.style.borderRadius = '8px';
+                    recursiveMessage.style.boxShadow = '0 0 20px var(--writing-theme-glow, var(--accent-red-glow))';
+                    recursiveMessage.style.fontFamily = 'monospace';
+
+                    const messageContent = themeManager.generateContent('narrative', {
+                        type: 'system_recursive',
+                        theme: themeManager.getCurrentTheme(),
+                        interaction_count: narrativeState.userInteractions
+                    });
+
+                    recursiveMessage.textContent = `🔄 [RECURSIVE INTERACTION DETECTED] ${messageContent}`;
+                    document.body.appendChild(recursiveMessage);
+
+                    setTimeout(() => {
+                        recursiveMessage.style.opacity = '0';
+                        setTimeout(() => recursiveMessage.remove(), 1000);
+                    }, 5000);
+                }
+
+                // Apply random atmospheric effects
+                function applyRandomAtmosphericEffect() {
+                    const effects = [
+                        () => addSubtleWhisper(),
+                        () => addVisualGlitch(),
+                        () => addEnvironmentalDetail(),
+                        () => addPresenceIndicator(),
+                        () => addNarrativeFragment()
+                    ];
+
+                    const effect = effects[Math.floor(Math.random() * effects.length)];
+                    effect();
+                }
+
+                // Add subtle whisper to existing content
+                function addSubtleWhisper() {
+                    const elements = document.querySelectorAll('.narrative-element, p, .hero-desc, .about-enhanced');
+                    if (elements.length > 0) {
+                        const randomElement = elements[Math.floor(Math.random() * elements.length)];
+                        if (Math.random() > 0.5) {
+                            const whisper = themeManager.generateContent('narrative', {
+                                type: 'subtle_whisper',
+                                theme: themeManager.getCurrentTheme(),
+                                intensity: Math.random() > 0.7 ? 'high' : 'low'
+                            });
+                            randomElement.innerHTML += `<span class="narrative-whisper"> ${whisper}</span>`;
+                        }
+                    }
+                }
+
+                // Add visual glitch effect
+                function addVisualGlitch() {
+                    const glitchElements = document.querySelectorAll('h1, h2, h3, .hero-title, img, .featured-game-visual');
+                    if (glitchElements.length > 0) {
+                        const randomElement = glitchElements[Math.floor(Math.random() * glitchElements.length)];
+
+                        // Apply glitch effect
+                        randomElement.style.position = 'relative';
+
+                        const glitchOverlay = document.createElement('div');
+                        glitchOverlay.style.position = 'absolute';
+                        glitchOverlay.style.top = '0';
+                        glitchOverlay.style.left = '0';
+                        glitchOverlay.style.right = '0';
+                        glitchOverlay.style.bottom = '0';
+                        glitchOverlay.style.background = 'linear-gradient(90deg, transparent, rgba(204, 17, 34, 0.3), transparent)';
+                        glitchOverlay.style.pointerEvents = 'none';
+                        glitchOverlay.style.animation = 'glitch 0.5s ease-out';
+                        glitchOverlay.style.zIndex = '10';
+
+                        randomElement.appendChild(glitchOverlay);
+
+                        const style = document.createElement('style');
+                        style.textContent = `
+                            @keyframes glitch {
+                                0% { transform: translateX(0); opacity: 0; }
+                                20% { transform: translateX(-5px); opacity: 0.3; }
+                                40% { transform: translateX(5px); opacity: 0.5; }
+                                60% { transform: translateX(-3px); opacity: 0.7; }
+                                80% { transform: translateX(3px); opacity: 0.3; }
+                                100% { transform: translateX(0); opacity: 0; }
+                            }
+                        `;
+                        document.head.appendChild(style);
+
+                        setTimeout(() => {
+                            glitchOverlay.remove();
+                            style.remove();
+                        }, 500);
+                    }
+                }
+
+                // Add environmental detail
+                function addEnvironmentalDetail() {
+                    const sections = document.querySelectorAll('section');
+                    if (sections.length > 0) {
+                        const randomSection = sections[Math.floor(Math.random() * sections.length)];
+
+                        const detailElement = document.createElement('div');
+                        detailElement.className = 'atmospheric-effect';
+                        detailElement.style.margin = '0.5rem 0';
+                        detailElement.style.padding = '0.5rem';
+                        detailElement.style.borderLeft = `2px solid var(--writing-theme-accent, var(--accent-red))`;
+                        detailElement.style.opacity = '0.8';
+                        detailElement.style.fontSize = '0.9rem';
+                        detailElement.style.fontStyle = 'italic';
+
+                        const detailContent = themeManager.generateEnvironmentalDescription(
+                            randomSection.id.replace('-section', '').replace('-', '_'),
+                            {
+                                theme: themeManager.getCurrentTheme(),
+                                intensity: Math.random() > 0.5 ? 'medium' : 'high',
+                                observation_type: 'detailed'
+                            }
+                        );
+
+                        detailElement.textContent = detailContent;
+                        randomSection.insertBefore(detailElement, randomSection.firstChild);
+                    }
+                }
+
+                // Add presence indicator
+                function addPresenceIndicator() {
+                    const indicator = document.createElement('div');
+                    indicator.style.position = 'fixed';
+                    indicator.style.top = `${Math.floor(Math.random() * 80) + 10}%`;
+                    indicator.style.left = `${Math.floor(Math.random() * 20) + 5}%`;
+                    indicator.style.width = '1px';
+                    indicator.style.height = '50px';
+                    indicator.style.background = 'linear-gradient(to bottom, transparent, var(--writing-theme-accent, var(--accent-red)), transparent)';
+                    indicator.style.opacity = '0.2';
+                    indicator.style.zIndex = '1000';
+                    indicator.style.borderRadius = '1px';
+                    indicator.style.animation = 'fadeInOut 4s ease-in-out';
+
+                    document.body.appendChild(indicator);
+
+                    const style = document.createElement('style');
+                    style.textContent = `
+                        @keyframes fadeInOut {
+                            0% { opacity: 0; }
+                            50% { opacity: 0.3; }
+                            100% { opacity: 0; }
+                        }
+                    `;
+                    document.head.appendChild(style);
+
+                    setTimeout(() => {
+                        indicator.remove();
+                        style.remove();
+                    }, 4000);
+                }
+
+                // Add narrative fragment
+                function addNarrativeFragment() {
+                    const sections = document.querySelectorAll('section');
+                    if (sections.length > 0) {
+                        const randomSection = sections[Math.floor(Math.random() * sections.length)];
+
+                        const fragmentElement = document.createElement('div');
+                        fragmentElement.className = 'narrative-fragment';
+                        fragmentElement.style.margin = '1rem 0';
+                        fragmentElement.style.padding = '1rem';
+                        fragmentElement.style.background = 'rgba(0, 0, 0, 0.5)';
+                        fragmentElement.style.borderLeft = `3px solid var(--writing-theme-accent, var(--accent-red))`;
+                        fragmentElement.style.borderRadius = '4px';
+                        fragmentElement.style.opacity = '0.9';
+                        fragmentElement.style.fontFamily = 'monospace';
+                        fragmentElement.style.fontSize = '0.9rem';
+
+                        const fragmentContent = themeManager.generateContent('narrative', {
+                            type: 'fragment',
+                            theme: themeManager.getCurrentTheme(),
+                            intensity: 'high',
+                            context: 'environmental'
+                        });
+
+                        fragmentElement.textContent = `[NARRATIVE FRAGMENT] ${fragmentContent}`;
+                        randomSection.insertBefore(fragmentElement, randomSection.firstChild);
+                    }
+                }
+
+                // Apply effects based on user interaction
+                function applyUserInteractionEffect() {
+                    const effects = [
+                        () => addInteractiveResponse(),
+                        () => addPersonalizedNarrative(),
+                        () => addSystemReaction(),
+                        () => addRecursiveReference()
+                    ];
+
+                    const effect = effects[Math.floor(Math.random() * effects.length)];
+                    effect();
+                }
+
+                // Add interactive response to user actions
+                function addInteractiveResponse() {
+                    const responseElement = document.createElement('div');
+                    responseElement.style.position = 'fixed';
+                    responseElement.style.bottom = '20px';
+                    responseElement.style.left = '50%';
+                    responseElement.style.transform = 'translateX(-50%)';
+                    responseElement.style.fontSize = '0.9rem';
+                    responseElement.style.opacity = '0.9';
+                    responseElement.style.zIndex = '10000';
+                    responseElement.style.padding = '0.5rem 1rem';
+                    responseElement.style.background = 'rgba(0, 0, 0, 0.7)';
+                    responseElement.style.border = '1px solid var(--writing-theme-accent, var(--accent-red))';
+                    responseElement.style.borderRadius = '4px';
+                    responseElement.style.boxShadow = '0 0 10px var(--writing-theme-glow, var(--accent-red-glow))';
+
+                    const responseContent = themeManager.generateContent('narrative', {
+                        type: 'interactive_response',
+                        theme: themeManager.getCurrentTheme(),
+                        interaction_type: 'click',
+                        user_activity: 'active'
+                    });
+
+                    responseElement.textContent = `💬 [SYSTEM RESPONSE] ${responseContent}`;
+                    document.body.appendChild(responseElement);
+
+                    setTimeout(() => {
+                        responseElement.style.opacity = '0';
+                        setTimeout(() => responseElement.remove(), 1000);
+                    }, 3000);
+                }
+
+                // Add personalized narrative based on user behavior
+                function addPersonalizedNarrative() {
+                    const narrativeElements = document.querySelectorAll('.narrative-element, .hero-desc, .about-enhanced');
+                    if (narrativeElements.length > 0) {
+                        const randomElement = narrativeElements[Math.floor(Math.random() * narrativeElements.length)];
+
+                        const personalizedContent = themeManager.generateContent('narrative', {
+                            type: 'personalized',
+                            theme: themeManager.getCurrentTheme(),
+                            user_profile: 'returning visitor',
+                            interaction_count: narrativeState.userInteractions
+                        });
+
+                        randomElement.innerHTML += `<span class="narrative-whisper"> ${personalizedContent}</span>`;
+                    }
+                }
+
+                // Add system reaction to user presence
+                function addSystemReaction() {
+                    const reactionElement = document.createElement('div');
+                    reactionElement.style.position = 'fixed';
+                    reactionElement.style.top = '20px';
+                    reactionElement.style.left = '20px';
+                    reactionElement.style.fontSize = '0.8rem';
+                    reactionElement.style.opacity = '0.8';
+                    reactionElement.style.zIndex = '10000';
+                    reactionElement.style.padding = '0.5rem';
+                    reactionElement.style.background = 'rgba(0, 0, 0, 0.6)';
+                    reactionElement.style.border = '1px solid var(--writing-theme-accent, var(--accent-red))';
+                    reactionElement.style.borderRadius = '4px';
+
+                    const reactionContent = themeManager.generateContent('narrative', {
+                        type: 'system_reaction',
+                        theme: themeManager.getCurrentTheme(),
+                        user_presence: 'detected',
+                        system_status: 'aware'
+                    });
+
+                    reactionElement.textContent = `🖥️ [SYSTEM REACTION] ${reactionContent}`;
+                    document.body.appendChild(reactionElement);
+
+                    setTimeout(() => {
+                        reactionElement.style.opacity = '0';
+                        setTimeout(() => reactionElement.remove(), 1000);
+                    }, 4000);
+                }
+
+                // Add recursive reference to previous interactions
+                function addRecursiveReference() {
+                    const referenceElement = document.createElement('div');
+                    referenceElement.style.position = 'fixed';
+                    referenceElement.style.bottom = '80px';
+                    referenceElement.style.right = '20px';
+                    referenceElement.style.fontSize = '0.9rem';
+                    referenceElement.style.opacity = '0.85';
+                    referenceElement.style.zIndex = '10000';
+                    referenceElement.style.padding = '0.5rem 1rem';
+                    referenceElement.style.background = 'rgba(0, 0, 0, 0.7)';
+                    referenceElement.style.border = '1px solid var(--writing-theme-accent, var(--accent-red))';
+                    referenceElement.style.borderRadius = '4px';
+                    referenceElement.style.fontFamily = 'monospace';
+
+                    const referenceContent = themeManager.generateContent('narrative', {
+                        type: 'recursive_reference',
+                        theme: themeManager.getCurrentTheme(),
+                        previous_interactions: narrativeState.userInteractions,
+                        recursive_depth: 'level 1'
+                    });
+
+                    referenceElement.textContent = `🔄 [RECURSIVE REFERENCE] ${referenceContent}`;
+                    document.body.appendChild(referenceElement);
+
+                    setTimeout(() => {
+                        referenceElement.style.opacity = '0';
+                        setTimeout(() => referenceElement.remove(), 1000);
+                    }, 4000);
+                }
+
+                // Initialize atmospheric narrative system
+                setTimeout(initializeAtmosphericNarrative, 2000);
+            }
+
+            // Initialize atmospheric narrative system
+            initializeAtmosphericNarrative();
+
+            // Periodically update narrative elements and themes
+            setTimeout(insertDynamicTeaser, 4000);
+
+            const periodicUpdate = setInterval(() => {
+                // 20% chance to update teaser
+                if (Math.random() < 0.2) {
+                    insertDynamicTeaser();
+                }
+
+                // 10% chance to initiate theme transition sequence
+                if (Math.random() < 0.1) {
+                    const currentTheme = themeManager.getCurrentTheme();
+                    const availableThemes = Object.values(themeManager.THEMES)
+                        .filter(t => t !== currentTheme && t !== 'default' && t !== 'horror');
+
+                    if (availableThemes.length > 0) {
+                        const newTheme = availableThemes[Math.floor(Math.random() * availableThemes.length)];
+                        themeManager.setTheme(newTheme);
+                        showThemeTransitionFeedback(newTheme);
+                    }
+                }
+
+                // 15% chance to add subtle narrative hints
+                if (Math.random() < 0.15) {
+                    const elementIds = Object.keys(narrativeElements);
+                    const randomElement = elementIds[Math.floor(Math.random() * elementIds.length)];
+                    const element = document.getElementById(randomElement);
+
+                    if (element && themeManager) {
+                        const original = narrativeElements[randomElement].content;
+                        const hint = themeManager.generateContent('warning', {
+                            intensity: Math.random() > 0.5 ? 'high' : 'normal',
+                            theme: themeManager.getCurrentTheme()
+                        });
+
+                        element.innerHTML += `<span class="narrative-whisper"> ${hint}</span>`;
+                        element.title = "Current narrative integrity: fluctuating";
+                    }
+                }
+            }, 15000);
+
+            // Cleanup on navigation
+            window.addEventListener('beforeunload', () => {
+                clearInterval(periodicUpdate);
+            });
+
+            // Add CSS for narrative effects
+            const style = document.createElement('style');
+            style.textContent = `
+                .narrative-transition, .narrative-whisper {
+                    color: var(--color-accent);
+                    opacity: 0.85;
+                    font-family: monospace;
+                    transition: opacity 0.2s ease, text-shadow 0.2s ease;
+                }
+
+                .narrative-whisper {
+                    display: inline-block;
+                    font-size: 0.7rem;
+                    vertical-align: middle;
+                    padding: 0.2rem;
+                    margin-left: 0.5rem;
+                    border-top: 1px dashed rgba(204, 17, 34, 0.3);
+                    animation: flicker 2s ease infinite;
+                }
+
+                @keyframes flicker {
+                    0%, 100% { opacity: 0.5; }
+                    3%, 95% { opacity: 0.85; }
+                    4%, 96% { opacity: 0.3; }
+                }
+
+                @keyframes fadeIn {
+                    from { opacity: 0; transform: translateY(10px); }
+                    to { opacity: 1; transform: translateY(0); }
+                }
+
+                /* Lore tablet styles */
+                .lore-tablet {
+                    background: rgba(0, 0, 0, 0.7);
+                    border-left: 3px solid var(--color-accent);
+                    border-radius: 8px;
+                    padding: 1rem;
+                    margin: 1rem 0;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    position: relative;
+                    overflow: hidden;
+                }
+
+                .lore-tablet:hover {
+                    background: rgba(0, 0, 0, 0.8);
+                    border-color: var(--color-accent);
+                    box-shadow: 0 0 15px var(--writing-theme-glow, var(--accent-red-glow));
+                    transform: translateY(-2px);
+                }
+
+                .lore-tablet::before {
+                    content: "";
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    right: 0;
+                    bottom: 0;
+                    background: linear-gradient(45deg,
+                        transparent 30%, rgba(204, 17, 34, 0.05) 50%,
+                        transparent 70%);
+                    background-size: 200% 200%;
+                    animation: scanline 3s linear infinite;
+                    opacity: 0.3;
+                    pointer-events: none;
+                }
+
+                @keyframes scanline {
+                    0% { background-position: 0% 0%; }
+                    100% { background-position: 200% 200%; }
+                }
+
+                .lore-tablet-header {
+                    font-size: 0.8rem;
+                    opacity: 0.7;
+                    margin-bottom: 0.5rem;
+                    display: flex;
+                    justify-content: space-between;
+                }
+
+                .lore-tablet-content {
+                    font-family: monospace;
+                    font-size: 0.9rem;
+                    line-height: 1.5;
+                }
+
+                .lore-tablet-footer {
+                    font-size: 0.7rem;
+                    opacity: 0.5;
+                    margin-top: 0.5rem;
+                    display: flex;
+                    justify-content: space-between;
+                }
+
+                .character-cameo {
+                    font-style: italic;
+                    color: var(--color-accent);
+                    position: relative;
+                    padding-left: 1.5rem;
+                    margin: 1rem 0;
+                    transition: all 0.3s ease;
+                }
+
+                .character-cameo:hover {
+                    color: white;
+                    text-shadow: 0 0 10px var(--color-accent);
+                }
+
+                .character-cameo::before {
+                    content: "👁️";
+                    position: absolute;
+                    left: 0;
+                    opacity: 0.7;
+                }
+
+                .audio-log {
+                    background: rgba(0, 0, 0, 0.6);
+                    border-left: 3px solid var(--accent-cyan);
+                    border-radius: 8px;
+                    padding: 1rem;
+                    margin: 1rem 0;
+                    font-family: monospace;
+                    transition: all 0.3s ease;
+                }
+
+                .audio-log:hover {
+                    background: rgba(0, 0, 0, 0.7);
+                    box-shadow: 0 0 10px var(--accent-cyan-glow);
+                }
+            `;
+            document.head.appendChild(style);
+
+            // Initialize lore tablets with dynamic content
+            function initializeLoreTablets() {
+                if (!themeManager || !themeManager.generateContent) {
+                    console.warn('ThemeWritingManager not available for lore generation');
+                    return;
+                }
+
+                // Lore tablet content generation
+                const loreTablets = [
+                    {
+                        id: 'lore-tablet-1',
+                        type: 'narrative',
+                        theme: themeManager.getCurrentTheme(),
+                        options: {
+                            title: "THE ORIGIN OF SCARYGAMESAI",
+                            content_type: "historical_record",
+                            character: "The Archivist",
+                            location: "unknown server farm",
+                            year: "2023"
+                        }
+                    },
+                    {
+                        id: 'lore-tablet-2',
+                        type: 'audio_log',
+                        theme: themeManager.getCurrentTheme(),
+                        options: {
+                            title: "TRANSMISSION FROM LEVEL 4",
+                            character: "unknown",
+                            location: "somewhere in the backrooms",
+                            signal_strength: "weak"
+                        }
+                    },
+                    {
+                        id: 'lore-tablet-3',
+                        type: 'diary_entry',
+                        theme: themeManager.getCurrentTheme(),
+                        options: {
+                            title: "PERSONAL LOG - DR. ELIAS VOSS",
+                            character: "Dr. Elias Voss",
+                            location: "Research Facility Delta",
+                            date: "March 13, 2024",
+                            condition: "deteriorating"
+                        }
+                    },
+                    {
+                        id: 'lore-tablet-4',
+                        type: 'system_message',
+                        theme: themeManager.getCurrentTheme(),
+                        options: {
+                            title: "INITIATION SEQUENCE",
+                            system: "SGAI-CORE",
+                            user: "new",
+                            status: "active"
+                        }
+                    },
+                    {
+                        id: 'lore-tablet-5',
+                        type: 'warning',
+                        theme: themeManager.getCurrentTheme(),
+                        options: {
+                            title: "CRITICAL SYSTEM ALERT",
+                            system: "Narrative Integrity Monitor",
+                            error_code: "ALPHA-9",
+                            priority: "critical"
+                        }
+                    },
+                    {
+                        id: 'lore-tablet-6',
+                        type: 'system_status',
+                        theme: themeManager.getCurrentTheme(),
+                        options: {
+                            title: "USER MONITORING",
+                            system: "SGAI-OBSERVER",
+                            users_online: document.getElementById('hero-live-count').textContent,
+                            status: "active"
+                        }
+                    },
+                    {
+                        id: 'lore-tablet-7',
+                        type: 'signal_fragment',
+                        theme: themeManager.getCurrentTheme(),
+                        options: {
+                            title: "BACKROOMS TRANSMISSION",
+                            source: "Level 1.5",
+                            frequency: "47.3MHz",
+                            signal_quality: "poor"
+                        }
+                    },
+                    {
+                        id: 'lore-tablet-8',
+                        type: 'character_dossier',
+                        theme: themeManager.getCurrentTheme(),
+                        options: {
+                            title: "FACILITY MAINTAINER",
+                            character_id: "FM-007",
+                            role: "maintenance",
+                            status: "missing",
+                            last_seen: "Level 3"
+                        }
+                    },
+                    {
+                        id: 'lore-tablet-9',
+                        type: 'system_directive',
+                        theme: themeManager.getCurrentTheme(),
+                        options: {
+                            title: "TERROR PROTOCOL",
+                            directive_id: "SGAI-771-B",
+                            status: "active",
+                            warning: "reality distortion possible"
+                        }
+                    },
+                    {
+                        id: 'lore-tablet-10',
+                        type: 'user_log',
+                        theme: themeManager.getCurrentTheme(),
+                        options: {
+                            title: "USER SELECTION",
+                            user: "[YOU]",
+                            action: "game selection",
+                            timestamp: "now"
+                        }
+                    },
+                    {
+                        id: 'lore-tablet-11',
+                        type: 'system_status',
+                        theme: themeManager.getCurrentTheme(),
+                        options: {
+                            title: "NARRATIVE INJECTION",
+                            system: "SGAI-NARRATIVE",
+                            status: "standby",
+                            readiness: "100%"
+                        }
+                    },
+                    {
+                        id: 'lore-tablet-12',
+                        type: 'statistics',
+                        theme: themeManager.getCurrentTheme(),
+                        options: {
+                            title: "SURVIVAL PROBABILITY",
+                            user: "[YOU]",
+                            probability: "low",
+                            based_on: "historical data"
+                        }
+                    },
+                    {
+                        id: 'lore-tablet-13',
+                        type: 'system_monitor',
+                        theme: themeManager.getCurrentTheme(),
+                        options: {
+                            title: "GLOBAL TERROR INDEX",
+                            system: "SGAI-CORE",
+                            coverage: "98.7%",
+                            status: "active"
+                        }
+                    },
+                    {
+                        id: 'lore-tablet-14',
+                        type: 'warning',
+                        theme: themeManager.getCurrentTheme(),
+                        options: {
+                            title: "CRITICAL THRESHOLD ALERT",
+                            system: "FEAR-RESPONSE",
+                            threshold: "90%",
+                            current: document.getElementById('scare-meter-number').textContent,
+                            action_required: "monitor closely"
+                        }
+                    },
+                    {
+                        id: 'lore-tablet-15',
+                        type: 'subscription',
+                        theme: themeManager.getCurrentTheme(),
+                        options: {
+                            title: "NARRATIVE SUBSCRIPTION",
+                            tier: "standard",
+                            cost: "free",
+                            benefits: "regular updates, exclusive content"
+                        }
+                    }
+                ];
+
+                // Generate content for each lore tablet
+                loreTablets.forEach((tablet, index) => {
+                    try {
+                        const element = document.getElementById(tablet.id);
+                        if (element) {
+                            let content = '';
+
+                            // Different content types
+                            switch(tablet.type) {
+                                case 'narrative':
+                                    content = themeManager.generateContent('narrative', tablet.options);
+                                    break;
+                                case 'audio_log':
+                                    content = `[AUDIO LOG BEGINS]\n${themeManager.generateContent('narrative', {
+                                        ...tablet.options,
+                                        style: "fragmented",
+                                        audio_quality: "distorted"
+                                    })}\n[AUDIO LOG ENDS]`;
+                                    break;
+                                case 'diary_entry':
+                                    content = `[PERSONAL LOG - ${tablet.options.character}]\n\n${themeManager.generateContent('narrative', {
+                                        ...tablet.options,
+                                        style: "personal",
+                                        emotional_state: "distressed"
+                                    })}\n\n[END LOG]`;
+                                    break;
+                                case 'system_message':
+                                    content = `[SYSTEM MESSAGE: ${tablet.options.title}]\n\n${themeManager.generateContent('narrative', {
+                                        ...tablet.options,
+                                        system: tablet.options.system || "SGAI-CORE",
+                                        style: "technical"
+                                    })}`;
+                                    break;
+                                case 'warning':
+                                    content = `⚠️ [SYSTEM WARNING: ${tablet.options.error_code || "UNKNOWN"}]\n\n${themeManager.generateContent('narrative', {
+                                        ...tablet.options,
+                                        urgency: "high",
+                                        style: "urgent"
+                                    })}`;
+                                    break;
+                                case 'system_status':
+                                    content = `[SYSTEM STATUS: ${tablet.options.status || "ACTIVE"}]\n\n${themeManager.generateContent('narrative', {
+                                        ...tablet.options,
+                                        style: "technical"
+                                    })}`;
+                                    break;
+                                case 'signal_fragment':
+                                    content = `[SIGNAL FRAGMENT RECEIVED]\n\n"${themeManager.generateContent('narrative', {
+                                        ...tablet.options,
+                                        style: "fragmented",
+                                        signal_quality: tablet.options.signal_quality || "poor"
+                                    })}"\n\n[END TRANSMISSION]`;
+                                    break;
+                                case 'character_dossier':
+                                    content = `[CHARACTER DOSSIER: ${tablet.options.character_id}]\n\n${themeManager.generateContent('narrative', {
+                                        ...tablet.options,
+                                        style: "clinical",
+                                        details: "limited"
+                                    })}\n\nSTATUS: ${tablet.options.status || "UNKNOWN"}`;
+                                    break;
+                                case 'system_directive':
+                                    content = `[DIRECTIVE: ${tablet.options.directive_id}]\n\n${themeManager.generateContent('narrative', {
+                                        ...tablet.options,
+                                        style: "formal",
+                                        urgency: "high"
+                                    })}`;
+                                    break;
+                                case 'user_log':
+                                    content = `[USER ACTIVITY LOG]\n\n${themeManager.generateContent('narrative', {
+                                        ...tablet.options,
+                                        user: tablet.options.user || "[USER]",
+                                        action: tablet.options.action || "unknown",
+                                        style: "log_entry"
+                                    })}`;
+                                    break;
+                                case 'statistics':
+                                    content = `[STATISTICAL ANALYSIS]\n\n${themeManager.generateContent('narrative', {
+                                        ...tablet.options,
+                                        style: "clinical",
+                                        data_source: "historical records"
+                                    })}`;
+                                    break;
+                                case 'system_monitor':
+                                    content = `[MONITORING SYSTEM: ${tablet.options.system || "SGAI-CORE"}]\n\n${themeManager.generateContent('narrative', {
+                                        ...tablet.options,
+                                        style: "technical",
+                                        status: tablet.options.status || "active"
+                                    })}`;
+                                    break;
+                                case 'subscription':
+                                    content = `[SUBSCRIPTION OFFER]\n\n${themeManager.generateContent('narrative', {
+                                        ...tablet.options,
+                                        style: "marketing",
+                                        call_to_action: "subscribe now"
+                                    })}`;
+                                    break;
+                                default:
+                                    content = themeManager.generateContent('narrative', tablet.options);
+                            }
+
+                            // Apply theme-specific formatting
+                            content = themeManager.applyWritingRules(content, tablet.options);
+
+                            // Update the content with typewriter effect
+                            const contentElement = document.getElementById(`lore-content-${index + 1}`);
+                            if (contentElement) {
+                                typewriterEffect(contentElement, content, [8, 6, 10, 7, 9, 11, 6, 8], () => {
+                                    // Add subtle hover effects
+                                    contentElement.style.cursor = 'pointer';
+                                    contentElement.addEventListener('mouseenter', () => {
+                                        contentElement.style.opacity = '0.9';
+                                        contentElement.style.textShadow = '0 0 5px var(--writing-theme-glow, var(--accent-red-glow))';
+                                    });
+                                    contentElement.addEventListener('mouseleave', () => {
+                                        contentElement.style.opacity = '1';
+                                        contentElement.style.textShadow = 'none';
+                                    });
+                                }, Math.random() < 0.2);
+                            }
+                        }
+                    } catch (error) {
+                        console.error(`Error generating content for ${tablet.id}:`, error);
+                    }
+                });
+
+                // Add character cameos that appear randomly
+                function addCharacterCameos() {
+                    const characters = [
+                        {
+                            name: "The Historian",
+                            role: "Provides cryptic exposition about the true nature of ScaryGamesAI",
+                            dialogTypes: ['realization', 'doubt', 'narrative'],
+                            icon: "📜",
+                            themeAffinity: [THEMES.COSMIC, THEMES.LOVECRAFTIAN, THEMES.SUPERNATURAL]
+                        },
+                        {
+                            name: "The Escapist",
+                            role: "Knows secret ways to navigate between game realities",
+                            dialogTypes: ['reassurance', 'advice', 'warning'],
+                            icon: "🚪",
+                            themeAffinity: [THEMES.PSYCHOLOGICAL, THEMES.FOUND_FOOTAGE, THEMES.URBAN_LEGEND]
+                        },
+                        {
+                            name: "The Archivist",
+                            role: "Understands the pattern matching rules that govern the system",
+                            dialogTypes: ['realization', 'explanation', 'doubt'],
+                            icon: "🗃️",
+                            themeAffinity: [THEMES.TECHNOLOGICAL, THEMES.SCI_FI, THEMES.FANTASY]
+                        },
+                        {
+                            name: "The Despondent Scientist",
+                            role: "Explains the experimental reasons behind the games",
+                            dialogTypes: ['realization', 'denial', 'explanation'],
+                            icon: "🔬",
+                            themeAffinity: [THEMES.BODY_HORROR, THEMES.SCI_FI, THEMES.TECHNOLOGICAL]
+                        },
+                        {
+                            name: "The Surrogate",
+                            role: "Becomes a recurring companion with an evolving story arc",
+                            dialogTypes: ['reassurance', 'personal', 'doubt'],
+                            icon: "🤝",
+                            themeAffinity: [THEMES.PSYCHOLOGICAL, THEMES.SUPERNATURAL, THEMES.FOLK_HORROR]
+                        },
+                        {
+                            name: "The Mimic",
+                            role: "Appears differently in various areas, adapting to your expectations",
+                            dialogTypes: ['deception', 'doubt', 'warning'],
+                            icon: "👥",
+                            themeAffinity: [THEMES.PSYCHOLOGICAL, THEMES.URBAN_LEGEND, THEMES.FOUND_FOOTAGE]
+                        },
+                        {
+                            name: "The Reality Diagnostician",
+                            role: "Offers escape suggestions and reality stabilization techniques",
+                            dialogTypes: ['advice', 'warning', 'explanation'],
+                            icon: "🔍",
+                            themeAffinity: [THEMES.COSMIC, THEMES.LOVECRAFTIAN, THEMES.TECHNOLOGICAL]
+                        }
+                    ];
+
+                    // Add 2-4 character cameos randomly throughout the page
+                    const sections = document.querySelectorAll('section');
+                    const cameoCount = Math.floor(Math.random() * 3) + 2;
+
+                    for (let i = 0; i < cameoCount; i++) {
+                        const randomSection = sections[Math.floor(Math.random() * sections.length)];
+                        if (randomSection && Math.random() > 0.3) {
+                            const character = characters[Math.floor(Math.random() * characters.length)];
+                            const cameoElement = document.createElement('div');
+                            cameoElement.className = 'character-cameo';
+
+                            // Choose dialog type based on character's preferred types
+                            const dialogType = character.dialogTypes[Math.floor(Math.random() * character.dialogTypes.length)];
+
+                            // Generate character-specific content
+                            let characterContent = '';
+                            const currentTheme = themeManager.getCurrentTheme();
+
+                            // Check if current theme is one the character prefers
+                            const themeMatch = character.themeAffinity.includes(currentTheme);
+
+                            switch(character.name) {
+                                case "The Historian":
+                                    characterContent = themeManager.generateCharacterDialogue(
+                                        'historian',
+                                        dialogType,
+                                        {
+                                            character: "The Historian",
+                                            revelation: themeMatch ? "forbidden knowledge" : "cryptic truth",
+                                            theme: currentTheme,
+                                            certainty: themeMatch ? "high" : "uncertain"
+                                        }
+                                    );
+                                    break;
+                                case "The Escapist":
+                                    characterContent = themeManager.generateCharacterDialogue(
+                                        'escapist',
+                                        dialogType,
+                                        {
+                                            character: "The Escapist",
+                                            advice: themeMatch ? "specific escape route" : "vague warning",
+                                            urgency: themeMatch ? "high" : "moderate",
+                                            theme: currentTheme
+                                        }
+                                    );
+                                    break;
+                                case "The Archivist":
+                                    characterContent = themeManager.generateCharacterDialogue(
+                                        'archivist',
+                                        dialogType,
+                                        {
+                                            character: "The Archivist",
+                                            explanation: themeMatch ? "detailed pattern" : "fragmented data",
+                                            confidence: themeMatch ? "high" : "low",
+                                            theme: currentTheme
+                                        }
+                                    );
+                                    break;
+                                case "The Despondent Scientist":
+                                    characterContent = themeManager.generateCharacterDialogue(
+                                        'scientist',
+                                        dialogType,
+                                        {
+                                            character: "The Despondent Scientist",
+                                            experiment: themeMatch ? "current game" : "unknown project",
+                                            emotional_state: themeMatch ? "desperate" : "resigned",
+                                            theme: currentTheme
+                                        }
+                                    );
+                                    break;
+                                case "The Surrogate":
+                                    characterContent = themeManager.generateCharacterDialogue(
+                                        'surrogate',
+                                        dialogType,
+                                        {
+                                            character: "The Surrogate",
+                                            personal_story: themeMatch ? "detailed memory" : "vague recollection",
+                                            emotional_state: themeMatch ? "intimate" : "distant",
+                                            theme: currentTheme
+                                        }
+                                    );
+                                    break;
+                                case "The Mimic":
+                                    characterContent = themeManager.generateCharacterDialogue(
+                                        'mimic',
+                                        dialogType,
+                                        {
+                                            character: "The Mimic",
+                                            deception_level: themeMatch ? "high" : "subtle",
+                                            familiarity: themeMatch ? "uncanny" : "comforting",
+                                            theme: currentTheme
+                                        }
+                                    );
+                                    break;
+                                case "The Reality Diagnostician":
+                                    characterContent = themeManager.generateCharacterDialogue(
+                                        'reality_diagnostician',
+                                        dialogType,
+                                        {
+                                            character: "The Reality Diagnostician",
+                                            diagnosis: themeMatch ? "specific issue" : "general instability",
+                                            solution: themeMatch ? "practical advice" : "philosophical warning",
+                                            theme: currentTheme
+                                        }
+                                    );
+                                    break;
+                                default:
+                                    characterContent = themeManager.generateCharacterDialogue(
+                                        character.name.toLowerCase().replace(' ', '_'),
+                                        dialogType,
+                                        {
+                                            character: character.name,
+                                            theme: currentTheme
+                                        }
+                                    );
+                            }
+
+                            // Apply theme-specific formatting
+                            characterContent = themeManager.applyWritingRules(characterContent, {
+                                character: character.name,
+                                theme: currentTheme
+                            });
+
+                            cameoElement.innerHTML = `
+                                <div style="font-size:0.8rem;opacity:0.7;margin-bottom:0.3rem;">
+                                    ${character.icon} ${character.name} <span style="opacity:0.6;">(${character.role})</span>
+                                </div>
+                                <div>"${characterContent}"</div>
+                                <div style="font-size:0.7rem;opacity:0.5;margin-top:0.3rem;text-align:right;">
+                                    🔄 Theme: ${currentTheme.replace(/_/g, ' ')}
+                                </div>
+                            `;
+
+                            // Insert at a random position within the section
+                            const children = randomSection.children;
+                            const insertPos = Math.floor(Math.random() * children.length);
+                            randomSection.insertBefore(cameoElement, children[insertPos]);
+
+                            // Add click interaction
+                            cameoElement.addEventListener('click', () => {
+                                // Change the character's dialog when clicked
+                                const newDialogType = character.dialogTypes[Math.floor(Math.random() * character.dialogTypes.length)];
+                                let newContent = '';
+
+                                switch(character.name) {
+                                    case "The Historian":
+                                        newContent = themeManager.generateCharacterDialogue(
+                                            'historian',
+                                            newDialogType,
+                                            {
+                                                character: "The Historian",
+                                                revelation: "deeper truth",
+                                                theme: currentTheme,
+                                                certainty: "absolute"
+                                            }
+                                        );
+                                        break;
+                                    case "The Escapist":
+                                        newContent = themeManager.generateCharacterDialogue(
+                                            'escapist',
+                                            newDialogType,
+                                            {
+                                                character: "The Escapist",
+                                                advice: "urgent escape plan",
+                                                urgency: "critical",
+                                                theme: currentTheme
+                                            }
+                                        );
+                                        break;
+                                    default:
+                                        newContent = themeManager.generateCharacterDialogue(
+                                            character.name.toLowerCase().replace(' ', '_'),
+                                            newDialogType,
+                                            {
+                                                character: character.name,
+                                                theme: currentTheme,
+                                                interaction: "follow-up"
+                                            }
+                                        );
+                                }
+
+                                newContent = themeManager.applyWritingRules(newContent, {
+                                    character: character.name,
+                                    theme: currentTheme
+                                });
+
+                                cameoElement.querySelector('div:nth-child(2)').textContent = `"${newContent}"`;
+
+                                // Add subtle visual feedback
+                                cameoElement.style.transform = 'scale(1.02)';
+                                setTimeout(() => {
+                                    cameoElement.style.transform = 'scale(1)';
+                                }, 200);
+                            });
+                        }
+                    }
+                }
+
+                // Add audio logs and environmental audio cues
+                function addAudioElements() {
+                    const audioLogSections = [
+                        'featured-section',
+                        'how-it-works-section',
+                        'scare-meter-section',
+                        'newsletter-section'
+                    ];
+
+                    // Add audio logs
+                    audioLogSections.forEach(sectionId => {
+                        const section = document.getElementById(sectionId);
+                        if (section && Math.random() > 0.5) {
+                            const audioLogElement = document.createElement('div');
+                            audioLogElement.className = 'audio-log';
+
+                            const timestamp = new Date(Date.now() - Math.floor(Math.random() * 86400000 * 7)).toISOString().split('T')[0];
+                            const logTypes = ['survivor', 'scientist', 'soldier', 'technician', 'unknown'];
+                            const logType = logTypes[Math.floor(Math.random() * logTypes.length)];
+
+                            let logContent, header, footer;
+
+                            switch(logType) {
+                                case 'survivor':
+                                    header = `🎙️ SURVIVOR LOG | DATE: ${timestamp} | LOCATION: UNKNOWN`;
+                                    logContent = themeManager.generateContent('audio_log', {
+                                        type: 'survivor_testimony',
+                                        date: timestamp,
+                                        character: "survivor",
+                                        emotional_state: Math.random() > 0.5 ? "desperate" : "terrified",
+                                        theme: themeManager.getCurrentTheme()
+                                    });
+                                    footer = `🔊 PLAYBACK: <span style="color:#00ff88;">▶️ Click to hear testimony</span> | 🎯 RELIABILITY: LOW`;
+                                    break;
+                                case 'scientist':
+                                    header = `🔬 RESEARCH LOG | DATE: ${timestamp} | PROJECT: [REDACTED]`;
+                                    logContent = themeManager.generateContent('audio_log', {
+                                        type: 'scientific_observation',
+                                        date: timestamp,
+                                        character: "Dr. " + generateRandomName(),
+                                        professionalism: Math.random() > 0.7 ? "deteriorating" : "clinical",
+                                        theme: themeManager.getCurrentTheme()
+                                    });
+                                    footer = `🔊 PLAYBACK: <span style="color:#00ff88;">▶️ Click to hear report</span> | 🎯 RELIABILITY: MEDIUM`;
+                                    break;
+                                case 'soldier':
+                                    header = `🪖 MILITARY DEBRIEF | DATE: ${timestamp} | OPERATION: [CLASSIFIED]`;
+                                    logContent = themeManager.generateContent('audio_log', {
+                                        type: 'military_report',
+                                        date: timestamp,
+                                        character: "Sgt. " + generateRandomName(),
+                                        mission_status: Math.random() > 0.6 ? "failed" : "compromised",
+                                        theme: themeManager.getCurrentTheme()
+                                    });
+                                    footer = `🔊 PLAYBACK: <span style="color:#00ff88;">▶️ Click to hear debrief</span> | 🎯 RELIABILITY: HIGH`;
+                                    break;
+                                case 'technician':
+                                    header = `💻 SYSTEM LOG | DATE: ${timestamp} | SYSTEM: [REDACTED]`;
+                                    logContent = themeManager.generateContent('audio_log', {
+                                        type: 'technical_report',
+                                        date: timestamp,
+                                        character: "Tech " + generateRandomName(),
+                                        system_status: Math.random() > 0.5 ? "critical" : "degraded",
+                                        theme: themeManager.getCurrentTheme()
+                                    });
+                                    footer = `🔊 PLAYBACK: <span style="color:#00ff88;">▶️ Click to hear system log</span> | 🎯 RELIABILITY: VARIABLE`;
+                                    break;
+                                case 'unknown':
+                                    header = `👻 UNKNOWN TRANSMISSION | DATE: ${timestamp} | SOURCE: [UNKNOWN]`;
+                                    logContent = themeManager.generateContent('audio_log', {
+                                        type: 'unknown_transmission',
+                                        date: timestamp,
+                                        signal_quality: Math.random() > 0.5 ? "poor" : "distorted",
+                                        theme: themeManager.getCurrentTheme()
+                                    });
+                                    footer = `🔊 PLAYBACK: <span style="color:#ff4444;">⚠️ CAUTION: PLAYBACK MAY CAUSE AUDIO DISTORTION</span> | 🎯 RELIABILITY: UNKNOWN`;
+                                    break;
+                            }
+
+                            audioLogElement.innerHTML = `
+                                <div style="font-size:0.8rem;opacity:0.7;margin-bottom:0.5rem;">
+                                    ${header}
+                                </div>
+                                <div>${logContent}</div>
+                                <div style="font-size:0.7rem;opacity:0.5;margin-top:0.5rem;">
+                                    ${footer}
+                                </div>
+                            `;
+
+                            // Add click interaction to "play" the audio log
+                            audioLogElement.addEventListener('click', () => {
+                                // Simulate audio playback
+                                const playButton = audioLogElement.querySelector('span');
+                                if (playButton) {
+                                    playButton.innerHTML = '🔊 PLAYING...';
+
+                                    // Apply audio distortion effect
+                                    audioLogElement.style.filter = 'grayscale(20%) brightness(1.2)';
+                                    audioLogElement.style.borderColor = '#00ff88';
+
+                                    // Add audio "visualization"
+                                    const visualization = document.createElement('div');
+                                    visualization.style.height = '2px';
+                                    visualization.style.background = 'linear-gradient(90deg, #00ff88, transparent)';
+                                    visualization.style.marginTop = '0.5rem';
+                                    visualization.style.animation = 'audioPulse 1.5s ease-in-out infinite';
+                                    audioLogElement.appendChild(visualization);
+
+                                    const style = document.createElement('style');
+                                    style.textContent = `
+                                        @keyframes audioPulse {
+                                            0% { width: 0%; opacity: 0.8; }
+                                            50% { width: 100%; opacity: 0.4; }
+                                            100% { width: 0%; opacity: 0.8; }
+                                        }
+                                    `;
+                                    document.head.appendChild(style);
+
+                                    // After "playback", show transcript with potential distortions
+                                    setTimeout(() => {
+                                        playButton.innerHTML = '🔊 PLAYBACK COMPLETE';
+
+                                        // Add potential distortions based on log type
+                                        if (logType === 'unknown' || Math.random() > 0.7) {
+                                            const originalContent = audioLogElement.querySelector('div:nth-child(2)');
+                                            if (originalContent) {
+                                                const distortedContent = applyAudioDistortion(originalContent.textContent);
+                                                originalContent.innerHTML = distortedContent;
+                                            }
+                                        }
+
+                                        visualization.remove();
+                                        style.remove();
+
+                                        // Add playback effects
+                                        audioLogElement.style.filter = '';
+                                        setTimeout(() => {
+                                            playButton.innerHTML = '🔊 REPLAY AUDIO';
+                                        }, 2000);
+                                    }, 4000);
+                                }
+                            });
+
+                            // Insert at a random position
+                            const children = section.children;
+                            const insertPos = Math.floor(Math.random() * children.length);
+                            section.insertBefore(audioLogElement, children[insertPos]);
+                        }
+                    });
+
+                    // Add environmental audio cues (non-interactive)
+                    function addEnvironmentalAudioCues() {
+                        const sections = document.querySelectorAll('section');
+                        sections.forEach(section => {
+                            if (Math.random() > 0.7) {
+                                const audioCue = document.createElement('div');
+                                audioCue.style.position = 'relative';
+                                audioCue.style.padding = '0.5rem';
+                                audioCue.style.margin = '0.5rem 0';
+                                audioCue.style.background = 'rgba(0, 0, 0, 0.3)';
+                                audioCue.style.borderLeft = `2px solid var(--writing-theme-accent, var(--accent-red))`;
+                                audioCue.style.opacity = '0.8';
+                                audioCue.style.fontSize = '0.8rem';
+                                audioCue.style.fontFamily = 'monospace';
+
+                                const cueTypes = [
+                                    { type: 'ambient', icon: '🔊', description: 'AMBIENT SOUND DETECTED' },
+                                    { type: 'whisper', icon: '👂', description: 'WHISPERING VOICES' },
+                                    { type: 'mechanical', icon: '⚙️', description: 'MECHANICAL NOISE' },
+                                    { type: 'organic', icon: '🌿', description: 'ORGANIC SOUNDS' },
+                                    { type: 'electronic', icon: '⚡', description: 'ELECTRONIC INTERFERENCE' }
+                                ];
+
+                                const cueType = cueTypes[Math.floor(Math.random() * cueTypes.length)];
+
+                                const cueContent = themeManager.generateContent('narrative', {
+                                    type: 'audio_cue',
+                                    audio_type: cueType.type,
+                                    theme: themeManager.getCurrentTheme(),
+                                    location: section.id.replace('-section', '').replace('-', ' '),
+                                    intensity: Math.random() > 0.5 ? 'subtle' : 'noticeable'
+                                });
+
+                                audioCue.innerHTML = `
+                                    <div style="display:flex;align-items:center;gap:0.5rem;">
+                                        ${cueType.icon} <strong>[${cueType.description}]</strong>
+                                    </div>
+                                    <div style="margin-top:0.3rem;opacity:0.9;">${cueContent}</div>
+                                    <div style="font-size:0.7rem;opacity:0.6;margin-top:0.3rem;">
+                                        📡 SIGNAL STRENGTH: ${Math.floor(Math.random() * 3) + 2}/5 |
+                                        🎯 SOURCE: ${Math.random() > 0.5 ? 'LOCAL' : 'UNKNOWN'}
+                                    </div>
+                                `;
+
+                                // Insert at random position
+                                const children = section.children;
+                                const insertPos = Math.floor(Math.random() * children.length);
+                                section.insertBefore(audioCue, children[insertPos]);
+                            }
+                        });
+                    }
+
+                    // Add historian display cases (environmental storytelling)
+                    function addHistorianDisplayCases() {
+                        const sections = document.querySelectorAll('section');
+                        sections.forEach(section => {
+                            if (Math.random() > 0.6) {
+                                const displayCase = document.createElement('div');
+                                displayCase.style.margin = '1rem 0';
+                                displayCase.style.padding = '1rem';
+                                displayCase.style.background = 'rgba(0, 0, 0, 0.4)';
+                                displayCase.style.border = `1px solid var(--writing-theme-accent, var(--accent-red))`;
+                                displayCase.style.borderRadius = '8px';
+                                displayCase.style.position = 'relative';
+                                displayCase.style.overflow = 'hidden';
+
+                                const artifacts = [
+                                    { name: 'strange artifact', description: 'unknown origin', era: 'prehistoric' },
+                                    { name: 'cursed amulet', description: 'pulses with dark energy', era: 'medieval' },
+                                    { name: 'alien device', description: 'emits strange frequencies', era: 'modern' },
+                                    { name: 'ancient manuscript', description: 'written in unknown language', era: 'ancient' },
+                                    { name: 'ritual dagger', description: 'covered in strange symbols', era: 'bronze age' },
+                                    { name: 'quantum core', description: 'reality-warping properties', era: 'futuristic' }
+                                ];
+
+                                const artifact = artifacts[Math.floor(Math.random() * artifacts.length)];
+
+                                const caseContent = themeManager.generateContent('narrative', {
+                                    type: 'artifact_description',
+                                    artifact_name: artifact.name,
+                                    artifact_properties: artifact.description,
+                                    era: artifact.era,
+                                    theme: themeManager.getCurrentTheme(),
+                                    discovery_location: section.id.replace('-section', '').replace('-', ' ')
+                                });
+
+                                displayCase.innerHTML = `
+                                    <div style="font-size:0.8rem;opacity:0.7;margin-bottom:0.5rem;">
+                                        🏺 HISTORIAN DISPLAY CASE | CURATOR: THE HISTORIAN
+                                    </div>
+                                    <div style="display:flex;gap:1rem;align-items:center;">
+                                        <div style="font-size:2rem;">🗿</div>
+                                        <div>
+                                            <strong>${artifact.name.toUpperCase()}</strong>
+                                            <div style="font-size:0.9rem;opacity:0.8;">${artifact.description}</div>
+                                            <div style="font-size:0.8rem;opacity:0.6;margin-top:0.3rem;">
+                                                ERA: ${artifact.era.toUpperCase()} |
+                                                DISCOVERY: ${section.id.replace('-section', '').replace('-', ' ').toUpperCase()}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="margin-top:0.8rem;font-style:italic;opacity:0.9;">
+                                        "${caseContent}"
+                                    </div>
+                                    <div style="font-size:0.7rem;opacity:0.5;margin-top:0.5rem;text-align:right;">
+                                        🔍 EXAMINE | 📝 RESEARCH | ⚠️ DO NOT TOUCH
+                                    </div>
+                                `;
+
+                                // Add subtle glow effect
+                                displayCase.addEventListener('mouseenter', () => {
+                                    displayCase.style.boxShadow = `0 0 15px var(--writing-theme-glow, var(--accent-red-glow))`;
+                                });
+
+                                displayCase.addEventListener('mouseleave', () => {
+                                    displayCase.style.boxShadow = 'none';
+                                });
+
+                                // Insert at random position
+                                const children = section.children;
+                                const insertPos = Math.floor(Math.random() * children.length);
+                                section.insertBefore(displayCase, children[insertPos]);
+                            }
+                        });
+                    }
+
+                    // Helper function to generate random names
+                    function generateRandomName() {
+                        const firstNames = ['Smith', 'Johnson', 'Williams', 'Brown', 'Jones', 'Miller', 'Davis', 'Garcia', 'Rodriguez', 'Wilson'];
+                        const lastNames = ['A.', 'B.', 'C.', 'D.', 'E.', 'F.', 'G.', 'H.', 'I.', 'J.'];
+                        return firstNames[Math.floor(Math.random() * firstNames.length)] +
+                               ' ' + lastNames[Math.floor(Math.random() * lastNames.length)];
+                    }
+
+                    // Helper function to apply audio distortion
+                    function applyAudioDistortion(text) {
+                        const words = text.split(' ');
+                        let distortedText = '';
+
+                        words.forEach((word, index) => {
+                            if (Math.random() > 0.7) {
+                                // Apply different distortion effects
+                                const distortions = [
+                                    `[[${word.toUpperCase()}]]`, // Loud
+                                    `(${word})`,               // Whispered
+                                    `~${word}~`,               // Distorted
+                                    `[${word}]`,               // Emphasized
+                                    `*${word}*`,               // Muffled
+                                    `░${word}░`,               // Static-covered
+                                    `${word}...`,              // Trailing off
+                                    `...${word}`,              // Cut off
+                                    word.split('').reverse().join('') // Reversed
+                                ];
+
+                                distortedText += distortions[Math.floor(Math.random() * distortions.length)] + ' ';
+                            } else {
+                                distortedText += word + ' ';
+                            }
+                        });
+
+                        return distortedText.trim();
+                    }
+
+                    // Initialize all audio and environmental elements
+                    addAudioLogs();
+                    addEnvironmentalAudioCues();
+                    addHistorianDisplayCases();
+                }
+
+                // Initialize all environmental storytelling elements
+                addCharacterCameos();
+                addAudioLogs();
+
+                // Add theme change listener to update lore content when theme changes
+                themeManager.addThemeChangeListener((themeId, themeConfig) => {
+                    // Update lore tablets with new theme content
+                    setTimeout(() => {
+                        loreTablets.forEach((tablet, index) => {
+                            try {
+                                const element = document.getElementById(tablet.id);
+                                if (element) {
+                                    const contentElement = document.getElementById(`lore-content-${index + 1}`);
+                                    if (contentElement) {
+                                        let updatedContent = '';
+
+                                        switch(tablet.type) {
+                                            case 'narrative':
+                                                updatedContent = themeManager.generateContent('narrative', tablet.options);
+                                                break;
+                                            case 'audio_log':
+                                                updatedContent = `[AUDIO LOG BEGINS]\n${themeManager.generateContent('narrative', {
+                                                    ...tablet.options,
+                                                    style: "fragmented",
+                                                    audio_quality: "distorted"
+                                                })}\n[AUDIO LOG ENDS]`;
+                                                break;
+                                            case 'warning':
+                                                updatedContent = `⚠️ [SYSTEM WARNING: ${tablet.options.error_code || "UNKNOWN"}]\n\n${themeManager.generateContent('narrative', {
+                                                    ...tablet.options,
+                                                    urgency: "high",
+                                                    style: "urgent"
+                                                })}`;
+                                                break;
+                                            default:
+                                                updatedContent = themeManager.generateContent('narrative', tablet.options);
+                                        }
+
+                                        updatedContent = themeManager.applyWritingRules(updatedContent, tablet.options);
+                                        contentElement.textContent = updatedContent;
+                                    }
+                                }
+                            } catch (error) {
+                                console.error(`Error updating lore tablet ${tablet.id}:`, error);
+                            }
+                        });
+                    }, 500); // Small delay to allow theme to apply
+                });
+            }
+
+            // Initialize lore tablets after a short delay
+            setTimeout(initializeLoreTablets, 1500);
+
+        } catch (error) {
+            console.error('Enhanced narrative integration failed:', error);
+
+            // Fallback to static content with horror placeholder
+            const elements = ['hero-enhanced', 'about-enhanced'];
+            elements.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) {
+                    el.style.cursor = 'default';
+                    const fallbacks = {
+                        'hero-enhanced': "Experience intelligent nightmare systems [PLUG-IN] engaging convergence horror scenarios [RECOMPILED]. No downloads. No exit.",
+                        'about-enhanced': "ScaryGamesAI hosts persistent horror experiences. Games [error: reference not found]. No downloads. No support. Experience monitored."
+                    };
+                    el.textContent = fallbacks[id] || "Error in simulation module: DESCRIPTOR POOL EMPTY";
+                }
+            });
+        }
+    }, 800); // Delay start to allow CSS themes to load
+  </script>
 </body>
 
 </html>

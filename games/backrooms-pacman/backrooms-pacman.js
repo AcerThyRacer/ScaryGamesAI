@@ -610,11 +610,14 @@
     // Level selector handler
     var levelSelect = document.getElementById('level-select');
     var levelDesc = document.getElementById('level-description');
-    var levelDescriptions = {
-        yellow: 'The classic yellow wallpaper backrooms - standard layout with secrets',
-        mono: 'Desaturated version - harder to navigate, same layout',
-        infinite: 'Non-Euclidean geometry - paths loop unexpectedly'
-    };
+var levelDescriptions = {
+    yellow: 'The classic yellow wallpaper backrooms - standard layout with secrets',
+    mono: 'Desaturated version - harder to navigate, same layout',
+    infinite: 'Non-Euclidean geometry - paths loop unexpectedly',
+    flooded: 'Waterlogged corridors - slippery and dangerous',
+    construction: 'Unfinished areas with scaffolding and hazards',
+    sewers: '⚠️ TERRIFYING: Dark, slimy tunnels beneath the backrooms. Extreme danger!'
+};
 
     if (levelSelect) {
         levelSelect.addEventListener('change', function() {
@@ -639,9 +642,44 @@
             switchLevel(levelSelect.value);
         }
 
-        HorrorAudio.init();
-        startGame();
-    });
+// PHASE 8: Initialize all audio systems
+HorrorAudio.init();
+
+// Initialize enhanced audio systems
+if (typeof Advanced3DAudio !== 'undefined') {
+  Advanced3DAudio.init();
+  console.log('[Backrooms] Advanced3DAudio initialized');
+}
+
+if (typeof DynamicSoundtrack !== 'undefined') {
+  DynamicSoundtrack.init();
+  console.log('[Backrooms] DynamicSoundtrack initialized');
+}
+
+if (typeof ProceduralAudio !== 'undefined') {
+  ProceduralAudio.init();
+  console.log('[Backrooms] ProceduralAudio initialized');
+}
+
+if (typeof BinauralAudio !== 'undefined') {
+  BinauralAudio.init();
+  console.log('[Backrooms] BinauralAudio initialized');
+}
+
+// PHASE 8: Initialize unified audio integration system
+if (typeof Phase8AudioIntegration !== 'undefined') {
+  Phase8AudioIntegration.init();
+  console.log('[Backrooms] ✅ Phase 8 Audio Integration COMPLETE - All systems coordinated');
+}
+
+// PHASE 8: Setup reverb zones for the maze
+setupAudioReverbZones();
+
+// PHASE 8: Initialize binaural calibration
+initBinauralCalibration();
+
+startGame();
+});
     document.getElementById('fullscreen-btn').addEventListener('click', function () { GameUtils.toggleFullscreen(); });
 
     // ---- INPUT (abstraction layer) ----
@@ -712,37 +750,48 @@
 
     var input = new InputManager();
 
-    function handleAbilityHotkey(code) {
-        if (code === 'Digit1') return tryUseAbility('flashbang');
-        if (code === 'Digit2') return tryUseAbility('decoy');
-        if (code === 'Digit3') return tryUseAbility('phasing');
-        if (code === 'Digit4') return tryUseAbility('radar');
-        if (code === 'Digit5') return tryUseAbility('reversal');
-        return false;
+function handleAbilityHotkey(code) {
+    if (code === 'Digit1') return tryUseAbility('flashbang');
+    if (code === 'Digit2') return tryUseAbility('decoy');
+    if (code === 'Digit3') return tryUseAbility('phasing');
+    if (code === 'Digit4') return tryUseAbility('radar');
+    if (code === 'Digit5') return tryUseAbility('reversal');
+    
+    // Phase 6.1: New expanded abilities
+    if (typeof ExpandedAbilities !== 'undefined') {
+        if (code === 'Digit6') return ExpandedAbilities.useAbility('timeDilation', playerPos);
+        if (code === 'Digit7') return ExpandedAbilities.useAbility('possession', playerPos);
+        if (code === 'Digit8') return ExpandedAbilities.useAbility('blackoutBomb', playerPos);
     }
+    
+    return false;
+}
 
-    document.addEventListener('keydown', function (e) {
-        keys[e.code] = true; // legacy/debug
-        if (!isGameRunning()) return;
-        input.handleKey(e.code, true);
-        if (!e.repeat) handleAbilityHotkey(e.code);
-    });
-    document.addEventListener('keyup', function (e) {
-        keys[e.code] = false; // legacy/debug
-        input.handleKey(e.code, false);
-    });
-    document.addEventListener('mousemove', function (e) {
-        if (!pointerLocked || !isGameRunning()) return;
-        // Fix camera flick: Clamp movement delta to avoid massive jumps
-        var mx = Math.max(-100, Math.min(100, e.movementX));
-        var my = Math.max(-100, Math.min(100, e.movementY));
-        yaw -= mx * 0.002;
-        pitch -= my * 0.002;
-        pitch = Math.max(-1.2, Math.min(1.2, pitch));
-        // Normalize yaw to prevent float precision loss over time
-        yaw = yaw % (Math.PI * 2);
-    });
-    document.addEventListener('pointerlockchange', function () { pointerLocked = !!document.pointerLockElement; });
+// Store listeners for cleanup
+document.addEventListener('keydown', window.keydownListener = function (e) {
+	keys[e.code] = true; // legacy/debug
+	if (!isGameRunning()) return;
+	input.handleKey(e.code, true);
+	if (!e.repeat) handleAbilityHotkey(e.code);
+});
+document.addEventListener('keyup', window.keyupListener = function (e) {
+	keys[e.code] = false; // legacy/debug
+	input.handleKey(e.code, false);
+});
+document.addEventListener('mousemove', window.mousemoveListener = function (e) {
+	if (!pointerLocked || !isGameRunning()) return;
+	// Fix camera flick: Clamp movement delta to avoid massive jumps
+	var mx = Math.max(-100, Math.min(100, e.movementX));
+	var my = Math.max(-100, Math.min(100, e.movementY));
+	yaw -= mx * 0.002;
+	pitch -= my * 0.002;
+	pitch = Math.max(-1.2, Math.min(1.2, pitch));
+	// Normalize yaw to prevent float precision loss over time
+	yaw = yaw % (Math.PI * 2);
+});
+document.addEventListener('pointerlockchange', window.pointerlockListener = function () {
+	pointerLocked = !!document.pointerLockElement;
+});
     document.addEventListener('keydown', function (e) {
         if (e.code === 'Escape' && isGameRunning()) {
             setGameState(GAME_STATE.PAUSED);
@@ -1371,11 +1420,89 @@
             // Initialize ambient sounds
             initAmbientSounds();
 
-            console.log('[Backrooms] Spatial Audio initialized');
-        } catch (e) {
-            console.warn('[Backrooms] Audio initialization failed:', e);
-        }
-    }
+console.log('[Backrooms] Spatial Audio initialized');
+  } catch (e) {
+    console.warn('[Backrooms] Audio initialization failed:', e);
+  }
+}
+
+// PHASE 8: Setup reverb zones throughout the maze
+function setupAudioReverbZones() {
+  if (typeof Advanced3DAudio === 'undefined' || !Advanced3DAudio.createReverbZone) return;
+
+  console.log('[Backrooms] Setting up Phase 8 audio reverb zones...');
+
+  // Clear existing zones
+  Advanced3DAudio.clearReverbZones();
+
+  // Create reverb zones for different areas
+  // Center area (starting position) - small room reverb
+  Advanced3DAudio.createReverbZone('center', { x: CELL * COLS / 2, y: 1.5, z: CELL * ROWS / 2 }, CELL * 2, 'small');
+
+  // Corridor zones - corridor reverb
+  for (var i = 0; i < 5; i++) {
+    var x = CELL * 2 + i * CELL * 3;
+    var z = CELL * 2;
+    Advanced3DAudio.createReverbZone('corridor_' + i, { x: x, y: 1.5, z: z }, CELL * 1.5, 'corridor');
+  }
+
+  // Large open areas - warehouse reverb
+  Advanced3DAudio.createReverbZone('open_area_1', { x: CELL * 10, y: 1.5, z: CELL * 10 }, CELL * 4, 'warehouse');
+
+  // Tight spaces (if any) - tight reverb
+  Advanced3DAudio.createReverbZone('tight_1', { x: CELL * 5, y: 1.5, z: CELL * 8 }, CELL * 1.2, 'tight');
+
+  // Water areas (if present) - underwater reverb
+  // Advanced3DAudio.createReverbZone('water_1', { x: CELL * 15, y: 0.5, z: CELL * 5 }, CELL * 3, 'underwater');
+
+  console.log('[Backrooms] Created', Advanced3DAudio.config.reverbZones ? 'multiple' : '0', 'reverb zones');
+}
+
+// PHASE 8: Initialize binaural audio calibration
+function initBinauralCalibration() {
+  if (typeof BinauralAudio === 'undefined') return;
+
+  // Check if user has completed calibration before
+  var calibrationCompleted = localStorage.getItem('binaural_calibration_completed');
+
+  if (!calibrationCompleted && BinauralAudio.getCalibrationStatus) {
+    // Offer calibration on first run (after game starts)
+    setTimeout(function() {
+      console.log('[Backrooms] Offering binaural calibration...');
+      // Could show a UI prompt here
+      // For now, just log that calibration is available
+    }, 5000);
+  }
+}
+
+// PHASE 8: Trigger procedural audio events based on game state
+function triggerProceduralAudioEvent(eventType, params) {
+  if (typeof ProceduralAudio === 'undefined') return;
+
+  switch (eventType) {
+    case 'whisper':
+      ProceduralAudio.generateWhisper();
+      break;
+    case 'chant':
+      ProceduralAudio.generateChant(params.pitch, params.speed, params.intensity);
+      break;
+    case 'moan':
+      ProceduralAudio.generateMoan(params.pitch, params.duration, params.intensity);
+      break;
+    case 'footstep':
+      ProceduralAudio.generateFootstep(params.surface, params.velocity, params.weight);
+      break;
+    case 'wind':
+      ProceduralAudio.generateWind(params.intensity || 0.5);
+      break;
+    case 'tile_crack':
+      ProceduralAudio.generateTileCrack();
+      break;
+    case 'glass_break':
+      ProceduralAudio.generateGlassBreak();
+      break;
+  }
+}
 
     // Create 3D panner for positional audio
     function create3DPanner(x, y, z) {
@@ -1743,28 +1870,89 @@
         return 'tile';
     }
 
-    // ---- Audio Update Loop ----
-    function updateAudioSystem(dt) {
-        if (!audioContext) return;
+// ---- Audio Update Loop ----
+function updateAudioSystem(dt) {
+  if (!audioContext) return;
 
-        // Update listener position
-        updateAudioListener();
+  // Update listener position
+  updateAudioListener();
 
-        // Update footstep sounds
-        if (isGameRunning()) {
-            currentSurface = detectSurface();
-            updateFootsteps(dt, isRunning);
-        }
+  // Update footstep sounds
+  if (isGameRunning()) {
+    currentSurface = detectSurface();
+    updateFootsteps(dt, isRunning);
+  }
 
-        // Update ambient sound intensities based on danger
-        var intensity = visualIntensity || 0;
+  // Update ambient sound intensities based on danger
+  var intensity = visualIntensity || 0;
 
-        if (ambientSounds.fluorescent) {
-            // Reduce ambient hum when in danger (player focus shifts)
-            var humVolume = AUDIO_CONFIG.ambientVolume * 0.3 * (1 - intensity * 0.5);
-            ambientSounds.fluorescent.gain.gain.setTargetAtTime(humVolume, audioContext.currentTime, 0.5);
-        }
+  if (ambientSounds.fluorescent) {
+    // Reduce ambient hum when in danger (player focus shifts)
+    var humVolume = AUDIO_CONFIG.ambientVolume * 0.3 * (1 - intensity * 0.5);
+    ambientSounds.fluorescent.gain.gain.setTargetAtTime(humVolume, audioContext.currentTime, 0.5);
+  }
+
+  // PHASE 8: Enhanced Dynamic Soundtrack Integration
+  if (typeof DynamicSoundtrack !== 'undefined' && DynamicSoundtrack.updateIntensity) {
+    // Build game context for leitmotif triggers
+    var gameContext = {
+      pacman_proximity: pacDist || 999,
+      sanity: typeof SanitySystem !== 'undefined' ? SanitySystem.getSanity() : 100,
+      blackout: blackoutActive,
+      enemies_nearby: extraPacmans ? extraPacmans.length : 0,
+      discoveredSecret: false // Would be set when discovering secrets
+    };
+
+    // Update dynamic soundtrack with game context
+    DynamicSoundtrack.updateIntensity(intensity * 4, dt, gameContext);
+  }
+
+  // PHASE 8: Update Advanced 3D Audio reverb zones
+  if (typeof Advanced3DAudio !== 'undefined' && Advanced3DAudio.updateReverbZones) {
+    if (camera) {
+      Advanced3DAudio.updateReverbZones({
+        x: camera.position.x,
+        y: camera.position.y,
+        z: camera.position.z
+      });
     }
+  }
+
+  // PHASE 8: Update HorrorAudioEnhanced intensity
+  if (typeof HorrorAudioEnhanced !== 'undefined' && HorrorAudioEnhanced.setMusicIntensity) {
+    HorrorAudioEnhanced.setMusicIntensity(intensity);
+
+    // Change music theme based on intensity
+    if (intensity > 0.8) {
+      HorrorAudioEnhanced.setMusicTheme('chase');
+    } else if (intensity > 0.5) {
+      HorrorAudioEnhanced.setMusicTheme('tension');
+    } else if (intensity > 0.2) {
+      HorrorAudioEnhanced.setMusicTheme('ambient');
+    } else {
+      // PHASE 8: Silence mechanic - very low chance to trigger silence
+      if (Math.random() < 0.001 && intensity < 0.1) {
+        DynamicSoundtrack.setIntensityParameter('force_silence', true);
+      }
+    }
+  }
+
+  // PHASE 8: Update procedural audio based on game state
+  if (typeof ProceduralAudio !== 'undefined') {
+    // Generate subtle ambient drones during low intensity
+    if (intensity < 0.2 && Math.random() < 0.01) {
+      ProceduralAudio.playAmbientDrone(40 + Math.random() * 20, 5, 0.05);
+    }
+
+    // Generate heartbeat based on stress
+    if (typeof StressSystem !== 'undefined') {
+      var stress = StressSystem.getStress ? StressSystem.getStress() : 0;
+      if (stress > 50 && Math.random() < 0.02) {
+        ProceduralAudio.generateHeartbeat(60 + stress);
+      }
+    }
+  }
+}
 
     // ============================================
     // PHASE 3: LEVEL DESIGN EXPANSION
@@ -2073,35 +2261,65 @@
     }
 
     // Level switching
-    function switchLevel(levelName) {
-        var config = LEVEL_CONFIGS[levelName];
-        if (!config) return;
-
-        currentLevel = levelName;
-
-        // Update visual theme
-        scene.background = new THREE.Color(config.fogColor);
-        scene.fog.color = new THREE.Color(config.fogColor);
-        scene.fog.density = config.fogDensity;
-
-        // Update target fog density
-        targetFogDensity = config.fogDensity;
-        baseFogDensity = config.fogDensity;
-
-        // Generate level-specific features
-        if (config.hasSecrets) {
-            generateSecretRooms();
-            generateVisualLandmarks();
+function switchLevel(levelName) {
+    // Phase 3.2: Use Biome System if available
+    if (typeof BiomeSystem !== 'undefined') {
+        var biome = BiomeSystem.setBiome(levelName);
+        if (biome) {
+            currentLevel = levelName;
+            console.log('[Phase 3.2] Biome switched to:', biome.name);
+            return;
         }
-
-        generateCorridorVariety();
-
-        if (config.nonEuclidean) {
-            generateNonEuclideanGeometry();
-        }
-
-        console.log('[Backrooms] Switched to level:', config.name);
     }
+
+    // Fallback to original implementation
+    var config = LEVEL_CONFIGS[levelName];
+    if (!config) return;
+
+    currentLevel = levelName;
+    scene.background = new THREE.Color(config.fogColor);
+    scene.fog.color = new THREE.Color(config.fogColor);
+    scene.fog.density = config.fogDensity;
+    targetFogDensity = config.fogDensity;
+    baseFogDensity = config.fogDensity;
+
+    if (config.hasSecrets) {
+        generateSecretRooms();
+        generateVisualLandmarks();
+    }
+    generateCorridorVariety();
+    if (config.nonEuclidean) {
+        generateNonEuclideanGeometry();
+    }
+    console.log('[Backrooms] Switched to level:', config.name);
+}
+
+// Phase 3.1 & 3.4: Generate procedural level for roguelike mode
+function generateProceduralLevel(floorNum) {
+    if (typeof RoguelikeMode === 'undefined') return null;
+    
+    var floorData = RoguelikeMode.getFloorData();
+    if (!floorData) return null;
+    
+    console.log('[Phase 3] Generating procedural floor', floorNum);
+    
+    // Generate maze using procedural system
+    if (typeof ProceduralMaze !== 'undefined') {
+        var mazeSize = 20 + Math.floor(floorNum / 5) * 5;
+        mazeSize = Math.min(mazeSize, 31);
+        
+        var maze = ProceduralMaze.generate(mazeSize, mazeSize, floorData.seed, floorNum);
+        
+        // Apply biome settings
+        if (typeof BiomeSystem !== 'undefined') {
+            BiomeSystem.setBiome(floorData.biome);
+        }
+        
+        return maze;
+    }
+    
+    return null;
+}
 
     // Check for secret room discovery
     function checkSecretRoomDiscovery() {
@@ -2826,7 +3044,7 @@
     // ============================================
 
     // Statistics tracking
-    let playerStats = {
+    playerStats = {
         gamesPlayed: 0,
         gamesWon: 0,
         gamesLost: 0,
@@ -3228,31 +3446,210 @@
 
         initPostProcessing(); // Init blur buffers
 
-        window.addEventListener('resize', function () {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            if (blurTarget) blurTarget.setSize(window.innerWidth, window.innerHeight);
-        });
-        renderer.domElement.addEventListener('click', function () { if (isGameRunning() && !pointerLocked) renderer.domElement.requestPointerLock(); });
+window.addEventListener('resize', window.resizeListener = function () {
+	camera.aspect = window.innerWidth / window.innerHeight;
+	camera.updateProjectionMatrix();
+	renderer.setSize(window.innerWidth, window.innerHeight);
+	if (blurTarget) blurTarget.setSize(window.innerWidth, window.innerHeight);
+});
+renderer.domElement.addEventListener('click', window.canvasClickListener = function () {
+	if (isGameRunning() && !pointerLocked) renderer.domElement.requestPointerLock();
+});
 
         console.log('[Backrooms] calling buildMaze...');
         buildMaze();
         console.log('[Backrooms] buildMaze done, calling createLighting...');
         createLighting();
         console.log('[Backrooms] lighting done, calling createPacman...');
-        createPacman();
-        console.log('[Backrooms] pacman done');
-        initExtraPacmanPool();
-        spawnPellets();
+createPacman();
+console.log('[Backrooms] pacman done');
+initExtraPacmanPool();
+
+// Phase 2: Spawn enemy variants based on difficulty
+if (typeof EnemyVariants !== 'undefined' && typeof MultiAgentPacman !== 'undefined') {
+    var variantCount = Math.floor(currentDifficulty.multiplier - 1);
+    if (variantCount > 0) {
+        var variantKeys = ['ghost_pac', 'berserker', 'hunter', 'shadow', 'swarm'];
+        for (var vi = 0; vi < Math.min(variantCount, variantKeys.length); vi++) {
+            var variantPos = new THREE.Vector3(
+                playerPos.x + (Math.random() - 0.5) * 20,
+                0.8,
+                playerPos.z + (Math.random() - 0.5) * 20
+            );
+            EnemyVariants.spawnVariant(variantKeys[vi], variantPos);
+        }
+        console.log('[Phase 2.3] Spawned', variantCount, 'enemy variants');
+    }
+    
+    // Create multi-agent pack
+    var agentCount = Math.min(3, Math.floor(currentDifficulty.multiplier));
+    for (var ai = 0; ai < agentCount; ai++) {
+        var agentPos = new THREE.Vector3(
+            playerPos.x + (Math.random() - 0.5) * 15,
+            0.8,
+            playerPos.z + (Math.random() - 0.5) * 15
+        );
+        MultiAgentPacman.createAgent(agentPos, variantKeys[ai % variantKeys.length]);
+    }
+    console.log('[Phase 2.1] Created', agentCount, 'AI agents');
+}
+
+spawnPellets();
         createDustParticles();
         createDistortionOverlay();
         createBlackoutOverlay();
-        initVisualAtmosphere(); // Phase 1: Visual Atmosphere Overhaul
-        initSpatialAudio(); // Phase 2: 3D Spatial Audio
-        switchLevel('yellow'); // Phase 3: Level Design
-        initProgressionSystems(); // Phases 7-10: Progression Systems
-        console.log('[Backrooms] init() complete, scene.children:', scene.children.length);
+initVisualAtmosphere(); // Phase 1: Visual Atmosphere Overhaul
+initSpatialAudio(); // Phase 2: 3D Spatial Audio
+switchLevel('yellow'); // Phase 3: Level Design
+initProgressionSystems(); // Phases 7-10: Progression Systems
+
+// Phase 1 initialization
+if (typeof AdvancedLighting !== 'undefined') {
+    AdvancedLighting.init(scene, renderer, camera);
+    AdvancedLighting.createPlayerFlashlight();
+    console.log('[Phase 1.1] Advanced Lighting initialized');
+}
+if (typeof DecaySystem !== 'undefined') {
+    DecaySystem.init(scene);
+    console.log('[Phase 1.4] Decay System initialized');
+}
+if (typeof DynamicEnvironment !== 'undefined') {
+    DynamicEnvironment.init(scene);
+    console.log('[Phase 1.3] Dynamic Environment initialized');
+}
+
+// Phase 2: AI Systems Initialization
+if (typeof MultiAgentPacman !== 'undefined') {
+    MultiAgentPacman.init(scene, MAZE, playerPos);
+    console.log('[Phase 2.1] Multi-Agent Pacman initialized');
+}
+if (typeof AILearner !== 'undefined') {
+    console.log('[Phase 2.2] AI Learner ready');
+}
+if (typeof EnemyVariants !== 'undefined') {
+    EnemyVariants.init(scene);
+    console.log('[Phase 2.3] Enemy Variants initialized');
+}
+if (typeof ThreatAssessment !== 'undefined') {
+    ThreatAssessment.init();
+    console.log('[Phase 2.4] Threat Assessment initialized');
+}
+// Phase 2.5: AI Integration (unified coordination system)
+if (typeof Phase2AIIntegration !== 'undefined') {
+    var currentDifficulty = DIFFICULTY_SELECTOR_MAP[document.getElementById('difficulty-select')?.value] || 'standard';
+    Phase2AIIntegration.init(scene, MAZE, currentDifficulty);
+    console.log('[Phase 2.5] AI Integration System initialized - Full coordination active');
+}
+
+// Phase 3: Procedural Content Initialization
+if (typeof BiomeSystem !== 'undefined') {
+    BiomeSystem.init(scene);
+    console.log('[Phase 3.2] Biome System initialized');
+}
+if (typeof RoguelikeMode !== 'undefined') {
+    RoguelikeMode.init();
+    console.log('[Phase 3.4] Roguelike Mode initialized');
+}
+if (typeof ProceduralMaze !== 'undefined') {
+    console.log('[Phase 3.1] Procedural Maze generator ready');
+}
+// PHASE 3 ENHANCEMENTS
+if (typeof WaveFunctionCollapse !== 'undefined') {
+    console.log('[Phase 3.1+] WFC Algorithm ready - Advanced procedural generation');
+}
+if (typeof BiomeSystem !== 'undefined' && typeof renderer !== 'undefined' && camera) {
+    // Enhanced biome system with full visual/atmosphere support
+    console.log('[Phase 3.2+] Enhanced Biome System ready - 5 biomes available');
+}
+if (typeof RoguelikeMode !== 'undefined') {
+    console.log('[Phase 3.4+] Enhanced Roguelike ready - Meta-progression active');
+}
+
+// Phase 4: Psychological Horror Initialization
+if (typeof SanitySystem !== 'undefined') {
+    SanitySystem.init(scene, camera);
+    SanitySystem.createSanityHUD(document.body);
+    console.log('[Phase 4.1] Sanity System initialized');
+}
+if (typeof JumpscareSystem !== 'undefined') {
+    JumpscareSystem.init(scene, camera);
+    console.log('[Phase 4.2] Jumpscare System initialized');
+}
+if (typeof StressSystem !== 'undefined') {
+    StressSystem.init(scene, camera);
+    StressSystem.createStressHUD(document.body);
+    console.log('[Phase 4.3] Stress System initialized');
+}
+if (typeof HorrorDirector !== 'undefined') {
+    HorrorDirector.init();
+    console.log('[Phase 4.4] Horror Director initialized');
+}
+// PHASE 4 ENHANCEMENTS - Hallucination System
+if (typeof HallucinationSystem !== 'undefined') {
+    HallucinationSystem.init(scene, camera);
+    console.log('[Phase 4.5] ✅ Hallucination System initialized - Full psychological horror active');
+}
+
+// PHASE 3 & 4 INTEGRATION
+if (typeof Phase3_4_Integration !== 'undefined') {
+    Phase3_4_Integration.init(scene, renderer, camera);
+    console.log('[Phase 3-4] ✅ Integrated systems initialized - Procedural horror ready');
+}
+
+// Phase 5: Multiplayer & Social Initialization
+if (typeof Multiplayer !== 'undefined') {
+    console.log('[Phase 5.1] Multiplayer system ready');
+}
+if (typeof GhostSystem !== 'undefined') {
+    GhostSystem.init(scene);
+    console.log('[Phase 5.3] Ghost System initialized');
+}
+if (typeof VoiceChat !== 'undefined') {
+    VoiceChat.init();
+    console.log('[Phase 5.4] Voice Chat initialized');
+}
+if (typeof SocialFeatures !== 'undefined') {
+    SocialFeatures.init();
+    console.log('[Phase 5.4] Social Features initialized');
+}
+
+// Phase 6: Abilities & Combat Initialization
+if (typeof ExpandedAbilities !== 'undefined') {
+    ExpandedAbilities.init(scene, camera);
+    console.log('[Phase 6.1] Expanded Abilities initialized');
+}
+if (typeof CraftingSystem !== 'undefined') {
+    CraftingSystem.init(scene);
+    console.log('[Phase 6.2] Crafting System initialized');
+}
+if (typeof DefensiveMechanics !== 'undefined') {
+    DefensiveMechanics.init(scene);
+    console.log('[Phase 6.3] Defensive Mechanics initialized');
+}
+if (typeof SkillTrees !== 'undefined') {
+    SkillTrees.init();
+    console.log('[Phase 6.4] Skill Trees initialized');
+}
+
+// Phase 7: Story & Progression Initialization
+if (typeof CampaignMode !== 'undefined') {
+    CampaignMode.init();
+    console.log('[Phase 7.1] Campaign Mode initialized');
+}
+if (typeof StoryElements !== 'undefined') {
+    StoryElements.init(scene);
+    console.log('[Phase 7.2] Story Elements initialized');
+}
+if (typeof QuestSystem !== 'undefined') {
+    QuestSystem.init();
+    console.log('[Phase 7.3] Quest System initialized');
+}
+if (typeof CharacterProgression !== 'undefined') {
+    CharacterProgression.init();
+    console.log('[Phase 7.4] Character Progression initialized');
+}
+
+console.log('[Backrooms] init() complete, scene.children:', scene.children.length);
 
         if (window.QualityFX) {
             QualityFX.injectThreeJS(renderer, scene, camera);
@@ -3432,12 +3829,32 @@
             }
         }
 
-        // Player flashlight - realistic cone
+// Player flashlight - realistic cone
+// Phase 1.1: Use Advanced Lighting if available
+if (typeof AdvancedLighting !== 'undefined' && AdvancedLighting.createPlayerFlashlight) {
+    var advFlashlight = AdvancedLighting.createPlayerFlashlight();
+    if (advFlashlight) {
+        playerFlashlight = advFlashlight.spotLight;
+        camera.add(playerFlashlight);
+        playerFlashlight.target.position.set(0, -0.3, -1);
+        camera.add(playerFlashlight.target);
+        scene.add(camera);
+        console.log('[Phase 1.1] Using Advanced Lighting flashlight');
+    } else {
+        // Fallback to basic
         playerFlashlight = new THREE.SpotLight(0xFFEECC, 0.8, 35, Math.PI / 5.5, 0.6, 1.5);
         camera.add(playerFlashlight);
         playerFlashlight.target.position.set(0, -0.3, -1);
         camera.add(playerFlashlight.target);
         scene.add(camera);
+    }
+} else {
+    playerFlashlight = new THREE.SpotLight(0xFFEECC, 0.8, 35, Math.PI / 5.5, 0.6, 1.5);
+    camera.add(playerFlashlight);
+    playerFlashlight.target.position.set(0, -0.3, -1);
+    camera.add(playerFlashlight.target);
+    scene.add(camera);
+}
         applyDifficultyPresentation();
 
         // Apply initial proximity activation so we never start with 100+ visible lights.
@@ -4979,11 +5396,24 @@
                 
                 // Score multiplier cheat
                 var pelletValue = cheatsEnabled.scoreMultiplier ? 2 : 1;
-                collectedPellets += pelletValue;
-                
-                try {
-                    HorrorAudio.playCollect();
-                } catch (e) { console.warn('[Backrooms] playCollect error:', e); }
+collectedPellets += pelletValue;
+
+  try {
+    HorrorAudio.playCollect();
+  } catch (e) { console.warn('[Backrooms] playCollect error:', e); }
+
+  // PHASE 8: Trigger discovery leitmotif for special pellets
+  if (pelletType === 4 || pelletType === 5) { // Power pellet or secret
+    if (typeof DynamicSoundtrack !== 'undefined') {
+      DynamicSoundtrack.setIntensityParameter('discovery', true);
+    }
+    if (typeof HorrorAudioEnhanced !== 'undefined') {
+      HorrorAudioEnhanced.showSubtitle('pickup_powerup', {
+        text: 'Power-up acquired!',
+        duration: 2000
+      });
+    }
+  }
                 try {
                     updateHUD();
                 } catch (e) { console.warn('[Backrooms] updateHUD error:', e); }
@@ -5128,11 +5558,22 @@
                 nextBlackout -= dt;
                 if (nextBlackout <= 0 && isGameRunning()) {
                     // Start blackout!
-                    blackoutActive = true;
-                    setGameState(GAME_STATE.BLACKOUT);
-                    blackoutTimer = 4 + Math.random() * 2; // 4-6 seconds
-                    blackoutOverlay.style.opacity = '0.85';
-                    HorrorAudio.playJumpScare(); // scary sound on blackout
+blackoutActive = true;
+      setGameState(GAME_STATE.BLACKOUT);
+      blackoutTimer = 4 + Math.random() * 2; // 4-6 seconds
+      blackoutOverlay.style.opacity = '0.85';
+      HorrorAudio.playJumpScare(); // scary sound on blackout
+
+      // PHASE 8: Enhanced blackout audio
+      if (typeof DynamicSoundtrack !== 'undefined') {
+        DynamicSoundtrack.setIntensityParameter('blackout', true);
+      }
+      if (typeof ProceduralAudio !== 'undefined') {
+        // Generate random whispers during blackout
+        setTimeout(function() {
+          ProceduralAudio.generateWhisper();
+        }, 1000 + Math.random() * 2000);
+      }
                 }
             }
         }
@@ -5231,23 +5672,35 @@
     }
 
     // ---- GAME OVER / WIN ----
-    function gameOver() {
-        setGameState(GAME_STATE.DEAD);
+function gameOver() {
+    setGameState(GAME_STATE.DEAD);
 
-        // Update stats
-        playerStats.gamesPlayed++;
-        playerStats.gamesLost++;
-        playerStats.totalDeaths++;
-        playerStats.totalPellets += collectedPellets;
-        if (gameElapsed < playerStats.fastestTime) {
-            playerStats.fastestTime = gameElapsed;
+    // Update stats
+    playerStats.gamesPlayed++;
+    playerStats.gamesLost++;
+    playerStats.totalDeaths++;
+    playerStats.totalPellets += collectedPellets;
+    if (gameElapsed < playerStats.fastestTime) {
+        playerStats.fastestTime = gameElapsed;
+    }
+    incrementDeathCounter();
+    checkAchievements();
+    savePlayerStats();
+
+    // Phase 5.3: Create ghost if multiplayer is active
+    if (typeof Multiplayer !== 'undefined' && Multiplayer.getState().connected) {
+        var mpState = Multiplayer.getState();
+        if (typeof GhostSystem !== 'undefined') {
+            GhostSystem.createGhost(mpState.localPlayerId, {
+                position: camera.position,
+                state: 'dead'
+            });
+            console.log('[Game] Player died, created ghost');
         }
-        incrementDeathCounter();
-        checkAchievements();
-        savePlayerStats();
+    }
 
-        // Visual Enhancements: Death effect
-        GameUtils.onPlayerDeath();
+    // Visual Enhancements: Death effect
+    GameUtils.onPlayerDeath();
 
         // AI System: End session with loss and record death
         if (typeof SGAIAI !== 'undefined') {
@@ -5605,10 +6058,188 @@
                 updateFlickeringLights(fixedStep);
                 updateBlackout(fixedStep);
                 updateExtraSpawns(fixedStep);
-                updateVisualAtmosphere(fixedStep); // Phase 1: Visual Atmosphere
-                updateAudioSystem(fixedStep); // Phase 2: 3D Spatial Audio
-                checkSecretRoomDiscovery(); // Phase 3: Check for secret rooms
-                updateProgressionSystems(fixedStep); // Phases 7-10: Progression Systems
+updateVisualAtmosphere(fixedStep); // Phase 1: Visual Atmosphere
+
+// Phase 8: Unified Audio Integration (replaces individual audio updates)
+if (typeof Phase8AudioIntegration !== 'undefined' && Phase8AudioIntegration.update) {
+    Phase8AudioIntegration.update(
+        fixedStep,
+        playerPos,
+        pacman ? pacman.position : null,
+        {
+            isRunning: isRunning,
+            isMoving: currentSpeed > 0.1,
+            blackoutActive: blackoutActive,
+            jumpscareActive: false
+        }
+    );
+} else {
+    updateAudioSystem(fixedStep); // Fallback to legacy system
+}
+
+checkSecretRoomDiscovery(); // Phase 3: Check for secret rooms
+updateProgressionSystems(fixedStep); // Phases 7-10: Progression Systems
+
+// PHASE 3 & 4 INTEGRATED UPDATES
+if (typeof Phase3_4_Integration !== 'undefined') {
+    Phase3_4_Integration.update(
+        fixedStep,
+        playerPos,
+        pacman ? pacman.position : null,
+        {
+            blackoutActive: blackoutActive,
+            sanity: typeof SanitySystem !== 'undefined' ? SanitySystem.getSanity() : 100,
+            stress: typeof StressSystem !== 'undefined' ? StressSystem.getStress() : 0
+        }
+    );
+}
+
+// Phase 1 updates
+if (typeof AdvancedLighting !== 'undefined') {
+    AdvancedLighting.updateLights(fixedStep, renderTime);
+}
+if (typeof DecaySystem !== 'undefined') {
+    var currentSanity = (typeof BackroomsEnhancements !== 'undefined') ? 
+        BackroomsEnhancements.sanity.sanity : 100;
+    DecaySystem.update(fixedStep, playerPos, pacman ? pacman.position : null, currentSanity);
+}
+if (typeof DynamicEnvironment !== 'undefined') {
+    var currentSanity2 = (typeof BackroomsEnhancements !== 'undefined') ? 
+        BackroomsEnhancements.sanity.sanity : 100;
+    DynamicEnvironment.update(fixedStep, playerPos, pacman ? pacman.position : null, currentSanity2, blackoutActive);
+}
+
+// Phase 2: AI Systems Updates (UNIFIED INTEGRATION)
+if (typeof Phase2AIIntegration !== 'undefined') {
+    // Use unified integration system for coordinated AI behavior
+    var allPacmans = [];
+    if (pacman) allPacmans.push(pacman);
+    if (extraPacmans && extraPacmans.length) allPacmans = allPacmans.concat(extraPacmans);
+    
+    Phase2AIIntegration.update(
+        fixedStep,
+        playerPos,
+        pacman ? pacman.position : null,
+        extraPacmans,
+        {
+            isRunning: isRunning,
+            nearEnemies: allPacmans.length,
+            gameState: gameState
+        }
+    );
+} else {
+    // Fallback to individual system updates if integration not available
+    if (typeof AILearner !== 'undefined') {
+        AILearner.recordPlayerPosition(playerPos, Date.now());
+    }
+    if (typeof MultiAgentPacman !== 'undefined') {
+        MultiAgentPacman.update(fixedStep, playerPos, pacman ? pacman.position : null);
+    }
+    if (typeof EnemyVariants !== 'undefined') {
+        var activeVariants = EnemyVariants.getActiveVariants();
+        for (var i = 0; i < activeVariants.length; i++) {
+            EnemyVariants.updateVariant(activeVariants[i], fixedStep, playerPos);
+        }
+    }
+    if (typeof ThreatAssessment !== 'undefined') {
+        ThreatAssessment.update(fixedStep);
+        if (pacman) {
+            ThreatAssessment.updatePlayerSighting(playerPos);
+        }
+    }
+}
+
+// Phase 4: Psychological Horror Updates
+var currentSanityVal = 100;
+if (typeof SanitySystem !== 'undefined') {
+    var isHiding = false;
+    SanitySystem.update(fixedStep, playerPos, pacman ? pacman.position : null, blackoutActive, isHiding);
+    currentSanityVal = SanitySystem.getSanity();
+    SanitySystem.updateSanityHUD();
+}
+
+if (typeof StressSystem !== 'undefined') {
+    StressSystem.update(fixedStep, playerPos, pacman ? pacman.position : null, currentSanityVal, blackoutActive, isRunning);
+    StressSystem.updateStressHUD();
+    StressSystem.applyStressEffects(camera);
+}
+
+if (typeof JumpscareSystem !== 'undefined') {
+    JumpscareSystem.update(fixedStep, playerPos, pacman ? pacman.position : null, currentSanityVal, blackoutActive);
+}
+
+if (typeof HorrorDirector !== 'undefined') {
+    HorrorDirector.update(fixedStep,
+        { sanity: currentSanityVal, stress: StressSystem.getStress() },
+        { nearby: 1 + (extraPacmans ? extraPacmans.length : 0) },
+        { dark: true, blackout: blackoutActive }
+    );
+}
+
+// Phase 5: Multiplayer & Social Updates
+if (typeof Multiplayer !== 'undefined' && Multiplayer.getState().connected) {
+    Multiplayer.updatePlayerPosition(
+        camera.position,
+        { x: camera.rotation.y, y: camera.rotation.x }
+    );
+    Multiplayer.updatePlayerState({
+        sanity: currentSanityVal,
+        stress: StressSystem ? StressSystem.getStress() : 0,
+        pellets: collectedPellets
+    });
+}
+
+if (typeof GhostSystem !== 'undefined') {
+    var livingPlayers = Multiplayer.getState ? Multiplayer.getRemotePlayers() : [];
+    var ghosts = GhostSystem.getGhosts();
+    for (var ghostId in ghosts) {
+        GhostSystem.updateGhost(ghosts[ghostId], fixedStep, livingPlayers);
+    }
+}
+
+if (typeof VoiceChat !== 'undefined' && VoiceChat.isLocalPlayerSpeaking) {
+    var isSpeaking = VoiceChat.isLocalPlayerSpeaking();
+    if (isSpeaking && Multiplayer.setPlayerSpeaking) {
+        Multiplayer.setPlayerSpeaking(Multiplayer.getState().localPlayerId, true);
+    }
+}
+
+// Phase 6: Abilities & Combat Updates
+if (typeof ExpandedAbilities !== 'undefined') {
+    var activeEffects = ExpandedAbilities.getActiveEffects();
+    if (activeEffects.possession && playerPos) {
+        ExpandedAbilities.controlPossessedPacman(playerPos);
+    }
+}
+
+if (typeof CraftingSystem !== 'undefined') {
+    var collected = CraftingSystem.collectResource(playerPos, 2);
+    if (collected.length > 0) {
+        console.log('[Phase 6.2] Collected resources:', collected);
+    }
+}
+
+if (typeof DefensiveMechanics !== 'undefined') {
+    DefensiveMechanics.updateHiding(fixedStep, playerPos);
+    var enemies = [];
+    if (pacman) enemies.push(pacman);
+    if (extraPacmans) enemies = enemies.concat(extraPacmans);
+    DefensiveMechanics.updateTraps(fixedStep, enemies);
+}
+
+// Phase 7: Story & Progression Updates
+if (typeof StoryElements !== 'undefined') {
+    StoryElements.checkCollection(playerPos, 2);
+    StoryElements.renderWallMessages(camera);
+}
+
+if (typeof QuestSystem !== 'undefined') {
+    QuestSystem.updateProgress('time', fixedStep);
+}
+
+if (typeof CharacterProgression !== 'undefined') {
+    CharacterProgression.addXP(fixedStep * 0.1);
+}
 
                 accumulator -= fixedStep;
                 subSteps++;
@@ -5653,19 +6284,112 @@
                 lastPitch = 0;
             }
 
-            if (blurTarget) {
-                renderer.setRenderTarget(blurTarget);
-                renderer.render(scene, camera);
-                renderer.setRenderTarget(null);
-                blurMaterial.uniforms.tDiffuse.value = blurTarget.texture;
-                renderer.render(blurScene, blurCamera);
-            } else {
-                renderer.render(scene, camera);
-            }
+// Phase 1.1: Advanced Lighting Render Pass
+if (typeof AdvancedLighting !== 'undefined') {
+    // Apply ray-marched shadows
+    AdvancedLighting.applyRayMarchedShadows();
+    
+    // Render volumetric lighting pass
+    AdvancedLighting.renderVolumetricPass();
+}
 
-            restoreAfterRender();
-        } catch (renderErr) {
-            console.error('[Backrooms] Render error (recovered):', renderErr);
-        }
-    }
+if (blurTarget) {
+    renderer.setRenderTarget(blurTarget);
+    renderer.render(scene, camera);
+    renderer.setRenderTarget(null);
+    blurMaterial.uniforms.tDiffuse.value = blurTarget.texture;
+    renderer.render(blurScene, blurCamera);
+} else {
+    renderer.render(scene, camera);
+}
+
+restoreAfterRender();
+} catch (renderErr) {
+		console.error('[Backrooms] Render error (recovered):', renderErr);
+	}
+}
+
+/**
+ * Cleanup function to prevent memory leaks
+ * Call this when game state changes or game is stopped
+ */
+function cleanupGame() {
+	console.log('[Backrooms] Cleaning up game resources...');
+
+	// Remove event listeners
+	window.removeEventListener('resize', window.resizeListener);
+	document.removeEventListener('keydown', window.keydownListener);
+	document.removeEventListener('keyup', window.keyupListener);
+	document.removeEventListener('mousemove', window.mousemoveListener);
+	document.removeEventListener('pointerlockchange', window.pointerlockListener);
+
+	// Clear animation frames
+	if (window.animationFrameId) {
+		cancelAnimationFrame(window.animationFrameId);
+		window.animationFrameId = null;
+	}
+
+	// Clear intervals
+	if (window.gameInterval) {
+		clearInterval(window.gameInterval);
+		window.gameInterval = null;
+	}
+	if (window.aiInterval) {
+		clearInterval(window.aiInterval);
+		window.aiInterval = null;
+	}
+
+	// Stop audio
+	if (backgroundMusic) {
+		backgroundMusic.pause();
+		backgroundMusic.src = '';
+	}
+
+	// Dispose Three.js resources
+	if (renderer) {
+		renderer.dispose();
+		renderer.forceContextLoss();
+		renderer.domElement.removeEventListener('click', window.canvasClickListener);
+	}
+
+	if (scene) {
+		// Traverse and dispose all geometries and materials
+		scene.traverse((object) => {
+			if (object.geometry) {
+				object.geometry.dispose();
+			}
+			if (object.material) {
+				if (Array.isArray(object.material)) {
+					object.material.forEach(m => m.dispose());
+				} else {
+					object.material.dispose();
+				}
+			}
+		});
+	}
+
+	// Clear references
+	scene = null;
+	camera = null;
+	renderer = null;
+	blurMaterial = null;
+	blurTarget = null;
+
+	console.log('[Backrooms] Cleanup complete');
+}
+
+// Store listeners for cleanup
+window.resizeListener = null;
+window.keydownListener = null;
+window.keyupListener = null;
+window.mousemoveListener = null;
+window.pointerlockListener = null;
+window.canvasClickListener = null;
+window.animationFrameId = null;
+window.gameInterval = null;
+window.aiInterval = null;
+
+// Expose cleanup function globally
+window.cleanupBackroomsGame = cleanupGame;
+
 })();

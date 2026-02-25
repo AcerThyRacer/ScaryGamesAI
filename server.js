@@ -9,6 +9,7 @@ const path = require('path');
 const cors = require('cors');
 const helmet = require('helmet');
 const compression = require('compression');
+const rateLimit = require('./middleware/rate-limiter');
 const { validateEnvironment } = require('./config/env');
 const observability = require('./services/observability');
 
@@ -75,6 +76,15 @@ app.use('/api/webhooks/stripe', express.raw({ type: 'application/json' }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Apply tiered rate limiting to all API routes
+app.use('/api', rateLimit.tiered);
+
+// Apply strict rate limiting to auth endpoints
+app.use('/api/auth', rateLimit.strict);
+
+// Apply search rate limiting to search endpoints
+app.use('/api/search', rateLimit.search);
+
 app.use('/api', observability.httpMetricsMiddleware());
 
 // API cache policy alignment for origin and edge behavior.
@@ -90,6 +100,70 @@ app.use('/api', (req, res, next) => {
 // API Routes
 const apiRoutes = require('./api');
 app.use('/api', apiRoutes);
+
+// Phase 1 & 2 AI Features - API Routes
+const recommendationsRoutes = require('./api/recommendations');
+const abTestingRoutes = require('./api/ab-testing');
+const anticheatRoutes = require('./api/anticheat');
+const dynamicInventoryRoutes = require('./api/dynamic-inventory');
+const engagementRoutes = require('./api/engagement');
+const smartBundlesRoutes = require('./api/smart-bundles');
+const dynamicChallengesRoutes = require('./api/dynamic-challenges');
+
+// Phase 2: Social Commerce & Competitive Economy
+const marketplaceRoutes = require('./api/marketplace');
+const limitedEditionRoutes = require('./api/limited-edition');
+const guildsRoutes = require('./api/guilds');
+const socialGiftingRoutes = require('./api/social-gifting');
+
+app.use('/api/v1/recommendations', recommendationsRoutes);
+app.use('/api/v1/ab', abTestingRoutes);
+app.use('/api/v1/anticheat', anticheatRoutes);
+app.use('/api/v1/inventory', dynamicInventoryRoutes);
+app.use('/api/v1/engagement', engagementRoutes);
+app.use('/api/v1/bundles', smartBundlesRoutes);
+app.use('/api/v1/challenges', dynamicChallengesRoutes);
+
+// Phase 2 Routes
+app.use('/api/v1/marketplace', marketplaceRoutes);
+app.use('/api/v1/drops', limitedEditionRoutes);
+app.use('/api/v1/guilds', guildsRoutes);
+app.use('/api/v1/gifting', socialGiftingRoutes);
+
+// Phase 3: Battle Pass Evolution & Crafting
+const battlePassRoutes = require('./api/battle-pass');
+const craftingSystemRoutes = require('./api/crafting-system');
+const accelerationRoutes = require('./api/acceleration');
+
+// Phase 4: Cross-Platform Progression
+const universalProgressionRoutes = require('./api/universal-progression');
+const currencyConversionRoutes = require('./api/currency-conversion');
+const mobileCompanionRoutes = require('./api/mobile-companion');
+
+app.use('/api/v1/battle-pass', battlePassRoutes);
+app.use('/api/v1/crafting', craftingSystemRoutes);
+app.use('/api/v1/acceleration', accelerationRoutes);
+
+// Phase 4 Routes
+app.use('/api/v1/progression', universalProgressionRoutes);
+app.use('/api/v1/currency', currencyConversionRoutes);
+app.use('/api/v1/mobile', mobileCompanionRoutes);
+
+// Phase 1: Cross-Game Meta-Progression (NEW)
+const universalProfileRoutes = require('./api/universal-profile');
+const matchmakingRoutes = require('./api/matchmaking');
+
+// Phase 2: Interconnected Narrative (NEW)
+const loreSystemRoutes = require('./api/lore-system');
+const crossGameEventsRoutes = require('./api/cross-game-events');
+
+// Phase 1 Routes
+app.use('/api/v1/profile', universalProfileRoutes);
+app.use('/api/v1/matchmaking', matchmakingRoutes);
+
+// Phase 2 Routes
+app.use('/api/v1/lore', loreSystemRoutes);
+app.use('/api/v1/events', crossGameEventsRoutes);
 
 // Static file serving
 const cacheableAssetExts = new Set(['.css', '.js', '.png', '.jpg', '.jpeg', '.gif', '.svg', '.ico', '.mp3', '.wav', '.ogg', '.woff', '.woff2', '.mp4', '.webm', '.json', '.webp', '.avif']);
@@ -155,18 +229,18 @@ app.use((err, req, res, next) => {
 function initializeDemoData() {
     const db = require('./models/database');
     
-    // Create demo user if not exists
-    const demoUser = db.findOne('users', { id: 'demo-user' });
-    if (!demoUser) {
-        db.create('users', {
-            id: 'demo-user',
-            username: 'DemoUser',
-            email: 'demo@scarygames.ai',
-            authToken: 'demo-token',
-            createdAt: new Date().toISOString()
-        });
-        console.log('✅ Demo user created');
-    }
+	// Create demo user if not exists
+	const demoUser = db.findOne('users', { id: 'demo-user' });
+	if (!demoUser) {
+		db.create('users', {
+			id: 'demo-user',
+			username: 'DemoUser',
+			email: 'demo@scarygames.ai',
+			authToken: process.env.NODE_ENV !== 'production' ? 'demo-token' : null,
+			createdAt: new Date().toISOString()
+		});
+		console.log('✅ Demo user created');
+	}
 
     // Initialize community goals if not exists
     const goals = db.findAll('communityGoals');

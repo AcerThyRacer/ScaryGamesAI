@@ -55,6 +55,13 @@ export default {
 
       try {
         const upstream = await fetch(proxyRequest);
+
+        // Cloudflare returns 530 when the upstream origin is misconfigured/unreachable (often DNS/origin issues).
+        // Surface a consistent JSON error so clients don't attempt to parse an HTML error page.
+        if (upstream.status === 530) {
+          return jsonError(502, 'API_UPSTREAM_530', 'API backend is unreachable.');
+        }
+
         return new Response(upstream.body, {
           status: upstream.status,
           statusText: upstream.statusText,

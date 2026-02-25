@@ -578,7 +578,11 @@ class PaymentService {
         idempotencyKey = null,
         requestId = null
     }) {
-        if (!senderUserId || !recipientUserId) throw new Error('senderUserId and recipientUserId are required');
+        if (!senderUserId || !recipientUserId) {
+            const err = new Error('senderUserId and recipientUserId are required');
+            err.code = 'INVALID_INPUT';
+            throw err;
+        }
         if (senderUserId === recipientUserId) {
             const err = new Error('Cannot gift subscription to yourself');
             err.code = 'SELF_GIFT_FORBIDDEN';
@@ -601,9 +605,25 @@ class PaymentService {
         if (postgres.isEnabled()) {
             const extensionDays = billingCycle === 'annual' ? 365 : 30;
 
-            await postgres.query('BEGIN');
+            const client = await pool.connect();
             try {
-                const recipientUser = await postgres.query(
+                await client.query('BEGIN');
+
+                // Check for duplicate transaction
+                if (idempotencyKey) {
+                    const existingTransaction = await client.query(
+                        `SELECT id FROM gift_transactions WHERE idempotency_key = $1 LIMIT 1`,
+                        [idempotencyKey]
+                    );
+
+                    if (existingTransaction.rows.length > 0) {
+                        const err = new Error('Transaction already processed');
+                        err.code = 'DUPLICATE_TRANSACTION';
+                        throw err;
+                    }
+                }
+
+                const recipientUser = await client.query(
                     'SELECT id FROM users WHERE id = $1 LIMIT 1 FOR UPDATE',
                     [recipientUserId]
                 );
@@ -613,7 +633,7 @@ class PaymentService {
                     throw err;
                 }
 
-                const existingActive = await postgres.query(
+                const existingActive = await client.query(
                     `
                       SELECT id, expires_at
                       FROM subscriptions
@@ -635,7 +655,7 @@ class PaymentService {
                 const expiresAt = base.toISOString();
 
                 if (existingActive.rows[0]) {
-                    await postgres.query(
+                    await client.query(
                         `
                           UPDATE subscriptions
                           SET tier = $2,
@@ -647,7 +667,7 @@ class PaymentService {
                         [existingActive.rows[0].id, tier, billingCycle, expiresAt]
                     );
                 } else {
-                    await postgres.query(
+                    await client.query(
                         `
                           INSERT INTO subscriptions (
                             id, user_id, tier, billing_cycle, status, started_at, expires_at,
@@ -660,16 +680,16 @@ class PaymentService {
                 }
 
                 const giftId = makeId('gift');
-                await postgres.query(
+                await client.query(
                     `
                       INSERT INTO gift_transactions (
                         id, gift_type, sender_user_id, recipient_user_id,
                         subscription_tier, subscription_billing_cycle, status,
-                        message, metadata, delivered_at, created_at, updated_at
+                        message, metadata, delivered_at, created_at, updated_at, idempotency_key
                       )
                       VALUES (
                         $1, 'subscription', $2, $3, $4, $5, 'delivered',
-                        $6, $7::jsonb, NOW(), NOW(), NOW()
+                        $6, $7::jsonb, NOW(), NOW(), NOW(), $8
                       )
                     `,
                     [
@@ -679,7 +699,8 @@ class PaymentService {
                         tier,
                         billingCycle,
                         message,
-                        JSON.stringify({ source: 'subscription_gift', giftedBy: senderUserId })
+                        JSON.stringify({ source: 'subscription_gift', giftedBy: senderUserId }),
+                        idempotencyKey
                     ]
                 );
 
@@ -698,7 +719,7 @@ class PaymentService {
                     }
                 });
 
-                await postgres.query('COMMIT');
+                await client.query('COMMIT');
 
                 return {
                     success: true,
@@ -709,36 +730,44 @@ class PaymentService {
                     expiresAt
                 };
             } catch (error) {
-                await postgres.query('ROLLBACK');
+                await client.query('ROLLBACK');
+                console.error('[PaymentService] Gift subscription transaction failed:', error);
                 throw error;
+            } finally {
+                client.release();
             }
         }
 
         // JSON fallback for backward compatibility in non-PG mode.
-        const now = new Date();
-        const expiresAt = new Date(now);
-        if (billingCycle === 'annual') expiresAt.setFullYear(expiresAt.getFullYear() + 1);
-        else expiresAt.setMonth(expiresAt.getMonth() + 1);
+        try {
+            const now = new Date();
+            const expiresAt = new Date(now);
+            if (billingCycle === 'annual') expiresAt.setFullYear(expiresAt.getFullYear() + 1);
+            else expiresAt.setMonth(expiresAt.getMonth() + 1);
 
-        db.create('subscriptions', {
-            userId: recipientUserId,
-            tier,
-            billingCycle,
-            status: 'active',
-            startedAt: now.toISOString(),
-            expiresAt: expiresAt.toISOString(),
-            giftedBy: senderUserId,
-            giftMessage: message || null
-        });
+            db.create('subscriptions', {
+                userId: recipientUserId,
+                tier,
+                billingCycle,
+                status: 'active',
+                startedAt: now.toISOString(),
+                expiresAt: expiresAt.toISOString(),
+                giftedBy: senderUserId,
+                giftMessage: message || null
+            });
 
-        return {
-            success: true,
-            giftId: `gift_${Date.now()}`,
-            recipientUserId,
-            tier,
-            billingCycle,
-            expiresAt: expiresAt.toISOString()
-        };
+            return {
+                success: true,
+                giftId: `gift_${Date.now()}`,
+                recipientUserId,
+                tier,
+                billingCycle,
+                expiresAt: expiresAt.toISOString()
+            };
+        } catch (error) {
+            console.error('[PaymentService] Gift subscription failed in JSON mode:', error);
+            throw error;
+        }
     }
 
     async recordRevenuePurchaseTransaction({

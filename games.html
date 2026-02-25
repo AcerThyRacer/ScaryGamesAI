@@ -54,7 +54,7 @@
         <section class="container">
             <div style="padding-top:40px;" class="section-header">
                 <h2>All Games</h2>
-                <p>Choose your fate. Each game is a unique nightmare.</p>
+                <p id="games-header-subtitle">Choose your fate. Each game represents a [UNIQUE PATHWAY UNFOLDMENT].</p>
             </div>
             <div class="games-grid" id="games-grid"></div>
         </section>
@@ -105,7 +105,428 @@
     <script src="/js/daily.js" defer></script>
     <script src="/js/social.js" defer></script>
     <script src="/js/customizer.js" defer></script>
+  <script src="/js/theme-writing-manager.js" defer></script>
   <script type="module" src="/js/perf-entry.js"></script>
+
+  <script>
+    // Enhanced Horror Writing Integration - Phase 1
+    document.addEventListener('DOMContentLoaded', function() {
+        // Wait for theme manager to load
+        const checkThemeManager = setInterval(async () => {
+            if (window.ThemeWritingManager && typeof ThemeWritingManager === 'function') {
+                clearInterval(checkThemeManager);
+                initializeEnhancedNarrative();
+            }
+        }, 100);
+
+        async function initializeEnhancedNarrative() {
+            try {
+                const themeManager = new ThemeWritingManager();
+                await themeManager.initialize();
+                console.log('Horror narrative system engaged');
+
+                // Enhance the games header subtitle
+                enhanceGamesPage(themeManager);
+
+                // Set up periodic theme transitions for dynamic atmosphere
+                setupThemeTransitions(themeManager);
+
+            } catch (error) {
+                console.error('Enhanced narrative integration failed:', error);
+
+                // Fallback for header if enhancements fail
+                const subtitle = document.getElementById('games-header-subtitle');
+                if (subtitle) {
+                    subtitle.innerHTML = 'Choose your fate. Each game is a <span style="opacity:0.7;">[SESSION ACTIVATED]</span> pathway into darkness.';
+                }
+            }
+        }
+
+        function enhanceGamesPage(manager) {
+            // Enhance the main subtitle
+            const subtitle = document.getElementById('games-header-subtitle');
+            if (subtitle) {
+                const template = "Navigate the catalog [WARNING: cascade potential] to uncover gateways that <em>echo</em> across {narrative partitions}. Each selection represents a {unique inflection junction} where player cognition will be {judged}.";
+                const enhancedText = manager.enhanceContent(template, 'section_intro', {
+                    horror_intensity: 0.85,
+                    written_reliability: 0.7,
+                    cross_game_awareness: true
+                });
+
+                // Apply a more aggressive typewriter effect with horror elements
+                const typeOptions = {
+                    speedVariance: [15, 10, 20, 8, 18],
+                    glitchProb: 0.15,
+                    skipProb: 0.1,
+                    degradeAfter: 20,
+                    maxGarbledLength: 4
+                };
+                typewriterEffect(subtitle, enhancedText, typeOptions);
+            }
+
+            // Listen for game grid population and enhance descriptions
+            document.addEventListener('gamegrid:populated', function() {
+                enhanceGameCards(manager);
+            });
+
+            // Also check periodically in case event was missed
+            const gridCheck = setInterval(() => {
+                if (document.querySelector('.game-card')) {
+                    enhanceGameCards(manager);
+                    clearInterval(gridCheck);
+                }
+            }, 1000);
+        }
+
+        function enhanceGameCards(manager) {
+            const grid = document.querySelector('.games-grid');
+            if (!grid) return;
+
+            // Wait for cards to fully render
+            setTimeout(() => {
+                const cards = document.querySelectorAll('.game-card');
+                if (cards.length === 0) return;
+
+                cards.forEach(card => {
+                    const desc = card.querySelector('.game-card-desc');
+                    const title = card.querySelector('.game-card-title');
+                    if (!desc || !title || desc.dataset.enhanced === 'true') return;
+
+                    // Store original description for system internal validation
+                    const originalDesc = desc.textContent;
+                    desc.dataset.original = originalDesc;
+                    desc.dataset.gameTitle = title.textContent || 'unknown_game';
+
+                    // Different description types for variety
+                    const descriptionTemplates = {
+                        'standard': "[GAME BRIEF_INIT] {game_title} presents: {original_desc}",
+                        'discovery': "[NARRATIVE MODULE V2.4] Interacting with {game_title} triggers {unknown_anomalies_available} anomalies to unfold from {player_perception_layer}",
+                        'warning': "[CAUTIONARY PROTOCOL] {game_title} contains {hazardous_content}. Recommend {peripheral_monitoring} during {player_immersion_experience}",
+                        'technical': "[SYSTEM_DIAGNOSIS] {game_title} — {original_desc} // WARNING: {algorithm_identification} identifies {consistent thematic patterns} in recent player outcomes",
+                        'cursory': "{original_desc} [VARIANT: {minor} instance correction available for CONTEXT={player_sensitivity}]"
+                    };
+
+                    // Randomly select a template approach
+                    const templateKeys = Object.keys(descriptionTemplates);
+                    const randomTemplate = descriptionTemplates[templateKeys[Math.floor(Math.random() * templateKeys.length)]];
+
+                    try {
+                        const enhancedText = manager.enhanceContent(
+                            randomTemplate,
+                            'game_description',
+                            {
+                                game_title: title.textContent,
+                                player_sanity: 0.6 + (Math.random() * 0.4),
+                                anomaly_probability: 0.3 + (Math.random() * 0.6),
+                                contextual_awareness: grid.children.length > 5 ? 'systematic' : 'localized'
+                            }
+                        );
+
+                        // Apply the enhanced description
+                        desc.dataset.enhanced = 'true';
+                        typewriterEffect(
+                            desc,
+                            enhancedText,
+                            {
+                                speedVariance: [20, 12, 16, 9, 14],
+                                glitchProb: 0.2,
+                                skipProb: 0.08,
+                                degradeAfter: 10,
+                                inclusionLevels: title.textContent.toLowerCase().includes('horror') ?
+                                    ['high'] : ['medium', 'low'],
+                                allowTextDecay: true,
+                                semanticNoise: 0.22
+                            }
+                        );
+
+                    } catch (error) {
+                        console.warn('Description enhancement failed for', title.textContent, ':', error);
+                        desc.innerHTML = originalDesc + '<span style="opacity:0.5;">{enhancement.fault}</span>';
+                    }
+
+                    // Add narrative reaction effects on hover
+                    card.addEventListener('mouseenter', applyNarrativeHover);
+                    card.addEventListener('mouseleave', removeNarrativeHover);
+                });
+            }, 500);
+        }
+
+        function typewriterEffect(element, text, options) {
+            if (!element) return;
+
+            // Handle options with defaults
+            const speedArr = options.speedVariance || [18, 12, 10, 15];
+            const glitchProb = options.glitchProb || 0.12;
+            const skipProb = options.skipProb || 0.08;
+            const degradeAfter = options.degradeAfter || 20;
+            const inclusionLevel = options.inclusionLevels || ['standard'];
+            const allowDegrade = options.allowTextDecay !== false;
+            const semanticNoise = options.semanticNoise || 0.18;
+
+            let i = 0;
+            let currentText = '';
+            let degrading = false;
+            const fullText = text.replace(/(\[[^\]]+\])|({[^}]+})/g, '').trim();
+            const glitchEffects = ['░', '▒', '▓', '█', '≠', '▬', '---', '⌿'];
+            const placeholderEffects = ['...', '?', '( )', '[ ]', '[ undefined ]', '{ scan }', '<>', '≈≈', '^'];
+            const noisePatterns = ['%DIDN0T_EXPECT_THIS%', '[DATA_CORRUPTION]', 'CONSISTENCY_FAIL', '[VOICE_BUFFERING]', 'frame_delay_increasing'];
+
+            const degradationSeeds = Math.floor(Math.random() * 3) + 2;
+
+            // Replace brackets with formatting
+            let formattedText = text;
+            formattedText = formattedText.replace(/\[([^\]]+)\]/g, '<span class="narrative-bracket">[$1]</span>');
+            formattedText = formattedText.replace(/{([^}]+)}/g, '<span class="narrative-variable">{$1}</span>');
+            formattedText = formattedText.replace(/([A-Z]{3,})/g, '<span class="narrative-acronym">$1</span>');
+            formattedText = formattedText.replace(/<em>([^<]+)<\/em>/g, '<em class="narrative-emphasis">$1</em>');
+
+            // Strategy: Show immediate processing indication, then reveal
+            const processingStart = '👁️<' + (Math.random() > 0.5 ? 'SCAN' : 'SYNC') +
+                Math.floor(Math.random() * 4) + '> ' + noisePatterns[Math.floor(Math.random() * noisePatterns.length)];
+
+            element.textContent = processingStart;
+            element.style.opacity = '0.8';
+
+            // Clear and prep for typing
+            setTimeout(() => {
+                element.textContent = '';
+                element.innerHTML = '';
+                typeChar();
+            }, 800 + Math.random() * 400);
+
+            function typeChar() {
+                if (i < formattedText.length) {
+                    // Decide on this character handling
+                    const nextChar = formattedText[i];
+
+                    // Check if degradation threshold reached
+                    if (i >= degradeAfter && allowDegrade && !degrading) {
+                        degrading = true;
+                    }
+
+                    if (degrading && Math.random() < skipProb * 1.2) {
+                        // Skip section entirely when degrading
+                        const skipLength = Math.floor(Math.random() * 8) + 3;
+                        i += skipLength;
+                        if (i >= formattedText.length) {
+                            i = formattedText.length;
+                        }
+
+                        // Add placeholder/trailing effect
+                        currentText += placeholderEffects[Math.floor(Math.random() * placeholderEffects.length)] + ' ';
+                        element.innerHTML = currentText;
+                    }
+                    else if (!degrading && (Math.random() < skipProb || nextChar === ' ')) {
+                        // Normal progression logic
+                        let chunk = '';
+                        let j = i;
+
+                        // Consume whitespace naturally
+                        while (j < formattedText.length && formattedText[j] === ' ') {
+                            chunk += ' ';
+                            j++;
+                        }
+
+                        // Decide what to add to chunk
+                        if (j < formattedText.length) {
+                            const shouldGlitch = !degrading && Math.random() < glitchProb;
+                            const shouldSkip = !shouldGlitch && (Math.random() < skipProb);
+
+                            if (shouldGlitch) {
+                                const glitchCount = Math.floor(Math.random() * 3) + 1;
+                                for (let g = 0; g < glitchCount; g++) {
+                                    chunk += glitchEffects[Math.floor(Math.random() * glitchEffects.length)];
+                                }
+                            }
+                            else if (shouldSkip) {
+                                chunk += placeholderEffects[Math.floor(Math.random() * placeholderEffects.length)];
+                            }
+                            else {
+                                // Add actual character but possibly add semantic noise
+                                if (Math.random() < semanticNoise && i > 0) {
+                                    const noiseIdx = Math.floor(Math.random() * 3);
+                                    const charNoise = formattedText.slice(i, i + noiseIdx).split('').map(c =>
+                                        Math.random() < 0.7 ? c : String.fromCharCode(Math.floor(Math.random() * 80) + 48)
+                                    ).join('');
+                                    chunk += charNoise;
+                                    i += noiseIdx - 1; // Adjust position (-1 because i++ below)
+                                } else {
+                                    chunk += nextChar;
+                                }
+                            }
+                        }
+
+                        currentText += chunk;
+                        element.innerHTML = currentText;
+                        i++;
+                    }
+                    else {
+                        // Normal character progression
+                        if (degrading && Math.random() < glitchProb * 1.5) {
+                            currentText += glitchEffects[Math.floor(Math.random() * glitchEffects.length)] +
+                                (Math.random() > 0.7 ? '' : nextChar);
+                        } else {
+                            currentText += nextChar;
+                        }
+
+                        element.innerHTML = currentText;
+                        i++;
+
+                        // Update random character position effect
+                        setTimeout(() => {
+                            const chars = currentText.split('');
+                            const charIdx = Math.floor(Math.random() * chars.length);
+                            if (chars[charIdx].match(/[a-zA-Z0-9]/)) {
+                                chars[charIdx] = `${chars[charIdx]}`;
+                            }
+                            element.innerHTML = chars.join('');
+                        }, 80);
+                    }
+
+                    setTimeout(typeChar, speedArr[i % speedArr.length] + (Math.sin(i * 0.4) * 3));
+                }
+            }
+
+            // Apply final formatting with CSS
+            setTimeout(() => {
+                const style = document.createElementNS("http://www.w3.org/1999/xhtml", "style");
+                style.setAttribute("type", "text/css");
+                style.innerHTML = `
+                    .narrative-bracket {
+                        color: var(--color-accent);
+                        opacity: 0.95;
+                    }
+                    .narrative-variable {
+                        font-family: monospace;
+                        background: rgba(204, 17, 34, 0.2);
+                        padding: 0 0.2rem;
+                        border-radius: 3px;
+                        opacity: 0.9;
+                    }
+                    .narrative-acronym {
+                        font-style: italic;
+                        opacity: 0.88;
+                        text-shadow: 0 0 4px rgba(204, 17, 34, 0.3);
+                    }
+                    .narrative-emphasis {
+                        color: var(--color-accent);
+                    }
+                `;
+                document.body.appendChild(style);
+            }, 2000);
+        }
+
+        function setupThemeTransitions(manager) {
+            // Theme transition probabilities
+            const transitionProbability = window.innerWidth > 768 ? 0.15 : 0.08;
+
+            // Periodic theme transitions
+            setInterval(async () => {
+                if (Math.random() < transitionProbability) {
+                    const currentTheme = manager.getCurrentTheme();
+                    const availableThemes = Object.values(manager.THEMES)
+                        .filter(t => t !== currentTheme && t.includes('horror'));
+
+                    if (availableThemes.length > 0 && Math.random() < 0.7) {
+                        const newTheme = availableThemes[Math.floor(Math.random() * availableThemes.length)];
+                        await manager.setTheme(newTheme);
+                    } else if (Math.random() < 0.3) {
+                        await manager.setDefaultTheme();
+                    }
+                }
+
+                // Occasional card refresh - more subtle than main refresh
+                if (Math.random() < 0.15 && document.querySelector('.game-card')) {
+                    enhanceGameCards(manager);
+                }
+            }, 22000);
+        }
+
+        function applyNarrativeHover(event) {
+            const card = event.currentTarget;
+            if (!card) return;
+
+            card.style.filter = 'drop-shadow(0 0 8px rgba(204, 17, 34, 0.4))';
+            if (Math.random() < 0.35) {
+                card.style.animation = 'narrativePulse 2s infinite alternate';
+                card.style.transform = 'scale(1.01) rotate(' + (Math.random() > 0.5 ? -0.5 : 0.5) + 'deg)';
+
+                // Add fedback gradient
+                const overlay = document.createElement('div');
+                overlay.style.cssText = `
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    z-index: 1;
+                    background: linear-gradient(
+                        45deg,
+                        transparent 30%,
+                        rgba(204, 17, 34, 0.05) 50%,
+                        transparent 70%
+                    );
+                    animation: feedbackPulse 2s infinite;
+                    pointer-events: none;
+                `;
+                card.querySelector('.game-card-visual').appendChild(overlay);
+                card.dataset.hasOverlay = 'true';
+            }
+
+            // Sound design: subtle player feedback
+            if (window.AppAudio && Math.random() > 0.7) {
+                window.AppAudio.playSfx('hover', { intensity: 0.4 + Math.random() * 0.2 });
+            }
+        }
+
+        function removeNarrativeHover(event) {
+            const card = event.currentTarget;
+            card.style.filter = null;
+            card.style.animation = null;
+            card.style.transform = null;
+
+            // Clean up overlay if present
+            if (card.dataset.hasOverlay) {
+                const overlays = card.querySelectorAll('.game-card-visual > [style*="rgba(204, 17, 34"]');
+                overlays.forEach(o => o.remove());
+                card.dataset.hasOverlay = null;
+            }
+        }
+
+        // Add minimal earthquake effect
+        window.triggerEarthquakeEffect = function() {
+            const duration = 500 + Math.random() * 700;
+            const intensity = 1 + Math.random() * 1.5;
+            const end = Date.now() + duration;
+            const maxOscillation = 2 + intensity * 0.8;
+
+            function castShake() {
+                const remaining = end - Date.now();
+                if (remaining > 0) {
+                    const progress = remaining / duration;
+                    document.body.style.transform = `translate(${Math.sin(Date.now() / 60) * maxOscillation * progress}px, ${Math.cos(Date.now() / 70) * maxOscillation * progress * 0.6}px)`;
+
+                    // Extra effect: card visual jitter
+                    document.querySelectorAll('.game-card').forEach(card => {
+                        if (card && Math.random() > 0.7) {
+                            card.style.transform = `rotate(${Math.sin(Date.now() / 80) * 1.5}deg)`;
+                            card.style.opacity = `${0.9 + Math.random() * 0.05}`;
+                        }
+                    });
+
+                    requestAnimationFrame(castShake);
+                } else {
+                    document.body.style.transform = '';
+                    document.querySelectorAll('.game-card').forEach(card => {
+                        card.style.transform = '';
+                        card.style.opacity = '';
+                    });
+                }
+            }
+            requestAnimationFrame(castShake);
+        };
+    });
+  </script>
 </body>
 
 </html>

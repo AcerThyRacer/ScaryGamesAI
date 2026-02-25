@@ -75,15 +75,15 @@
         window.dispatchEvent(new CustomEvent('sgai:auth-changed', { detail: { user: null } }));
     }
 
-    function isLoggedIn() {
-        const t = getAccessToken();
-        if (!t) return false;
-        // demo-token is treated as "logged in" in dev-only flows.
-        if (t === 'demo-token') return true;
-        const payload = decodeJwtPayload(t);
-        if (!payload || !payload.exp) return true;
-        return payload.exp > nowSeconds();
-    }
+function isLoggedIn() {
+	const t = getAccessToken();
+	if (!t) return false;
+	// demo-token is ONLY accepted in non-production environments
+	if (process.env.NODE_ENV !== 'production' && t === 'demo-token') return true;
+	const payload = decodeJwtPayload(t);
+	if (!payload || !payload.exp) return true;
+	return payload.exp > nowSeconds();
+}
 
     function ensureAuthWidget() {
         const slot = document.getElementById('sgai-auth-slot');
@@ -392,16 +392,22 @@
         renderNavbar();
     }
 
-    async function refreshIfNeeded() {
-        const t = getAccessToken();
-        const r = getRefreshToken();
-        if (!t && !r) return;
-        if (t === 'demo-token') return;
-
-        const payload = decodeJwtPayload(t);
-        const exp = payload && payload.exp ? payload.exp : null;
-        const needs = !t || (exp != null && exp <= nowSeconds() + 60);
-        if (!needs) return;
+async function refreshIfNeeded() {
+	const t = getAccessToken();
+	const r = getRefreshToken();
+	if (!t && !r) return;
+	// Skip refresh for demo-token only in non-production
+	if (t === 'demo-token' && process.env.NODE_ENV !== 'production') return;
+	if (t === 'demo-token' && process.env.NODE_ENV === 'production') {
+		// Invalid token in production - clear it
+		clearAuthState();
+		return;
+	}
+	
+	const payload = decodeJwtPayload(t);
+	const exp = payload && payload.exp ? payload.exp : null;
+	const needs = !t || (exp != null && exp <= nowSeconds() + 60);
+	if (!needs) return;
 
         // Try refresh (cookie or body token).
         try {
