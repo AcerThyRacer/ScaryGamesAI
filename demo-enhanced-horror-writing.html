@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScaryGamesAI - Enhanced Horror Writing Demonstration</title>
+    <meta name="description" content="Demonstration of the Phase 1 Horror Writing Engine implementation with themes and narrative generation">
+    <style>
+        :root {
+            --color-primary: #1a1a1a;
+            --color-secondary: #2a2a2a;
+            --color-accent: #cc1122;
+            --color-text-primary: #f1f1f1;
+            --color-text-secondary: #a0a0a0;
+            --color-void-glow: rgba(204, 17, 34, 0.1);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--color-primary);
+            color: var(--color-text-primary);
+            line-height: 1.6;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem;
+            background-image:
+                radial-gradient(circle at 15% 85%, rgba(204, 17, 34, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 85% 20%, rgba(204, 17, 34, 0.05) 0%, transparent 30%);
+        }
+
+        body.theme-cosmic {
+            --color-primary: #00113b;
+            --color-accent: #0000ff;
+            --color-void-glow: rgba(0, 255, 255, 0.1);
+            background-image:
+                radial-gradient(circle at 25% 65%, rgba(0, 50, 200, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 75% 35%, rgba(10, 130, 255, 0.12) 0%, transparent 40%);
+        }
+
+        body.theme-psychological {
+            --color-primary: #3a1e2a;
+            --color-accent: #ff006e;
+            --color-void-glow: rgba(122, 32, 72, 0.2);
+            background-image:
+                radial-gradient(circle at 35% 45%, rgba(100, 40, 110, 0.08) 0%, transparent 45%),
+                linear-gradient(135deg, rgba(50, 0, 30, 0.1) 0%, transparent 60%);
+        }
+
+        h1, h2, h3 {
+            color: var(--color-accent);
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--color-accent);
+            padding-bottom: 0.5rem;
+            line-height: 1.3;
+        }
+
+        h1 { font-size: 2.2rem; }
+        h2 { font-size: 1.6rem; }
+        h3 { font-size: 1.3rem; }
+
+        .section {
+            background-color: rgba(20, 20, 30, 0.5);
+            border-left: 3px solid var(--color-accent);
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 0 4px 4px 0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .content-box {
+            background-color: rgba(25, 25, 35, 0.7);
+            border: 1px solid rgba(204, 17, 34, 0.3);
+            border-radius: 4px;
+            padding: 1rem;
+            margin: 1rem 0;
+            box-shadow: 0 1px 3px var(--color-void-glow);
+        }
+
+        .controls {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        select, button {
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            border: 1px solid var(--color-accent);
+            background-color: var(--color-primary);
+            color: var(--color-text-primary);
+            cursor: pointer;
+            transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        button:hover, select:hover {
+            border-color: var(--color-text-primary);
+            box-shadow: 0 0 8px var(--color-accent);
+        }
+
+        button {
+            background-color: var(--color-accent);
+            color: #000;
+            font-weight: 600;
+        }
+
+        button:hover {
+            background-color: var(--color-text-primary);
+            color: var(--color-accent);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .example-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .example-card {
+            background: rgba(15, 15, 25, 0.8);
+            border: 1px solid rgba(204, 17, 34, 0.2);
+            border-radius: 4px;
+            padding: 1rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .example-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--color-accent);
+            box-shadow: 0 4px 12px rgba(204, 17, 34, 0.2);
+        }
+
+        .example-card h3 {
+            font-size: 1rem;
+            border-bottom: none;
+            margin-top: 0;
+            color: var(--color-text-primary);
+        }
+
+        .stats {
+            background-color: rgba(20, 20, 20, 0.5);
+            border-left: 3px solid #666;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-family: 'Source Code Pro', monospace;
+            font-size: 0.9rem;
+        }
+
+        .enny-content {
+            font-family: 'Georgia', serif;
+            font-style: italic;
+            color: var(--color-text-primary);
+            margin: 1rem 0;
+            line-height: 1.7;
+        }
+
+        .code {
+            background: rgba(20, 20, 30, 0.8);
+            border-left: 3px solid #00aa55;
+            font-family: 'Source Code Pro', monospace;
+            font-size: 0.85rem;
+            margin: 1rem 0;
+            padding: 1rem;
+            overflow-x: auto;
+            white-space: pre-wrap;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .generated {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        .menu-icon {
+            font-size: 1.5rem;
+            display: inline-block;
+            margin-right: 0.5rem;
+            position: relative;
+            top: 3px;
+        }
+    </style>
+</head>
+<body>
+    <h1 id="demo-title">🔮 Horizon Ascendant <span id="theme-icon"></span> Enhanced Horror Narrative Demonstration</h1>
+
+    <div class="section">
+        <h2>🎛️ Generation Control Panel</h2>
+
+        <div class="controls">
+            <div>
+                <label for="theme-select">Select Horror Theme: </label>
+                <select id="theme-select">
+                    <option value="cosmic_horror">Cosmic Horror 🌀</option>
+                    <option value="psychological_horror" selected>Psychological Horror 🎭</option>
+                    <option value="gore">Gore 💀</option>
+                    <option value="supernatural">Supernatural 👻</option>
+                    <option value="default">Default (Classic)</option>
+                </select>
+            </div>
+
+            <div class="button-group">
+                <button id="generate-game">Generate Game Description</button>
+                <button id="generate-locations">Generate 6 Location Descriptions</button>
+                <button id="generate-monologue">Generate Internal Monologue</button>
+            </div>
+        </div>
+
+        <div class="controls">
+            <div class="button-group">
+                <button id="demo-legacy">🔄 Legacy vs Enhanced</button>
+                <button id="demo-lore-link">🔗 Cross-Game Lore</button>
+                <button id="debug-info">ℹ️ Debug Statistics</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="section" id="intro-section">
+        <h2><span id="intro-icon"></span> Contextualization Module</h2>
+        <div class="enhanced-content" id="demo-description">
+            This demonstration exhibits the operational <span class="code">HorrorWritingEngine v1.2</span> retrofitted to the existing narrative management subsystem within the <span class="code">ThemeWritingManager</span> class. Component architecture evolves across three salient dimensions:
+        </div>
+
+        <div class="content-box">
+            <p>✅ <strong>Enhanced Theme Content:</strong>
+            Deploying dynamically-loadable JSON thematic profiles containing sophisticated horror-specific writing rules, vocabulary subsets, atmospheric blueprints, and form governance.</p>
+
+            <p>✅ <strong>Adaptive Content Generation:</strong>
+            Leveraging a structured horror lexicon exceeding <strong id="vocab-count">...</strong> discrete terms, curated templates, and generative pattern syntax.</p>
+
+            <p>✅ <strong>Legacy Integration Compatibility:</strong>
+            Seamless interoperability with existing thematic content through enhanced content switching capability.</p>
+        </div>
+    </div>
+
+    <div class="section" id="generated-content">
+        <h2 id="generated-title"><span id="generated-icon"></span> Narrative Extrusion</h2>
+
+        <h3>Game Summary (<span id="game-theme">...</span>)</h3>
+        <div class="content-box">
+            <div id="game-description" class="enhanced-content generated">Initiating game summary module. Cache warming operational. Awaiting theme confirmation and seed stabilization...</div>
+        </div>
+
+        <h3>Location Illuminations</h3>
+        <div class="example-grid" id="location-grid">
+            <div class="example-card">
+                <div class="enhanced-content">Awareness stabilizing... [LOCATION DATA REQUESTED]</div>
+            </div>
+        </div>
+
+        <div>
+            <h3>Situational Monologue</h3>
+            <div class="content-box">
+                <div id="internal-monologue" class="enhanced-content ennui-content generated"> { psychic_buffer_compression_factor_high } Initiating percept filter... «greetings: reports indicate your {designation} module has {reactivated}.
+                Preliminary exploration of {reality_container} imminent. Suggest allocating {mind_resources} to {neural_contingency_unit} for {event_regulation_protocol}. » [RETAIN SOUNDPROOF INTEGRITY]</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="section" id="stats-section" style="display: none;">
+        <h2>ℹ️ System Information</h2>
+
+        <div class="stats">
+            <pre id="debug-stats">- SYSTEM INTELLIGENCE SUMMARY -
+Engine Version:        [DETECTING]
+Lexicon Entries:       [QUERYING DATABASE]
+Current Theme:         [SCANNING]
+Horror Subgenres:      [COUNTING]
+Integration Status:    [TESTING]</pre>
+        </div>
+
+        <div class="content-box">
+            <h3>Manager State Variables</h3>
+            <div id="manager-state" style="font-family: 'Source Code Pro', monospace;">
+                - manager.exportState() pending execution -
+            </div>
+        </div>
+    </div>
+
+    <div class="section" id="legacy-demo" style="display: none;">
+        <h2>🔄 Legacy Transformation Sequence</h2>
+
+        <div class="content-box">
+            <h3>Original Legacy Content</h3>
+            <div id="legacy-input" class="ennui-content">
+                Day 1: I found myself here. The walls look strange, and I don't recognize this place. Maybe I should explore.
+            </div>
+        </div>
+
+        <div class="content-box">
+            <h3>Psychological Horror Enhancement</h3>
+            <div id="psych-enhanced" class="enhanced-content ennui-content generated"></div>
+        </div>
+
+        <div class="content-box">
+            <h3>Cosmic Horror Enhancement</h3>
+            <div id="cosmic-enhanced" class="enhanced-content ennui-content generated"></div>
+        </div>
+    </div>
+
+    <div class="section" id="lore-demo" style="display: none;">
+        <h2>🔗 Narrative Threadlinking (Cross-Game Lore Discovery)</h2>
+
+        <div class="content-box">
+            <p><strong>Player Discovery Log:</strong> <em>Integration commencing — 24 topological discoveries identified across Backrooms: Pacman, Asylum Architect archives. Cross-referencing 98,912% of possible continuity errors...</em></p>
+
+            <h3>Discovery Event Journal</h3>
+            <div id="cross-game-event" class="enhanced-content ennui-content generated">
+                🔗 INITIATE CROSS-PATCH FEED: SYNCING [BACKROOMS * MESH * ARCHITECT]
+                ...
+            </div>
+
+            <h3>Entity Manifestation Consistency</h3>
+            <div id="entity-consistency" class="enhanced-content generated"></div>
+        </div>
+    </div>
+
+    <script type="module">
+        // Initialize Theme Writing Manager with enhanced horror capabilities
+        import { ThemeWritingManager } from '/js/theme-writing-manager.js';
+        import { HorrorWritingEngine } from '/core/narrative/HorrorWritingEngine.js';
+
+        // Global manager instance
+        const themeManager = new ThemeWritingManager();
+        let initialized = false;
+
+        // Theme configuration mapping
+        const THEME_CONFIG = {
+            cosmic_horror: {
+                name: "Cosmic Horror",
+                icon: "🌀",
+                introIcon: "🐙",
+                accentColor: "#0000ff"
+            },
+            psychological_horror: {
+                name: "Psychological Horror",
+                icon: "🎭",
+                introIcon: "🧠",
+                accentColor: "#ff006e"
+            },
+            gore: {
+                name: "Gore",
+                icon: "💀",
+                introIcon: "🩸",
+                accentColor: "#880000"
+            },
+            supernatural: {
+                name: "Supernatural",
+                icon: "👻",
+                introIcon: "🔮",
+                accentColor: "#551a8b"
+            },
+            default: {
+                name: "Classic",
+                icon: "⚪",
+                introIcon: "➡️",
+                accentColor: "#cc1122"
+            }
+        };
+
+        // Initialization function
+        async function initialize() {
+            try {
+                await themeManager.initialize();
+                initialized = true;
+
+                // Set initial theme
+                const initialTheme = themeManager.getCurrentTheme();
+                document.getElementById('theme-select').value = themeManager.currentTheme;
+                updateThemeUI(initialTheme);
+
+                // Update vocabulary count
+                updateVocabularyCount();
+
+                // Generate initial content
+                generateGameDescription();
+                generateLocationExamples();
+                generateMonologue();
+
+                // Add event listeners
+                setupEventListeners();
+                setupTestButtons();
+
+            } catch (error) {
+                console.error('Initialization error:', error);
+                console.error('Falling back to manual initialization:', error);
+                initializeLegacy();
+            }
+        }
+
+        function setupEventListeners() {
+            // Theme change listener
+            document.getElementById('theme-select').addEventListener('change', async function() {
+                const themeId = this.value;
+                await themeManager.setTheme(themeId);
+                updateThemeUI(themeId);
+                generateGameDescription();
+                generateLocationExamples();
+                generateMonologue();
+            });
+
+            // Generate game description
+            document.getElementById('generate-game').addEventListener('click', generateGameDescription);
+
+            // Generate location descriptions
+            document.getElementById('generate-locations').addEventListener('click', generateLocationExamples);
+
+            // Generate monologue
+            document.getElementById('generate-monologue').addEventListener('click', generateMonologue);
+        }
+
+        function setupTestButtons() {
+            // Legacy demonstration
+            document.getElementById('demo-legacy').addEventListener('click', () => {
+                const legacySection = document.getElementById('legacy-demo');
+                legacySection.style.display = legacySection.style.display === 'none' ? 'block' : 'none';
+                if (legacySection.style.display === 'block') {
+                    demonstrateLegacyTransformation();
+                }
+            });
+
+            // Cross-game lore demonstration
+            document.getElementById('demo-lore-link').addEventListener('click', () => {
+                const loreSection = document.getElementById('lore-demo');
+                loreSection.style.display = loreSection.style.display === 'none' ? 'block' : 'none';
+                if (loreSection.style.display === 'block') {
+                    demonstrateCrossGameLore();
+                }
+            });
+
+            // Debug information
+            document.getElementById('debug-info').addEventListener('click', () => {
+                const statsSection = document.getElementById('stats-section');
+                statsSection.style.display = statsSection.style.display === 'none' ? 'block' : 'none';
+                if (statsSection.style.display === 'block') {
+                    updateDebugInfo();
+                }
+            });
+        }
+
+        function updateThemeUI(themeId) {
+            const config = THEME_CONFIG[themeId];
+            if (!config) return;
+
+            // Update theme icon
+            document.getElementById('theme-icon').textContent = config.icon;
+
+            // Update intro icon
+            document.getElementById('intro-icon').textContent = config.introIcon;
+
+            // Update generated title icon
+            document.getElementById('generated-icon').textContent = config.icon;
+
+            // Update page title
+            document.title = `Horizon Ascendant ${config.icon} ${config.name} Horror Demo`;
+
+            // Update section titles
+            document.getElementById('generated-title').innerHTML =
+                `${config.icon} Narrative Extrusion`;
+
+            // Update game theme display
+            document.getElementById('game-theme').textContent = config.name;
+
+            // Handle theme class
+            document.body.classList.remove('theme-cosmic', 'theme-psychological');
+            document.body.classList.add(`theme-${themeId.replace(/_/g, '-')}`);
+        }
+
+        async function generateGameDescription() {
+            const titleElement = document.getElementById('game-description');
+
+            try {
+                // Show loading animation
+                titleElement.innerHTML = `<em>🌀 ${themeManager.getLoadingMessage()}</em>`;
+
+                // Add brief delay to simulate computation
+                await new Promise(resolve => setTimeout(resolve, 200));
+
+                // Generate description with Horror Writing Engine
+                const result = themeManager.generateGameDescription(
+                    `game_${Math.random().toString(36).substring(7)}`
+                );
+
+                titleElement.innerHTML = replaceFormattingTokens(result);
+            } catch (error) {
+                console.error('Game description generation error:', error);
+                titleElement.textContent = "ERROR: Narrative generation module experiencing coherence axis collapse. Stabilization pending...";
+            }
+        }
+
+        async function generateLocationExamples() {
+            const grid = document.getElementById('location-grid');
+            grid.innerHTML = '';
+
+            const locationTypes = [
+                'abandoned_hospital',
+                'endless_corridor',
+                'forgotten_asylum',
+                'dimensional_interstitial',
+                'ordinary_bedroom_after_reality_reconfiguration_event',
+                'algorithmically_generated_simple_path'
+            ];
+
+            try {
+                // Generate 6 locations
+                locationTypes.forEach((locationType, index) => {
+                    const card = document.createElement('div');
+                    card.className = 'example-card';
+
+                    const description = themeManager.generateLocationDescription(
+                        locationType,
+                        { sanity: getRandomSanityLevel(), gameId: `demo_location_${index}` }
+                    );
+
+                    card.innerHTML = `
+                        <h3>${titleCase(locationType.replace(/_/g, ' '))}</h3>
+                        <div class="enhanced-content" style="font-size: 0.9rem;">
+                            ${replaceFormattingTokens(description)}
+                        </div>
+                    `;
+
+                    card.style.animationDelay = `${0.1 * index}s`;
+                    card.style.animation = 'fadeIn 0.5s ease-out forwards';
+
+                    grid.appendChild(card);
+                });
+            } catch (error) {
+                console.error('Location generation error:', error);
+                grid.innerHTML = '<div class="example-card">ERROR: Geographical reality rendering compromised. Please keep the {corridor} clear for emergency extraction teams.</div>';
+            }
+        }
+
+        async function generateMonologue() {
+            const monologueElement = document.getElementById('internal-monologue');
+
+            try {
+                monologueElement.innerHTML = `<em>ℹ️ Psychic transmission routing... [PRIORITY: REALITY_STABILIZATION]</em>`;
+
+                // Generate rich internal monologue
+                const monologue = themeManager.enhanceContent(
+                    "Personal thought cache: status [INDETERMINATE]",
+                    'internal_monologue',
+                    {
+                        sanity: 'disturbed',
+                        player_name: 'ENTITY_PROCXYZ_198763',
+                        concept_challenges: 'self_reference, temporal_paradox'
+                    }
+                );
+
+                monologueElement.innerHTML = replaceFormattingTokens(monologue);
+
+            } catch (error) {
+                console.error('Monologue generation error:', error);
+                monologueElement.textContent = "ERROR: {thought_system_down} :: REASON: cognitive safety constraints prevent emergence of potentially remedial cued experiences.";
+            }
+        }
+
+        function demonstrateLegacyTransformation() {
+            const legacyText = "Day 1: I found myself here. The walls look strange, and I don't recognize this place. Maybe I should explore.";
+
+            try {
+                // Cosmic horror enhancement
+                document.getElementById('legacy-input').textContent = legacyText;
+
+                // Psychological horror
+                themeManager.setTheme('psychological_horror').then(() => {
+                    try {
+                        const psychContent = themeManager.enhanceContent(legacyText, 'note', {
+                            sanity: 'disturbed',
+                            confidence: 0.4,
+                            player_memory_integrity: 0.3
+                        });
+                        document.getElementById('psych-enhanced').innerHTML =
+                            replaceFormattingTokens(psychContent);
+                    } catch (error) {
+                        console.error('Psych enhancement error:', error);
+                    }
+                });
+
+                // Cosmic horror
+                themeManager.setTheme('cosmic_horror').then(() => {
+                    try {
+                        const cosmicContent = themeManager.enhanceContent(legacyText, 'audio_log', {
+                            dimensional_context: 'leaking',
+                            derivation_spread: 0.88
+                        });
+                        document.getElementById('cosmic-enhanced').innerHTML =
+                            replaceFormattingTokens(cosmicContent);
+                    } catch (error) {
+                        console.error('Cosmic enhancement error:', error);
+                    }
+                });
+
+            } catch (error) {
+                console.error('Legacy demo error:', error);
+            }
+
+            // Reset theme
+            themeManager.setTheme(document.getElementById('theme-select').value);
+        }
+
+        function demonstrateCrossGameLore() {
+            try {
+                // Simulate a discovery between Backrooms and Asylum games
+                themeManager.setGameContext('backrooms_pacman', {
+                    theme: 'cosmic_horror',
+                    sanity: 'paranoid',
+                    reliability: 0.1
+                });
+
+                const eventDescription = themeManager.generateNarrative('event_description', {
+                    cross_game_connection: true,
+                    primary_system: 'BACKROOMS_LEVEL_94a_mechanic',
+                    secondary_system: 'ASYLUM_ARCHITECT_commit_subsystem',
+                    discovery_probability: 0.95
+                });
+
+                document.getElementById('cross-game-event').innerHTML =
+                    replaceFormattingTokens(eventDescription);
+
+                // Generate entity manifestation evidence
+                const entityCompromise = themeManager.generateLocationDescription(
+                    'entity_hierarchy_interface',
+                    {
+                        gameId: 'both_games',
+                        entity_class: 'NonEuclideanObserver',
+                        analytic_containment_stress: 0.976
+                    }
+                );
+
+                document.getElementById('entity-consistency').innerHTML =
+                    replaceFormattingTokens(entityCompromise);
+
+                // Different sanity levels
+                themeManager.setSanityLevel('psychotic');
+                const entityCompromise2 = themeManager.generateLocationDescription(
+                    'cognitive_consistency_report',
+                    { gameId: 'both_games' }
+                );
+
+                document.getElementById('entity-consistency').innerHTML += `<hr>${replaceFormattingTokens(entityCompromise2)}`;
+
+            } catch (error) {
+                console.error('Cross-game demo error:', error);
+                document.getElementById('cross-game-event').innerHTML = "ERROR: Narrative multiplexing array collapsed. VERDICT: The very effort to hold disparate story regions AoE thread-consistent may actively rebut coherence.";
+            }
+
+            // Reset context
+            themeManager.setGameContext(null);
+        }
+
+        function updateDebugInfo() {
+            try {
+                const stats = themeManager.getDebugInfo();
+                const statsElement = document.getElementById('debug-stats');
+
+                if (stats.engine) {
+                    const lexiconCount = status.termCount ||
+                                        (stats.engine.lexiconVersion ? "Estimate: 12000+" : "Initializing...");
+
+                    statsElement.textContent = `
+- SYSTEM INTELLIGENCE SUMMARY -
+Engine Version:        ${stats.engine.lexiconVersion || '1.0.0'}
+Lexicon Entries:       ${lexiconCount}
+Current Theme:         ${themeManager.getCurrentTheme()} ${themeManager.legacyMode ? '[LEGACY]' : ''}
+Horror Subgenres:      ${stats.engine?.engine?.horrorSubgenres?.length || '12+'} identified
+Integration Status:    ${stats.engine ? "Enhanced Horror Writing ENGAGED" : "Default writing system (No Horror Engine)"}
+Template Coverage:     ${stats.engine?.engine?.templateCount || 'Learning...'}+ templates
+Player States Cached:  ${stats.engine?.engine?.playerStateCount || '0'}
+
+- MANAGER STATE -
+Themes Loaded:         ${stats.manager?.allThemes?.length || 'Loading...'}
+Cache Size:            ${stats.manager?.cachedContentCount || '0'}
+Legacy Mode:           ${stats.manager?.legacyMode ? "ACTIVE (downgraded)" : "Disabled"}
+`;
+                }
+
+                // Update manager state
+                const managerState = JSON.stringify(themeManager.exportState(), null, 2);
+                document.getElementById('manager-state').textContent = "themeWritingManager.exportState():\n" + managerState;
+
+            } catch (error) {
+                console.error('Debug update failed:', error);
+                document.getElementById('debug-stats').textContent = "- SYSTEM INTELLIGENCE SUMMARY -\nSTATUS: Diagnostics incapable of diagnosticity.";
+            }
+        }
+
+        function updateVocabularyCount() {
+            try {
+                const vocab = themeManager.getVocabulary();
+                document.getElementById('vocab-count').textContent = vocab.length.toLocaleString();
+            } catch (error) {
+                document.getElementById('vocab-count').textContent = "N/A";
+            }
+        }
+
+        // Initialize with fallback
+        function initializeLegacy() {
+            try {
+                // Manual initialization with default theme
+                themeManager.currentTheme = themeManager.THEMES.DEFAULT;
+                themeManager.themeConfigs = {
+                    [themeManager.THEMES.DEFAULT]: themeManager.getDefaultThemeConfig()
+                };
+                themeManager.isInitialized = true;
+
+                // Set UI to default theme
+                updateThemeUI('default');
+
+                // Generate fallback content
+                document.getElementById('game-description').textContent =
+                    "Welcome to the ScaryGamesAI narrative engine. Explore worlds where danger feels complicated and eerie. Configure text prime with the theme selector above.";
+
+                // Generate simple locations
+                const grid = document.getElementById('location-grid');
+                grid.innerHTML = '';
+                const locations = ['Cave', 'Mansion', 'Labyrinth', 'Portal'];
+                locations.forEach(loc => {
+                    const card = document.createElement('div');
+                    card.className = 'example-card';
+                    card.innerHTML = `<h3>${loc}</h3>
+                    <p>Discover eerie ${loc.toLowerCase()} settings. Musical ambiance detects danger. Your decisions explore alleged anomalies.</p>`;
+                    grid.appendChild(card);
+                });
+
+                // Add event listeners after manual setup
+                setupEventListeners();
+                setupTestButtons();
+
+            } catch (error) {
+                console.error('Manual initialization failed:', error);
+            }
+        }
+
+        // Helper functions
+        function titleCase(str) {
+            return str.split(/[ _-]/).map(word =>
+                word.charAt(0).toUpperCase() + word.substring(1).toLowerCase()
+            ).join(' ');
+        }
+
+        function getRandomSanityLevel() {
+            const levels = ['pristine', 'normal', 'disturbed', 'shaken', 'paranoid', 'delusional', 'fragmented', 'catatonic'];
+            const criticalThreshold = 0.7; // 70% chance of disturbed or worse
+            return Math.random() < criticalThreshold ?
+                   levels[Math.floor(Math.random() * (levels.length - 2)) + 2] : // disturbed and above
+                   levels[Math.floor(Math.random() * 2)]; // pristine, normal
+        }
+
+        function replaceFormattingTokens(text) {
+            // Handle HTML-safe formatting of special elements
+            text = text.replace(/\uFEFF/g, ''); // Remove zero-width space
+            text = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            text = text.replace(/`(.*?)`/g, '<code style="background: rgba(255,255,255,0.1); padding: 2px 4px; border-radius: 2px;">$1</code>');
+            text = text.replace(/\[([^\]]+)\]/g, '<span class="debug-meta" style="color: var(--color-text-secondary); font-size: 0.85rem; opacity: 0.7;">$1</span>');
+            text = text.replace(/\n\n/g, '<p></p>');
+
+            return text.replace(/\n/g, '<br>');
+        }
+
+        // Start initialization when DOM is ready
+        if (document.readyState === 'loading') {
+            console.log('Waiting for DOMContentLoaded...');
+            document.addEventListener('DOMContentLoaded', initialize);
+        } else {
+            console.log('DOM already loaded, initializing...');
+            initialize();
+        }
+
+        // Export modules for console experimentation (development)
+        window.ThemeWritingManager = ThemeWritingManager;
+        window.HorrorWritingEngine = HorrorWritingEngine;
+        window.themeManager = themeManager;
+    </script>
+</body>
+</html>

@@ -1,0 +1,159 @@
+{
+  "id": "found_footage",
+  "name": "Found Footage Horror Theme",
+  "description": "Documentary-style horror, lost recordings, the terror of authenticity and the blurred line between fiction and reality.",
+  "lexicon_id": "found_footage",
+  "icon": "📹",
+  "class": "writing-theme-found-footage",
+  "writing_rules": {
+    "message": "WARNING: This theme explores the terror of authenticity and the blurred line between fiction and reality. What you are about to witness may be real. The camera does not lie... or does it?",
+    "technical": {
+      "use_camera_perspective": 0.95,
+      "use_technical_issues": 0.9,
+      "use_improvised_dialogue": 0.8,
+      "use_unfinished_sentences": 0.7,
+      "use_technical_jargon": 0.6
+    },
+    "sentence_structure": {
+      "complexity_normal": 0.55,
+      "fragment_probability": 0.65,
+      "ellipsis_probability": 0.5,
+      "use_shaky_cam_language": 0.7,
+      "use_improvised_dialogue": 0.8,
+      "use_technical_terms": 0.6
+    },
+    "content_constraints": {
+      "allow_camera_perspective": 0.95,
+      "allow_technical_issues": 0.9,
+      "allow_unexplained_events": 0.85,
+      "allow_reality_distortion": 0.75,
+      "allow_fourth_wall_breaking": 0.7
+    }
+  },
+  "vocabulary_subsets": [
+    "nouns_by_theme.filmmaking",
+    "nouns_by_theme.technology",
+    "verbs_by_terror.subtle",
+    "adjectives.technical",
+    "adjectives.eerie"
+  ],
+  "content": {
+    "greetings": [
+      "[CAMERA SHAKE] The {location} comes into view, its {feature} barely visible in the {low_light}.",
+      "[AUDIO DISTORTION] {character} adjusts the {equipment}, their {breathing} heavy with {emotion}.",
+      "[ZOOM IN] Something {moves} in the {distance}, its {form} too {distorted} to make out clearly."
+    ],
+    "demands": [
+      "[WHISPERING] Keep the camera running. We need to {action}.",
+      "[PANICKED] The {equipment} is dying. We have to {action} before we lose {power|signal}.",
+      "[URGENT] Don't turn off the camera. Whatever happens, {action}."
+    ],
+    "farewells": [
+      "[STATIC] The {transmission} cuts out abruptly. {error_code} detected.",
+      "[DISTORTED] The last thing heard is {sound}, then {silence}.",
+      "[GLITCH] The {recording} ends with {disturbing_image}, then {static}."
+    ],
+    "loading_messages": [
+      "[LOADING] Processing {file_type}... {technical_issue} detected.",
+      "[BUFFERING] Playing {recording}... {unexpected_content} found.",
+      "[ANALYZING] Scanning {footage}... {anomaly} confirmed.",
+      "[DECRYPTING] Restoring {damaged_file}... {disturbing_content} revealed."
+    ],
+    "narrative_fragments": [
+      "[CAMERA SHAKE] {character} swings the camera around, but whatever was there is {gone} now.",
+      "[AUDIO DISTORTION] A {voice} comes through the {recording}, saying {phrase} in a {language} no one recognizes.",
+      "[TIMESTAMP GLITCH] The {clock} on the camera jumps forward {time_span}, as if {time} itself has {skipped}.",
+      "[SUDDEN STATIC] The {image} cuts to {static} for a moment, then returns to show {disturbing_change}.",
+      "[WHISPERING] {character} thinks they're alone, but the {audio} picks up {whispers} too quiet for human ears.",
+      "[FOCUS SHIFT] The {camera} suddenly zooms in on {object}, revealing {disturbing_detail} that wasn't visible before."
+    ],
+    "location_descriptions": {
+      "generic_location": [
+        "[CAMERA SHAKE] The {location} comes into view, its {feature} barely visible in the {low_light}.",
+        "[AUDIO DISTORTION] A {sound} echoes through the {location}, too {adjective} to be {natural}.",
+        "[ZOOM IN] Something {moves} in the {distance}, its {form} too {distorted} to make out clearly."
+      ],
+      "abandoned_building": [
+        "[FOCUS ADJUST] The {building} looms ahead, its {windows} like {empty_eyes} staring into the {void}.",
+        "[AUDIO PEAK] A {sound} comes from the {direction}, but when we turn, there's {nothing_there}.",
+        "[CAMERA GLITCH] The {image} distorts for a moment, revealing {something} that shouldn't be {there}."
+      ],
+      "forest": [
+        "[LOW LIGHT] The trees {tower} above us, their {branches} blocking out the {moonlight}.",
+        "[SUDDEN MOVEMENT] Something {moves} in the {undergrowth}, too {fast} to be {animal}.",
+        "[AUDIO DROP] The {sound} of {something} {approaching} stops abruptly, as if {it_knows} we're here."
+      ]
+    },
+    "character_dialog": {
+      "reassurance": [
+        "[BREATHING HEAVY] It's probably just {innocuous_explanation}. Let's keep moving.",
+        "[WHISPERING] Don't worry about the {disturbing_thing}. It's probably just {rational_explanation}.",
+        "[NORMAL VOICE] We're fine. {reassuring_statement}."
+      ],
+      "doubt": [
+        "[UNSTEADY] Did you see that? {observation} doesn't make sense.",
+        "[WHISPERING] This can't be happening. {phenomenon} shouldn't work like that.",
+        "[NERVOUS] I don't like this. {suspicious_detail} feels {adjective}."
+      ],
+      "realization": [
+        "[GASP] Oh God... {horrifying_discovery}. That explains everything.",
+        "[PANICKED] I think I understand now. {revelation}. We have to get out of here!",
+        "[TERRIFIED] The {object} isn't just {normal_state}. It's {horrifying_state}."
+      ],
+      "denial": [
+        "[SHAKY] This can't be real. {reality_denial}. It just can't be.",
+        "[DESPERATE] There has to be an explanation. {attempted_explanation}.",
+        "[SCREAMING] No, no, no! {repetition} This isn't happening!"
+      ],
+      "camera_operator": [
+        "[WHISPER] Did you get that? Tell me you got that.",
+        "[FRUSTRATED] The camera's not picking it up. It's like {something} is blocking the {signal}.",
+        "[TERRIFIED] Why isn't this working?! We need to {action}!",
+        "[PANICKED] The {battery|tape} is almost gone. We have to {action} before it's too late."
+      ]
+    },
+    "game_descriptions": {
+      "templates": [
+        "Investigate {location} with only your camera to document the truth. {mechanic} forces you to capture evidence of the {supernatural} before it's too late.",
+        "Survive the night in {haunted_place} while filming everything. {gameplay_feature} tests your ability to document the horror while trying to escape it.",
+        "Uncover the truth behind {missing_persons_case} by reviewing {found_footage}. {twist} reveals what really happened that night.",
+        "Escape from {cursed_location} before {doom} claims you. {unique_mechanic} forces you to use your camera as both a tool and a weapon.",
+        "Document the {paranormal_activity} in {location} for {client}. {revelation} will make you question whether some truths should remain hidden."
+      ],
+      "found_footage_elements": [
+        "a camera that captures things that aren't there when viewed normally",
+        "a video file that changes every time it's watched",
+        "a recording that predicts future events",
+        "a microphone that picks up voices that weren't there during recording",
+        "a lens that shows reflections of people who aren't present",
+        "footage that contains subliminal messages when played in reverse",
+        "a camera that continues recording even after the battery dies",
+        "a recording that shows different events depending on who watches it",
+        "a video that causes physical effects when viewed",
+        "a camera that adds disturbing elements to footage after recording"
+      ]
+    }
+  },
+  "assets": {
+    "icons": {
+      "themeIcon": "📹",
+      "menuIcon": "🎞️",
+      "loadingIcon": "⏺️"
+    },
+    "colors": {
+      "primary": "#1a1a1a",
+      "primary-dark": "#0a0a0a",
+      "secondary": "#2a2a2a",
+      "text-primary": "#e0e0e0",
+      "text-secondary": "#a0a0a0",
+      "accent": "#ff0000",
+      "film_grain": "rgba(50, 50, 50, 0.3)",
+      "static": "rgba(100, 100, 100, 0.4)",
+      "blood": "rgba(139, 0, 0, 0.5)"
+    },
+    "sounds": {
+      "ambient": ["camera_static.mp3", "distant_screams.mp3", "breathing_heavy.mp3"],
+      "ui": ["camera_click.wav", "tape_rewind.wav", "static_burst.wav"]
+    }
+  }
+}

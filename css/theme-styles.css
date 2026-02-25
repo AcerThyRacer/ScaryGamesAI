@@ -1,0 +1,243 @@
+/* ============================================
+   Theme Classes - Phase 1 Expanded Themes
+   ============================================ */
+
+.writing-theme-default {
+  --writing-theme-primary: var(--bg-primary);
+  --writing-theme-text: var(--text-primary);
+}
+
+.writing-theme-horror {
+  --writing-theme-primary: #2a1a1a;
+  --writing-theme-text: #e8d8c0;
+  --writing-theme-accent: #cc1122;
+  --writing-theme-glow: rgba(204, 17, 34, 0.3);
+}
+
+.writing-theme-gore {
+  --writing-theme-primary: #6b0f1a;
+  --writing-theme-text: #ffd1dc;
+  --writing-theme-accent: #ff0000;
+  --writing-theme-blood: rgba(139, 0, 0, 0.7);
+  --writing-theme-flesh: rgba(255, 204, 188, 0.3);
+}
+
+.writing-theme-supernatural {
+  --writing-theme-primary: #2d1b69;
+  --writing-theme-text: #e6d7ff;
+  --writing-theme-accent: #9d00ff;
+  --writing-theme-ethereal: rgba(157, 0, 255, 0.2);
+  --writing-theme-haunting: rgba(220, 200, 255, 0.15);
+}
+
+.writing-theme-post-apocalyptic {
+  --writing-theme-primary: #5a4d41;
+  --writing-theme-text: #e8d8c0;
+  --writing-theme-accent: #d45500;
+  --writing-theme-ruin: rgba(139, 69, 19, 0.3);
+  --writing-theme-toxic: rgba(143, 188, 143, 0.2);
+}
+
+.writing-theme-fantasy {
+  --writing-theme-primary: #2a1e18;
+  --writing-theme-text: #e8d8c0;
+  --writing-theme-accent: #8b4513;
+  --writing-theme-magic: rgba(139, 69, 19, 0.3);
+  --writing-theme-cursed: rgba(75, 0, 130, 0.2);
+}
+
+.writing-theme-sci-fi {
+  --writing-theme-primary: #0a1a2a;
+  --writing-theme-text: #c0d8f0;
+  --writing-theme-accent: #0066cc;
+  --writing-theme-technological: rgba(0, 102, 204, 0.3);
+  --writing-theme-cosmic: rgba(10, 26, 42, 0.5);
+}
+
+.writing-theme-psychological {
+  --writing-theme-primary: #1a1a2a;
+  --writing-theme-text: #d0d0f0;
+  --writing-theme-accent: #6600cc;
+  --writing-theme-mind: rgba(102, 0, 204, 0.2);
+  --writing-theme-reality: rgba(20, 20, 40, 0.3);
+}
+
+.writing-theme-cosmic {
+  --writing-theme-primary: #0a0a1a;
+  --writing-theme-text: #c0c0f0;
+  --writing-theme-accent: #4400aa;
+  --writing-theme-void: rgba(20, 20, 40, 0.5);
+  --writing-theme-cosmic: rgba(68, 0, 170, 0.3);
+  --writing-theme-eldritch: rgba(120, 0, 255, 0.2);
+}
+
+/* Expanded themes for Phase 1 */
+.writing-theme-body-horror {
+  --writing-theme-primary: #3a1a1a;
+  --writing-theme-text: #ffd1dc;
+  --writing-theme-accent: #cc1111;
+  --writing-theme-flesh: rgba(255, 204, 188, 0.4);
+  --writing-theme-blood: rgba(139, 0, 0, 0.6);
+  --writing-theme-bone: rgba(245, 245, 220, 0.5);
+  --writing-theme-viscera: rgba(139, 69, 19, 0.6);
+}
+
+.writing-theme-folk-horror {
+  --writing-theme-primary: #3a2a1a;
+  --writing-theme-text: #e8d8c0;
+  --writing-theme-accent: #8b4513;
+  --writing-theme-earth: rgba(139, 69, 19, 0.3);
+  --writing-theme-blood: rgba(139, 0, 0, 0.4);
+  --writing-theme-ritual: rgba(200, 100, 50, 0.2);
+}
+
+.writing-theme-lovecraftian {
+  --writing-theme-primary: #1a0a2a;
+  --writing-theme-text: #d0c0f0;
+  --writing-theme-accent: #6600aa;
+  --writing-theme-eldritch: rgba(102, 0, 170, 0.3);
+  --writing-theme-forbidden: rgba(150, 100, 200, 0.2);
+  --writing-theme-ancient: rgba(75, 0, 130, 0.4);
+}
+
+.writing-theme-technological {
+  --writing-theme-primary: #0a1a2a;
+  --writing-theme-text: #c0d8f0;
+  --writing-theme-accent: #00ccff;
+  --writing-theme-circuit: rgba(0, 200, 255, 0.3);
+  --writing-theme-holographic: rgba(0, 150, 255, 0.4);
+  --writing-theme-error: rgba(255, 50, 50, 0.3);
+}
+
+.writing-theme-urban-legend {
+  --writing-theme-primary: #2a2a2a;
+  --writing-theme-text: #e0e0e0;
+  --writing-theme-accent: #ff6b35;
+  --writing-theme-digital: rgba(255, 107, 53, 0.3);
+  --writing-theme-shadow: rgba(50, 50, 50, 0.4);
+  --writing-theme-eerie: rgba(200, 100, 50, 0.2);
+}
+
+.writing-theme-found-footage {
+  --writing-theme-primary: #1a1a1a;
+  --writing-theme-text: #e0e0e0;
+  --writing-theme-accent: #ff0000;
+  --writing-theme-film-grain: rgba(50, 50, 50, 0.3);
+  --writing-theme-static: rgba(100, 100, 100, 0.4);
+  --writing-theme-blood: rgba(139, 0, 0, 0.5);
+}
+
+.writing-theme-apocalyptic {
+  --writing-theme-primary: #2a2a1a;
+  --writing-theme-text: #e8d8c0;
+  --writing-theme-accent: #d45500;
+  --writing-theme-fire: rgba(212, 85, 0, 0.4);
+  --writing-theme-ash: rgba(100, 100, 100, 0.5);
+  --writing-theme-blood: rgba(139, 0, 0, 0.3);
+}
+
+/* Apply theme styles to narrative elements */
+.narrative-element {
+  color: var(--writing-theme-text, var(--text-primary));
+  transition: all 0.3s ease;
+}
+
+.narrative-element:hover {
+  color: var(--writing-theme-accent, var(--accent-red));
+  text-shadow: 0 0 8px var(--writing-theme-glow, var(--accent-red-glow));
+}
+
+.lore-tablet {
+  background: rgba(0, 0, 0, 0.7);
+  border-left: 3px solid var(--writing-theme-accent, var(--accent-red));
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1rem 0;
+  transition: all 0.3s ease;
+}
+
+.lore-tablet:hover {
+  background: rgba(0, 0, 0, 0.8);
+  border-color: var(--writing-theme-accent, var(--accent-red));
+  box-shadow: 0 0 15px var(--writing-theme-glow, var(--accent-red-glow));
+}
+
+.character-cameo {
+  font-style: italic;
+  color: var(--writing-theme-accent, var(--accent-red));
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+.character-cameo::before {
+  content: "👁️";
+  position: absolute;
+  left: 0;
+  opacity: 0.7;
+}
+
+.audio-log {
+  background: rgba(0, 0, 0, 0.6);
+  border-left: 3px solid var(--writing-theme-accent, var(--accent-cyan));
+  border-radius: 8px;
+  padding: 1rem;
+  margin: 1rem 0;
+  font-family: monospace;
+}
+
+.audio-log:hover {
+  background: rgba(0, 0, 0, 0.7);
+  box-shadow: 0 0 10px var(--writing-theme-glow, var(--accent-cyan-glow));
+}
+
+.atmospheric-effect {
+  opacity: 0.8;
+  transition: opacity 0.5s ease;
+}
+
+.atmospheric-effect:hover {
+  opacity: 1;
+  text-shadow: 0 0 10px var(--writing-theme-glow, var(--accent-red-glow));
+}
+
+/* Theme-specific effects */
+.writing-theme-cosmic .narrative-element {
+  text-shadow: 0 0 5px var(--writing-theme-eldritch);
+  font-family: 'Courier New', monospace;
+}
+
+.writing-theme-body-horror .narrative-element {
+  text-shadow: 0 0 3px var(--writing-theme-blood);
+}
+
+.writing-theme-folk-horror .narrative-element {
+  font-family: 'Times New Roman', serif;
+}
+
+.writing-theme-technological .narrative-element {
+  font-family: 'Courier New', monospace;
+  text-shadow: 0 0 3px var(--writing-theme-circuit);
+}
+
+.writing-theme-found-footage .narrative-element {
+  position: relative;
+}
+
+.writing-theme-found-footage .narrative-element::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 1px,
+    rgba(100, 100, 100, 0.1) 1px,
+    rgba(100, 100, 100, 0.1) 2px
+  );
+  pointer-events: none;
+  opacity: 0.3;
+  z-index: 1;
+}

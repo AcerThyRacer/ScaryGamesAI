@@ -1,0 +1,120 @@
+{
+    "id": "pirate",
+    "name": "Pirate Adventure",
+    "description": "A swashbuckling pirate theme with treasure hunts, sea battles, and tropical islands.",
+
+    // UI Theme Settings (extends existing theme system)
+    "ui": {
+        "themeClass": "theme-pirate",
+        "colors": {
+            "primary": "#1a1a2e",
+            "secondary": "#16213e",
+            "accent": "#e94560",
+            "textPrimary": "#f1f1f1",
+            "textSecondary": "#a0a0a0",
+            "textMuted": "#666666",
+            "borderDark": "rgba(233, 69, 96, 0.3)",
+            "borderGlow": "rgba(233, 69, 96, 0.2)"
+        },
+        "fonts": {
+            "main": "'Cormorant Garamond', serif",
+            "heading": "'Cormorant Garamond', serif",
+            "monospace": "'Source Code Pro', monospace"
+        }
+    },
+
+    // Writing Style Settings
+    "writing": {
+        "tone": "adventurous, swashbuckling, rough, humorous",
+        "vocabulary": {
+            "positive": ["treasure", "gold", "doubloons", "matey", "ship", "captain", "crew", "island", "rum", "adventure", "sail", "horizon", "plunder", "booty", "voyage"],
+            "negative": ["landlubber", "scurvy", "coward", "mutiny", "davy jones", "kraken", "cursed", "lost", "abandoned", "stranded"],
+            "intensifiers": ["deadly", "fearsome", "legendary", "cursed", "mighty", "terrible", "bloody", "savage", "ruthless"],
+            "descriptors": ["bloodthirsty", "treacherous", "swashbuckling", "daring", "cunning", "sly", "brave", "reckless"]
+        },
+        "sentenceStructure": {
+            "minWords": 6,
+            "maxWords": 18,
+            "complexity": 0.6,
+            "ellipsisProbability": 0.1,
+            "fragmentProbability": 0.3
+        },
+        "pirateTechniques": {
+            "yarrProbability": 0.4,
+            "swearingProbability": 0.2,
+            "metaphorProbability": 0.3,
+            "humorProbability": 0.25,
+            "exaggerationProbability": 0.3
+        }
+    },
+
+    // Theme-specific content
+    "content": {
+        "greetings": [
+            "Ahoy there, matey!",
+            "Welcome aboard, scallywag!",
+            "Yarr! What brings ye to these waters?",
+            "Shiver me timbers! Look who's here!",
+            "Avast! A new face on the high seas!"
+        ],
+        "farewells": [
+            "May the winds be at yer back!",
+            "Fair winds and following seas!",
+            "Don't let the kraken get ye!",
+            "Keep yer powder dry, matey!",
+            "Until we meet again on the high seas!"
+        ],
+        "loadingMessages": [
+            "Raising the Jolly Roger...",
+            "Plotting the course...",
+            "Loading the cannons...",
+            "Counting the doubloons...",
+            "Preparing for adventure...",
+            "Setting sail for the horizon...",
+            "Checking the treasure map...",
+            "Readying the crew..."
+        ],
+        "gameDescriptions": {
+            "template": "A {adjective} adventure that will test yer {noun}. {setup}",
+            "adjectives": ["treacherous", "daring", "swashbuckling", "bloodthirsty", "legendary", "cursed", "mighty", "savage"],
+            "verbs": ["test", "challenge", "push", "forge", "shape", "define", "break"],
+            "nouns": ["courage", "wits", "strength", "loyalty", "resolve", "fortune", "fate"],
+            "setups": [
+                "The treasure be cursed, and only the bravest pirates dare seek it.",
+                "A mutiny be brewing, and ye must choose yer side wisely.",
+                "The kraken awakens, and the high seas be no longer safe.",
+                "A legendary pirate's lost treasure be within reach... if ye dare.",
+                "The Royal Navy be hot on yer trail, and escape be yer only option."
+            ]
+        }
+    },
+
+    // Theme-specific assets
+    "assets": {
+        "backgrounds": ["pirate-bg-1.jpg", "pirate-bg-2.jpg", "pirate-bg-3.jpg"],
+        "icons": {
+            "themeIcon": "⚓",
+            "loadingIcon": "🏴‍☠️"
+        },
+        "sounds": {
+            "ambient": ["pirate-ambient-1.mp3", "pirate-ambient-2.mp3"],
+            "effects": ["cannon-1.mp3", "wave-1.mp3", "seagull-1.mp3", "sword-1.mp3"]
+        }
+    },
+
+    // Game-specific adaptations
+    "gameAdaptations": {
+        "caribbean-conquest": {
+            "npcDialogueStyle": "rough pirate with a heart of gold",
+            "environmentDescriptions": "tropical islands, pirate ships, hidden coves, treasure caves"
+        },
+        "blood-tetris": {
+            "npcDialogueStyle": "pirate captain giving orders",
+            "environmentDescriptions": "ship deck, cargo hold, stormy seas"
+        },
+        "cursed-sands": {
+            "npcDialogueStyle": "desert pirate with a mysterious past",
+            "environmentDescriptions": "sandy dunes, ancient ruins, hidden oases"
+        }
+    }
+}

@@ -1,0 +1,292 @@
+{
+  "id": "urban_legend_horror",
+  "name": "Urban Legend Horror",
+  "description": "Modern folklore, internet horror, creepypasta, viral horror, the terror of everyday life, stories that feel too real, horror that spreads like a virus",
+  "lexicon_id": "urban_legend_horror",
+  "icon": "👥",
+  "class": "writing-theme-urban-legend",
+  "writing_rules": {
+    "message": "WARNING: This theme explores the terror of modern folklore. The stories are too real. The legends are spreading. And they might be true.",
+    "technical": {
+      "use_modern_language": 0.95,
+      "create_realism": 0.98,
+      "build_viral_spread": 0.9,
+      "use_internet_culture": 0.95,
+      "create_authenticity": 0.99
+    },
+    "sentence_structure": {
+      "complexity_normal": 0.5,
+      "complexity_disturbed": 0.7,
+      "fragment_probability": 0.6,
+      "ellipsis_probability": 0.5,
+      "repetition_probability": 0.4,
+      "modern_phrasing": 0.95,
+      "viral_spread_probability": 0.8
+    },
+    "technical_rules": {
+      "never_make_it_clear": [
+        "Never confirm whether the legend is true or false. The ambiguity is the terror.",
+        "Never show the full monster or entity. The imagination is more powerful.",
+        "Never resolve the story completely. Some mysteries should remain."
+      ],
+      "viral_horror": {
+        "min_spread_level": 0.9,
+        "max_realism_level": 0.95,
+        "authenticity_probability": 0.9
+      }
+    },
+    "content_constraints": {
+      "min_modern_language": 0.95,
+      "min_realism": 0.9,
+      "max_definitive_explanations": 0.1,
+      "min_viral_spread": 0.85,
+      "min_authenticity": 0.95,
+      "urban_legend_horror_auto_generation": 0.85
+    },
+    "form": {
+      "allow_modern_phrasing": 0.98,
+      "mandatory_realism": 0.95,
+      "allow_ambiguity": 0.99,
+      "forbid_definitive_resolution": 0.99
+    }
+  },
+  "vocabulary_subsets": [
+    "nouns_by_theme.modern",
+    "nouns_by_theme.internet",
+    "verbs_by_terror.viral",
+    "verbs_by_terror.creepy",
+    "adjectives.modern",
+    "adjectives.creepy",
+    "adjectives.viral",
+    "nouns.urban_legend"
+  ],
+  "content": {
+    "greetings": [
+      "Have you heard about {legend_name}? It happened to a {relationship} of mine.",
+      "I found this {object} in {location}. It has {disturbing_feature}.",
+      "There's this {website|forum} where people post about {phenomenon}. It's {adjective}.",
+      "A {friend|stranger} told me about {legend}. I didn't believe it until {event}.",
+      "I saw {something} last night. It was {description}. Or maybe I {imagined|dreamed} it.",
+      "This {video|image} is going viral. It shows {phenomenon}. {Warning}.",
+      "They say if you {action} at {time}, {consequence} happens. I tried it. {Result}.",
+      "There's this {game|ritual} that people are doing. It's supposed to {purpose}. But {warning}."
+    ],
+    "greetings_internal_monologue": [
+      "{self_question}: Why does {legend} feel so {adjective}? It's just a story... right?",
+      "{uncertainty}: I saw {something}. {self_correction} No, it was just {explanation}. {doubt} {something_is_wrong}.",
+      "{introjection}: {legend_command}. {resistance} {futile_gesture}.",
+      "{self_observation}: My {device|surroundings} {shows_signs|appears_normal}. {doubt} {self_reassurance}. {Something} is off.",
+      "{memory_fragment}: I remember hearing about {legend} before. {realization} That was {time_ago}."
+    ],
+    "farewells": [
+      "Don't look up {legend_name} at night. You might find more than you bargained for.",
+      "The {story|video} is still out there. It's spreading.",
+      "They say {legend} is just a myth. But {evidence} suggests otherwise.",
+      "Be careful what you {search_for|believe}. Some stories are true.",
+      "The {phenomenon} continues. New {victims|witnesses} emerge every day.",
+      "Don't try {ritual|game}. It's not worth the {consequence}.",
+      "The {legend} has a life of its own. It's evolving.",
+      "You can forget about it. But {legend} won't forget about you."
+    ],
+    "loading_messages": [
+      "Loading {legend} details... {status}",
+      "Searching for {phenomenon}... {results} found",
+      "Analyzing {video|image}... {anomalies} detected",
+      "Tracing {story} origin... {source} identified",
+      "Verifying {account}... {authenticity}% real",
+      "Decrypting {message}... {hidden_meaning} revealed",
+      "Tracking {legend} spread... {count} instances",
+      "Processing {user_report}... {details} extracted"
+    ],
+    "legend_reports": [
+      "[URBAN LEGEND REPORT]\nName: {legend_name}\nOrigin: {source}\nFirst Reported: {date}\nSpread: {platforms}\nVariations: {count}\nAuthenticity: {level}\nStatus: {status}",
+      "[WITNESS ACCOUNT]\nName: {name}\nLocation: {place}\nDate: {date}\nDescription: {details}\nEvidence: {type}\nCredibility: {score}\nFollow-up: {status}",
+      "[VIRAL PHENOMENON ANALYSIS]\nContent: {type}\nPlatform: {platform}\nViews: {count}\nShares: {count}\nAnomalies: {count}\nAuthenticity: {level}\nStatus: {status}",
+      "[CREEPYPASTA ANALYSIS]\nTitle: {title}\nAuthor: {author}\nOrigin: {source}\nVariations: {count}\nCultural Impact: {level}\nNotable Features: {features}"
+    ],
+    "game_descriptions": {
+      "templates": [
+        "A {adjective} {game|ritual} that's gone viral. {player_action} triggers {consequence}.",
+        "The {legend} is spreading online. {event} has {effect}. {objective}.",
+        "A {subgenre} game where {phenomenon} becomes real. {mechanic} determines your fate.",
+        "You've encountered {legend}. {circumstance} makes it personal. {goal}.",
+        "The {story|video} is too real. {player_action} reveals {truth}.",
+        "A {group} of {people} investigate {legend}. {consequence} awaits.",
+        "The {internet_challenge|ritual} was meant to be {fun|harmless}. It isn't. {horror} ensues.",
+        "Every {time_period}, {legend} resurfaces. This time, {something_different}. {player_role}."
+      ],
+      "adjectives": [
+        "viral", "creepy", "unsettling", "too_real",
+        "spreading", "unexplained", "disturbing", "authentic",
+        "modern", "internet", "urban", "contagious"
+      ],
+      "legends": [
+        "the Slender Man who stalks children",
+        "the Backrooms that you can accidentally enter",
+        "the Russian Sleep Experiment gone wrong",
+        "the Midnight Game that summons something",
+        "the Rake that watches from the shadows",
+        "the Siren Head that lures victims with sounds",
+        "the Smile Dog that spreads through images",
+        "the Black-Eyed Children who knock on doors"
+      ],
+      "phenomena": [
+        "a game that summons something when played",
+        "a ritual that opens a door to another world",
+        "a video that drives viewers insane",
+        "an image that contains something unnatural",
+        "a website that predicts your death",
+        "a phone call from your future self",
+        "a social media challenge with deadly consequences",
+        "a meme that becomes too real"
+      ],
+      "platforms": [
+        "a creepypasta that feels too authentic",
+        "a viral video with disturbing content",
+        "a forum where people share their experiences",
+        "a social media challenge gone wrong",
+        "a deep web site with forbidden knowledge",
+        "a game that shouldn't exist",
+        "a ritual that spreads through word of mouth",
+        "a story that everyone knows but no one remembers the origin"
+      ]
+    },
+    "rules": {
+      "thematic_constraints": {
+        "never_make_it_clear": 0.99,
+        "always_show_viral_spread": 0.98,
+        "emphasize_realism": 0.95,
+        "avoid_definitive_resolutions": 0.99,
+        "show_the_terror_of_modern_folklore": 0.99
+      },
+      "example_techniques": {
+        "viral_horror": [
+          "Describe {legend} spreading through {platform}. The {speed} is {alarming}.",
+          "Show how {story} {evolves|changes} as it spreads. {variations} emerge.",
+          "Create {situation} where {legend} {becomes} {too_real}. {consequence} is {immediate}.",
+          "Note how {people} {react} to {legend}. The {spread} is {viral}."
+        ],
+        "ambiguous_horror": [
+          "Describe {phenomenon} that could be {explanation} or {supernatural}.",
+          "Show {character} experiencing {event} that may or may not be real.",
+          "Create {situation} where {evidence} is {ambiguous|contradictory}.",
+          "Note how {legend} {behavior} in ways that defy {logic|explanation}."
+        ],
+        "modern_folklore": [
+          "Describe {legend} as if it's {true}. The {details} are {specific|realistic}.",
+          "Show how {story} {spreads} through {modern_media}. The {authenticity} is {convincing}.",
+          "Create {situation} where {legend} {feels} {too_real}. {doubt} sets in.",
+          "Note how {people} {treat} {legend} as {true|false}. The {ambiguity} is the horror."
+        ]
+      }
+    },
+    "world_unfolding": {
+      "urban_legend_locations": {
+        "viral_forum": {
+          "central_paradox": "The forum appears to be a normal online community, but the stories shared there are too real. The more people believe, the more real they become.",
+          "untrustworthy_elements": [
+            "stories that change when reread",
+            "users who post from impossible locations",
+            "threads that disappear and reappear",
+            "the sense that the forum is watching you",
+            "posts that contain personal information",
+            "users who remember things differently",
+            "the feeling that you've posted here before"
+          ]
+        },
+        "creepypasta_wiki": {
+          "central_paradox": "The wiki was meant to document fictional horror stories, but the stories are becoming real. The more they're read, the more power they gain.",
+          "untrustworthy_elements": [
+            "stories that update themselves",
+            "images that change when unobserved",
+            "pages that contain personal information",
+            "the sense that the wiki is alive",
+            "stories that come true in real life",
+            "users who remember different versions",
+            "the feeling that you're part of the story"
+          ]
+        },
+        "haunted_social_media": {
+          "central_paradox": "The social media platform appears normal, but the content shared there has a life of its own. The more it's shared, the more real it becomes.",
+          "untrustworthy_elements": [
+            "posts that contain hidden messages",
+            "videos that show different things to different viewers",
+            "accounts that post from the future",
+            "the sense that the platform is manipulating you",
+            "content that spreads too quickly",
+            "memories that don't match the timeline",
+            "the feeling that you're being watched through your webcam"
+          ]
+        }
+      },
+      "revelation_patterns": [
+        "{Legend} isn't just {story} - it's {real}. The {evidence} was {ignored|dismissed}.",
+        "The {phenomenon} wasn't {natural} - it was {supernatural}. This suggests {hidden_truth}.",
+        "{Platform} isn't just {website} - it's {alive}. The {content} is {controlled}.",
+        "{Story} isn't {fiction} - it's {prediction}. This explains {unexplained_events}.",
+        "The {viral_content} doesn't just {spread} - it {evolves}. This reveals {true_nature}."
+      ]
+    }
+  },
+  "assets": {
+    "icons": {
+      "themeIcon": "👥",
+      "menuIcon": "📱",
+      "loadingIcon": "🔗"
+    },
+    "colors": {
+      "primary": "#2a2a3a",
+      "primary-dark": "#12121a",
+      "secondary": "#3a3a4a",
+      "text-primary": "#e0e0ff",
+      "text-secondary": "#b0b0d0",
+      "accent": "#8a8aff",
+      "viral": "rgba(138, 138, 255, 0.2)",
+      "modern": "rgba(200, 200, 255, 0.15)",
+      "legend": "rgba(150, 150, 200, 0.3)"
+    },
+    "sounds": {
+      "ambient": ["keyboard_typing.mp3", "notification_sounds.mp3", "distant_voices.mp3", "static_noise.mp3"],
+      "ui": ["notification.wav", "keyboard_click.wav", "page_turn.wav", "whisper.wav"]
+    }
+  },
+  "ai_config": {
+    "urban_legend_horror": {
+      "min_horror_level": 4,
+      "max_horror_level": 8,
+      "horror_types": [
+        "viral_horror", "ambiguous_horror",
+        "modern_folklore", "internet_horror",
+        "creepypasta", "reality_distortion",
+        "psychological_horror", "supernatural_manifestation"
+      ],
+      "horror_probability": 0.8
+    },
+    "viral_spread": {
+      "min_spread_level": 4,
+      "max_spread_level": 9,
+      "spread_mechanisms": [
+        "social_media", "word_of_mouth",
+        "internet_forums", "viral_challenges",
+        "memes", "creepypasta",
+        "deep_web", "alternate_reality_games"
+      ],
+      "spread_probability": 0.85
+    }
+  },
+  "integration": {
+    "game_behavior_modifications": {
+      "reality_system": "belief_based",
+      "perception_system": "influenced_by_stories",
+      "trust_system": "dynamic",
+      "spread_system": "viral",
+      "belief_system": "active"
+    },
+    "narrative_triggers": [
+      "legend_encounter", "viral_spread",
+      "internet_discovery", "ritual_performance",
+      "story_becoming_real", "ambiguous_evidence",
+      "modern_folklore_manifestation", "belief_system_activation"
+    ]
+  }
+}

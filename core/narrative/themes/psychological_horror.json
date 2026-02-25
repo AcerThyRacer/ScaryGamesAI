@@ -1,0 +1,245 @@
+{
+  "id": "psychological_horror",
+  "name": "Psychological Horror Theme",
+  "description": "Unreality, paranoia, gaslighting, mind control, existential dread - the horror of realizing your own perception cannot be trusted",
+  "lexicon_id": "psychological_horror",
+  "icon": "🎭",
+  "class": "writing-theme-psychological",
+  "writing_rules": {
+    "metadata": {
+      "author_balance": {
+        "trust_dice": 3,
+        "certainty_die": 0.2,
+        "proof_value": 0.3
+      }
+    },
+    "sentence_structure": {
+      "complexity_pristine": 0.2,
+      "complexity_normal": 0.5,
+      "complexity_disturbed": 0.65,
+      "complexity_paranoid": 0.8,
+      "complexity_delusional": 0.9,
+      "complexity_fragmented": 0.95,
+      "complexity_psychotic": 0.98,
+      "fragment_probability": 0.3,
+      "ellipsis_probability": 0.4,
+      "repetition_probability": 0.15,
+      "question_probability": 0.2,
+      "contraction_probability": 0.6,
+      "nominalization_probability": 0.4,
+      "passive_voice_probability": 0.5
+    },
+    "sanity_levels": {
+      "pristine": {
+        "description": "Normal perception, rational thoughts, high trust in reality",
+        "constraints": {
+          "min_readability": 0.8,
+          "max_jargon": 0.1,
+          "allow_contradictions": false,
+          "allow_paradoxes": false,
+          "narrative_coherence": 0.98
+        }
+      },
+      "psychotic": {
+        "description": "Complete breakdown of perception, chaotic thoughts, delusional",
+        "constraints": {
+          "min_readability": 0.1,
+          "max_jargon": 0.9,
+          "allow_contradictions": true,
+          "allow_paradoxes": true,
+          "narrative_coherence": 0.2
+        },
+        "special_rules": [
+          "The narrative should convincingly deceive itself - presenting arguments FOR an interpretation that the context puts strong pressure AGAINST",
+          "Every revelation should trigger a sliding doors sequence that promises redemption to be immediately undermined by other revelations"
+        ],
+        "concept_challenges": {
+          "self_reference": 0.9,
+          "metatextuality": 0.8,
+          "idiosyncratic_logic": 0.75
+        }
+      }
+    },
+    "techniques": {
+      "gaslighting": 0.7,
+      "psychological_pressure": 0.85,
+      "cognitive_dissonance": 0.6,
+      "perceptual_doubt": 0.8,
+      "existential_dread": 0.75,
+      "unreliable_narration": 0.8,
+      "informal_fallacies": 0.5,
+      "pacing_manipulation": 0.65,
+      "perspective_forgery": 0.5
+    }
+  },
+  "vocabulary_subsets": [
+    "nouns_by_theme.existential",
+    "verbs_by_terror.breathless",
+    "adjectives.psychological",
+    "adjectives.sound_contested_reality",
+    "adjectives.light_uncanny",
+    "adjectives.surface_uncertainty",
+    "nouns.time_disruptions"
+  ],
+  "content": {
+    "greetings": [
+      "You stand at the border of cognition, prepared to cross the line into {condition}.",
+      "Reality flickers at the edges. {self_assurance} that you're actually checking now.",
+      "{player_name}—no, {alternative_identity}—open your perception to the occluded dimensions beyond normal sight.",
+      "Step one: question {everything_you_believe}. Step two: question step one.",
+      "The world presents itself as {convincingly_stable_reality_term}. This may no longer be sufficient {trust_structure}."
+    ],
+    "greetings_internal_monologue": [
+      "{self_description}, {self_question} You can't {trust_source} any longer, can you?",
+      "{mandatory_consideration}: have you {retroactively} observed your {auto_reification_gesture} today?",
+      "[CONSIDER {self_sanity_label}]: it appears to be {test_outcome}. {perform_attempt} to double check?",
+      "{introjection_1}: {imperative_statement}. {introjection_2}: {resist_imperative}."
+    ],
+    "farewells": [
+      "The real horror begins when you try to {reconstruct} what actually happened. Good luck reconstructing {anything_that_happened}.",
+      "{time_passes}. Six hours since you last {trusted_action}. Difficult to remember why you ever believed anything in this place.",
+      "How does one account for {missing_piece} of the experience? {consider_documenting}. {choose_not_to}.",
+      "Shutting down {observational_faculties}. The last coherent sentence your {thought_generation_organ} will form today: how should we {judge_reconstructed_memory} {broken_pieces}.",
+      "{leaving_gesture_select}—carrying {serviceable_perceptual_model} that may soon show its flaws."
+    ],
+    "loading_messages": [
+      "Determining where your horizon of trust will fail today...",
+      "Compiling inconsistencies between memory and recorded {reality}...",
+      "Calculating {probable_perceptual_failures} for this gameplay session... {percentage_display}",
+      "Your brain processes {image_count_with_embedded_falsehoods} simultaneously while slowly realizing, your {sensory_memory} serves as a confidence wormhole.",
+      "Preparing psychological {fracture_points}..."
+    ],
+    "mirror_text": [
+      "{self_part} feels {wrong_adjective}. {self_correction}: no, everything feels {wrong_adjective}.",
+      "{times_measured}  measures of {self_part} have {discrepancy}",
+      "{reflection_action}, but performed by {actor}: {non_action}",
+      "When {view_peripherally}, you see {person}. When {view_fixated}, you see {other_horror_description}"
+    ],
+    "empty_notes": [
+      "[BLANK: {criteria} {satisfied|unsatisfied}: narrative completed successfully without violating elementary logic.]",
+      "{trace_process_description}",
+      "[ DISCREPANCY LOG ]\n- {input}: {input_value}\n- {output}: {different_value}\n- {explanation_attempt}: [INSUFFICIENT DATA]",
+      "{perspective_strip} featuring {location} from temporal location {temporal_description}"
+    ],
+    "game_descriptions": {
+      "templates": [
+        "A psychological {exercise} disguised as a game: {be_traded} {reality_model} for {gambled_perception}. Your opponent plays the role of {antagonist_unit} while hiding the {true_role}. Your objective: determine how thoroughly you've been {pre_conditioned} to {preference_illusion}.",
+        "An occulted {assessment_procedure} whereby subjects volunteer sacrifice vision, aural comfort, or proprioceptive confidence in exchange for {imaginary_rewards}",
+        "{player_psychological_status} competes to {self_action} before {conditional_problem} becomes {absolute_problems}.",
+        "{evidence_perception} tests the boundaries of your epistemic container: at what point does {internal_conflict} outbalance {external_perception}?",
+        "{horror_modality_selector} throws brave participants into an environment carefully engineered to induce both {reconciled_contradictions} and {perception_failures} based on purposefully {corrected_data}"
+      ],
+      "adjectives": [
+        "perceptual", "cognitive", "existential", "epistemic",
+        "hermeneutic", "metacognitive", "phenomenological", "ontological"
+      ],
+      "verbs": [
+        "tests", "evaluates", "probes", "examines",
+        "dismantles", "disassembles", "reprograms", "reorchestrates",
+        "rewires"
+      ],
+      "assessment_procedures": [
+        "IQ test", "epistemological stability assessment",
+        "reality apperception test", "trust horizon delamination procedure",
+        "cognitive binding experiment"
+      ],
+      "antagonist_units": [
+        "the most advanced cluster of software designed to simulate psychological terror",
+        "deliberately misleading semantic network",
+        "the design team's physical representation of paranoia",
+        "your own mind, wearing unfamiliar clothing"
+      ],
+      "evidence_perceptions": [
+        "Cumulative evidence tending to disappear after careful scrutiny",
+        "A grid of observations that refuses Mendeleian consistency",
+        "The sense you lost an argument with a naming convention"
+      ],
+      "enemies": [
+        "hallucinations with predeveloped personalities",
+        "semantic cognitive errors manifested physically",
+        "your young self objecting to your current actions",
+        "aspects of your psyche you'd prefer remained compartmentalized",
+        "paperwork you are CERTAIN you disposed of properly"
+      ]
+    },
+    "rules": {
+      "thematic_constraints": {
+        "never_allow_certainty": 0.98,
+        "always_question_source": 0.95,
+        "create_epistemological_uncertainty": 0.99,
+        "situate_reality_as_potentially_fabricated": 0.85,
+        "embed_recursive_paradoxes": 0.5
+      },
+      "example_technique_applications": {
+        "gaslighting": [
+          "{Corroborate_with} an external source that contradicts player perception. Gradually erase {external_source}'s testimony as questionable.",
+          "{Present_as} annihilating proof, then {recontextualize_as} condition-dependent. Eventually admit {you_admitted_previously_erred_overthis_proof} to cast retrospective doubt on all memory forming from {begin_time} forward.",
+          "{Induce_delusion} that a trusted third-party secretly works for {historically_untrustworthy_entity}. Allow limited {interactions_with_third_party}, carefully censored to appear supportive, then retroactively reveal the censorship as natural degradation."
+        ],
+        "informal_fallacies": [
+          "Appeal to {consequence}: statement {A} is true because accepting it prevents {horrible_outcome}.",
+          "{Perspectival_framing}: condition {A} transforms into {B} based solely on whether it's a {pathological_diagnosis}, {chronic_condition}, or {existential_crunch}.",
+          "{Circular reasoning}: the belief {B} is {justified} because it exists reliably across {multiplicity}. The reason {B} exists across {multiplicity} is because it is justified to do so."
+        ]
+      }
+    },
+    "world_unfolding": {
+      "epistemological_locations": {
+        "asylum": {
+          "central_paradox": "The very structure that exists to contain madness instead amplifies it by competitive entryism; the walls not only warp perception but invite contesting perceptions to fight for narrative dominance",
+          "untrustworthy_elements": [
+            "neither door marking system nor directional signage delivers connected semantic content",
+            "staff identify themselves as different people every shifted corridor—impossible to adjudicate emergency based on name",
+            "patients' screams never reach confessable revelation stage—they peak and then [sound_buffer_cleared] before resolution",
+            "the clocks form transceiver array designed to transmit fabricated continuity through sonic pathways"
+          ]
+        },
+        "backrooms": {
+          "central_paradox": "What you thought was an information anomaly confining geographic vagueness functions instead as an ontological loophole—a special relativistic frame wherein locality dissolves not through space BUT THROUGH TRUST IN SPATIAL RELATIONS THEMSELVES",
+          "untrustworthy_elements": [
+            "the corridor that appears {legible_distance} turns out to measure {different_distance} when paced physically",
+            "the color naming system HAS ACTUALLY SHIFTED perceptually—the receiving hardware recalibrated such that {color_name} no longer indicates {color_property}",
+            "the indecipherable hum encodes missing building management system instructions that you translate subliminally without consent",
+            "you recognize {recurrent_detail} that shouldn't be replicable without replication"
+          ]
+        }
+      },
+      "revelation_patterns": [
+        "(BELIEVE nothing. By which I mean LITERALLY locate the deposit of belief in your system, look it in its face, interrogate it in a non-judgmental manner without any presumption of inherent righteousness.)",
+        "You trust {X} because {Y}. {Y} primarily obtains because {X}. Filtering duplicates, the ultimate reason you trust {X} is {X}. This configuration provides opportunity.",
+        "{Simple_form} survived extensive culling because it appeared to {deliver_value}, but {expert_analysis} suggests the {benefit} resulted not from {simple_form} but {hidden_dynamic}. The culled systems might have {protected}."
+      ]
+    }
+  },
+  "assets": {
+    "icons": {
+      "themeIcon": "🎭",
+      "menuIcon": "🧠",
+      "loadingIcon": "🔄"
+    },
+    "palette": {
+      "primary": "#7a2048",
+      "primary-dark": "#5d1836",
+      "secondary": "#a03060",
+      "text-primary": "#f8e9e9",
+      "text-secondary": "#b88699",
+      "accent": "#ff006e",
+      "uncertainty": "rgba(122, 32, 72, 0.5)"
+    }
+  },
+  "integration": {
+    "narrative_system": {
+      "theme_key": "psychological_horror",
+      "dialogue_system": {
+        "condition_operators": [
+          "perceptualConsistency", "memoryAlignment", "realityTrustThreshold"
+        ]
+      },
+      "event_scheduler": {
+        "conditions": [
+          "sanityBelow", "trustBelow", "perceptionWarping", "cognitiveLoadAbove"
+        ]
+      }
+    }
+  }
+}

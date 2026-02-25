@@ -1,0 +1,121 @@
+{
+    "id": "sci_fi",
+    "name": "Sci-Fi Adventure",
+    "description": "A futuristic theme exploring advanced technology, space exploration, alien encounters, and the ethical dilemmas of a technologically advanced society.",
+
+    // UI Theme Settings (extends existing theme system)
+    "ui": {
+        "themeClass": "theme-sci-fi",
+        "colors": {
+            "primary": "#0a0a1a",
+            "secondary": "#1a1a2a",
+            "accent": "#2a6bff",
+            "textPrimary": "#c0d0ff",
+            "textSecondary": "#8a9ac0",
+            "textMuted": "#556688",
+            "borderDark": "rgba(42, 107, 255, 0.3)",
+            "borderGlow": "rgba(42, 107, 255, 0.2)"
+        },
+        "fonts": {
+            "main": "'Orbitron', sans-serif",
+            "heading": "'Orbitron', sans-serif",
+            "monospace": "'Source Code Pro', monospace"
+        }
+    },
+
+    // Writing Style Settings
+    "writing": {
+        "tone": "futuristic, technological, mysterious, adventurous, philosophical",
+        "vocabulary": {
+            "positive": ["starship", "AI", "cybernetic", "quantum", "wormhole", "alien", "android", "hologram", "plasma", "nanotech", "hyperdrive", "exoplanet"],
+            "negative": ["primitive", "outdated", "obsolete", "analog", "earthbound", "limited"],
+            "intensifiers": ["quantum", "cyber", "hyper", "nano", "stellar", "cosmic", "advanced", "cutting-edge"],
+            "descriptors": ["futuristic", "technological", "cybernetic", "interstellar", "quantum", "advanced", "alien"]
+        },
+        "sentenceStructure": {
+            "minWords": 8,
+            "maxWords": 22,
+            "complexity": 0.8,
+            "ellipsisProbability": 0.3,
+            "fragmentProbability": 0.2
+        },
+        "sciFiTechniques": {
+            "techJargon": 0.5,
+            "philosophicalQuestions": 0.4,
+            "alienPerspectives": 0.5,
+            "futuristicConcepts": 0.6,
+            "ethicalDilemmas": 0.4
+        }
+    },
+
+    // Theme-specific content
+    "content": {
+        "greetings": [
+            "Welcome aboard the starship, traveler.",
+            "The cosmos awaits your exploration...",
+            "Engage hyperdrive... destination unknown.",
+            "Another cycle begins in the vast expanse...",
+            "The future is now... and it needs you."
+        ],
+        "farewells": [
+            "May the stars guide your journey...",
+            "Until we meet again in the void...",
+            "The universe remembers your deeds...",
+            "Engage thrusters... destination: unknown.",
+            "May your AI always calculate true..."
+        ],
+        "loadingMessages": [
+            "Calibrating quantum drives...",
+            "Scanning for alien lifeforms...",
+            "The AI contemplates existence...",
+            "Your cybernetic enhancements activate...",
+            "The wormhole stabilizes...",
+            "The starship hums to life...",
+            "A distant signal beckons...",
+            "The future unfolds before you..."
+        ],
+        "gameDescriptions": {
+            "template": "A {adjective} mission to {verb} the {noun} and {outcome}. {setup}",
+            "adjectives": ["dangerous", "cutting-edge", "interstellar", "quantum", "cybernetic", "alien", "mysterious", "epic"],
+            "verbs": ["explore", "discover", "activate", "decode", "confront", "unravel", "prevent", "unlock"],
+            "nouns": ["alien artifact", "quantum anomaly", "rogue AI", "mysterious signal", "derelict starship", "alien civilization", "ancient technology"],
+            "outcome": ["save humanity", "uncover the truth", "prevent catastrophe", "expand our knowledge", "forge a new future"],
+            "setups": [
+                "A mysterious signal from deep space could change everything... or doom us all.",
+                "The AI has gained sentience, and its goals may not align with ours.",
+                "An ancient alien artifact holds the key to humanity's evolution... or extinction.",
+                "The quantum anomaly threatens to tear apart the fabric of spacetime itself.",
+                "First contact with an alien civilization is imminent... but are we ready?"
+            ]
+        }
+    },
+
+    // Theme-specific assets
+    "assets": {
+        "backgrounds": ["sci-fi-bg-1.jpg", "sci-fi-bg-2.jpg", "sci-fi-bg-3.jpg"],
+        "icons": {
+            "themeIcon": "🚀",
+            "loadingIcon": "🛰️"
+        },
+        "sounds": {
+            "ambient": ["sci-fi-ambient-1.mp3", "sci-fi-ambient-2.mp3"],
+            "effects": ["laser-1.mp3", "robot-1.mp3", "wormhole-1.mp3", "ai-voice-1.mp3", "spaceship-engine-1.mp3"]
+        }
+    },
+
+    // Game-specific adaptations
+    "gameAdaptations": {
+        "the-abyss": {
+            "npcDialogueStyle": "advanced AI with mysterious motives",
+            "environmentDescriptions": "derelict spaceships, alien ruins, zero-gravity environments"
+        },
+        "cursed-depths": {
+            "npcDialogueStyle": "cybernetically enhanced explorer",
+            "environmentDescriptions": "underground bunkers, alien technology sites, post-apocalyptic labs"
+        },
+        "shadow-crawler": {
+            "npcDialogueStyle": "rogue AI with a hidden agenda",
+            "environmentDescriptions": "cyberpunk cities, corporate megastructures, neon-lit alleys"
+        }
+    }
+}

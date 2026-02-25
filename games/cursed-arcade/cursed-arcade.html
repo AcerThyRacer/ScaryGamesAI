@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <title>Cursed Arcade — ScaryGamesAI</title>
+    <meta name="description" content="Trapped in a haunted arcade machine. Collect cursed tokens while avoiding ghostly enemies in this retro-horror arcade experience.">
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+    <link rel="canonical" href="https://scarygames.ai/games/cursed-arcade/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="ScaryGamesAI">
+    <meta property="og:title" content="Cursed Arcade — ScaryGamesAI">
+    <meta property="og:description" content="Trapped in a haunted arcade machine. Collect cursed tokens while avoiding ghostly enemies.">
+    <meta property="og:url" content="https://scarygames.ai/games/cursed-arcade/">
+    <meta property="og:image" content="https://scarygames.ai/assets/og-game-fallback.svg?game=cursed-arcade">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Cursed Arcade — ScaryGamesAI">
+    <meta name="twitter:description" content="Trapped in a haunted arcade machine. Collect cursed tokens while avoiding ghostly enemies.">
+    <meta name="twitter:image" content="https://scarygames.ai/assets/og-game-fallback.svg?game=cursed-arcade">
+    <link rel="manifest" href="/manifest.json">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "VideoGame",
+        "name": "Cursed Arcade",
+        "description": "Trapped in a haunted arcade machine. Collect cursed tokens while avoiding ghostly enemies.",
+        "genre": ["Horror", "Arcade", "Survival"],
+        "applicationCategory": "Game",
+        "operatingSystem": "Web Browser",
+        "url": "https://scarygames.ai/games/cursed-arcade/",
+        "image": ["https://scarygames.ai/assets/og-game-fallback.svg?game=cursed-arcade"],
+        "publisher": {"@type": "Organization", "name": "ScaryGamesAI", "url": "https://scarygames.ai/"},
+        "isPartOf": {"@type": "WebSite", "name": "ScaryGamesAI", "url": "https://scarygames.ai/"}
+    }
+    </script>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/game-responsive.css">
+    <link rel="stylesheet" href="/css/mobile-controls.css">
+    <link rel="stylesheet" href="/css/game-container.css">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #000;
+        }
+        #game-canvas {
+            display: block;
+            width: 100vw;
+            height: 100vh;
+        }
+        .retro-scanline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 0, 0, 0.1),
+                rgba(0, 0, 0, 0.1) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            z-index: 100;
+        }
+        .crt-flicker {
+            animation: flicker 0.15s infinite;
+        }
+    @keyframes flicker {
+      0% { opacity: 0.97; }
+      50% { opacity: 1; }
+      100% { opacity: 0.98; }
+    }
+    
+    /* Enhanced HUD Styles */
+    .game-hud {
+      position: fixed;
+      top: 10px;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: space-between;
+      padding: 0 20px;
+      pointer-events: none;
+      z-index: 50;
+    }
+    
+    .hud-section {
+      display: flex;
+      gap: 20px;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 10px 20px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .hud-score {
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      font-weight: bold;
+      text-shadow: 0 0 10px currentColor;
+    }
+</style>
+    <link rel="stylesheet" href="/css/mobile-enhancements.css" id="mc-enhance-css">
+</head>
+<body>
+    <a href="#game-container" class="sr-only skip-link">Skip to game</a>
+    <main class="game-page" role="main">
+        <a href="/games.html" class="back-link" id="back-link" aria-label="Return to games list">← Back to Games</a>
+        
+        <!-- Start Screen -->
+        <div class="start-screen" id="start-screen" role="dialog" aria-modal="false" aria-labelledby="start-title">
+            <h1 id="start-title">Cursed Arcade</h1>
+            <p class="game-desc">You're trapped inside a haunted arcade machine. Collect all the cursed tokens to escape, but beware the ghostly enemies that patrol the maze.</p>
+            
+            <!-- Difficulty Selector -->
+            <div class="difficulty-selector" id="difficulty-selector" style="margin: 20px 0; text-align: center;">
+                <label for="difficulty-select" style="color: #aaa; font-size: 0.9rem; display: block; margin-bottom: 8px;">SELECT DIFFICULTY</label>
+                <select id="difficulty-select" style="
+                    background: rgba(0,0,0,0.7);
+                    color: #fff;
+                    border: 1px solid #555;
+                    padding: 10px 20px;
+                    font-size: 1rem;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    min-width: 200px;
+                ">
+                    <option value="easy">Easy (Fewer ghosts)</option>
+                    <option value="normal" selected>Normal (Standard)</option>
+                    <option value="hard">Hard (More ghosts)</option>
+                    <option value="nightmare">Nightmare (Extreme)</option>
+                </select>
+            </div>
+            
+            <button class="start-btn" id="start-btn" aria-label="Start Cursed Arcade game">INSERT COIN</button>
+        </div>
+        
+        <!-- Controls Overlay -->
+        <div class="controls-overlay" id="controls-overlay" style="display:none;" role="dialog" aria-modal="true" aria-labelledby="controls-title">
+            <div class="controls-content">
+                <h2 id="controls-title">Controls</h2>
+                <div class="control-item"><span class="control-key">W A S D</span> Move</div>
+                <div class="control-item"><span class="control-key">Arrow Keys</span> Alternative Move</div>
+                <div class="control-item"><span class="control-key">Space</span> Sprint (limited)</div>
+                <div class="control-item"><span class="control-key">ESC</span> Pause</div>
+                <p class="controls-start-hint">Game starting...</p>
+            </div>
+        </div>
+        
+        <!-- Game Container -->
+        <div class="game-container" id="game-container">
+            <canvas id="game-canvas" aria-label="Cursed Arcade game canvas - use WASD or arrow keys to move"></canvas>
+            
+        <!-- HUD -->
+        <div class="game-hud" id="game-hud" style="display:none;">
+            <div class="hud-section">
+                <div class="hud-score" id="hud-score">Tokens: 0 / 0</div>
+                <div class="hud-score" id="hud-lives" style="color: #ff4444;">Lives: 3</div>
+                <div class="hud-score" id="hud-level">Level: 1</div>
+            </div>
+            <div class="hud-section hud-right">
+                <div class="hud-score" id="hud-score-total" style="color: #ffd700;">Score: 0</div>
+                <div class="hud-score" id="hud-highscore" style="color: #888;">High: 0</div>
+            </div>
+        </div>
+        </div>
+        
+        <!-- CRT Scanline Effect -->
+        <div class="retro-scanline crt-flicker" id="scanline-effect" style="display:none;"></div>
+        
+        <!-- Game Over -->
+        <div class="game-end-screen game-over" id="game-over-screen" style="display:none;" role="alertdialog" aria-modal="true" aria-labelledby="gameover-title" aria-describedby="gameover-desc">
+            <h1 id="gameover-title">GAME OVER</h1>
+            <p id="gameover-desc">The arcade claims another soul...</p>
+            <div id="final-score" style="color: #888; margin: 16px 0; font-size: 1.1rem;"></div>
+            <button class="play-btn" id="gameover-retry-btn" aria-label="Try again">▶ INSERT COIN</button>
+            <a href="/games.html" style="display:block;margin-top:16px;color:#888;">← Back to Games</a>
+        </div>
+        
+        <!-- Win Screen -->
+        <div class="game-end-screen game-win" id="game-win-screen" style="display:none;" role="alertdialog" aria-modal="true" aria-labelledby="win-title" aria-describedby="win-desc">
+            <h1 id="win-title">YOU ESCAPED!</h1>
+            <p id="win-desc">You broke free from the cursed arcade machine!</p>
+            <div id="win-stats" style="color: #888; margin: 16px 0; font-size: 1.1rem;"></div>
+            <button class="play-btn" id="win-retry-btn" aria-label="Play again">▶ PLAY AGAIN</button>
+            <a href="/games.html" style="display:block;margin-top:16px;color:#888;">← Back to Games</a>
+        </div>
+    </main>
+    
+    <!-- Core Scripts -->
+    <script src="/js/game-utils.js"></script>
+    <script src="/js/state-bus.js"></script>
+    <script src="/js/audio.js"></script>
+    <script src="/js/mobile-controls.js"></script>
+    <script src="/js/mobile-game-bindings.js"></script>
+    <script src="/js/unified-game-container.js"></script>
+    
+    <!-- Game Script -->
+    <script src="cursed-arcade.js"></script>
+</body>
+</html>

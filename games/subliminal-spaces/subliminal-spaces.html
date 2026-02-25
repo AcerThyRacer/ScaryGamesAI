@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subliminal Spaces - Psychological Liminal Horror</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: #000;
+            overflow: hidden;
+            font-family: 'Courier New', monospace;
+        }
+        
+        #game-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        
+        #canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+        
+        #ui-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 100;
+        }
+        
+        #sanity-meter {
+            position: absolute;
+            bottom: 30px;
+            right: 30px;
+            color: #fff;
+            font-size: 14px;
+            text-shadow: 0 0 10px rgba(255,255,255,0.5);
+        }
+        
+        #sanity-bar {
+            width: 200px;
+            height: 8px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            margin-top: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #sanity-fill {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background: linear-gradient(90deg, #667, #889, #aab);
+            transition: width 0.5s ease;
+        }
+        
+        #instructions {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            color: rgba(255,255,255,0.6);
+            font-size: 12px;
+            line-height: 1.6;
+        }
+        
+        #title-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            pointer-events: auto;
+            transition: opacity 2s ease;
+        }
+        
+        #title-screen.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        h1 {
+            color: #fff;
+            font-size: 48px;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(255,255,255,0.5);
+            animation: flicker 4s infinite;
+        }
+        
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            92% { opacity: 1; }
+            93% { opacity: 0.8; }
+            94% { opacity: 1; }
+            96% { opacity: 0.9; }
+            97% { opacity: 0.3; }
+            98% { opacity: 1; }
+        }
+        
+        .subtitle {
+            color: rgba(255,255,255,0.5);
+            font-size: 14px;
+            letter-spacing: 4px;
+            margin-bottom: 40px;
+        }
+        
+        #start-button {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.3);
+            color: rgba(255,255,255,0.7);
+            padding: 15px 40px;
+            font-size: 16px;
+            letter-spacing: 3px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Courier New', monospace;
+        }
+        
+        #start-button:hover {
+            border-color: rgba(255,255,255,0.8);
+            color: #fff;
+            background: rgba(255,255,255,0.05);
+        }
+        
+        #pareidolia-warning {
+            position: absolute;
+            bottom: 30px;
+            left: 30px;
+            color: rgba(255,255,255,0.4);
+            font-size: 11px;
+            max-width: 300px;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="canvas"></canvas>
+        
+        <div id="ui-overlay">
+            <div id="instructions">
+                WASD / Arrows - Move<br>
+                Mouse - Look<br>
+                Shift - Sprint<br>
+                E - Interact<br>
+                ESC - Pause
+            </div>
+            
+            <div id="sanity-meter">
+                REALITY STABILITY
+                <div id="sanity-bar">
+                    <div id="sanity-fill"></div>
+                </div>
+            </div>
+            
+            <div id="pareidolia-warning">
+                ⚠️ This game uses procedural pareidolia generation. 
+                If you see faces or patterns, they are intentionally created by the architecture.
+            </div>
+        </div>
+        
+        <div id="title-screen">
+            <h1>SUBLIMINAL SPACES</h1>
+            <div class="subtitle">A LIMINAL HORROR EXPERIENCE</div>
+            <button id="start-button">ENTER THE BACKSTAGE</button>
+        </div>
+    </div>
+    
+    <script type="module" src="./subliminal-spaces.js"></script>
+</body>
+</html>

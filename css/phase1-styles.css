@@ -1,0 +1,562 @@
+/**
+ * Phase 1: Dynamic Store & Challenges Styles
+ * Flash sales, smart bundles, dynamic challenges
+ */
+
+/* ============================================
+   FLASH SALE WIDGET
+   ============================================ */
+
+.flash-sale-widget {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  padding: 16px;
+  color: white;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4); }
+  50% { box-shadow: 0 4px 25px rgba(102, 126, 234, 0.6); }
+}
+
+.flash-sale-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.flash-sale-header h3 {
+  margin: 0;
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.flash-sale-badge {
+  background: #ff4757;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  animation: blink 1.5s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.flash-sale-timer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.2);
+  padding: 8px 12px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  font-family: 'Courier New', monospace;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.flash-sale-type {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-bottom: 12px;
+  opacity: 0.9;
+}
+
+.flash-sale-items {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.flash-sale-item {
+  background: rgba(255, 255, 255, 0.15);
+  padding: 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.flash-sale-item:hover {
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+}
+
+.flash-sale-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.item-name {
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.item-prices {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.original-price {
+  text-decoration: line-through;
+  opacity: 0.6;
+  font-size: 0.75rem;
+}
+
+.sale-price {
+  font-weight: 700;
+  font-size: 0.9rem;
+}
+
+.discount-badge {
+  background: #ff4757;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  align-self: flex-start;
+}
+
+.view-all-flash-btn {
+  width: 100%;
+  background: white;
+  color: #667eea;
+  border: none;
+  padding: 10px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.view-all-flash-btn:hover {
+  background: #f0f0f0;
+  transform: translateY(-2px);
+}
+
+/* ============================================
+   SMART BUNDLES CAROUSEL
+   ============================================ */
+
+.smart-bundles-carousel {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 15px rgba(245, 87, 108, 0.3);
+}
+
+.bundles-header {
+  margin-bottom: 16px;
+}
+
+.bundles-header h3 {
+  margin: 0 0 4px 0;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: white;
+}
+
+.bundles-subtitle {
+  color: rgba(255, 255, 255, 0.9);
+  font-size: 0.9rem;
+  font-style: italic;
+}
+
+.bundles-track {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.bundle-card {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  animation: slideUp 0.5s ease-out;
+  animation-fill-mode: both;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.bundle-card:nth-child(1) { animation-delay: 0.1s; }
+.bundle-card:nth-child(2) { animation-delay: 0.2s; }
+.bundle-card:nth-child(3) { animation-delay: 0.3s; }
+
+.bundle-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.bundle-header h4 {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.completion-bonus {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.bundle-items-preview {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+  min-height: 50px;
+}
+
+.bundle-item {
+  width: 40px;
+  height: 40px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+}
+
+.more-items {
+  width: 40px;
+  height: 40px;
+  background: #f0f0f0;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #666;
+}
+
+.bundle-pricing {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.bundle-price {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #667eea;
+}
+
+.bundle-reasons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.reason-tag {
+  background: #f0f0f0;
+  color: #666;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.purchase-bundle-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 10px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.purchase-bundle-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.no-bundles {
+  color: white;
+  text-align: center;
+  padding: 20px;
+  font-style: italic;
+}
+
+/* ============================================
+   DYNAMIC CHALLENGES PANEL
+   ============================================ */
+
+.dynamic-challenges-panel {
+  background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
+  border-radius: 16px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0 4px 15px rgba(48, 207, 208, 0.3);
+}
+
+.challenges-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+  border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+  padding-bottom: 12px;
+}
+
+.tab-btn {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 2px solid transparent;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.tab-btn:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.tab-btn.active {
+  background: white;
+  color: #330867;
+  border-color: white;
+}
+
+.challenges-content {
+  min-height: 300px;
+}
+
+.challenges-section {
+  animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.section-header h4 {
+  margin: 0;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.skill-match,
+.streak-bonus,
+.meta-badge {
+  background: rgba(255, 255, 255, 0.2);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.challenges-list {
+  display: grid;
+  gap: 12px;
+}
+
+.challenge-card {
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+  border-left: 4px solid #667eea;
+  transition: all 0.3s ease;
+}
+
+.challenge-card:hover {
+  transform: translateX(4px);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+}
+
+.challenge-card.generated {
+  border-left-color: #30cfd0;
+}
+
+.challenge-card.hot-streak {
+  border-left-color: #ff4757;
+  background: linear-gradient(135deg, #fff5f5 0%, white 100%);
+}
+
+.challenge-card.meta-challenge {
+  border-left-color: #f093fb;
+}
+
+.challenge-header {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.difficulty {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.difficulty.easy { background: #6ab04c; color: white; }
+.difficulty.medium { background: #f0932b; color: white; }
+.difficulty.hard { background: #eb4d4b; color: white; }
+.difficulty.nightmare { background: #833471; color: white; }
+
+.bonus-badge {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.multiplier-badge {
+  background: linear-gradient(135deg, #ff4757 0%, #ff6b81 100%);
+  color: white;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.meta-tag {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+
+.challenge-card h5 {
+  margin: 0 0 8px 0;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.challenge-card p {
+  margin: 0 0 12px 0;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.challenge-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.reward {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #f0932b;
+}
+
+.game-tag,
+.game-pill {
+  background: #f0f0f0;
+  color: #666;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.games-involved {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+/* Locked States */
+.hot-streak-locked,
+.cross-game-locked {
+  text-align: center;
+  padding: 40px 20px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  color: white;
+}
+
+.lock-icon {
+  font-size: 3rem;
+  margin-bottom: 12px;
+}
+
+.hot-streak-locked h4,
+.cross-game-locked h4 {
+  margin: 0 0 8px 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.hot-streak-locked p,
+.cross-game-locked p {
+  margin: 0;
+  opacity: 0.9;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .flash-sale-items {
+    grid-template-columns: 1fr;
+  }
+
+  .bundles-track {
+    grid-template-columns: 1fr;
+  }
+
+  .challenges-tabs {
+    flex-wrap: wrap;
+  }
+
+  .tab-btn {
+    flex: 1;
+    min-width: 100px;
+  }
+}

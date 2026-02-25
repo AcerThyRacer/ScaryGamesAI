@@ -1,0 +1,161 @@
+{
+  "id": "lovecraftian",
+  "name": "Lovecraftian Horror Theme",
+  "description": "Elder gods, forbidden knowledge, madness from revelation, the terror of the incomprehensible and vast cosmic forces.",
+  "lexicon_id": "lovecraftian",
+  "icon": "🐙",
+  "class": "writing-theme-lovecraftian",
+  "writing_rules": {
+    "message": "WARNING: This theme explores the terror of forbidden knowledge, elder gods, and the fragility of human sanity. Some truths are not meant to be known, and some entities should never be named.",
+    "technical": {
+      "avoid_direct_naming": 0.95,
+      "use_epithets": 0.85,
+      "use_scientific_terminology": 0.6,
+      "use_archaic_language": 0.7,
+      "avoid_anthropomorphism": 0.9
+    },
+    "sentence_structure": {
+      "complexity_normal": 0.9,
+      "fragment_probability": 0.45,
+      "ellipsis_probability": 0.35,
+      "use_archaic_language": 0.7,
+      "use_scientific_terminology": 0.6,
+      "use_non_euclidean_descriptions": 0.7
+    },
+    "content_constraints": {
+      "max_human_agency": 0.2,
+      "min_eldritch_agency": 0.85,
+      "allow_forbidden_knowledge": 0.9,
+      "allow_sanity_mechanics": 0.8,
+      "allow_reality_warping": 0.75
+    },
+    "technical_rules": {
+      "never_name_the_unnamable": [
+        "Never use the true names of elder gods. Use epithets, titles, or descriptions instead.",
+        "Never describe the full form of incomprehensible entities. Hint at their nature through effects and partial glimpses.",
+        "Never provide complete explanations. The true horror lies in what cannot be understood.",
+        "Avoid direct statements about the entities' nature. Describe them through metaphor, allegory, and the reactions of those who encounter them."
+      ]
+    }
+  },
+  "vocabulary_subsets": [
+    "nouns_by_theme.lovecraftian",
+    "nouns_by_theme.cosmic",
+    "verbs_by_terror.eldritch",
+    "adjectives.incomprehensible",
+    "adjectives.ancient"
+  ],
+  "content": {
+    "greetings": [
+      "The {tome} lies open on the {desk}, its {pages} filled with {forbidden_knowledge} that {damages} the {mind}.",
+      "Something {moves} in the {shadows}, its {form} too {complex|vast} to register in {human_perception}.",
+      "The {stars} {align} in a {pattern} not seen since the {time_period}, heralding {ominous_event}."
+    ],
+    "demands": [
+      "The {ritual} must be performed at {sacred_time}. The {eldritch_entity} demands its {sacrifice}.",
+      "You must {action} the {forbidden_tome} before its {knowledge} drives you {mad}.",
+      "The {eldritch_presence} grows stronger. We must {perform_ritual} to {contain|delay} it."
+    ],
+    "farewells": [
+      "The {knowledge} has {consumed} me. I can feel my {sanity} {slipping|fading}.",
+      "When you read these words, I will already be {lost|gone}. Do not {seek} what I have found.",
+      "The {eldritch_entity} has claimed me. My {consciousness} now resides in {incomprehensible_place}."
+    ],
+    "loading_messages": [
+      "Deciphering {ancient_script}... {forbidden_knowledge} revealed.",
+      "Consulting the {forbidden_tome}... {sanity} at risk.",
+      "Calculating {cosmic_alignment}... {ominous_portent} detected.",
+      "Translating {eldritch_language}... {reality_warping} imminent."
+    ],
+    "narrative_fragments": [
+      "The {entity} {moves} in ways that {defy} {human_understanding}, its {form} {shifting} between {dimensions}.",
+      "{character} tries to {read} the {tome}, but the {words} {shift} and {change} as they watch.",
+      "A {sound} {echoes} through the {location}, the {chanting} of something that shouldn't be {alive}.",
+      "The {geometry} of the {place} {warps} around {character}, as if {space_itself} is {afraid} of what lurks within."
+    ],
+    "location_descriptions": {
+      "generic_location": [
+        "The {location} {looms|stands} against the {sky}, its {architecture} defying {known_geometry} in ways that hurt the {mind}.",
+        "A {scent} permeates the air, the unmistakable {odor} of {eldritch_presence} and {forgotten_ages}.",
+        "The very {fabric_of_reality} seems {distorted} here, as if {space_itself} is {warped} by something {beyond_comprehension}."
+      ],
+      "city": [
+        "The {buildings} of {city} {lean} at {impossible_angles}, their {windows} staring like {empty_eyes} into the {void}.",
+        "Something {moves} in the {shadows}, its {form} too {complex|vast} to register in {human_mind}.",
+        "The {streets} {shift} when no one is looking, leading to {places} that shouldn't {exist}."
+      ],
+      "library": [
+        "The {books} in the {library} are written in {languages} that haven't been spoken in {aeons}, their {pages} filled with {forbidden_knowledge}.",
+        "A {tome} lies open on the {desk}, its {text} {shifting} when no one is looking directly at it.",
+        "The {librarian} {watches} with {eyes} that have seen too much, their {smile} too {wide|knowing}."
+      ]
+    },
+    "character_dialog": {
+      "reassurance": [
+        "It's probably just {innocuous_explanation}. The {city|place} has always been {strange}.",
+        "Don't worry about the {disturbing_thing}. It's just a {natural_phenomenon} we don't understand yet.",
+        "The {elders} say it's nothing to worry about. They would know."
+      ],
+      "doubt": [
+        "Something's not right. {observation} defies everything we know about {reality}.",
+        "This can't be natural. {phenomenon} violates the {laws_of_physics}.",
+        "I don't understand this. The {geometry} of this place... it's {wrong}."
+      ],
+      "realization": [
+        "Oh God... {horrifying_discovery}. That explains the {impossible_phenomenon}.",
+        "I think I understand now. {revelation}. We were never meant to {know|find} this.",
+        "The {entity} isn't just {alien}. It's {beyond_human_comprehension}."
+      ],
+      "denial": [
+        "This can't be real. {reality_denial}. The universe can't work like that.",
+        "There has to be an explanation. {attempted_explanation}. It's not possible otherwise.",
+        "No, no, no. {repetition} This isn't happening."
+      ],
+      "forbidden_knowledge": [
+        "The {tome} speaks of {eldritch_entity}, but the {description} is too {horrifying} to comprehend.",
+        "They say the {stars} will {align} on {date}, and when they do, the {eldritch_ones} will {action}.",
+        "Beware the {symbol}. It is the {mark} of {forbidden_presence}, and to see it is to be {doomed}."
+      ]
+    },
+    "game_descriptions": {
+      "templates": [
+        "Investigate {forbidden_location} where {eldritch_entity} slumbers. {mechanic} forces you to confront the limits of human understanding.",
+        "Uncover the secrets of {ancient_tome} that drives readers mad. {twist} reveals the true nature of the knowledge within.",
+        "Survive in {non_euclidean_space} where {geometry} defies human comprehension. {gameplay_feature} tests your ability to navigate the incomprehensible.",
+        "Decode the {ancient_language} before {eldritch_force} awakens. {revelation} will challenge your grip on sanity.",
+        "Escape from {cursed_city} before {ritual} is completed. {revelation} will make you question whether you were ever truly sane."
+      ],
+      "lovecraftian_elements": [
+        "a book that rewrites itself based on the reader's knowledge",
+        "a city that exists in multiple dimensions simultaneously",
+        "an entity that can only be perceived through peripheral vision",
+        "a language that alters reality when spoken aloud",
+        "a ritual that requires the sacrifice of one's own memories",
+        "a symbol that appears in your dreams before manifesting in reality",
+        "a library where books change their content when you're not looking"
+      ]
+    }
+  },
+  "assets": {
+    "icons": {
+      "themeIcon": "🐙",
+      "menuIcon": "📜",
+      "loadingIcon": "🔍"
+    },
+    "colors": {
+      "primary": "#1a0a2a",
+      "primary-dark": "#0a021a",
+      "secondary": "#3a1a4a",
+      "text-primary": "#d0c0f0",
+      "text-secondary": "#a090c0",
+      "accent": "#6600aa",
+      "eldritch": "rgba(102, 0, 170, 0.3)",
+      "forbidden": "rgba(150, 100, 200, 0.2)",
+      "ancient": "rgba(75, 0, 130, 0.4)"
+    },
+    "sounds": {
+      "ambient": ["distant_chanting.mp3", "eldritch_whispers.mp3", "non_euclidean_sounds.mp3"],
+      "ui": ["forbidden_knowledge.wav", "sanity_fracture.wav", "eldritch_summoning.wav"]
+    }
+  }
+}

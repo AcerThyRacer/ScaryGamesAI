@@ -1,0 +1,292 @@
+{
+  "id": "lovecraftian_horror",
+  "name": "Lovecraftian Horror",
+  "description": "Cosmic horror, forbidden knowledge, ancient gods, the insignificance of humanity, reality as a thin veil, the terror of the unknown",
+  "lexicon_id": "lovecraftian_horror",
+  "icon": "🐙",
+  "class": "writing-theme-lovecraftian",
+  "writing_rules": {
+    "message": "WARNING: This theme explores the terror of cosmic insignificance. Humanity is but a speck in the grand scheme of the universe. The truth will shatter your mind.",
+    "technical": {
+      "use_archaic_language": 0.9,
+      "describe_the_indescribable": 0.95,
+      "create_sense_of_dread": 0.98,
+      "avoid_definitive_explanations": 0.99,
+      "build_cosmic_scale": 0.95
+    },
+    "sentence_structure": {
+      "complexity_normal": 0.8,
+      "complexity_disturbed": 0.95,
+      "fragment_probability": 0.6,
+      "ellipsis_probability": 0.8,
+      "repetition_probability": 0.7,
+      "archaic_phrase_probability": 0.9,
+      "cosmic_scale_probability": 0.85
+    },
+    "technical_rules": {
+      "never_explain_the_inexplicable": [
+        "Never provide definitive explanations for cosmic entities. Their nature is beyond human comprehension.",
+        "Never describe the full form of ancient gods. The human mind cannot grasp their true appearance.",
+        "Never resolve the cosmic mystery completely. Some truths should remain hidden."
+      ],
+      "cosmic_dread": {
+        "min_dread_level": 0.9,
+        "max_insignificance_level": 0.95,
+        "reality_distortion": 0.85
+      }
+    },
+    "content_constraints": {
+      "min_archaic_language": 0.85,
+      "min_cosmic_scale": 0.9,
+      "max_definitive_explanations": 0.05,
+      "min_reality_distortion": 0.8,
+      "min_forbidden_knowledge": 0.85,
+      "lovecraftian_horror_auto_generation": 0.9
+    },
+    "form": {
+      "allow_archaic_terms": 0.98,
+      "mandatory_cosmic_dread": 0.95,
+      "allow_indescribable_entities": 0.99,
+      "forbid_definitive_resolution": 0.99
+    }
+  },
+  "vocabulary_subsets": [
+    "nouns_by_theme.cosmic",
+    "nouns_by_theme.eldritch",
+    "verbs_by_terror.cosmic",
+    "verbs_by_terror.madness",
+    "adjectives.eldritch",
+    "adjectives.archaic",
+    "adjectives.ineffable",
+    "nouns.lovecraftian"
+  ],
+  "content": {
+    "greetings": [
+      "The stars are wrong. {Eldritch_entity} stirs in the depths.",
+      "You've gazed upon the {forbidden_knowledge}. Your mind cannot comprehend what you've seen.",
+      "The {ancient_text} whispers to you. Its words will drive you mad.",
+      "The {cosmic_horror} has noticed you. It hungers for your sanity.",
+      "Reality is thinner here. The {eldritch_truth} bleeds through.",
+      "The {ancient_ones} are waking. Their dreams shape our world.",
+      "You feel the {cosmic_pull}. The {eldritch_entity} calls to you.",
+      "The {veil_of_reality} is tearing. You see what lies beyond."
+    ],
+    "greetings_internal_monologue": [
+      "{self_question}: Why do the {stars|constellations} {behavior} so {adjective} tonight?",
+      "{uncertainty}: The {ancient_text} {behavior} when I {action}. {self_correction} No, it's always {behavior}.",
+      "{introjection}: {eldritch_command}. {resistance} {futile_gesture}.",
+      "{self_observation}: My {mind|perception} {shows_signs|appears_normal}. {doubt} {self_reassurance}. The {eldritch_truth} is near.",
+      "{memory_fragment}: I remember when the {world|reality} made sense. {realization} That was {time_ago}."
+    ],
+    "farewells": [
+      "The {eldritch_entity} will remember you. Your mind is already slipping.",
+      "Don't look at the stars. They are not what they seem.",
+      "The {forbidden_knowledge} will consume you. There is no escape.",
+      "You have seen too much. The {ancient_ones} will find you.",
+      "Reality is an illusion. The {truth} will drive you mad.",
+      "The {cosmic_horror} is always watching. You cannot hide.",
+      "Your mind cannot contain what you've seen. It will break.",
+      "The {eldritch_truth} is eternal. You are but a moment in its gaze."
+    ],
+    "loading_messages": [
+      "Consulting the {ancient_text}... {status}",
+      "Deciphering {eldritch_symbols}... {progress}",
+      "Calculating {cosmic_alignment}... {result}",
+      "Translating {forbidden_knowledge}... {warning}",
+      "Mapping {non_euclidean_geometry}... {complexity}",
+      "Contacting {eldritch_entity}... {response_time}",
+      "Analyzing {reality_distortion}... {level}",
+      "Preparing {sanity_check}... {result}"
+    ],
+    "eldritch_reports": [
+      "[ELDER SIGN ACTIVATION]\nLocation: {location}\nEntity: {eldritch_entity}\nEffect: {result}\nSanity Cost: {cost}\nKnowledge Gained: {knowledge}\nStatus: {status}",
+      "[FORBIDDEN KNOWLEDGE]\nSource: {ancient_text}\nDiscovery Date: {date}\nDiscoverer: {name}\nSanity Effect: {effect}\nReality Impact: {impact}\nCurrent Status: {status}",
+      "[COSMIC EVENT]\nType: {event_type}\nLocation: {coordinates}\nDuration: {time}\nEntities Involved: {entities}\nReality Distortion: {level}\nWitness Accounts: {accounts}",
+      "[MADNESS MANIFESTATION]\nSubject: {name}\nTrigger: {event}\nSymptoms: {symptoms}\nSanity Level: {level}\nEldritch Connection: {entity}\nPrognosis: {outcome}"
+    ],
+    "game_descriptions": {
+      "templates": [
+        "A {adjective} {location} where the {eldritch_entity} has awakened. {player_action} accelerates the {cosmic_event}.",
+        "The {ancient_text} has been discovered. {forbidden_knowledge} threatens to {effect}. {objective}.",
+        "A {subgenre} game where {reality_distortion} warps {setting}. {mechanic} determines your sanity.",
+        "You've translated the {eldritch_language}. The {truth} will {consequence}. {goal}.",
+        "The {stars|constellations} are wrong. {eldritch_entity} is {awakening|approaching}. {player_role}.",
+        "A {group} of {investigators} discovers {forbidden_knowledge}. {eldritch_truth} awaits. {objective}.",
+        "The {veil_of_reality} is thinning. {eldritch_entity} is {manifesting|breaching}. {consequence}.",
+        "Every {time_period}, the {eldritch_cycle} repeats. This time, {something_different}. {player_role}."
+      ],
+      "adjectives": [
+        "eldritch", "forbidden", "blasphemous", "ineffable",
+        "non-euclidean", "cyclopean", " squamous", "ichorous",
+        "gibbous", "cyclical", "antediluvian", "ultraterrestrial"
+      ],
+      "locations": [
+        "town built on non-Euclidean geometry",
+        "ancient city beneath the ocean",
+        "mountain with a gate to another dimension",
+        "university with forbidden knowledge in its library",
+        "island that shouldn't exist on any map",
+        "desert with ruins that defy time and space",
+        "arctic research station built on ancient ruins",
+        "asylum where patients see things beyond reality"
+      ],
+      "eldritch_entities": [
+        "an ancient god that dreams the universe into existence",
+        "a cosmic entity that exists outside of time and space",
+        "a race of beings that predates humanity by eons",
+        "a sentient dimension that hungers for our reality",
+        "a hive mind that controls the stars themselves",
+        "a being of pure mathematics that reshapes reality",
+        "a god that exists in the spaces between atoms",
+        "a race of beings that communicate through geometry"
+      ],
+      "forbidden_knowledge": [
+        "the true nature of the stars and constellations",
+        "the cyclical nature of time and reality",
+        "the insignificance of humanity in the cosmic scale",
+        "the true geometry of the universe",
+        "the language that can summon ancient gods",
+        "the rituals that can tear the veil of reality",
+        "the history of the universe before humanity",
+        "the future that awaits all civilizations"
+      ]
+    },
+    "rules": {
+      "thematic_constraints": {
+        "never_explain_the_inexplicable": 0.99,
+        "always_show_cosmic_insignificance": 0.98,
+        "emphasize_reality_distortion": 0.95,
+        "avoid_definitive_resolutions": 0.99,
+        "show_the_terror_of_forbidden_knowledge": 0.99
+      },
+      "example_techniques": {
+        "cosmic_dread": [
+          "Describe {eldritch_entity} in terms that defy {human_understanding}. The {truth} is {indescribable}.",
+          "Show how {reality} {distorts|warps} in the presence of {eldritch_truth}. {consequence} is {inevitable}.",
+          "Create {situation} where {character} {glimpses|understands} {forbidden_knowledge}. {madness} ensues.",
+          "Note how {time|space|geometry} {behaves} in ways that defy {natural_laws}."
+        ],
+        "reality_distortion": [
+          "Describe how {location} {changes|warps} when {eldritch_entity} is near.",
+          "Show how {perception} {fails|distorts} in the presence of {eldritch_truth}.",
+          "Create {situation} where {geometry|physics} {behaves} unnaturally.",
+          "Note how {reality} {shifts|changes} based on {eldritch_influence}."
+        ],
+        "forbidden_knowledge": [
+          "Describe {ancient_text} that contains {eldritch_truth}. The {knowledge} is {dangerous|maddening}.",
+          "Show how {character} {discovers|understands} {forbidden_knowledge}. {consequence} is {immediate}.",
+          "Create {situation} where {knowledge} {spreads|infects} those who learn it.",
+          "Note how {forbidden_knowledge} {changes|destroys} those who possess it."
+        ]
+      }
+    },
+    "world_unfolding": {
+      "lovecraftian_locations": {
+        "non_euclidean_city": {
+          "central_paradox": "The city appears normal from the outside, but its geometry defies all known laws of physics. Those who enter never return the same.",
+          "untrustworthy_elements": [
+            "streets that lead to impossible places",
+            "buildings that change when unobserved",
+            "angles that don't add up",
+            "shadows that move against the light",
+            "reflections that show different realities",
+            "the sense of being watched by something vast",
+            "memories that change after visiting"
+          ]
+        },
+        "forbidden_library": {
+          "central_paradox": "The library contains all knowledge, but the knowledge it contains will drive you mad. The more you learn, the less you understand.",
+          "untrustworthy_elements": [
+            "books that rewrite themselves",
+            "text that changes when read",
+            "knowledge that contradicts itself",
+            "librarians who are not human",
+            "sections that shouldn't exist",
+            "the sense that the library is alive",
+            "memories of books you don't remember reading"
+          ]
+        },
+        "eldritch_island": {
+          "central_paradox": "The island appears on no map, yet it has always been there. Those who find it wish they hadn't. The island changes those who visit.",
+          "untrustworthy_elements": [
+            "structures that shouldn't be possible",
+            "inhabitants who don't age",
+            "the sense of being in multiple places at once",
+            "time that flows differently",
+            "memories that don't match reality",
+            "the constant feeling of being watched",
+            "geography that changes when unobserved"
+          ]
+        }
+      },
+      "revelation_patterns": [
+        "The {eldritch_entity} isn't just {description} - it's {true_nature}. The {implication} is {consequence}.",
+        "{Reality} isn't {what_we_think} - it's {eldritch_truth}. This suggests {hidden_purpose}.",
+        "The {ancient_text} wasn't {written_by} - it was {created_by}. The {knowledge} is {dangerous}.",
+        "{Humanity} isn't {significant} - we're {insignificant}. This explains {cosmic_indifference}.",
+        "The {stars|constellations} aren't {natural} - they're {eldritch_constructs}. This changes {everything}."
+      ]
+    }
+  },
+  "assets": {
+    "icons": {
+      "themeIcon": "🐙",
+      "menuIcon": "📜",
+      "loadingIcon": "✨"
+    },
+    "colors": {
+      "primary": "#1a1a2e",
+      "primary-dark": "#0a0a1a",
+      "secondary": "#2a2a4e",
+      "text-primary": "#d0d0ff",
+      "text-secondary": "#9a9ac6",
+      "accent": "#6a5acd",
+      "eldritch": "rgba(106, 90, 205, 0.3)",
+      "cosmic": "rgba(75, 0, 130, 0.4)",
+      "madness": "rgba(138, 43, 226, 0.2)"
+    },
+    "sounds": {
+      "ambient": ["distant_chanting.mp3", "reality_warping.mp3", "eldritch_whispers.mp3", "cosmic_winds.mp3"],
+      "ui": ["sanity_drain.wav", "eldritch_chime.wav", "reality_shift.wav", "whispered_secret.wav"]
+    }
+  },
+  "ai_config": {
+    "cosmic_horror": {
+      "min_horror_level": 7,
+      "max_horror_level": 10,
+      "horror_types": [
+        "reality_distortion", "forbidden_knowledge",
+        "cosmic_insignificance", "eldritch_entities",
+        "sanity_drain", "time_distortion",
+        "geometry_horror", "madness_induction"
+      ],
+      "horror_probability": 0.9
+    },
+    "reality_distortion": {
+      "min_distortion_level": 5,
+      "max_distortion_level": 9,
+      "distortion_mechanisms": [
+        "non_euclidean_geometry", "time_warping",
+        "perception_alteration", "reality_bleed",
+        "dimensional_overlap", "physics_violation",
+        "memory_manipulation", "sensory_overload"
+      ],
+      "distortion_probability": 0.85
+    }
+  },
+  "integration": {
+    "game_behavior_modifications": {
+      "reality_system": "fluid",
+      "perception_system": "unreliable",
+      "time_system": "non_linear",
+      "sanity_system": "active",
+      "knowledge_system": "dangerous"
+    },
+    "narrative_triggers": [
+      "eldritch_exposure", "forbidden_knowledge",
+      "reality_distortion", "sanity_drain",
+      "cosmic_event", "eldritch_manifestation",
+      "ancient_text_discovery", "geometry_violation"
+    ]
+  }
+}

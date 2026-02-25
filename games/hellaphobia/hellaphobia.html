@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Inter:wght@400;600;700&family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <title>Hellaphobia — ScaryGamesAI</title>
+    <meta name="description" content="A psychological horror dungeon crawler where you play as an anime character escaping terrifying monsters. Breaking the 4th wall with mind-bending effects.">
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+    <link rel="canonical" href="https://scarygames.ai/games/hellaphobia/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="ScaryGamesAI">
+    <meta property="og:title" content="Hellaphobia — ScaryGamesAI">
+    <meta property="og:description" content="A psychological horror dungeon crawler where you play as an anime character escaping terrifying monsters.">
+    <meta property="og:url" content="https://scarygames.ai/games/hellaphobia/">
+    <meta property="og:image" content="https://scarygames.ai/assets/og-game-fallback.svg?game=hellaphobia">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Hellaphobia — ScaryGamesAI">
+    <meta name="twitter:description" content="A psychological horror dungeon crawler where you play as an anime character escaping terrifying monsters.">
+    <meta name="twitter:image" content="https://scarygames.ai/assets/og-game-fallback.svg?game=hellaphobia">
+    <link rel="manifest" href="/manifest.json">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "VideoGame",
+        "name": "Hellaphobia",
+        "description": "A psychological horror dungeon crawler where you play as an anime character escaping terrifying monsters.",
+        "genre": ["Horror", "Action", "Psychological"],
+        "applicationCategory": "Game",
+        "operatingSystem": "Web Browser",
+        "url": "https://scarygames.ai/games/hellaphobia/",
+        "image": ["https://scarygames.ai/assets/og-game-fallback.svg?game=hellaphobia"],
+        "publisher": {"@type": "Organization", "name": "ScaryGamesAI", "url": "https://scarygames.ai/"},
+        "isPartOf": {"@type": "WebSite", "name": "ScaryGamesAI", "url": "https://scarygames.ai/"}
+    }
+    </script>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/game-responsive.css">
+    <link rel="stylesheet" href="/css/mobile-controls.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            margin: 0; 
+            overflow: hidden; 
+            background: #050005; 
+            font-family: 'Inter', 'Noto Sans JP', sans-serif;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+        
+        #game-canvas { 
+            display: block; 
+            width: 100vw; 
+            height: 100vh; 
+            image-rendering: pixelated; 
+            image-rendering: crisp-edges;
+            cursor: none;
+        }
+        
+        /* ===== LOADING SCREEN ===== */
+        #loading-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 10000;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(ellipse at center, #1a0008 0%, #000000 100%);
+            color: #ff0044;
+        }
+        #loading-screen.active { display: flex; }
+        #loading-title {
+            font-family: 'Creepster', cursive;
+            font-size: 4rem;
+            text-shadow: 0 0 40px rgba(255, 0, 68, 0.5);
+            animation: titlePulse 2s ease-in-out infinite;
+            margin-bottom: 20px;
+        }
+        #loading-subtitle {
+            font-family: 'Noto Sans JP', sans-serif;
+            font-size: 1.2rem;
+            color: #ff88aa;
+            margin-bottom: 30px;
+            opacity: 0.8;
+        }
+        #loading-bar-container {
+            width: min(400px, 90vw);
+            height: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 0, 68, 0.4);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 16px;
+        }
+        #loading-bar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #ff0044, #ff3366, #ff0044);
+            box-shadow: 0 0 20px rgba(255, 0, 68, 0.6);
+            border-radius: 8px;
+            transition: width 0.3s ease;
+        }
+        #loading-status {
+            font-family: 'Inter', monospace;
+            font-size: 0.9rem;
+            color: rgba(255, 136, 170, 0.7);
+            letter-spacing: 2px;
+        }
+        #loading-tip {
+            margin-top: 30px;
+            font-size: 0.8rem;
+            color: rgba(255, 136, 170, 0.4);
+            max-width: 500px;
+            text-align: center;
+            font-style: italic;
+        }
+        
+        /* ===== START SCREEN ===== */
+        .game-page { width: 100vw; height: 100vh; overflow: hidden; position: relative; }
+        .back-link {
+            position: fixed;
+            top: 16px;
+            left: 16px;
+            z-index: 9999;
+            color: #ff0044;
+            font-size: 0.9rem;
+            text-decoration: none;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 0, 68, 0.3);
+            transition: all 0.2s;
+        }
+        .back-link:hover { background: rgba(255, 0, 68, 0.2); }
+        
+        .start-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 5000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(ellipse at center, rgba(30, 0, 15, 0.98) 0%, rgba(0, 0, 0, 0.99) 100%);
+            text-align: center;
+        }
+        .start-screen h1 {
+            font-family: 'Creepster', cursive;
+            font-size: 5rem;
+            color: #ff0044;
+            text-shadow: 0 0 50px rgba(255, 0, 68, 0.6), 0 0 100px rgba(255, 0, 68, 0.3);
+            margin-bottom: 8px;
+            animation: titlePulse 3s ease-in-out infinite;
+        }
+        .start-screen .anime-subtitle {
+            font-family: 'Noto Sans JP', sans-serif;
+            font-size: 1.5rem;
+            color: #ff88aa;
+            letter-spacing: 8px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(255, 136, 170, 0.5);
+        }
+        .start-screen .game-desc {
+            color: #aa8899;
+            max-width: 600px;
+            line-height: 1.8;
+            margin-bottom: 40px;
+            font-size: 1rem;
+        }
+        .start-screen .warning-text {
+            color: #ff4444;
+            font-size: 0.85rem;
+            margin-bottom: 30px;
+            opacity: 0.7;
+            animation: flicker 2s infinite;
+        }
+        
+        .start-btn {
+            padding: 18px 60px;
+            background: linear-gradient(135deg, #ff0044, #cc0033);
+            color: #fff;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            box-shadow: 0 4px 40px rgba(255, 0, 68, 0.5);
+            transition: all 0.3s;
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+        .start-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 50px rgba(255, 0, 68, 0.7);
+        }
+        
+        .mode-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        .mode-btn {
+            padding: 10px 24px;
+            background: rgba(255, 255, 255, 0.05);
+            color: #aa8899;
+            font-size: 0.85rem;
+            border: 1px solid rgba(255, 0, 68, 0.2);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Inter', sans-serif;
+        }
+        .mode-btn:hover {
+            background: rgba(255, 0, 68, 0.2);
+            border-color: rgba(255, 0, 68, 0.5);
+            color: #ff88aa;
+        }
+        
+        .version-tag {
+            margin-top: 25px;
+            font-size: 0.7rem;
+            color: rgba(255, 136, 170, 0.4);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        
+        /* ===== CONTROLS OVERLAY ===== */
+        .controls-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 5000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            background: rgba(5, 0, 5, 0.95);
+        }
+        .controls-content {
+            text-align: center;
+            max-width: 500px;
+        }
+        .controls-content h2 {
+            font-family: 'Creepster', cursive;
+            font-size: 2.5rem;
+            color: #ff0044;
+            margin-bottom: 30px;
+        }
+        .control-item {
+            color: #cc8899;
+            margin: 12px 0;
+            font-size: 1rem;
+        }
+        .control-key {
+            display: inline-block;
+            min-width: 80px;
+            padding: 6px 14px;
+            background: rgba(255, 0, 68, 0.1);
+            border: 1px solid rgba(255, 0, 68, 0.3);
+            border-radius: 6px;
+            color: #ff88aa;
+            font-weight: 700;
+            margin-right: 15px;
+            font-family: monospace;
+        }
+        .controls-start-hint {
+            color: #ff0044;
+            margin-top: 30px;
+            font-style: italic;
+            animation: pulse 1.5s infinite;
+        }
+        
+        /* ===== GAME OVER SCREEN ===== */
+        .game-over-screen {
+            position: fixed;
+            inset: 0;
+            z-index: 6000;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.95);
+        }
+        .game-over-screen h2 {
+            font-family: 'Creepster', cursive;
+            font-size: 4rem;
+            color: #ff0044;
+            margin-bottom: 20px;
+            text-shadow: 0 0 30px rgba(255, 0, 68, 0.5);
+        }
+        .death-message {
+            color: #ff88aa;
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            max-width: 500px;
+            text-align: center;
+            line-height: 1.6;
+        }
+        .death-counter {
+            color: #aa5566;
+            font-size: 1rem;
+            margin-bottom: 20px;
+        }
+        .final-stats {
+            color: #888899;
+            font-size: 0.9rem;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .retry-btn {
+            padding: 15px 50px;
+            background: linear-gradient(135deg, #ff0044, #cc0033);
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: all 0.3s;
+        }
+        .retry-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(255, 0, 68, 0.5);
+        }
+        
+        /* ===== HUD ===== */
+        #game-hud {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 15px 20px;
+            display: none;
+            justify-content: space-between;
+            align-items: flex-start;
+            pointer-events: none;
+            z-index: 100;
+        }
+        .hud-left, .hud-right, .hud-center {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .hud-center {
+            align-items: center;
+        }
+        .hud-item {
+            color: #ff88aa;
+            font-size: 0.9rem;
+            text-shadow: 0 0 10px rgba(255, 0, 68, 0.5);
+        }
+        .hud-item.large {
+            font-size: 1.3rem;
+            font-weight: 700;
+        }
+        .health-bar {
+            width: 150px;
+            height: 12px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 0, 68, 0.3);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        .health-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff0044, #ff3366);
+            transition: width 0.3s ease;
+        }
+        .sanity-bar {
+            width: 150px;
+            height: 8px;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(136, 68, 255, 0.3);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+        .sanity-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #8844ff, #aa66ff);
+            transition: width 0.3s ease;
+        }
+        
+        /* ===== CHAT BUBBLES ===== */
+        .chat-bubble {
+            position: absolute;
+            background: rgba(0, 0, 0, 0.9);
+            border: 2px solid #ff0044;
+            border-radius: 15px;
+            padding: 10px 15px;
+            color: #ff88aa;
+            font-size: 0.85rem;
+            max-width: 200px;
+            pointer-events: none;
+            z-index: 50;
+            animation: bubblePop 0.3s ease;
+        }
+        .chat-bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 20px;
+            border-width: 10px 10px 0;
+            border-style: solid;
+            border-color: #ff0044 transparent transparent;
+        }
+        .chat-bubble.monster {
+            border-color: #ff4444;
+            color: #ffaaaa;
+        }
+        .chat-bubble.fourth-wall {
+            border-color: #ff00ff;
+            color: #ff88ff;
+            font-style: italic;
+        }
+        .chat-bubble.boss {
+            border-color: #ff0044;
+            color: #ff0044;
+            font-family: 'Creepster', cursive;
+            font-size: 1rem;
+            max-width: 300px;
+            animation: bossBubble 0.5s ease;
+        }
+        @keyframes bossBubble {
+            0% { transform: scale(0); opacity: 0; }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        /* ===== GLITCH OVERLAY ===== */
+        #glitch-overlay {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 9998;
+            display: none;
+        }
+        #glitch-overlay.active {
+            display: block;
+            animation: glitch 0.1s infinite;
+        }
+        
+        /* ===== FAKE ERROR SCREEN ===== */
+        #fake-error {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: none;
+            background: #000080;
+            color: #fff;
+            font-family: 'Courier New', monospace;
+            padding: 50px;
+            font-size: 1rem;
+        }
+        #fake-error.active { display: block; }
+        
+        /* ===== ANIMATIONS ===== */
+        @keyframes titlePulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.85; transform: scale(0.98); }
+        }
+        @keyframes flicker {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 0.3; }
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        @keyframes bubblePop {
+            0% { transform: scale(0); opacity: 0; }
+            80% { transform: scale(1.1); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        @keyframes glitch {
+            0% { transform: translate(0); }
+            20% { transform: translate(-2px, 2px); }
+            40% { transform: translate(-2px, -2px); }
+            60% { transform: translate(2px, 2px); }
+            80% { transform: translate(2px, -2px); }
+            100% { transform: translate(0); }
+        }
+        
+        /* ===== PAUSE MENU ===== */
+        .pause-menu {
+            position: fixed;
+            inset: 0;
+            z-index: 5500;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.9);
+        }
+        .pause-menu.active { display: flex; }
+        .pause-menu h2 {
+            font-family: 'Creepster', cursive;
+            font-size: 3rem;
+            color: #ff0044;
+            margin-bottom: 30px;
+        }
+        .pause-btn {
+            padding: 12px 40px;
+            margin: 8px;
+            background: rgba(255, 0, 68, 0.1);
+            border: 1px solid rgba(255, 0, 68, 0.3);
+            color: #ff88aa;
+            font-size: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .pause-btn:hover {
+            background: rgba(255, 0, 68, 0.3);
+            color: #fff;
+        }
+    </style>
+    <link rel="stylesheet" href="/css/mobile-enhancements.css" id="mc-enhance-css">
+</head>
+<body>
+    <div class="game-page">
+        <a href="/games.html" class="back-link" id="back-link">← Back to Games</a>
+        
+        <!-- START SCREEN -->
+        <div class="start-screen" id="start-screen">
+            <canvas id="title-particles" style="position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0;"></canvas>
+            <h1>HELLAPHOBIA</h1>
+            <p class="anime-subtitle">ヘラフォビア</p>
+            <p class="game-desc">
+                You are an anime character trapped in a nightmarish dungeon.<br>
+                Dodge terrifying monsters. Survive psychological horror.<br>
+                <span style="color:#ff4444;">The game knows you're watching...</span>
+            </p>
+            <p class="warning-text">
+                ⚠ WARNING: Contains intense psychological horror, 4th wall breaking effects,<br>
+                and disturbing imagery. Not for the faint of heart.
+            </p>
+            <button class="start-btn" id="start-btn">ENTER THE NIGHTMARE</button>
+            <div class="mode-buttons">
+                <button class="mode-btn" id="story-mode-btn">📖 Story Mode</button>
+                <button class="mode-btn" id="endless-mode-btn">∞ Endless</button>
+                <button class="mode-btn" id="hardcore-btn">☠ Hardcore</button>
+            </div>
+            <p class="version-tag">v1.0 — 15 Phases of Terror</p>
+        </div>
+        
+        <!-- CONTROLS OVERLAY -->
+        <div class="controls-overlay" id="controls-overlay">
+            <div class="controls-content">
+                <h2>Controls</h2>
+                <div class="control-item"><span class="control-key">A / D</span> Move Left / Right</div>
+                <div class="control-item"><span class="control-key">SPACE</span> Jump / Double Jump</div>
+                <div class="control-item"><span class="control-key">SHIFT</span> Dash / Dodge</div>
+                <div class="control-item"><span class="control-key">MOUSE</span> Look (eyes follow)</div>
+                <div class="control-item"><span class="control-key">ESC</span> Pause</div>
+                <p class="controls-start-hint">The nightmare begins in 3 seconds...</p>
+            </div>
+        </div>
+        
+        <!-- LOADING SCREEN -->
+        <div id="loading-screen">
+            <div id="loading-title">HELLAPHOBIA</div>
+            <div id="loading-subtitle">ヘラフォビア</div>
+            <div id="loading-bar-container">
+                <div id="loading-bar"></div>
+            </div>
+            <div id="loading-status">Initializing Nightmare...</div>
+            <div id="loading-tip">"The walls are watching..."</div>
+        </div>
+        
+        <!-- GAME HUD -->
+        <div id="game-hud">
+            <div class="hud-left">
+                <div class="hud-item">HP</div>
+                <div class="health-bar">
+                    <div class="health-fill" id="health-fill" style="width: 100%;"></div>
+                </div>
+                <div class="hud-item" style="font-size: 0.75rem; margin-top: 5px;">SANITY</div>
+                <div class="sanity-bar">
+                    <div class="sanity-fill" id="sanity-fill" style="width: 100%;"></div>
+                </div>
+            </div>
+            <div class="hud-center">
+                <div class="hud-item large" id="phase-display">PHASE 1</div>
+                <div class="hud-item" id="area-name">The Entrance</div>
+            </div>
+            <div class="hud-right">
+                <div class="hud-item" id="death-counter">Deaths: 0</div>
+                <div class="hud-item" id="time-survived">00:00</div>
+            </div>
+        </div>
+
+        <!-- BOSS HEALTH BAR -->
+        <div id="boss-health-bar" style="display:none;position:fixed;bottom:100px;left:50%;transform:translateX(-50%);z-index:9999;width:min(600px,90vw);">
+            <div style="background:rgba(0,0,0,0.8);border:2px solid rgba(255,0,68,0.5);border-radius:10px;overflow:hidden;padding:10px;">
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                    <span id="boss-name" style="color:#ff0044;font-family:'Creepster',cursive;font-size:1.5rem;text-shadow:0 0 10px rgba(255,0,68,0.5);">THE WARDEN</span>
+                    <span id="boss-phase" style="color:#ff88aa;font-size:0.85rem;">Phase 1/3</span>
+                </div>
+                <div style="background:rgba(255,255,255,0.1);height:20px;border-radius:4px;overflow:hidden;">
+                    <div id="boss-health-fill" style="width:100%;height:100%;background:linear-gradient(90deg,#ff0044,#ff3366);transition:width 0.3s ease;"></div>
+                </div>
+                <div style="text-align:right;margin-top:4px;">
+                    <span id="boss-hp-text" style="color:#ff88aa;font-size:0.8rem;">500 / 500</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- PAUSE MENU -->
+        <div class="pause-menu" id="pause-menu">
+            <h2>PAUSED</h2>
+            <button class="pause-btn" id="resume-btn">Resume</button>
+            <button class="pause-btn" id="restart-btn">Restart</button>
+            <button class="pause-btn" id="quit-btn">Quit to Menu</button>
+        </div>
+        
+        <!-- GAME OVER SCREEN -->
+        <div class="game-over-screen" id="game-over-screen">
+            <h2 id="death-title">YOU DIED</h2>
+            <p class="death-message" id="death-message">The darkness claims another soul...</p>
+            <p class="death-counter" id="game-death-counter">Total Deaths: 0</p>
+            <p class="final-stats" id="final-stats">Phase: 1 | Time: 00:00</p>
+            <button class="retry-btn" id="retry-btn">TRY AGAIN</button>
+        </div>
+        
+        <!-- GLITCH OVERLAY -->
+        <div id="glitch-overlay"></div>
+        
+        <!-- FAKE ERROR SCREEN -->
+        <div id="fake-error">
+            <p>A problem has been detected and Windows has been shut down to prevent damage to your computer.</p>
+            <br>
+            <p>*** STOP: 0x0000007B (0xFFFFF880009A9928, 0xFFFFFFFFC0000034, 0x0000000000000000, 0x0000000000000000)</p>
+            <br>
+            <p>INACCESSIBLE_BOOT_DEVICE</p>
+            <br>
+            <p>*** HELLAPHOBIA.SYS - Address FFFFF880009A9928 base at FFFFF880009A1000, DateStamp 4d4075b2</p>
+            <br><br>
+            <p>Collecting data for crash dump ...</p>
+            <p>Initializing disk for crash dump ...</p>
+            <p>Beginning dump of physical memory.</p>
+            <p>Physical memory dump complete.</p>
+            <br>
+            <p>Contact your system admin or technical support group for further assistance.</p>
+            <br><br>
+            <p style="color:#ff0000;">Just kidding. Press any key to continue...</p>
+        </div>
+        
+        <!-- GAME CANVAS -->
+        <canvas id="game-canvas" aria-label="Hellaphobia horror game canvas"></canvas>
+    </div>
+    
+    <!-- Audio System -->
+    <script src="audio/AudioDirector.js"></script>
+    <!-- Boss Fight System -->
+    <script src="bosses/BossFightManager.js"></script>
+    <!-- Visual Enhancement Systems (Phase 1) -->
+    <script src="renderer/WebGLRenderer.js"></script>
+    <script src="renderer/SpriteSystem.js"></script>
+    <script src="renderer/LightingSystem.js"></script>
+    <script src="renderer/PostProcessStack.js"></script>
+    <script src="renderer/Phase1VisualIntegration.js"></script>
+    <!-- Phase 1: Core Gameplay Mechanics -->
+    <script src="phase1-core-gameplay.js"></script>
+    <!-- Phase 2: Procedural Dungeon Generation -->
+    <script src="phase2-procedural-dungeons.js"></script>
+    <!-- Phase 3: Advanced AI & Monster Ecosystem -->
+    <script src="phase3-advanced-ai.js"></script>
+    <!-- Phase 4: Advanced Psychological Systems -->
+    <script src="phase4-psychological-systems.js"></script>
+    <!-- Phase 5: Narrative & Story Systems -->
+    <script src="phase5-narrative-systems.js"></script>
+    <!-- Phase 6: Multiplayer Systems -->
+    <script src="phase6-multiplayer.js"></script>
+    <!-- Phase 7: Anti-Cheat & Security -->
+    <script src="phase7-anticheat.js"></script>
+    <!-- Phase 8: Analytics & Player Engagement -->
+    <script src="phase8-analytics.js"></script>
+    <!-- Phase 9: Modding & Customization -->
+    <script src="phase9-modding.js"></script>
+    <!-- Phase 10: Accessibility Features -->
+    <script src="phase10-accessibility.js"></script>
+    <!-- Phase 11: Boss Battles -->
+    <script src="phase11-boss-battles.js"></script>
+    <!-- Phase 12: Secrets & Collectibles -->
+    <script src="phase12-secrets-collectibles.js"></script>
+    <!-- Phase 13: Performance Optimization -->
+    <script src="phase13-performance.js"></script>
+    <!-- Phase 14: Multiplayer Foundations -->
+    <script src="phase14-multiplayer.js"></script>
+    <!-- Phase 15: Mod Support -->
+    <script src="phase15-mod-support.js"></script>
+    <!-- Phase 16: Achievements & Rewards -->
+    <script src="phase16-achievements.js"></script>
+    <!-- Phase 17: Quality Assurance -->
+    <script src="phase17-qa.js"></script>
+    <!-- Phase 18: Localization -->
+    <script src="phase18-localization.js"></script>
+    <!-- Phase 19: Launch Preparation -->
+    <script src="phase19-launch.js"></script>
+    <!-- Phase 20: True Ending -->
+    <script src="phase20-true-ending.js"></script>
+    <!-- Phase 21: Visual Polish & Enhancements -->
+    <script src="phase21-visual-polish.js"></script>
+
+<!-- Scripts -->
+<script src="/js/achievements.js"></script>
+<script src="/js/leaderboards.js"></script>
+<script src="/js/game-utils.js"></script>
+<script src="hellaphobia.js"></script>
+<script src="/js/mobile-controls.js"></script>
+<script src="/js/mobile-game-bindings.js"></script>
+<script src="/js/mobile-universal-init.js"></script>
+</body>
+</html>

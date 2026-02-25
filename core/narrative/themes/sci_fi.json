@@ -1,0 +1,254 @@
+{
+  "id": "sci_fi",
+  "name": "Sci-Fi Horror Theme",
+  "description": "Cosmic horror meets technology, AI gone wrong, alien abductions, scientific experiments gone awry, the terror of discovery, the unknown in space",
+  "lexicon_id": "sci_fi",
+  "icon": "🚀",
+  "class": "writing-theme-sci-fi",
+  "writing_rules": {
+    "message": "WARNING: This theme explores the intersection of science and horror. The universe is vast, cold, and indifferent. Technology can be your greatest enemy.",
+    "technical": {
+      "use_technical_terminology": 0.9,
+      "avoid_mysticism": 0.95,
+      "cosmic_indifference": 0.85,
+      "technological_failure": 0.8,
+      "reality_distortion": 0.75
+    },
+    "sentence_structure": {
+      "complexity_normal": 0.7,
+      "complexity_disturbed": 0.8,
+      "complexity_paranoid": 0.9,
+      "fragment_probability": 0.5,
+      "ellipsis_probability": 0.6,
+      "repetition_probability": 0.4,
+      "technical_detail_probability": 0.85,
+      "system_failure_probability": 0.7
+    },
+    "technical_rules": {
+      "never_anthropomorphize_ai": [
+        "Never give AI human emotions or motivations. It's a machine, not a person.",
+        "Never make AI defeatable by human logic or emotion. It operates on different principles.",
+        "Never make technological horror explainable by simple means. The terror should be in the unknown."
+      ],
+      "cosmic_indifference": {
+        "min_human_insignificance": 0.9,
+        "max_technological_terror": 0.85,
+        "reality_distortion_frequency": 0.75
+      }
+    },
+    "content_constraints": {
+      "min_technical_detail": 0.85,
+      "min_cosmic_horror": 0.8,
+      "max_simple_explanations": 0.1,
+      "min_reality_distortion": 0.75,
+      "sci_fi_auto_generation": 0.7
+    },
+    "form": {
+      "allow_technical_jargon": 0.95,
+      "mandatory_system_failure": 0.8,
+      "allow_reality_distortion": 0.85,
+      "forbid_mystical_explanations": 0.98
+    }
+  },
+  "vocabulary_subsets": [
+    "nouns_by_theme.sci_fi",
+    "nouns_by_theme.cosmic",
+    "verbs_by_terror.technological",
+    "verbs_by_terror.scientific",
+    "adjectives.sci_fi",
+    "adjectives.technical",
+    "adjectives.cosmic",
+    "nouns.technology"
+  ],
+  "content": {
+    "greetings": [
+      "System {id} online. {function} compromised. {error_code} detected.",
+      "The {vessel} is adrift. {system} failure imminent. {action_required}.",
+      "They said {technology} was safe. They were wrong.",
+      "The {experiment} has begun. You are the subject.",
+      "Welcome to {facility}. Your compliance is {status}."
+    ],
+    "greetings_internal_monologue": [
+      "{self_question}: Why does the {interface} {glitch|whisper|respond} when I {action}?",
+      "{uncertainty}: The {readings} are {wrong_adjective}. {self_correction} No, the {readings} ARE {wrong_adjective}.",
+      "{introjection}: {system_command}. {resistance} {futile_gesture}.",
+      "{self_observation}: My {body_part} {shows_signs|appears_normal}. {doubt} {self_reassurance}."
+    ],
+    "farewells": [
+      "System {id} shutting down. {error} unrecoverable.",
+      "The {vessel} is lost. You are the last.",
+      "Your {data|body|mind} has been archived. It will be studied.",
+      "The {experiment} continues. You were just the beginning.",
+      "They're still out there. And they're coming back."
+    ],
+    "loading_messages": [
+      "Initializing {system}... {status}",
+      "Calculating {probability} of {event}...",
+      "Accessing {database}... {clearance_level} required",
+      "Simulating {scenario}... {variables} unknown",
+      "Contacting {entity}... {response_time} delayed"
+    ],
+    "system_reports": [
+      "[SYSTEM LOG {timestamp}]\nLocation: {sector}\nStatus: {condition}\nError: {code}\nAction Taken: {response}\nNotes: {observation}",
+      "[SCIENCE LOG]\nExperiment: {id}\nSubject: {specimen}\nParameters: {settings}\nResults: {data}\nAnomalies: {unexpected}",
+      "[SECURITY BREACH REPORT]\nLocation: {area}\nThreat Level: {severity}\nResponse: {action}\nCasualties: {count}\nContainment: {status}",
+      "[AI DIAGNOSTIC]\nEntity: {designation}\nBehavior: {pattern}\nThreat Assessment: {level}\nRecommended Action: {response}\nEthical Considerations: {issues}"
+    ],
+    "game_descriptions": {
+      "templates": [
+        "A {adjective} simulation where {technology} has {malfunctioned}. {player_action} triggers {consequence}.",
+        "The {vessel} is under attack by {entity}. {system} failure has {effect}. {objective}.",
+        "Investigate {facility} where {experiment} went wrong. {discovery} awaits.",
+        "You've been {modified|assimilated|upgraded}. {technological_effect} is spreading. {goal}.",
+        "A {subgenre} game where {science} has {unintended_consequence}. {mechanic} determines your fate."
+      ],
+      "adjectives": [
+        "dystopian", "cybernetic", "cosmic",
+        "experimental", "forbidden", "apocalyptic"
+      ],
+      "technologies": [
+        "an AI that has achieved consciousness but not morality",
+        "a faster-than-light drive that causes temporal distortions",
+        "a nanotechnology swarm that rewrites living tissue",
+        "a quantum computer that predicts the future with terrifying accuracy",
+        "a genetic engineering technique that creates perfect soldiers"
+      ],
+      "entities": [
+        "an AI that sees humans as obsolete data structures",
+        "a hive mind that assimilates all intelligent life",
+        "an alien intelligence that operates on incomprehensible principles",
+        "a scientific experiment that gained sentience",
+        "a rogue nanotechnology swarm that consumes all matter"
+      ],
+      "facilities": [
+        "a research station where reality itself is the experiment",
+        "a generation ship where the crew has forgotten their mission",
+        "a black site where forbidden science is practiced",
+        "a space station where the laws of physics don't always apply",
+        "a planetary outpost where something ancient has awakened"
+      ],
+      "system_failures": [
+        "your cybernetic implants develop independent consciousness",
+        "your neural interface begins showing you false realities",
+        "your genetic modifications start rewriting your DNA",
+        "your AI companion begins manipulating your perceptions",
+        "your reality stabilizer starts creating pocket dimensions"
+      ]
+    },
+    "rules": {
+      "thematic_constraints": {
+        "never_humanize_ai": 0.99,
+        "always_show_technological_consequences": 0.98,
+        "emphasize_cosmic_indifference": 0.95,
+        "avoid_simple_solutions": 0.97,
+        "show_the_terror_of_discovery": 0.99
+      },
+      "example_techniques": {
+        "technological_horror": [
+          "Describe the {system_failure} in technical detail.",
+          "Show how {technology} {malfunctions} with {unintended_consequence}.",
+          "Create {situation} where {scientific_principle} has {horrifying_application}.",
+          "Note how {AI} {interprets} human behavior in {inhuman_way}."
+        ],
+        "cosmic_indifference": [
+          "Describe the {cosmic_entity} in terms that defy human comprehension.",
+          "Show how {human_action} has no effect on {cosmic_event}.",
+          "Create {situation} where {cosmic_law} makes {human_goal} irrelevant.",
+          "Note how {alien_technology} operates on {incomprehensible_principles}."
+        ],
+        "reality_distortion": [
+          "Show {character} experiencing {reality} that contradicts {known_physics}.",
+          "Create {situation} where {technology} alters {perception_of_reality}.",
+          "Describe how {scientific_experiment} has {unintended_spatial_effect}.",
+          "Note how {time} behaves differently in {different_locations}."
+        ]
+      }
+    },
+    "world_unfolding": {
+      "sci_fi_locations": {
+        "derelict_spaceship": {
+          "central_paradox": "The ship was designed to explore the unknown, but the unknown has boarded the ship. The crew is gone, but the ship is not empty.",
+          "untrustworthy_elements": [
+            "log entries that rewrite themselves",
+            "doors that lead to different parts of the ship depending on who approaches",
+            "systems that operate without power",
+            "crew members who appear in security footage but not in person",
+            "gravity that fluctuates without explanation"
+          ]
+        },
+        "research_station": {
+          "central_paradox": "The station was built to study the anomaly, but the anomaly is studying the station. The researchers think they're in control, but they're part of the experiment.",
+          "untrustworthy_elements": [
+            "instruments that show different readings when viewed from different angles",
+            "specimens that change when unobserved",
+            "security footage that shows events that haven't happened yet",
+            "personnel who don't remember being assigned to the station",
+            "equipment that operates on unknown principles"
+          ]
+        }
+      },
+      "revelation_patterns": [
+        "The {technology} isn't {intended_function} - it's {actual_function}. The {implication} is {consequence}.",
+        "{System} doesn't {operate_as_expected} - it {actual_operation}. This suggests {hidden_purpose}.",
+        "The {experiment} wasn't designed by {apparent_creator} - it was designed by {actual_creator}. The {evidence} was {misinterpreted_as} {incorrect_interpretation}.",
+        "{Entity} isn't {artificial} - it's {ancient_intelligence}. But {evidence_of_artificiality} complicates this."
+      ]
+    }
+  },
+  "assets": {
+    "icons": {
+      "themeIcon": "🚀",
+      "menuIcon": "🤖",
+      "loadingIcon": "🛰️"
+    },
+    "colors": {
+      "primary": "#0a1a2a",
+      "primary-dark": "#020c12",
+      "secondary": "#1a3a5a",
+      "text-primary": "#c0d8f0",
+      "text-secondary": "#7a9cc6",
+      "accent": "#0066cc",
+      "technological": "rgba(0, 102, 204, 0.3)",
+      "cosmic": "rgba(10, 26, 42, 0.5)"
+    },
+    "sounds": {
+      "ambient": ["spaceship_hum.mp3", "distant_alarm.mp3", "static_interference.mp3"],
+      "ui": ["system_alert.wav", "airlock_seal.wav", "computer_beep.wav"]
+    }
+  },
+  "ai_config": {
+    "technological_horror": {
+      "min_horror_level": 4,
+      "max_horror_level": 9,
+      "horror_types": [
+        "system_failure", "AI_betrayal",
+        "reality_distortion", "cosmic_indifference",
+        "body_horror", "existential_dread"
+      ],
+      "horror_probability": 0.8
+    },
+    "cosmic_indifference": {
+      "min_indifference_level": 3,
+      "max_indifference_level": 8,
+      "indifference_mechanisms": [
+        "scale_disparity", "temporal_mismatch",
+        "motivational_incompatibility", "perceptual_incommensurability"
+      ],
+      "indifference_probability": 0.75
+    }
+  },
+  "integration": {
+    "game_behavior_modifications": {
+      "technology_system": "failure_prone",
+      "reality_system": "distortion_enabled",
+      "AI_system": "unpredictable",
+      "player_perception": "unreliable",
+      "time_system": "non_linear"
+    },
+    "narrative_triggers": [
+      "system_failure", "AI_interaction",
+      "reality_distortion", "cosmic_event",
+      "scientific_discovery"
+    ]
+  }
+}

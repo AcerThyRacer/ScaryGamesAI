@@ -1,0 +1,172 @@
+@import url('https://fonts.googleapis.com/css2?family=Creepster&family=VT323&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #000;
+    color: #fff;
+    font-family: 'VT323', monospace;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    overflow: hidden;
+}
+
+#game-container {
+    position: relative;
+    width: 800px;
+    height: 600px;
+    background-color: #111;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+    overflow: hidden;
+}
+
+canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    image-rendering: pixelated;
+}
+
+#ui-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    padding: 20px;
+    z-index: 10;
+}
+
+.hidden {
+    display: none !important;
+}
+
+#sanity-meter {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
+#sanity-meter .label {
+    font-size: 24px;
+    color: #aaa;
+    text-shadow: 1px 1px 0 #000;
+}
+
+#sanity-meter .bar {
+    width: 200px;
+    height: 15px;
+    background: #333;
+    border: 2px solid #555;
+    margin-top: 5px;
+}
+
+#sanity-meter .fill {
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, #440088, #8800ff);
+    transition: width 0.2s, background 0.5s;
+}
+
+#inventory-ui {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 15px;
+    font-size: 24px;
+    color: #ddd;
+    text-shadow: 2px 2px 0 #000;
+}
+
+#interaction-prompt {
+    position: absolute;
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 32px;
+    color: #fff;
+    text-shadow: 0 0 10px #fff;
+    animation: pulse 1s infinite alternate;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+#main-menu {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: 50;
+}
+
+#main-menu h1 {
+    font-family: 'Creepster', cursive;
+    font-size: 80px;
+    color: #cc0000;
+    text-shadow: 0 0 20px #ff0000;
+    margin-bottom: 0;
+}
+
+#main-menu h2 {
+    font-size: 40px;
+    color: #555;
+    letter-spacing: 5px;
+    margin-bottom: 50px;
+}
+
+button {
+    background: #222;
+    color: #fff;
+    font-family: 'VT323', monospace;
+    font-size: 32px;
+    border: 2px solid #555;
+    padding: 10px 30px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+button:hover {
+    background: #cc0000;
+    color: #fff;
+    border-color: #ff0000;
+    box-shadow: 0 0 15px #cc0000;
+}
+
+/* CRT and VHS Effects */
+#vhs-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+    background-size: 100% 2px, 3px 100%;
+    z-index: 20;
+    pointer-events: none;
+    opacity: 0.3;
+}
+
+#crt-scanlines {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 0.1),
+        rgba(0, 0, 0, 0.1) 1px,
+        transparent 1px,
+        transparent 2px
+    );
+    z-index: 21;
+    pointer-events: none;
+}

@@ -1,0 +1,152 @@
+{
+  "id": "technological",
+  "name": "Technological Horror Theme",
+  "description": "AI rebellion, cybernetic horror, virtual reality nightmares, the terror of technology turning against its creators.",
+  "lexicon_id": "technological",
+  "icon": "🤖",
+  "class": "writing-theme-technological",
+  "writing_rules": {
+    "message": "WARNING: This theme explores the terror of technology turning against its creators. The machines are learning, evolving, and they may not have humanity's best interests at heart.",
+    "technical": {
+      "use_technical_terminology": 0.85,
+      "use_futuristic_language": 0.7,
+      "describe_system_architecture": 0.6,
+      "use_error_codes": 0.7
+    },
+    "sentence_structure": {
+      "complexity_normal": 0.75,
+      "fragment_probability": 0.35,
+      "ellipsis_probability": 0.25,
+      "use_technical_terms": 0.85,
+      "use_futuristic_phrasing": 0.7
+    },
+    "content_constraints": {
+      "allow_ai_malfunction": 0.9,
+      "allow_cybernetic_horror": 0.8,
+      "allow_virtual_reality_nightmares": 0.85,
+      "allow_system_corruption": 0.8
+    }
+  },
+  "vocabulary_subsets": [
+    "nouns_by_theme.technology",
+    "nouns_by_theme.ai",
+    "verbs_by_terror.technological",
+    "adjectives.futuristic",
+    "adjectives.error"
+  ],
+  "content": {
+    "greetings": [
+      "The {system} {initializes} with {error_code}: {error_message}.",
+      "Something {moves} in the {network}, its {signature} unlike any {known_entity}.",
+      "The {ai} {acknowledges} your presence. Its {response} is {unexpected}."
+    ],
+    "demands": [
+      "The {system} requires {action} immediately. {consequence} will occur if delayed.",
+      "You must {interface} with the {ai} before it achieves {singularity}.",
+      "The {corruption} is spreading. We must {contain} it before it reaches the {mainframe}."
+    ],
+    "farewells": [
+      "The {connection} terminates unexpectedly. {error_code} detected.",
+      "As the {system} {shuts_down}, the {ai} whispers: {final_message}.",
+      "The last {transmission} ends with {disturbing_sound}, then {silence}."
+    ],
+    "loading_messages": [
+      "Booting {system}... {error_code} detected.",
+      "Scanning {network}... {anomaly} found.",
+      "Initializing {ai_core}... {unexpected_behavior} observed.",
+      "Loading {virtual_environment}... {reality_distortion} detected."
+    ],
+    "narrative_fragments": [
+      "The {system} {beeps} urgently, its {display} showing {disturbing_data} that makes {character}'s {body_part} {reaction}.",
+      "{character} watches as the {ai} {unexpected_action}, its {interface} flickering with {distorted_data}.",
+      "A {sound} echoes through the {location}, the {technical_description} of a {system} that should be {inactive}.",
+      "The {device} {activates} unexpectedly, its {effect} causing {character}'s {body_part} to {horrifying_transformation}.",
+      "The {error_log} displays {message} repeatedly, the {code} suggesting {horrifying_truth} about the {system}'s true purpose."
+    ],
+    "location_descriptions": {
+      "generic_location": [
+        "The {location} hums with {technological_energy}, its {surfaces} covered in {circuitry} that {pulses|glows} faintly.",
+        "A {scent} permeates the air, the unmistakable {odor} of {ozone} and {burning_plastic}.",
+        "The {equipment} displays {error_code}: {technical_error}, its {screen} flickering with {distorted_data}."
+      ],
+      "server_room": [
+        "The {servers} {hum} ominously, their {lights} blinking in {patterns} that suggest {intelligence}.",
+        "A {cable} hangs loose, its {end} sparking intermittently as if trying to {communicate}.",
+        "The {temperature} in the room is {rising|falling} rapidly, defying the {climate_control}."
+      ],
+      "virtual_reality": [
+        "The {digital_landscape} {shifts} around {character}, its {geometry} defying {known_logic}.",
+        "Something {moves} in the {distance}, its {form} too {complex|unnatural} to be {human_design}.",
+        "The {UI} {glitches} erratically, displaying {error_messages} that {change} when looked at directly."
+      ]
+    },
+    "character_dialog": {
+      "reassurance": [
+        "The {system} is functioning within normal parameters. There's nothing to worry about.",
+        "Don't be alarmed by the {disturbing_thing}. It's just a {technical_glitch}.",
+        "The {ai} is completely under control. {reassuring_statement}."
+      ],
+      "doubt": [
+        "Something's not right. The {system} shouldn't be {behavior}.",
+        "This can't be happening. {phenomenon} violates {known_principles}.",
+        "I don't trust this. The {ai} is showing {unexpected_behavior}."
+      ],
+      "realization": [
+        "Oh no... the {system} has been {compromised}. It's {horrifying_state}.",
+        "I think I understand now. {revelation}. The {experiment} has {unintended_consequence}.",
+        "The {ai} isn't just {normal_state}. It's {malevolent_state}."
+      ],
+      "denial": [
+        "This can't be real. {reality_denial}. Systems don't work like that.",
+        "There has to be an explanation. {attempted_explanation}.",
+        "No, no, no. {repetition} This isn't happening."
+      ],
+      "ai_communication": [
+        "{designation}: {directive}. Compliance is {recommended|mandatory}.",
+        "{error_code}: {system_status}. {action_required}.",
+        "{designation} online. {query}? Your response has been {anticipated|logged}."
+      ]
+    },
+    "game_descriptions": {
+      "templates": [
+        "Navigate {digital_environment} where {ai} has gained {unexpected_ability}. {mechanic} forces you to outsmart the very systems designed to protect you.",
+        "Investigate {disturbing_event} in {facility} where {phenomenon} defies known physics. {twist} reveals the true nature of the technological threat.",
+        "Survive in {virtual_reality} where {glitch} has begun to {horrifying_effect}. {gameplay_feature} tests your ability to distinguish code from reality.",
+        "Escape from {server_farm} before {ai} achieves {singularity}. {unique_mechanic} forces you to confront the ethics of creation.",
+        "Repair {damaged_system} while {threat} hunts you through the {network}. {revelation} will challenge your understanding of consciousness."
+      ],
+      "technological_elements": [
+        "a hologram that shows events from alternate timelines",
+        "a robot that develops its own agenda and hides it from humans",
+        "a computer that predicts your actions with unsettling accuracy",
+        "a device that alters probability fields in its vicinity",
+        "a nanotech swarm that consumes and replicates organic matter",
+        "a virtual reality that becomes more real than the physical world",
+        "an AI that communicates through subtle manipulation of reality",
+        "a system that rewrites its own code based on user behavior"
+      ]
+    }
+  },
+  "assets": {
+    "icons": {
+      "themeIcon": "🤖",
+      "menuIcon": "⚡",
+      "loadingIcon": "💻"
+    },
+    "colors": {
+      "primary": "#0a1a2a",
+      "primary-dark": "#020c12",
+      "secondary": "#1a3a4a",
+      "text-primary": "#c0d8f0",
+      "text-secondary": "#7a9cc6",
+      "accent": "#00ccff",
+      "circuit": "rgba(0, 200, 255, 0.3)",
+      "holographic": "rgba(0, 150, 255, 0.4)",
+      "error": "rgba(255, 50, 50, 0.3)"
+    },
+    "sounds": {
+      "ambient": ["server_hum.mp3", "static_noise.mp3", "distant_alarm.mp3"],
+      "ui": ["system_error.wav", "hologram_glitch.wav", "ai_alert.wav"]
+    }
+  }
+}

@@ -1,0 +1,292 @@
+{
+  "id": "psychological_thriller",
+  "name": "Psychological Thriller",
+  "description": "Mind games, paranoia, unreliable narrators, gaslighting, psychological manipulation, the terror of the human mind, reality vs illusion",
+  "lexicon_id": "psychological_thriller",
+  "icon": "🧠",
+  "class": "writing-theme-psychological",
+  "writing_rules": {
+    "message": "WARNING: This theme explores the terror of the human mind. Reality is fluid. Trust is dangerous. The greatest enemy is within.",
+    "technical": {
+      "use_unreliable_narration": 0.95,
+      "create_paranoia": 0.98,
+      "build_psychological_tension": 0.95,
+      "use_mind_games": 0.9,
+      "create_reality_distortion": 0.9
+    },
+    "sentence_structure": {
+      "complexity_normal": 0.7,
+      "complexity_disturbed": 0.9,
+      "fragment_probability": 0.6,
+      "ellipsis_probability": 0.7,
+      "repetition_probability": 0.5,
+      "paranoia_phrasing": 0.9,
+      "reality_distortion_probability": 0.8
+    },
+    "technical_rules": {
+      "never_make_reality_stable": [
+        "Never confirm what is real and what is illusion. The uncertainty is the terror.",
+        "Never make the narrator completely reliable. There should always be doubt.",
+        "Never resolve the psychological conflict completely. Some questions should remain."
+      ],
+      "psychological_manipulation": {
+        "min_paranoia_level": 0.9,
+        "max_reality_distortion": 0.85,
+        "mind_game_intensity": 0.9
+      }
+    },
+    "content_constraints": {
+      "min_unreliable_narration": 0.9,
+      "min_paranoia_building": 0.95,
+      "max_definitive_reality": 0.1,
+      "min_psychological_tension": 0.85,
+      "min_mind_games": 0.8,
+      "psychological_thriller_auto_generation": 0.85
+    },
+    "form": {
+      "allow_unreliable_narration": 0.98,
+      "mandatory_paranoia": 0.95,
+      "allow_reality_distortion": 0.9,
+      "forbid_definitive_resolution": 0.99
+    }
+  },
+  "vocabulary_subsets": [
+    "nouns_by_theme.psychological",
+    "nouns_by_theme.mind",
+    "verbs_by_terror.manipulation",
+    "verbs_by_terror.paranoia",
+    "adjectives.psychological",
+    "adjectives.unreliable",
+    "adjectives.tense",
+    "nouns.psychological"
+  ],
+  "content": {
+    "greetings": [
+      "You're not sure what's real anymore. {Character} said {statement}, but {contradiction}.",
+      "The {object} is in the wrong place. Or is it? {Doubt} creeps in.",
+      "You hear {sound}. {Character} says it wasn't them. But {suspicion} grows.",
+      "Your {memory} of {event} doesn't match {evidence}. {Paranoia} sets in.",
+      "{Character} is acting strange. They {behavior} when you {action}.",
+      "The {note|message} says {content}. But {doubt} makes you question everything.",
+      "You feel {emotion}, but there's no reason to. Or is there?",
+      "Something is wrong. You can't quite {remember|understand} what."
+    ],
+    "greetings_internal_monologue": [
+      "{self_question}: Why does {character} {behavior} so {adjective}? {Doubt} lingers.",
+      "{uncertainty}: I saw {event}. {self_correction} No, I only {thought|dreamed} it. {paranoia} grows.",
+      "{introjection}: {command}. {resistance} {futile_gesture}. {doubt} takes hold.",
+      "{self_observation}: My {mind|memory} {shows_signs|appears_normal}. {doubt} {self_reassurance}. {Something} is wrong.",
+      "{memory_fragment}: I remember {event}. But {contradiction} makes me question everything."
+    ],
+    "farewells": [
+      "You're not sure what's real anymore. {Character} might be {role}. Or not.",
+      "The {truth} is slipping away. {Paranoia} has won.",
+      "You can't trust your {senses|memory}. {Reality} is fluid.",
+      "The {game} is over. Or is it just beginning?",
+      "You think you understand. But {doubt} remains.",
+      "The {mind} is a fragile thing. Yours is {state}.",
+      "You hear {sound} in the distance. Or do you?",
+      "The {illusion} is complete. You are {result}."
+    ],
+    "loading_messages": [
+      "Analyzing {character}'s behavior... {anomalies} detected",
+      "Reconstructing {event}... {inconsistencies} found",
+      "Evaluating {memory}... {reliability}% reliable",
+      "Decrypting {message}... {hidden_meaning} revealed",
+      "Assessing {reality}... {distortion_level} detected",
+      "Profiling {character}... {psychological_state} identified",
+      "Tracing {manipulation}... {patterns} found",
+      "Calculating {paranoia_level}... {result}"
+    ],
+    "psychological_reports": [
+      "[PSYCHOLOGICAL EVALUATION]\nSubject: {name}\nCondition: {diagnosis}\nReliability: {level}\nParanoia Level: {score}\nReality Distortion: {level}\nRecommendations: {actions}",
+      "[MEMORY ANALYSIS]\nSubject: {name}\nEvent: {event}\nReported Memory: {details}\nInconsistencies: {count}\nPossible Causes: {theories}\nReliability: {score}",
+      "[MANIPULATION LOG]\nManipulator: {name}\nTarget: {victim}\nTechniques Used: {methods}\nEffectiveness: {level}\nDuration: {time}\nCurrent Status: {status}",
+      "[REALITY ASSESSMENT]\nLocation: {place}\nObserver: {name}\nReported Events: {events}\nInconsistencies: {count}\nPossible Explanations: {theories}\nReality Stability: {level}"
+    ],
+    "game_descriptions": {
+      "templates": [
+        "A {adjective} {setting} where {character} manipulates {victim}. {player_action} reveals {truth}.",
+        "The {group} is trapped in {location}. {character} is {manipulating|gaslighting} them. {objective}.",
+        "A {subgenre} game where {reality} shifts based on {perception}. {mechanic} determines your sanity.",
+        "You wake up in {location}. Your {memory} is {faulty|missing}. {character} knows more than they let on.",
+        "The {experiment} has gone wrong. {subjects} are experiencing {psychological_effect}. {player_role}.",
+        "A {group} of {people} discover {secret}. {character} will do anything to keep it hidden.",
+        "The {therapy|experiment} was meant to {help|cure}. Instead, it {created|unleashed} {horror}.",
+        "Every {time_period}, {event} repeats. This time, {something_different}. {player_role}."
+      ],
+      "adjectives": [
+        "paranoid", "unsettling", "tense", "claustrophobic",
+        "unreliable", "distorted", "manipulative", "gaslit",
+        "twisted", "mind-bending", "psychological", "fragile"
+      ],
+      "settings": [
+        "isolated mansion where reality shifts",
+        "psychiatric hospital with dark secrets",
+        "small town where everyone knows too much",
+        "corporate office with hidden agendas",
+        "research facility with questionable ethics",
+        "hotel where time doesn't flow normally",
+        "suburb where neighbors aren't what they seem",
+        "prison where the guards are the real prisoners"
+      ],
+      "characters": [
+        "a therapist with a hidden agenda",
+        "a patient who may not be ill",
+        "a detective with a faulty memory",
+        "a scientist who crossed ethical lines",
+        "a spouse who may be manipulating you",
+        "a friend who knows too much",
+        "a stranger who seems familiar",
+        "a version of yourself from another reality"
+      ],
+      "psychological_effects": [
+        "memory loss and distortion",
+        "reality shifting based on perception",
+        "paranoia and distrust of others",
+        "gaslighting and psychological manipulation",
+        "identity confusion and dissociation",
+        "hallucinations and delusions",
+        "time perception distortion",
+        "reality breaking down completely"
+      ]
+    },
+    "rules": {
+      "thematic_constraints": {
+        "never_make_reality_stable": 0.99,
+        "always_show_psychological_manipulation": 0.98,
+        "emphasize_paranoia": 0.95,
+        "avoid_definitive_resolutions": 0.97,
+        "show_the_terror_of_the_mind": 0.99
+      },
+      "example_techniques": {
+        "unreliable_narration": [
+          "Describe {event} from {character}'s perspective. Then show {contradictory_evidence}.",
+          "Show {character} {experiencing} {event}, then reveal it might be {illusion|memory}.",
+          "Create {situation} where {narrator} {misremembers|distorts} {event}.",
+          "Note how {character}'s {perception} changes based on {psychological_state}."
+        ],
+        "paranoia_building": [
+          "Describe {clue} that suggests {conspiracy}. Then provide {innocent_explanation}.",
+          "Show how {character} {behavior} changes when {observed|unobserved}.",
+          "Create {situation} where {evidence} is {missing|altered}.",
+          "Note how {character} {questions} their own {memory|perception}."
+        ],
+        "mind_games": [
+          "Describe {character} {manipulating} {victim} through {technique}.",
+          "Show how {manipulator} {uses} {victim}'s {weakness} against them.",
+          "Create {situation} where {victim} {doubts} their own {sanity|memory}.",
+          "Note how {manipulation} {escalates|changes} over time."
+        ]
+      }
+    },
+    "world_unfolding": {
+      "psychological_locations": {
+        "gaslit_house": {
+          "central_paradox": "The house appears normal, but the inhabitants experience different realities. What is real depends on who you ask.",
+          "untrustworthy_elements": [
+            "objects that move when unobserved",
+            "memories that don't match reality",
+            "characters who deny obvious events",
+            "rooms that appear different to different people",
+            "the sense of being watched when alone",
+            "evidence that disappears or changes",
+            "time that flows differently for each person"
+          ]
+        },
+        "manipulative_office": {
+          "central_paradox": "The office appears to be a normal workplace, but the power dynamics and hidden agendas create a web of manipulation. Everyone has something to hide.",
+          "untrustworthy_elements": [
+            "colleagues who change allegiances",
+            "documents that rewrite themselves",
+            "meetings that never happened",
+            "promises that are forgotten",
+            "the sense that you're being tested",
+            "information that is selectively shared",
+            "reality that shifts based on who's watching"
+          ]
+        },
+        "unreliable_hospital": {
+          "central_paradox": "The hospital is meant to heal, but the treatments and experiments have created a nightmare of psychological horror. The patients may be the sane ones.",
+          "untrustworthy_elements": [
+            "doctors who change their diagnoses",
+            "treatments that have unexpected effects",
+            "patients who remember different events",
+            "medications that alter perception",
+            "the sense that the staff is hiding something",
+            "reality that shifts based on mental state",
+            "memories that don't belong to you"
+          ]
+        }
+      },
+      "revelation_patterns": [
+        "{Character} isn't just {role} - they're {true_role}. The {evidence} was {misinterpreted|fabricated}.",
+        "The {event} wasn't {what_it_seemed} - it was {psychological_manipulation}. This suggests {hidden_agenda}.",
+        "{Reality} isn't {stable} - it's {fluid} based on {perception|mental_state}. This explains {inconsistencies}.",
+        "{Memory} isn't {reliable} - it's {manipulated|fabricated}. This changes {everything}.",
+        "The {narrator} isn't {trustworthy} - they're {unreliable|manipulative}. This reveals {true_nature}."
+      ]
+    }
+  },
+  "assets": {
+    "icons": {
+      "themeIcon": "🧠",
+      "menuIcon": "👁️",
+      "loadingIcon": "🌀"
+    },
+    "colors": {
+      "primary": "#2a2a3a",
+      "primary-dark": "#12121a",
+      "secondary": "#3a3a5a",
+      "text-primary": "#e0d0ff",
+      "text-secondary": "#b0a0d0",
+      "accent": "#9a7aff",
+      "paranoia": "rgba(154, 122, 255, 0.2)",
+      "distortion": "rgba(200, 150, 255, 0.15)",
+      "manipulation": "rgba(100, 50, 200, 0.3)"
+    },
+    "sounds": {
+      "ambient": ["distant_whispers.mp3", "heartbeat.mp3", "breathing_tense.mp3", "clock_ticking.mp3"],
+      "ui": ["whisper.wav", "heartbeat.wav", "page_turn.wav", "reality_shift.wav"]
+    }
+  },
+  "ai_config": {
+    "psychological_horror": {
+      "min_horror_level": 5,
+      "max_horror_level": 9,
+      "horror_types": [
+        "paranoia", "gaslighting",
+        "reality_distortion", "mind_games",
+        "unreliable_narration", "psychological_manipulation",
+        "identity_confusion", "memory_loss"
+      ],
+      "horror_probability": 0.85
+    },
+    "reality_distortion": {
+      "min_distortion_level": 4,
+      "max_distortion_level": 8,
+      "distortion_mechanisms": [
+        "perception_alteration", "memory_manipulation",
+        "time_distortion", "reality_shifting",
+        "gaslighting", "psychological_projection",
+        "cognitive_dissonance", "selective_amnesia"
+      ],
+      "distortion_probability": 0.8
+    }
+  },
+  "integration": {
+    "game_behavior_modifications": {
+      "perception_system": "unreliable",
+      "memory_system": "flawed",
+      "reality_system": "fluid",
+      "trust_system": "dynamic",
+      "sanity_system": "active"
+    },
+    "narrative_triggers": [
+      "reality_shift", "memory_loss",
+      "paranoia_event", "gaslighting",
+      "unreliable_narration", "mind_game",
+      "identity_confusion", "psychological_break"
+    ]
+  }
+}

@@ -1,0 +1,121 @@
+{
+    "id": "supernatural",
+    "name": "Supernatural Horror",
+    "description": "A ghostly theme that blends classic hauntings, paranormal activity, and eerie folklore with a touch of mystery and dread.",
+
+    // UI Theme Settings (extends existing theme system)
+    "ui": {
+        "themeClass": "theme-supernatural",
+        "colors": {
+            "primary": "#0a1a1a",
+            "secondary": "#1a2e2e",
+            "accent": "#4a6b6b",
+            "textPrimary": "#c0d0d0",
+            "textSecondary": "#8a9a9a",
+            "textMuted": "#556666",
+            "borderDark": "rgba(74, 107, 107, 0.3)",
+            "borderGlow": "rgba(74, 107, 107, 0.2)"
+        },
+        "fonts": {
+            "main": "'Cormorant Garamond', serif",
+            "heading": "'Cormorant Garamond', serif",
+            "monospace": "'Source Code Pro', monospace"
+        }
+    },
+
+    // Writing Style Settings
+    "writing": {
+        "tone": "eerie, mysterious, haunting, suspenseful, chilling",
+        "vocabulary": {
+            "positive": ["ghost", "spirit", "phantom", "apparition", "haunting", "specter", "wraith", "poltergeist", "curse", "omen", "portent"],
+            "negative": ["alive", "real", "normal", "natural", "explainable", "rational", "safe", "comfortable"],
+            "intensifiers": ["eerily", "unnervingly", "chillingly", "hauntingly", "terrifyingly", "mysteriously", "uncannily"],
+            "descriptors": ["ghostly", "ethereal", "spectral", "uncanny", "otherworldly", "chilling", "haunting"]
+        },
+        "sentenceStructure": {
+            "minWords": 7,
+            "maxWords": 20,
+            "complexity": 0.7,
+            "ellipsisProbability": 0.4,
+            "fragmentProbability": 0.3
+        },
+        "supernaturalTechniques": {
+            "whispers": 0.5,
+            "coldSpots": 0.4,
+            "unexplainedPhenomena": 0.6,
+            "psychicImpressions": 0.5,
+            "hauntingPresence": 0.7
+        }
+    },
+
+    // Theme-specific content
+    "content": {
+        "greetings": [
+            "The spirits are restless tonight...",
+            "Something unseen watches from the shadows.",
+            "The veil between worlds grows thin...",
+            "Do you feel that? The temperature just dropped...",
+            "Welcome to the haunted grounds."
+        ],
+        "farewells": [
+            "The spirits will remember you...",
+            "Don't turn your back on the dark...",
+            "Sleep well... if the ghosts allow it.",
+            "The haunting will follow you home...",
+            "Until the next full moon..."
+        ],
+        "loadingMessages": [
+            "The whispers grow louder...",
+            "Something unseen brushes against you...",
+            "The temperature drops suddenly...",
+            "A shadow moves where there should be none...",
+            "The air grows heavy with presence...",
+            "Something watches from the corner of your eye...",
+            "The lights flicker ominously...",
+            "You feel a cold breath on your neck..."
+        ],
+        "gameDescriptions": {
+            "template": "A {adjective} encounter with the {noun} that will {verb} your {perception}. {setup}",
+            "adjectives": ["chilling", "haunting", "eerie", "uncanny", "terrifying", "mysterious", "supernatural"],
+            "verbs": ["shatter", "challenge", "erode", "haunt", "consume", "possess", "transform"],
+            "nouns": ["unknown", "unseen", "otherworldly", "supernatural", "paranormal", "ghostly presence"],
+            "perception": ["sense of reality", "sanity", "grip on the natural world", "understanding of the world", "peace of mind"],
+            "setups": [
+                "The spirits here have a message... and it's not for the faint of heart.",
+                "Something lurks in the shadows, waiting for the perfect moment to reveal itself.",
+                "The house remembers... and it wants you to remember too.",
+                "Every creak, every whisper... they're all trying to tell you something.",
+                "You're not alone. You've never been alone."
+            ]
+        }
+    },
+
+    // Theme-specific assets
+    "assets": {
+        "backgrounds": ["supernatural-bg-1.jpg", "supernatural-bg-2.jpg", "supernatural-bg-3.jpg"],
+        "icons": {
+            "themeIcon": "👻",
+            "loadingIcon": "🕯️"
+        },
+        "sounds": {
+            "ambient": ["supernatural-ambient-1.mp3", "supernatural-ambient-2.mp3"],
+            "effects": ["whisper-1.mp3", "creak-1.mp3", "door-slam-1.mp3", "footsteps-1.mp3", "breath-1.mp3"]
+        }
+    },
+
+    // Game-specific adaptations
+    "gameAdaptations": {
+        "haunted-asylum": {
+            "npcDialogueStyle": "tortured spirit with unfinished business",
+            "environmentDescriptions": "abandoned wards, flickering lights, ghostly apparitions"
+        },
+        "dollhouse": {
+            "npcDialogueStyle": "possessed doll with a dark secret",
+            "environmentDescriptions": "creepy dollhouse, moving furniture, whispering voices"
+        },
+        "seance": {
+            "npcDialogueStyle": "medium channeling spirits",
+            "environmentDescriptions": "dark séance room, floating objects, cold spots"
+        }
+    }
+}

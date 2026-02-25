@@ -1,0 +1,121 @@
+{
+    "id": "cosmic_horror",
+    "name": "Cosmic Horror",
+    "description": "An eldritch theme that explores the terror of the unknown, the insignificance of humanity, and the madness that comes from glimpsing the true nature of reality.",
+
+    // UI Theme Settings (extends existing theme system)
+    "ui": {
+        "themeClass": "theme-cosmic",
+        "colors": {
+            "primary": "#0a0a0f",
+            "secondary": "#1a0a2e",
+            "accent": "#6a0dad",
+            "textPrimary": "#d0c0ff",
+            "textSecondary": "#a090c0",
+            "textMuted": "#666688",
+            "borderDark": "rgba(106, 13, 173, 0.3)",
+            "borderGlow": "rgba(106, 13, 173, 0.2)"
+        },
+        "fonts": {
+            "main": "'Cormorant Garamond', serif",
+            "heading": "'Cormorant Garamond', serif",
+            "monospace": "'Source Code Pro', monospace"
+        }
+    },
+
+    // Writing Style Settings
+    "writing": {
+        "tone": "ominous, existential, maddening, incomprehensible, ancient",
+        "vocabulary": {
+            "positive": ["void", "eldritch", "cosmic", "ancient", "forbidden", "ineffable", "transcendent", "eternal", "abyssal", "otherworldly"],
+            "negative": ["human", "normal", "sane", "rational", "comprehensible", "familiar", "safe", "understandable"],
+            "intensifiers": ["terribly", "horribly", "awfully", "dreadfully", "unspeakably", "indescribably", "inconceivably", "maddeningly"],
+            "descriptors": ["eldritch", "abyssal", "otherworldly", "incomprehensible", "forbidden", "ancient", "transcendent", "ineffable"]
+        },
+        "sentenceStructure": {
+            "minWords": 10,
+            "maxWords": 25,
+            "complexity": 0.9,
+            "ellipsisProbability": 0.5,
+            "fragmentProbability": 0.4
+        },
+        "cosmicTechniques": {
+            "incomprehensibility": 0.6,
+            "existentialDread": 0.7,
+            "madnessInduction": 0.5,
+            "ancientKnowledge": 0.6,
+            "realityDistortion": 0.4
+        }
+    },
+
+    // Theme-specific content
+    "content": {
+        "greetings": [
+            "The void welcomes you...",
+            "Something ancient stirs in the darkness.",
+            "Your presence disturbs the cosmic balance.",
+            "The stars whisper your name... can you hear them?",
+            "You are but a speck in the grand design."
+        ],
+        "farewells": [
+            "The cosmos will remember your insignificance.",
+            "Do not look too deeply into the abyss.",
+            "Your sanity is not guaranteed.",
+            "The stars will guide you... to madness.",
+            "Until the next alignment..."
+        ],
+        "loadingMessages": [
+            "The fabric of reality thins...",
+            "Something watches from beyond the stars...",
+            "The ancient ones stir in their slumber...",
+            "Your mind struggles to comprehend...",
+            "The void between the stars grows wider...",
+            "Something moves in the corner of your perception...",
+            "The laws of physics bend...",
+            "You feel the weight of eternity..."
+        ],
+        "gameDescriptions": {
+            "template": "A {adjective} journey into the {noun} that will {verb} your {understanding}. {setup}",
+            "adjectives": ["terrifying", "maddening", "ineffable", "abyssal", "otherworldly", "forbidden", "ancient", "transcendent"],
+            "verbs": ["shatter", "consume", "unravel", "corrupt", "erode", "dissolve", "transcend"],
+            "nouns": ["void", "abyss", "cosmos", "eldritch truth", "forbidden knowledge", "ancient horror", "madness"],
+            "understanding": ["sanity", "perception of reality", "grip on existence", "very soul", "mind"],
+            "setups": [
+                "Something lurks beyond the stars, waiting for the perfect moment to reveal itself.",
+                "The ancient texts speak of a truth too terrible for mortal minds to comprehend.",
+                "You are not alone. You have never been alone. Something shares your mind.",
+                "The deeper you go, the less you recognize the laws of physics.",
+                "Every shadow hides a truth that will drive you to madness."
+            ]
+        }
+    },
+
+    // Theme-specific assets
+    "assets": {
+        "backgrounds": ["cosmic-bg-1.jpg", "cosmic-bg-2.jpg", "cosmic-bg-3.jpg"],
+        "icons": {
+            "themeIcon": "👁️‍🗨️",
+            "loadingIcon": "🌀"
+        },
+        "sounds": {
+            "ambient": ["cosmic-ambient-1.mp3", "cosmic-ambient-2.mp3"],
+            "effects": ["whisper-eldritch-1.mp3", "reality-distortion-1.mp3", "madness-1.mp3", "void-1.mp3"]
+        }
+    },
+
+    // Game-specific adaptations
+    "gameAdaptations": {
+        "haunted-asylum": {
+            "npcDialogueStyle": "mad prophet speaking in riddles",
+            "environmentDescriptions": "non-euclidean geometry, shifting corridors, impossible spaces"
+        },
+        "the-abyss": {
+            "npcDialogueStyle": "ancient entity speaking through madness",
+            "environmentDescriptions": "endless descent, warped reality, living darkness"
+        },
+        "ritual-circle": {
+            "npcDialogueStyle": "cultist reciting forbidden knowledge",
+            "environmentDescriptions": "eldritch symbols, floating runes, reality-warping circles"
+        }
+    }
+}

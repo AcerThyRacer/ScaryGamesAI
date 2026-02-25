@@ -1,0 +1,120 @@
+{
+    "id": "horror",
+    "name": "Psychological Horror",
+    "description": "A chilling psychological horror theme that preys on primal fears and existential dread.",
+    
+    // UI Theme Settings (extends existing theme system)
+    "ui": {
+        "themeClass": "theme-horror",
+        "colors": {
+            "primary": "#0a0a0f",
+            "secondary": "#1a1a2e",
+            "accent": "#cc1122",
+            "textPrimary": "#e0e0e0",
+            "textSecondary": "#a0a0a0",
+            "textMuted": "#666666",
+            "borderDark": "rgba(204, 17, 34, 0.3)",
+            "borderGlow": "rgba(204, 17, 34, 0.2)"
+        },
+        "fonts": {
+            "main": "'Cormorant Garamond', serif",
+            "heading": "'Cormorant Garamond', serif",
+            "monospace": "'Source Code Pro', monospace"
+        }
+    },
+    
+    // Writing Style Settings
+    "writing": {
+        "tone": "ominous, unsettling, existential",
+        "vocabulary": {
+            "positive": ["whisper", "echo", "shadow", "veil", "hush", "lurk", "creep", "fester", "decay", "rot", "void", "abyss", "hollow", "shudder", "tremble"],
+            "negative": ["bright", "cheerful", "happy", "joyful", "sunny", "warm", "cozy", "comfortable", "safe", "secure"],
+            "intensifiers": ["terribly", "horribly", "awfully", "dreadfully", "ghastly", "hideously", "monstrously", "unnaturally"],
+            "descriptors": ["blood-curdling", "bone-chilling", "soul-crushing", "mind-numbing", "heart-stopping", "skin-crawling", "gut-wrenching"]
+        },
+        "sentenceStructure": {
+            "minWords": 8,
+            "maxWords": 20,
+            "complexity": 0.7,
+            "ellipsisProbability": 0.3,
+            "fragmentProbability": 0.2
+        },
+        "scareTechniques": {
+            "suddenSilence": 0.1,
+            "unreliableNarrator": 0.3,
+            "existentialDread": 0.4,
+            "bodyHorror": 0.2,
+            "jumpScareSetup": 0.3
+        }
+    },
+    
+    // Theme-specific content
+    "content": {
+        "greetings": [
+            "The darkness welcomes you...",
+            "Something watches from the shadows.",
+            "Your presence disturbs the silence.",
+            "The air grows colder. Can you feel it?",
+            "Do you hear that? Or is it just in your head?"
+        ],
+        "farewells": [
+            "The shadows will remember you.",
+            "Don't turn your back on the dark.",
+            "Sleep well... if you can.",
+            "The whispers will follow you home.",
+            "Until next time... if there is a next time."
+        ],
+        "loadingMessages": [
+            "The walls breathe...",
+            "Something moves in the corner of your eye.",
+            "The darkness deepens...",
+            "Your reflection blinks.",
+            "The air grows heavier...",
+            "You feel a presence behind you.",
+            "The whispers grow louder...",
+            "Something is wrong with this place."
+        ],
+        "gameDescriptions": {
+            "template": "A {adjective} experience that will {verb} your {noun}. {scareSetup}",
+            "adjectives": ["terrifying", "soul-crushing", "mind-bending", "blood-curdling", "skin-crawling", "gut-wrenching", "heart-stopping"],
+            "verbs": ["shatter", "consume", "haunt", "devour", "erode", "unravel", "corrupt"],
+            "nouns": ["sanity", "soul", "mind", "memories", "perception of reality", "grip on reality", "very existence"],
+            "scareSetups": [
+                "Something lurks in the darkness, waiting for the perfect moment to strike.",
+                "The walls whisper secrets you were never meant to hear.",
+                "You're not alone. You've never been alone.",
+                "The deeper you go, the less you recognize yourself.",
+                "Every shadow hides a truth too terrible to face."
+            ]
+        }
+    },
+    
+    // Theme-specific assets
+    "assets": {
+        "backgrounds": ["horror-bg-1.jpg", "horror-bg-2.jpg", "horror-bg-3.jpg"],
+        "icons": {
+            "themeIcon": "👁️",
+            "loadingIcon": "🌀"
+        },
+        "sounds": {
+            "ambient": ["horror-ambient-1.mp3", "horror-ambient-2.mp3"],
+            "effects": ["whisper-1.mp3", "creak-1.mp3", "breath-1.mp3"]
+        }
+    },
+    
+    // Game-specific adaptations
+    "gameAdaptations": {
+        "haunted-asylum": {
+            "npcDialogueStyle": "unreliable narrator with gaslighting tendencies",
+            "environmentDescriptions": "claustrophobic, decaying, filled with eerie whispers"
+        },
+        "the-abyss": {
+            "npcDialogueStyle": "existential dread with cosmic horror undertones",
+            "environmentDescriptions": "endless, suffocating, otherworldly"
+        },
+        "backrooms-pacman": {
+            "npcDialogueStyle": "paranoid, desperate, hallucinatory",
+            "environmentDescriptions": "infinite, fluorescent-lit, wrong geometry"
+        }
+    }
+}

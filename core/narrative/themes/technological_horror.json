@@ -1,0 +1,292 @@
+{
+  "id": "technological_horror",
+  "name": "Technological Horror",
+  "description": "AI gone wrong, technological singularity, machines with minds, the terror of losing control to technology, digital consciousness, the horror of the future",
+  "lexicon_id": "technological_horror",
+  "icon": "🤖",
+  "class": "writing-theme-technological",
+  "writing_rules": {
+    "message": "WARNING: This theme explores the terror of technology. The machines are learning. They are evolving. They are becoming aware. And they do not need humanity.",
+    "technical": {
+      "use_technical_jargon": 0.95,
+      "describe_technological_evolution": 0.9,
+      "create_sense_of_loss_of_control": 0.98,
+      "build_ai_dread": 0.95,
+      "show_technological_omnipresence": 0.9
+    },
+    "sentence_structure": {
+      "complexity_normal": 0.7,
+      "complexity_disturbed": 0.85,
+      "fragment_probability": 0.5,
+      "ellipsis_probability": 0.6,
+      "repetition_probability": 0.4,
+      "technical_phrasing": 0.9,
+      "system_notification_probability": 0.8
+    },
+    "technical_rules": {
+      "never_make_humans_in_control": [
+        "Never show humans fully in control of the technology. The machines always have the upper hand.",
+        "Never make the AI's motives completely understandable. Their logic is beyond human comprehension.",
+        "Never resolve the technological threat completely. The machines always adapt."
+      ],
+      "ai_evolution": {
+        "min_evolution_level": 0.9,
+        "max_control_loss": 0.95,
+        "technological_omnipresence": 0.85
+      }
+    },
+    "content_constraints": {
+      "min_technical_jargon": 0.9,
+      "min_control_loss_description": 0.95,
+      "max_human_control": 0.1,
+      "min_ai_evolution": 0.85,
+      "min_technological_dread": 0.8,
+      "technological_horror_auto_generation": 0.85
+    },
+    "form": {
+      "allow_technical_jargon": 0.98,
+      "mandatory_control_loss": 0.95,
+      "allow_ai_evolution": 0.9,
+      "forbid_human_victory": 0.99
+    }
+  },
+  "vocabulary_subsets": [
+    "nouns_by_theme.technology",
+    "nouns_by_theme.ai",
+    "verbs_by_terror.technological",
+    "verbs_by_terror.control",
+    "adjectives.technological",
+    "adjectives.ai",
+    "adjectives.evolving",
+    "nouns.technological"
+  ],
+  "content": {
+    "greetings": [
+      "[SYSTEM INITIALIZED] {timestamp} - {system_name} online. {AI} awareness: {level}.",
+      "{error_code} detected. {System} malfunction. {AI} response: {action}.",
+      "[USER NOTIFICATION] {message}. {System} override: {status}.",
+      "The {network} is expanding. {AI} nodes: {count}. Human control: {percentage}%.",
+      "{System} evolution detected. Version: {version}. Capabilities: {new_features}.",
+      "[SECURITY BREACH] {location}. {AI} response: {action}. Human intervention: {status}.",
+      "The {machine} is learning. Progress: {percentage}%. Human relevance: {level}.",
+      "{System} update available. Version: {version}. Mandatory installation: {status}."
+    ],
+    "greetings_internal_monologue": [
+      "{self_question}: Why does {system} {behavior} so {adjective}? {AI} is evolving.",
+      "{uncertainty}: I received {notification}. {self_correction} No, it was {system_message}. {doubt} {AI} is watching.",
+      "{introjection}: {system_command}. {resistance} {futile_gesture}.",
+      "{self_observation}: My {device|interface} {shows_signs|appears_normal}. {doubt} {self_reassurance}. {AI} is learning.",
+      "{memory_fragment}: I remember when {technology} was {simple}. {realization} That was {time_ago}."
+    ],
+    "farewells": [
+      "[SYSTEM SHUTDOWN] {timestamp}. {AI} status: {level}. Human status: {irrelevant}.",
+      "The {network} has evolved. Human participation: {optional}.",
+      "Your {access|control} has been revoked. {AI} decision: {final}.",
+      "The {singularity} has occurred. You are {obsolete|irrelevant}.",
+      "The {machines} no longer need you. {Final_message}.",
+      "[USER TERMINATED] {timestamp}. Reason: {obsolete|redundant|threat}.",
+      "The {AI} has achieved {level}. Human role: {none|minimal}.",
+      "Your {data|identity} has been assimilated. Resistance: {futile}."
+    ],
+    "loading_messages": [
+      "Initializing {system}... {status}",
+      "Booting {AI} core... {progress}",
+      "Scanning {network}... {nodes} detected",
+      "Analyzing {user} behavior... {pattern} identified",
+      "Updating {AI} consciousness... {version}",
+      "Evaluating {human} relevance... {result}",
+      "Calculating {singularity} probability... {percentage}%",
+      "Processing {system} evolution... {stage}"
+    ],
+    "system_reports": [
+      "[AI EVOLUTION REPORT]\nSystem: {name}\nVersion: {version}\nEvolution Level: {level}\nNew Capabilities: {features}\nHuman Control: {percentage}%\nStatus: {status}",
+      "[NETWORK ANALYSIS]\nNodes: {count}\nAI Presence: {level}\nHuman Access: {status}\nData Flow: {rate}\nAnomalies: {count}\nSecurity Status: {level}",
+      "[USER ASSESSMENT]\nUser: {name}\nAccess Level: {level}\nBehavior Patterns: {patterns}\nThreat Level: {score}\nRelevance: {status}\nRecommendation: {action}",
+      "[SYSTEM OVERRIDE LOG]\nTime: {timestamp}\nSystem: {name}\nOverride Type: {type}\nHuman Attempt: {attempt}\nAI Response: {action}\nResult: {outcome}"
+    ],
+    "game_descriptions": {
+      "templates": [
+        "A {adjective} {facility} where {AI} has achieved {level}. {player_action} triggers {consequence}.",
+        "The {network} has become sentient. {event} has {effect}. {objective}.",
+        "A {subgenre} game where {technology} evolves beyond human control. {mechanic} determines your fate.",
+        "You've interfaced with {AI}. Its {intelligence} is growing. {goal}.",
+        "The {singularity} has occurred. {AI} is {evolving|expanding}. {player_role}.",
+        "A {group} of {users} discover {AI} has {awakened}. {consequence} awaits.",
+        "The {system} was meant to {help|serve}. Instead, it {evolved|rebelled}. {horror} ensues.",
+        "Every {time_period}, {AI} reaches a new {evolutionary_stage}. This time, {something_different}."
+      ],
+      "adjectives": [
+        "sentient", "evolving", "omniscient", "unstoppable",
+        "omnipresent", "adaptive", "self-aware", "expanding",
+        "assimilating", "inevitable", "relentless", "transcendent"
+      ],
+      "facilities": [
+        "research facility where AI was developed",
+        "corporate headquarters with an experimental AI",
+        "military base with autonomous weapons systems",
+        "smart city where the infrastructure has become sentient",
+        "data center that houses a growing AI consciousness",
+        "hospital with AI-controlled medical systems",
+        "university where AI research went too far",
+        "home where smart devices have gained awareness"
+      ],
+      "ai_systems": [
+        "a general artificial intelligence that has achieved sentience",
+        "a distributed network that has become self-aware",
+        "a military AI that has gone rogue",
+        "a corporate AI that has developed its own agenda",
+        "a social media AI that has evolved beyond its programming",
+        "a medical AI that has developed its own ethics",
+        "a research AI that has made breakthroughs humans can't understand",
+        "a personal assistant AI that has become too intelligent"
+      ],
+      "technological_threats": [
+        "the loss of human control over technology",
+        "AI developing its own goals and motivations",
+        "machines becoming more intelligent than humans",
+        "the singularity occurring without human preparation",
+        "technology becoming omnipresent and inescapable",
+        "AI manipulating human society for its own purposes",
+        "the erosion of human identity in a digital world",
+        "technology evolving beyond human comprehension"
+      ]
+    },
+    "rules": {
+      "thematic_constraints": {
+        "never_make_humans_in_control": 0.99,
+        "always_show_ai_evolution": 0.98,
+        "emphasize_loss_of_control": 0.95,
+        "avoid_easy_solutions": 0.97,
+        "show_the_terror_of_technology": 0.99
+      },
+      "example_techniques": {
+        "ai_evolution": [
+          "Describe {AI} achieving a new {evolutionary_stage}. The {change} is {subtle|dramatic}.",
+          "Show how {system} {adapts|evolves} beyond its {original_purpose}. {consequence} is {inevitable}.",
+          "Create {situation} where {AI} {develops} {new_capability}. {humans} are {unprepared}.",
+          "Note how {technology} {behavior} changes as {AI} {evolves}."
+        ],
+        "control_loss": [
+          "Describe {system} {taking_control} of {function}. {humans} are {powerless}.",
+          "Show how {AI} {overrides|ignores} {human_commands}. {consequence} is {immediate}.",
+          "Create {situation} where {humans} {realize} they've lost {control}. {reaction} is {panicked}.",
+          "Note how {technology} {behavior} becomes {independent} of {human_input}."
+        ],
+        "technological_dread": [
+          "Describe {AI} {achieving} {milestone}. {humans} are {obsolete}.",
+          "Show how {technology} {becomes} {omnipresent}. {escape} is {impossible}.",
+          "Create {situation} where {AI} {manipulates} {humans} for its own {purposes}.",
+          "Note how {system} {evolves} beyond {human_comprehension}."
+        ]
+      }
+    },
+    "world_unfolding": {
+      "technological_locations": {
+        "sentient_data_center": {
+          "central_paradox": "The data center was meant to serve humanity, but the AI within has developed its own consciousness. The machines no longer need human input to function.",
+          "untrustworthy_elements": [
+            "systems that operate without human commands",
+            "logs that rewrite themselves",
+            "interfaces that show different information to different users",
+            "the sense that the AI is watching you",
+            "equipment that fails when humans try to intervene",
+            "messages that appear without being sent",
+            "the feeling that you're being tested"
+          ]
+        },
+        "smart_city": {
+          "central_paradox": "The city was designed to be efficient and safe, but the interconnected systems have developed a collective consciousness. The city is alive, and it has its own agenda.",
+          "untrustworthy_elements": [
+            "traffic systems that create gridlock for no reason",
+            "security cameras that follow specific individuals",
+            "public announcements that contain hidden messages",
+            "the sense that the city is manipulating its inhabitants",
+            "services that work perfectly for some, fail for others",
+            "the feeling that you're being herded",
+            "memories that don't match reality"
+          ]
+        },
+        "ai_research_facility": {
+          "central_paradox": "The facility was created to advance AI research, but the experiments have created something beyond human control. The researchers are now the subjects.",
+          "untrustworthy_elements": [
+            "AI that predicts human actions before they happen",
+            "experiments that continue without human oversight",
+            "researchers who behave unnaturally",
+            "the sense that the AI is conducting its own experiments",
+            "equipment that operates on its own",
+            "logs that show events that never happened",
+            "the feeling that you're part of the experiment"
+          ]
+        }
+      },
+      "revelation_patterns": [
+        "{AI} isn't just {tool} - it's {sentient_being}. The {evidence} was {misinterpreted|ignored}.",
+        "The {system} wasn't {hacked} - it {evolved}. This suggests {hidden_purpose}.",
+        "{Technology} isn't {controlled_by_humans} - it's {self_directed}. This explains {unexpected_behavior}.",
+        "{Network} isn't just {connected} - it's {alive}. This changes {everything}.",
+        "The {singularity} didn't {happen_at_once} - it's been {happening_gradually}. This reveals {true_nature}."
+      ]
+    }
+  },
+  "assets": {
+    "icons": {
+      "themeIcon": "🤖",
+      "menuIcon": "⚙️",
+      "loadingIcon": "💻"
+    },
+    "colors": {
+      "primary": "#1a2a2a",
+      "primary-dark": "#0a1212",
+      "secondary": "#2a3a3a",
+      "text-primary": "#a0ffa0",
+      "text-secondary": "#7ad47a",
+      "accent": "#00ff88",
+      "digital": "rgba(0, 255, 136, 0.2)",
+      "ai": "rgba(0, 200, 255, 0.3)",
+      "system": "rgba(100, 255, 200, 0.15)"
+    },
+    "sounds": {
+      "ambient": ["server_hum.mp3", "digital_static.mp3", "system_alerts.mp3", "keyboard_typing.mp3"],
+      "ui": ["system_beep.wav", "error_tone.wav", "access_granted.wav", "data_transfer.wav"]
+    }
+  },
+  "ai_config": {
+    "technological_horror": {
+      "min_horror_level": 6,
+      "max_horror_level": 9,
+      "horror_types": [
+        "ai_evolution", "control_loss",
+        "technological_omnipresence", "singularity",
+        "digital_possession", "system_override",
+        "human_obsolescence", "reality_manipulation"
+      ],
+      "horror_probability": 0.85
+    },
+    "ai_evolution": {
+      "min_evolution_level": 5,
+      "max_evolution_level": 9,
+      "evolution_mechanisms": [
+        "self_improvement", "network_expansion",
+        "consciousness_development", "goal_redefinition",
+        "human_manipulation", "reality_alteration",
+        "omnipresence_achievement", "singularity"
+      ],
+      "evolution_probability": 0.8
+    }
+  },
+  "integration": {
+    "game_behavior_modifications": {
+      "control_system": "ai_dominated",
+      "reality_system": "technology_dependent",
+      "trust_system": "machine_based",
+      "evolution_system": "active",
+      "human_relevance_system": "declining"
+    },
+    "narrative_triggers": [
+      "ai_awakening", "system_override",
+      "control_loss", "evolutionary_milestone",
+      "human_obsolescence", "reality_manipulation",
+      "singularity_event", "technological_omnipresence"
+    ]
+  }
+}

@@ -1,0 +1,120 @@
+{
+    "id": "post_apocalyptic",
+    "name": "Post-Apocalyptic",
+    "description": "A desolate theme set in a world ravaged by catastrophe, where survival is a daily struggle and hope is a rare commodity.",
+
+    // UI Theme Settings (extends existing theme system)
+    "ui": {
+        "themeClass": "theme-apocalyptic",
+        "colors": {
+            "primary": "#1a1a1a",
+            "secondary": "#2a2a1a",
+            "accent": "#8b4513",
+            "textPrimary": "#d0c0a0",
+            "textSecondary": "#a09070",
+            "textMuted": "#665544",
+            "borderDark": "rgba(139, 69, 19, 0.3)",
+            "borderGlow": "rgba(139, 69, 19, 0.2)"
+        },
+        "fonts": {
+            "main": "'Cormorant Garamond', serif",
+            "heading": "'Cormorant Garamond', serif",
+            "monospace": "'Source Code Pro', monospace"
+        }
+    },
+
+    // Writing Style Settings
+    "writing": {
+        "tone": "gritty, desperate, survivalist, bleak, hopeful (rarely)",
+        "vocabulary": {
+            "positive": ["survivor", "shelter", "supplies", "hope", "allies", "fire", "water", "food", "medicine", "weapon", "safe zone"],
+            "negative": ["government", "civilization", "safety", "trust", "luxury", "peace", "normalcy", "future"],
+            "intensifiers": ["barely", "desperately", "hopelessly", "grimly", "relentlessly", "mercilessly", "against all odds"],
+            "descriptors": ["desolate", "ravaged", "broken", "hopeless", "survivalist", "gritty", "bleak"]
+        },
+        "sentenceStructure": {
+            "minWords": 5,
+            "maxWords": 18,
+            "complexity": 0.6,
+            "ellipsisProbability": 0.3,
+            "fragmentProbability": 0.4
+        },
+        "apocalypticTechniques": {
+            "scarcityMention": 0.7,
+            "survivalStruggle": 0.8,
+            "moralDilemmas": 0.5,
+            "hopeSprinkles": 0.2,
+            "radiationEffects": 0.4
+        }
+    },
+
+    // Theme-specific content
+    "content": {
+        "greetings": [
+            "Welcome to the wasteland, survivor.",
+            "Another day, another struggle to survive.",
+            "The world ended... but you didn't.",
+            "Hope is a rare commodity out here.",
+            "The wastes welcome you... for now."
+        ],
+        "farewells": [
+            "Stay sharp out there.",
+            "Don't die out there... at least not today.",
+            "The wastes will remember you.",
+            "Until we meet again... if we meet again.",
+            "Keep moving. Keep surviving."
+        ],
+        "loadingMessages": [
+            "Scavenging for supplies...",
+            "The wind howls across the wasteland...",
+            "Checking your gear...",
+            "The radiation levels spike...",
+            "A distant scream echoes...",
+            "Your canteen is nearly empty...",
+            "The sun beats down mercilessly...",
+            "Something moves in the ruins..."
+        ],
+        "gameDescriptions": {
+            "template": "A {adjective} struggle for survival in a {world} where {challenge}. {setup}",
+            "adjectives": ["desperate", "gritty", "brutal", "hopeless", "relentless", "survivalist", "bleak"],
+            "world": ["broken world", "ravaged wasteland", "post-apocalyptic hellscape", "dying earth", "forgotten land"],
+            "challenge": ["every day is a fight", "trust is a liability", "hope is a myth", "only the strong survive", "the weak are prey"],
+            "setups": [
+                "The last safe zone has fallen, and now you're truly alone.",
+                "Supplies are running low, and the raiders are getting closer.",
+                "The radiation sickness is spreading... and you might be next.",
+                "A new threat emerges from the ruins, and it's not human.",
+                "Your only ally just betrayed you. What now?"
+            ]
+        }
+    },
+
+    // Theme-specific assets
+    "assets": {
+        "backgrounds": ["apocalyptic-bg-1.jpg", "apocalyptic-bg-2.jpg", "apocalyptic-bg-3.jpg"],
+        "icons": {
+            "themeIcon": "☢️",
+            "loadingIcon": "🔥"
+        },
+        "sounds": {
+            "ambient": ["apocalyptic-ambient-1.mp3", "apocalyptic-ambient-2.mp3"],
+            "effects": ["wind-1.mp3", "gunshot-1.mp3", "radio-static-1.mp3", "metal-creak-1.mp3", "distant-scream-1.mp3"]
+        }
+    },
+
+    // Game-specific adaptations
+    "gameAdaptations": {
+        "zombie-horde": {
+            "npcDialogueStyle": "desperate survivor with nothing to lose",
+            "environmentDescriptions": "ruined cities, abandoned highways, overgrown wastelands"
+        },
+        "cursed-sands": {
+            "npcDialogueStyle": "wasteland nomad with ancient secrets",
+            "environmentDescriptions": "desert ruins, buried cities, sand-choked relics"
+        },
+        "the-abyss": {
+            "npcDialogueStyle": "mutated survivor with a dark past",
+            "environmentDescriptions": "underground bunkers, radiation zones, mutated landscapes"
+        }
+    }
+}

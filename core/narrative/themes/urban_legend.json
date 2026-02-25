@@ -1,0 +1,157 @@
+{
+  "id": "urban_legend",
+  "name": "Urban Legend Horror Theme",
+  "description": "Modern myths, internet horror, creepypasta, the terror that hides in everyday life and spreads through stories.",
+  "lexicon_id": "urban_legend",
+  "icon": "👥",
+  "class": "writing-theme-urban-legend",
+  "writing_rules": {
+    "message": "WARNING: This theme explores the terror that hides in everyday life, spreading through stories, whispers, and the internet. What you dismiss as superstition may be far more real - and far more dangerous - than you imagine.",
+    "technical": {
+      "use_colloquial_language": 0.7,
+      "use_internet_slang": 0.6,
+      "use_modern_settings": 0.9,
+      "use_everyday_objects": 0.8,
+      "use_conspiracy_theories": 0.7
+    },
+    "sentence_structure": {
+      "complexity_normal": 0.6,
+      "fragment_probability": 0.4,
+      "ellipsis_probability": 0.35,
+      "use_colloquialisms": 0.7,
+      "use_internet_language": 0.6,
+      "use_unfinished_thoughts": 0.5
+    },
+    "content_constraints": {
+      "allow_modern_settings": 0.9,
+      "allow_internet_horror": 0.85,
+      "allow_everyday_objects_becoming_terrifying": 0.8,
+      "allow_conspiracy_elements": 0.75,
+      "allow_viral_spread": 0.7
+    }
+  },
+  "vocabulary_subsets": [
+    "nouns_by_theme.modern",
+    "nouns_by_theme.internet",
+    "verbs_by_terror.subtle",
+    "adjectives.everyday",
+    "adjectives.eerie"
+  ],
+  "content": {
+    "greetings": [
+      "The {location} looks {normal} at first glance, but something about it feels {wrong|off}.",
+      "A {scent} lingers in the air, the unmistakable {smell} of {something_familiar} gone {horribly_wrong}.",
+      "The {object} in the corner seems {innocuous}, but {character} can't shake the feeling that {something_is_wrong}."
+    ],
+    "demands": [
+      "You have to {action} the {object} before {time}. It's the only way to {prevent} the {doom}.",
+      "Don't {interact} with the {entity}. It's not what it seems.",
+      "The {story} is true. You need to {action} before it's too late."
+    ],
+    "farewells": [
+      "If you tell anyone about this, they'll think you're {crazy}.",
+      "The {object} is still out there. And it's {spreading|growing|learning}.",
+      "When you see {sign}, remember what I told you. And {action}."
+    ],
+    "loading_messages": [
+      "Loading {website}... {disturbing_content} detected.",
+      "Connecting to {user}... {unexpected_response} received.",
+      "Playing {video}... {subliminal_message} found.",
+      "Searching for {topic}... {forbidden_knowledge} revealed."
+    ],
+    "narrative_fragments": [
+      "{character} receives a {message} from {unknown_sender}, the {content} too {personal} to be a coincidence.",
+      "The {video} plays normally at first, but {disturbing_content} begins to {appear} in the {background} when {character} watches it again.",
+      "A {sound} echoes through the {location}, the {ringtone} of a {phone} that hasn't worked in years.",
+      "{character} finds a {post} online that describes their {current_situation} in {eerie_detail}, posted {time_ago}.",
+      "The {object} seems {normal} at first, but when {character} looks closer, they notice {disturbing_detail}."
+    ],
+    "location_descriptions": {
+      "generic_location": [
+        "The {location} looks {normal} at first glance, but something about it feels {wrong|off}.",
+        "A {scent} lingers in the air, the unmistakable {smell} of {something_familiar} gone {horribly_wrong}.",
+        "The {object} in the corner seems {innocuous}, but {character} can't shake the feeling that {something_is_wrong}."
+      ],
+      "bedroom": [
+        "The {room} is exactly as {character} left it, yet something feels {fundamentally_wrong}.",
+        "The {mirror} shows {character}'s reflection, but their {expression} doesn't match their {internal_state}.",
+        "A {sound} comes from the {closet|under_the_bed}, but when {character} checks, there's {nothing_there}."
+      ],
+      "internet": [
+        "The {website|forum} loads normally, but the {posts} seem to be {changing} when {character} isn't looking directly at them.",
+        "A {user} with {suspicious_name} keeps {posting} the same {message} in every {thread}.",
+        "The {video} plays normally at first, but {disturbing_content} begins to {appear} in the {background}."
+      ]
+    },
+    "character_dialog": {
+      "reassurance": [
+        "It's just an {innocuous_explanation}. Happens all the time.",
+        "Don't worry about the {disturbing_thing}. It's probably just {rational_explanation}.",
+        "You're imagining things. {observation} is completely normal."
+      ],
+      "doubt": [
+        "Did you see that {disturbing_thing}? Or am I just {losing_it}?",
+        "This can't be happening. {phenomenon} doesn't work like that.",
+        "I don't like this. {suspicious_detail} feels {adjective}."
+      ],
+      "realization": [
+        "Oh no... {horrifying_discovery}. That explains the {evidence}.",
+        "I think I understand now. {revelation}. We shouldn't have {action}.",
+        "The {object} isn't just {normal_state}. It's {horrifying_state}."
+      ],
+      "denial": [
+        "This can't be real. {reality_denial}. Urban legends aren't real!",
+        "There has to be an explanation. {attempted_explanation}.",
+        "No, no, no. {repetition} This isn't happening."
+      ],
+      "internet": [
+        "Have you seen the new {meme|creepypasta} about {subject}? It's {adjective}.",
+        "Don't click on any links from {suspicious_user}. They're {reputation}.",
+        "The {website} is down again. This is the {nth_time} this week. {suspicious_detail}."
+      ]
+    },
+    "game_descriptions": {
+      "templates": [
+        "Investigate {urban_legend} that's begun to {come_true}. {mechanic} forces you to separate fact from fiction before it's too late.",
+        "Survive the night in {location} where {creepypasta} has become reality. {gameplay_feature} tests your ability to distinguish the real from the imagined.",
+        "Uncover the truth behind {viral_video} that shows {disturbing_content}. {twist} reveals the dark reality behind the legend.",
+        "Escape from {cursed_place} before {ritual} is completed. {revelation} will make you question what you thought you knew about internet culture.",
+        "Navigate {social_media} where {entity} hunts victims through their own posts. {unique_mechanic} forces you to confront the dangers of oversharing."
+      ],
+      "urban_legend_elements": [
+        "a phone that receives calls from the future",
+        "a video that shows your death when you reach the end",
+        "a website that predicts when you'll die",
+        "a social media account that posts pictures of you while you sleep",
+        "a game that traps your soul if you play it alone",
+        "a meme that becomes more real the more it's shared",
+        "a forum where users slowly realize they're all the same person",
+        "a mirror that shows a different version of you",
+        "a stuffed animal that moves when you're not looking",
+        "a song that contains hidden messages when played backward"
+      ]
+    }
+  },
+  "assets": {
+    "icons": {
+      "themeIcon": "👥",
+      "menuIcon": "📱",
+      "loadingIcon": "💬"
+    },
+    "colors": {
+      "primary": "#2a2a2a",
+      "primary-dark": "#1a1a1a",
+      "secondary": "#3a3a3a",
+      "text-primary": "#e0e0e0",
+      "text-secondary": "#a0a0a0",
+      "accent": "#ff6b35",
+      "digital": "rgba(255, 107, 53, 0.3)",
+      "shadow": "rgba(50, 50, 50, 0.4)",
+      "eerie": "rgba(200, 100, 50, 0.2)"
+    },
+    "sounds": {
+      "ambient": ["distant_traffic.mp3", "keyboard_typing.mp3", "phone_ringing.mp3"],
+      "ui": ["notification.wav", "message_received.wav", "creepy_ringtone.wav"]
+    }
+  }
+}

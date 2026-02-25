@@ -1,0 +1,245 @@
+{
+  "id": "supernatural",
+  "name": "Supernatural Horror Theme",
+  "description": "Ghosts, hauntings, curses, possession, the unseen world, ancient evils, the veil between worlds, things that shouldn't exist but do",
+  "lexicon_id": "supernatural",
+  "icon": "👻",
+  "class": "writing-theme-supernatural",
+  "writing_rules": {
+    "message": "WARNING: This theme deals with entities that defy natural law. Prolonged exposure may result in narrative contamination.",
+    "technical": {
+      "use_ambiguous_terminology": 0.85,
+      "avoid_definitive_explanations": 0.95,
+      "supernatural_presence_probability": 0.9,
+      "reality_uncertainty": 0.8,
+      "temporal_disruption": 0.75
+    },
+    "sentence_structure": {
+      "complexity_normal": 0.5,
+      "complexity_disturbed": 0.7,
+      "complexity_paranoid": 0.85,
+      "fragment_probability": 0.6,
+      "ellipsis_probability": 0.7,
+      "repetition_probability": 0.5,
+      "ambiguity_probability": 0.85,
+      "temporal_disruption_probability": 0.6
+    },
+    "technical_rules": {
+      "never_explain_the_supernatural": [
+        "Never provide definitive explanations for supernatural events. Leave room for doubt.",
+        "Never confirm the nature of supernatural entities. Let them remain ambiguous.",
+        "Never resolve supernatural mysteries. Let them linger and fester."
+      ],
+      "reality_uncertainty": {
+        "min_doubt_introduction": 0.8,
+        "max_certainty_reduction": 0.95,
+        "temporal_disruption_frequency": 0.7
+      }
+    },
+    "content_constraints": {
+      "min_supernatural_presence": 0.85,
+      "min_reality_uncertainty": 0.8,
+      "max_definitive_explanations": 0.1,
+      "min_ambiguous_terminology": 0.9,
+      "supernatural_auto_generation": 0.7
+    },
+    "form": {
+      "allow_ambiguous_endings": 1,
+      "mandatory_doubt_introduction": 0.95,
+      "allow_temporal_disruption": 0.8,
+      "forbid_definitive_resolution": 0.98
+    }
+  },
+  "vocabulary_subsets": [
+    "nouns_by_theme.supernatural",
+    "nouns_by_theme.occult",
+    "verbs_by_terror.haunting",
+    "verbs_by_terror.possession",
+    "adjectives.supernatural",
+    "adjectives.uncanny",
+    "adjectives.ethereal",
+    "nouns.rituals"
+  ],
+  "content": {
+    "greetings": [
+      "The {location} feels {adjective}. You're not alone.",
+      "{supernatural_presence} lingers in the {space}. Can you {sense_it}?",
+      "Something {adjective} happened here. The {evidence} remains.",
+      "The {boundary} between worlds is {state}. You might {cross_it}.",
+      "They're watching. They've always been watching."
+    ],
+    "greetings_internal_monologue": [
+      "{self_question}: Did I {action} or did {entity} {action_through_me}?",
+      "{uncertainty}: {perception} feels {wrong_adjective}. {self_correction} No, {perception} IS {wrong_adjective}.",
+      "{introjection}: {supernatural_command}. {resistance} {futile_gesture}.",
+      "{self_observation}: {body_part} {behaves_normally|shows_signs}. {doubt} {self_reassurance}."
+    ],
+    "farewells": [
+      "They'll remember you. They always remember the curious.",
+      "The {veil} is thinning. Don't stay too long.",
+      "What you saw... was it {real} or {manifestation}?",
+      "The {ritual} isn't complete. It never will be.",
+      "You brought something back with you. It's in your {possession}."
+    ],
+    "loading_messages": [
+      "Consulting the {occult_archive}...",
+      "Divining the {supernatural_presence}...",
+      "Calculating {reality_stability}...",
+      "Communicating with {unseen_entities}...",
+      "Interpreting {ominous_signs}..."
+    ],
+    "haunting_reports": [
+      "[PARANORMAL LOG {timestamp}]\nLocation: {place}\nActivity: {supernatural_event}\nIntensity: {level}\nEvidence: {proof}\nWitnesses: {people}\nNotes: {observation}",
+      "[GHOST HUNTER REPORT]\nEntity Type: {classification}\nManifestation: {form}\nInteraction: {behavior}\nEMF Readings: {data}\nPersonal Experience: {account}",
+      "[CURSE ASSESSMENT]\nOrigin: {source}\nSymptoms: {effects}\nProgression: {timeline}\nCountermeasures: {attempts}\nSuccess Rate: {percentage}",
+      "[POSSESSION CASE FILE]\nSubject: {name}\nDuration: {time}\nBehavioral Changes: {symptoms}\nExorcism Attempts: {count}\nCurrent Status: {condition}"
+    ],
+    "game_descriptions": {
+      "templates": [
+        "A {adjective} experience where {supernatural_phenomenon} defies {natural_law}. {player_action} triggers {consequence}.",
+        "The {boundary} between {worlds} is thinning. {entity} is trying to {cross_over}. {player_role}.",
+        "Investigate {haunted_location} where {supernatural_event} occurs at {specific_time}. {discovery}.",
+        "You've been {cursed|possessed|marked}. {supernatural_effect} is spreading. {objective}.",
+        "A {subgenre} game where {occult_practice} awakens {ancient_evil}. {mechanic} determines the outcome."
+      ],
+      "adjectives": [
+        "haunting", "uncanny", "ethereal",
+        "cursed", "possessed", "supernatural"
+      ],
+      "supernatural_phenomena": [
+        "apparitions that only appear in reflections",
+        "objects that move when unobserved",
+        "voices that speak in reverse",
+        "time loops that reset at death",
+        "entities that feed on fear"
+      ],
+      "entities": [
+        "ghosts that remember futures that haven't happened yet",
+        "demons that wear the faces of the living",
+        "spirits that exist in the spaces between atoms",
+        "ancient gods that slumber in suburban basements",
+        "cursed objects that grant wishes at a terrible cost"
+      ],
+      "haunted_locations": [
+        "abandoned asylums where the walls whisper",
+        "old houses where the floor plan changes",
+        "hotels where guests check in but never check out",
+        "forests where the trees watch you",
+        "hospitals where the dead outnumber the living"
+      ]
+    },
+    "rules": {
+      "thematic_constraints": {
+        "never_confirm_reality": 0.98,
+        "always_leave_doubt": 0.95,
+        "emphasize_uncertainty": 0.9,
+        "avoid_definitive_explanations": 0.99,
+        "show_supernatural_ambiguity": 0.97
+      },
+      "example_techniques": {
+        "reality_uncertainty": [
+          "Describe {event} from multiple perspectives that contradict each other.",
+          "Show {evidence} that could be interpreted as {natural_explanation} or {supernatural_explanation}.",
+          "Have {character} experience {phenomenon} but find no physical proof.",
+          "Create {situation} where {natural_cause} and {supernatural_cause} are equally plausible."
+        ],
+        "temporal_disruption": [
+          "Have {event} occur before its apparent cause.",
+          "Show {character} experiencing memories of events that haven't happened yet.",
+          "Create {situation} where time flows differently for different characters.",
+          "Have {object} show signs of both past and future states simultaneously."
+        ],
+        "supernatural_ambiguity": [
+          "Describe {entity} in terms that could apply to {natural_phenomenon} or {supernatural_being}.",
+          "Have {character} interpret {event} as {supernatural} but provide {natural_explanation}.",
+          "Create {situation} where {supernatural_effect} has {logical_explanation}.",
+          "Show {evidence} that disappears when examined closely."
+        ]
+      }
+    },
+    "world_unfolding": {
+      "haunted_locations": {
+        "abandoned_asylum": {
+          "central_paradox": "The asylum was meant to heal, but the treatments created something worse. The patients never left - they transformed.",
+          "untrustworthy_elements": [
+            "patient records that rewrite themselves",
+            "doors that lead to different rooms depending on who opens them",
+            "voices that repeat conversations from other timelines",
+            "medical equipment that operates on principles unknown to science",
+            "shadows that move independently of light sources"
+          ]
+        },
+        "cursed_house": {
+          "central_paradox": "The house wasn't built on cursed land - the land became cursed because the house was built there. The architecture itself is the curse.",
+          "untrustworthy_elements": [
+            "rooms that appear in different locations",
+            "windows that show different views depending on the time of day",
+            "stairs that lead to impossible spaces",
+            "reflections that don't match the room they're in",
+            "clocks that run backward when no one is watching"
+          ]
+        }
+      },
+      "revelation_patterns": [
+        "The {phenomenon} isn't {supernatural_explanation} - it's {alternative_explanation}. But that doesn't explain {unexplained_aspect}.",
+        "{Object} doesn't {function_normally} - it {supernatural_function}. This suggests {implication}.",
+        "The {event} wasn't caused by {apparent_cause} - it was caused by {supernatural_cause}. But {contradictory_evidence} complicates this.",
+        "{Character} isn't {human} - they're {supernatural_being}. But {evidence_of_humanity} contradicts this."
+      ]
+    }
+  },
+  "assets": {
+    "icons": {
+      "themeIcon": "👻",
+      "menuIcon": "🔮",
+      "loadingIcon": "🕯️"
+    },
+    "colors": {
+      "primary": "#2d1b69",
+      "primary-dark": "#1a0f3a",
+      "secondary": "#4a308a",
+      "text-primary": "#e6d7ff",
+      "text-secondary": "#b399d4",
+      "accent": "#9d00ff",
+      "ethereal": "rgba(157, 0, 255, 0.2)",
+      "haunting": "rgba(220, 200, 255, 0.15)"
+    },
+    "sounds": {
+      "ambient": ["ghostly_whispers.mp3", "distant_chanting.mp3", "echoing_footsteps.mp3"],
+      "ui": ["spectral_appearance.wav", "curse_activation.wav", "veil_tearing.wav"]
+    }
+  },
+  "ai_config": {
+    "supernatural_presence": {
+      "min_presence_level": 3,
+      "max_presence_level": 9,
+      "manifestation_types": [
+        "visual", "auditory", "tactile",
+        "olfactory", "cognitive", "temporal"
+      ],
+      "manifestation_probability": 0.75
+    },
+    "reality_uncertainty": {
+      "min_doubt_level": 2,
+      "max_doubt_level": 8,
+      "doubt_mechanisms": [
+        "contradictory_evidence", "perceptual_ambiguity",
+        "temporal_disruption", "logical_paradoxes"
+      ],
+      "doubt_probability": 0.8
+    }
+  },
+  "integration": {
+    "game_behavior_modifications": {
+      "perception_system": "reality_uncertainty",
+      "time_system": "temporal_disruption",
+      "entity_system": "supernatural_ambiguity",
+      "evidence_system": "contradictory_proof",
+      "player_perception": "subjective_reality"
+    },
+    "narrative_triggers": [
+      "supernatural_manifestation", "reality_distortion",
+      "temporal_anomaly", "possession_event", "curse_activation"
+    ]
+  }
+}

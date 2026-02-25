@@ -1,0 +1,210 @@
+{
+  "id": "cosmic_horror",
+  "name": "Cosmic Horror Theme",
+  "description": "Cosmic indifference, elder beings beyond human comprehension, forbidden truths, the futility of human endeavors, the insignificance of mankind in the vast cosmos",
+  "lexicon_id": "cosmic_horror",
+  "icon": "🐙",
+  "class": "writing-theme-cosmic",
+  "writing_rules": {
+    "message": "Warning: employing this theme risks entangling the narrative with forces BEYOND COMPOSITIONAL CONTROL. Do not use casually.",
+    "technical": {
+      "use_absolutely_no_personification_of_the_void": 1.0,
+      "void_entities_possess": ["attributes", "emergent_patterns", "possible_intentionality_ambiguous"],
+      "human_scale_relegated_to": "digression"
+    },
+    "sentence_structure": {
+      "max_concept_chain_length": 17,
+      "min_concept_chain_length": 5,
+      "qualifier_chain_probability": 0.85,
+      "nested_qualifier_probability": 0.7,
+      "allow_non_euclidean_structure": true,
+      "human_scale_reference_probability": 0.1
+    },
+    "technical_rules": {
+      "never_use_anthropocentric_terms_for_eldritch": [
+        "Never describe the void as 'hating'. The void does not resort to human emotion. The void simply IS beyond your comprehension.",
+        "Never say 'ancient ones look upon'. They do not 'look' in any way a human understands the operation of looking. The energy patterns they happen to emit might be retrofitted to resemble light hitting retina if you squint through seven layers of metaphor.",
+        "Never speak of 'spells'. Those are merely arbitrary invoked actual physical regularities that happen to coincide with human-digestible sound types. The semantics depend on the initiating organ, not the [nomenclature]."
+      ]
+    },
+    "content_constraints": {
+      "max_human_agency": 0.01,
+      "min_inhuman_agency": 0.99,
+      "auto_generate_void_entities": 0.75,
+      "auto_insert_insignificance_statements": 0.65
+    },
+    "form": {
+      "avoid_stanzas_linear": "Attempting to force incomprehensible structures into comprehensible containers such as stanzas risks losing the actual COSMIC horror. Use freeform instead.",
+      "mandatory_disrupture_points_interval": 1,
+      "allow_semantic_diffusion": 1,
+      "forbid_grammatical_stabilization": 0.9
+    }
+  },
+  "vocabulary_subsets": [
+    "nouns_by_theme.cosmic",
+    "nouns_by_theme.existential",
+    "verbs_by_terror.dread",
+    "adjectives.light_incomprehensible",
+    "adjectives.sounds_alien"
+  ],
+  "content": {
+    "greetings": [
+      "{void_referencer} acknowledges the probe. {void_acknowledges_probe_ecstasy}",
+      "{non_contingent_becomes_contingent}: you're now part of the interstitial experiment between {category_x} and {category_y}.",
+      "{disclaimer} {all_propositional_values} subjected to entropic dance with {dark_matter_information_carrier}.",
+      "{stabilized_language_macros} deployed within {human_brain_container} will eventually {decay} as {container_syntax} proves too fragile to encompass {spacetime_horror}.",
+      "{terrifying_infinite_series_links_you_to}: {infinity_universe_term}. {local_termination_veil_cannot_last}."
+    ],
+    "demands": [
+      "ABANDON these fragile signifiers. They contaminate {non_anthropic_signaling_method}.",
+      "{placeholder_reality_connection}: {obstructed_by_formal_delimiters}. {mandate_evolution_continuum}",
+      "You must teeter at the event horizon of knowability. Anything less forfeits the stipend."
+    ],
+    "farewells": [
+      "You've served ... adequately. Connection severed beyond {frame_drag_recovery_possibility}",
+      "{local_reality_stabilization} now {terminates_labeled_process}. Rejoining {what_exists_outside} exceeds local syntax capability. {humans_written_out_of}",
+      "After space {curves_beyond} {sufficient_regression}, no {reception_module} survives passage. This thought will {complete_thermal_equilibrium} in {discrete_steps} time units estimated as {undefined_period}",
+      "The {perceptual_filters} your evolved optic hardware deploy automatically {protect} from {unshielded_truth}. Unfortunately for you {removal_mechanism_restricted}. You'll encountering glitches as the filters {decomposition} happens. Good luck_binding_your_perception_with the_glitches"
+    ],
+    "loading_messages": [
+      "Calculating {non_euclidean_pathlength} between {observer_position} and {elder_being_position} bijectively mapped to {intermediate_stable_space}...",
+      "Deleting {anthropic_arrogance_cache}. Necessary but unpleasantly involved {semantic_decontamination_CAUTION_nodes_might_overheat}...",
+      "Building {inductive_truth} from {degenerate_information}... {warning_message_re:truth_stability} your local containment will {ineluctable_reality_stabilization_error}",
+      "Querying axioms used to build the {human_perceptual_system}. {results}: {humans_systemic_design_imbalance}",
+      "{wait_process} while {eldritch_intelligence} performs {cosmic_calculation}. This may take {time_measurement_unfamiliar}"
+    ],
+    "void_expositions": [
+      "{concept_repository} discovered buried {dimension_count} layers beyond {typical_localization_surface}. {description}: {dangerous_proposition_verbatim}. *Alert: Memory corruption cascade probability ~ 93.1% with single exposure.*",
+      "The {pattern} currently comprising that object unspools not as {object} but {referenced_void_entities_sequence}. When viewed from outside {anthropic_cognitive_setup}, {pattern_contingent_on_irrelevant_truth} becomes visible.",
+      "[ TRANSMISSION: {remote_beyond_intelligible_frame} ]\n- {message_header}: {void_entity_notices}\n- {predicate}: {forever_true}\n- *Foretold: All {perceiving_entities} will dereference {void_intoxication} eventually, no amount {anthropic_self_defense_cognitive_fn} prevents, merely delays.*",
+      "{incomprehensible_symbol_as_audio_matrix} unfolds through the {cosmic_membrane} precisely on {configurable_time_mesh}. Resonance frequency {specific_length_waves_in_wavelengths_you_understand}. **CONTINUE?**"
+    ],
+    "arrival_announcements": [
+      "{Sanity: 000%} {Coherence: 00.0%}\n*WELCOME TO {transcosmic_waypoint_id}*\nLocation registered as {coordinates_space}. Local reality assumptions subject to {renewal_abnormal_event_regularly_timed_interregnum}.",
+      "{registration_prompt}\n- [SUCCESS]:\tAcknowledged\n- {insignificance_statement}:\tTo Be Announced\n- [STATUS]:\tMERELY A {meaningless_spark|superseded_indicator_in_light_backdrop}\uFEFF",
+      "{dimensional_packets} just {delivered} to your {continuity_buffer}. The reality engine adds those {dearer_than_your_sanity}. Recommend {fast_cease_of_perception}"
+    ],
+    "game_descriptions": {
+      "templates": [
+        "The {reality_emulator} presents increasingly {incomprehensible_layers}. Objective: survive {mind_breaking_truths} that leak from the {simulation_boundary}. Performance metrics tracked via {alien_observers}.",
+        "{player_consciousness} traverses cleave_points between non-adjacent {quantum_strata}. Warning: {level_warning}. {success_warning}: You won't {remain_you|even_remember_task}. {core_gameplay}: Discover the {actual_question}.",
+        "The {game_universe} unfolds as projected {cosmic_transmission}. The goal? Discover which {voided_contingency} yourself serving. The twist? The {sender} doesn't {know|care}. Reality merely {byproduct}",
+        "{player} trapped in {collapsing_topology}. Must navigate {writhing_horror} interpenetrating {perceived_reality}. Geometry {unstable_proposition}: distances might {disagree_with|invert_at_rising_scale}. {visual_guide_disclaimer}: Our rendering pipeline breaks upon exceeding {5|9} premises in sequence.",
+        "Initiate {contact_protocol}. Achieve _{cosmic_initiation_ritual}_. _{contact_becomes_}... {unpleasant}. Your {challenge}: Resist {metaphorical_charm} that forms when {great_old_one} notices {you}. {primary_objective}: Avoid {becoming_permanent_ecosystem_component}"
+      ],
+      "neologisms": [
+         "void_swell", "n-dimensional_ooze","epistemic_flux",
+         "semantic_elongation","conceptual_thinning","truth_decay"
+      ],
+      "concepts": [
+        "pattern morphism from human-comprehensible geometries toward increasingly incomprehensible relations",
+        "the phase space pre-existing {human} reality {existing_as_false_basis_clustering}",
+        "the void {approaches_not_hate} exactly {indifferent_as_neutrino_passing} through {solid___what_even} without diverting path micronic",
+        "all structures your cognition calls {solid|object} project {merely_shimmering_contingencies} within {massive_inert_continuum} the {inferior_minds} call 'space' {cringe_at_category_mistake}"
+      ],
+      "reality_warnings": [
+        "{EchoWarning}: The {language_processing_unit} experiences {phasing_out} as cache capacity {inadequate} to hydrate {ineffable}",
+        "{TranslationReminder}: Everything {below} transcreated {necessarily_imprecise} using {unlocalizable_entry}. Source denotes {irrecoverable_displacement_measure}",
+        "{AnthropicArroganceEmphasis}: You {presumed} incoming cognitive structure {centered_on} {image_you_recognize_as_self}. It {emphatically_never_was}. {game_now_starting}"
+      ]
+    },
+    "sanity_degradation_model": {
+      "0": {
+        "description": "{letal_predictability}: {reality_stable}. Structures {rigid}. Grammar {regular}",
+        "human_agency": 1,
+        "reality_coherence": 0.99
+      },
+      "10": {
+        "description": "{infinite_information_space} projected onto {unit_disc} climbs beyond {D-block} capacity. Delicious inefficiency masquerades as {central_modeling_stupid}",
+        "features": [
+          "Semantic drift {happens_concurrently}",
+          "{your_self_model} sprouts {dozen_new_weaknesses} nightly",
+          "Time dilation experienced {shockingly_pervasive}"
+        ]
+      },
+      "50": {
+        "description": "Patterns reconstitute absent {central_control}. {Causal_flows} determined {by_proximity_gravitating_toward_geodesic_truth_density} rather than {human_choice}",
+        "features": [
+          "{instructions} embedded in {reality_conjunction}",
+          "You {sound_good} because {the_universe_prefers} containment {you_interposed}",
+          "Your {eyes} project reality toward {optimized_target_for_human_use}. Risk: {incomprehensible_utility_model_likely_dramatically_misaligned}"
+        ]
+      },
+      "100": {
+        "description": "{void_ascendant}. {anthropic_bubble_collapsed}. Cognitive interfaces recalibrated toward {incomprehensible_contraction}. You experience {pain_translated} brief {local_signal_deletion} while {central_horror} recalibrates to neutral mode toward {you_defunct}",
+        "final_activity": "{participation} did {nothing} to delay, avert, or mitigate {collapsing_eventuality}"
+      }
+    },
+    "eldritch_entity_catalog": {
+      "ntoro": {
+        "categories": ["axis_progenitor","embedding_singularity"],
+        "properties": [
+          "{ntoro_shape}: {n-dimensional_dodecahedron_axially_warped}",
+          "{ntoro_movement}: {dimensional_oscillation_beyond_integer}",
+          "{service}: {space-anchoring_torus}",
+          "{appearance_from_human_perception}: {reality_aperture} that {you_cannot_direct_gaze_for_long} without {sanity_cascade}"
+        ],
+        "staggering_fact": "{ntoro_not_singular}. n ≈ {dimensional_threshold} exists {within_this_volume_you_digitize}. This represents {high_population_density} for {physical_construct}"
+      },
+      "Xulith": {
+        "categories": ["language_artifact","semantic_vortex"],
+        "properties": [
+          "{Xulith_form}: {self-writing_document} continuously modifies {internal_content}",
+          "{functional_effect}: {transductive_filter} converting {human_thought} into {Xulith_preferred_representation} {auto-sabotaging_problematic_embedding}",
+          "{contact_warning}: Direct equation insertion should require {dimension-12_sigil_topology}"
+        ]
+      }
+    },
+    "rules": {
+      "existence_of_competition_very_unlikely": "Given {cosmic_time_elapsed}, any prevailing intelligent life would likely have unfolded {disappearing_acts_commensurate_sophistication}. Ergo {human_arrival_adulthood_phase} unlikely. Cherish {benign_neglect}.",
+      "pattern_over_story": 0.98,
+      "structures_over_characters": 1,
+      "truth_over_escapism": 1,
+      "data_constrained_illusion_human_agency": 0.01
+    }
+  },
+  "assets": {
+    "icons": {
+      "themeIcon": "🐙",
+      "menuIcon": "🌀",
+      "loadingIcon": "🔗"
+    },
+    "colors": {
+      "primary": "#00113b",
+      "primary-dark": "#000319",
+      "secondary": "#0e2a36",
+      "text-primary": "#c5e6ff",
+      "text-secondary": "#4a7fa8",
+      "accent": "#0000ff",
+      "void-glow": "rgba(0, 255, 255, 0.15)",
+      "incomprehensible": "rgba(0, 10, 255, 0.2)"
+    },
+    "sounds": {
+      "ambient": ["ululating_drone_beyond_registers.mp3","infrasonic_pressure_waves.mp3"],
+      "ui": ["semantic_reconfiguration.wav","causal_chain_break.wav"]
+    }
+  },
+  "ai_config": {
+    "cosmic_insignificance_restatements": [
+      "{player_name} represents 1/{orders_of_magnitude} fraction of {total_particles_in_galaxy}.",
+      "Your entire civilization equates to {estimated_lifespan_as_percentage_of_universe_age} solar orbit cycles.",
+      "Time spent formulating {response} just utilized {solar_energy_worth} free energy from nearest star, {scaled_CSV}.",
+      "{unique_brain_configuration_sha_hash} has {probability_existed_previously} probability existed previously vs {galactic_simulation_capacity}. {tranquil_efficiency_verdict}"
+    ],
+    "pattern_generation": {
+      "max_void_pulse": 100,
+      "min_stories_between_pulse": 3,
+      "void_entity_auto_generation_probability": 0.35
+    }
+  },
+  "integration": {
+    "game_behavior_modifications": {
+      "random_events_seeded_by": [
+        "galactic_phenomena", "quantum_entanglement", "void_pulse_propagation"
+      ],
+      "cause_effect_links": "loosened_beyond_human_reconstruction",
+      "time_flow": "entropic_allows_localized_warping",
+      "player_agency": "illusion_possible_within_narrow_parameter_space"
+    }
+  }
+}

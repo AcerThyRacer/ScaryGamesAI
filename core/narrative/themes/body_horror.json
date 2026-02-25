@@ -1,0 +1,150 @@
+{
+  "id": "body_horror",
+  "name": "Body Horror Theme",
+  "description": "Physical transformation, mutation, disease, the violation of the human form - where the body becomes the source of terror.",
+  "lexicon_id": "body_horror",
+  "icon": "🧬",
+  "class": "writing-theme-body-horror",
+  "writing_rules": {
+    "message": "WARNING: This theme contains graphic descriptions of bodily transformation, mutation, and medical horror. Exposure may cause physical discomfort or visceral reactions.",
+    "technical": {
+      "use_medical_terminology": 0.7,
+      "use_graphic_imagery": 0.85,
+      "avoid_euphemisms": 0.9,
+      "describe_physical_processes": 0.8
+    },
+    "sentence_structure": {
+      "complexity_normal": 0.5,
+      "fragment_probability": 0.6,
+      "ellipsis_probability": 0.4,
+      "use_technical_terms": 0.7,
+      "use_sensory_details": 0.8
+    },
+    "content_constraints": {
+      "max_euphemisms": 0.1,
+      "min_graphic_detail": 0.7,
+      "allow_body_horror_transformations": 0.95,
+      "allow_medical_procedures": 0.8
+    }
+  },
+  "vocabulary_subsets": [
+    "nouns_by_theme.body_horror",
+    "nouns_by_theme.medical",
+    "verbs_by_terror.transformation",
+    "adjectives.flesh",
+    "adjectives.pain"
+  ],
+  "content": {
+    "greetings": [
+      "The {body_part} {verb} uncomfortably as {character} shifts position, the {sensation} more {intense} than it should be.",
+      "A {sound} comes from {character}'s {body_part}, the {medical_term} suggesting {condition}.",
+      "The {medical_device} beeps urgently, its {display} showing {vital_signs} that defy {normal_range}."
+    ],
+    "demands": [
+      "The {procedure} must be completed immediately. The {condition} will {spread} if we don't {action}.",
+      "We have to {amputate|remove} the {body_part} before the {infection} reaches the {vital_organ}.",
+      "The {transformation} is irreversible. We can only {manage} the symptoms now."
+    ],
+    "farewells": [
+      "The {body_part} {verb} one last time before {process} takes over completely.",
+      "As the {transformation} completes, {character}'s {consciousness} fades into {new_state}.",
+      "The last thing {character} sees is their {body_part} {horrifying_transformation} into something {unnatural}."
+    ],
+    "loading_messages": [
+      "Analyzing {bodily_fluid} sample... {abnormal_result} detected.",
+      "Monitoring {vital_signs}... {disturbing_trend} observed.",
+      "Scanning {body_part}... {anomaly} found in {tissue_type}.",
+      "Processing {medical_imagery}... {abnormality} confirmed."
+    ],
+    "narrative_fragments": [
+      "The {body_part} {verb} as {substance} oozes from the {wound}, the {texture} unlike anything {character} has ever seen.",
+      "{character} watches in horror as their {body_part} begins to {transformation}, the {sound} like {comparison}.",
+      "Something is {process} beneath the skin, {movement_description} that makes {character}'s stomach churn.",
+      "The {bodily_fluid} isn't {normal_state} anymore. It's {horrifying_state}, pulsing with {unnatural_quality}."
+    ],
+    "location_descriptions": {
+      "generic_location": [
+        "The {location} reeks of {bodily_fluid} and {antiseptic}, the air thick with the {scent} of {rotting_flesh}.",
+        "Something {wet|viscous} coats the {surface}, glistening under the {light} like {substance}.",
+        "The {walls|floor} are {stained} with {bodily_substance}, the {pattern} suggesting {violent_event}."
+      ],
+      "laboratory": [
+        "The {operating_table} is still {stained} with {bodily_fluid}, the {surgical_instrument} left embedded in {body_part}.",
+        "A {specimen} floats in the {containment_tank}, its {form} {distorted} by the {experiment}.",
+        "The {monitor} displays {vital_signs}, the {readings} fluctuating wildly as if the {subject} is still {alive}."
+      ],
+      "hospital": [
+        "The {hallway} stretches endlessly, the {doors} leading to {rooms} filled with {horrors}.",
+        "A {sound} echoes through the {location}, the {wet_cough} of something that shouldn't be {alive}.",
+        "The {equipment} {beeps} erratically, its {display} showing {error_code} that defies {medical_knowledge}."
+      ]
+    },
+    "character_dialog": {
+      "pain": [
+        "{exclamation} My {body_part}! It's {verb} apart!",
+        "I can feel it {process} inside me. {desperate_plea}",
+        "{guttural_sound} The {pain_location}... it's {adjective}!",
+        "It's in my {body_part}! {action} it out!"
+      ],
+      "fear": [
+        "What's happening to my {body_part}?! {observation}",
+        "It's {verb} me from the inside! {desperate_action}",
+        "I can see it {process} under my skin! {reaction}",
+        "My {body_part} feels {adjective}! Like it's not mine anymore!"
+      ],
+      "realization": [
+        "Oh God... it's using my {body_part} as a {purpose}.",
+        "I think I understand now. {terrible_truth} is what's causing this.",
+        "The {substance}... it's not {innocuous_thing}. It's {horrifying_truth}.",
+        "My {body_part} isn't {normal_state} anymore. It's {horrifying_state}."
+      ],
+      "denial": [
+        "This can't be happening. My {body_part} can't be {state}.",
+        "There has to be an explanation. {attempted_explanation}.",
+        "No, no, no! {repetition} This isn't real!",
+        "I'm not {condition}. The {test} must be wrong."
+      ]
+    },
+    "game_descriptions": {
+      "templates": [
+        "Survive in {location} where {pathogen} transforms victims into {horrifying_result}. {mechanic} forces you to make impossible choices about your own body.",
+        "Escape from {facility} as your {body_part} begins to {horrifying_transformation}. {gameplay_feature} makes this a race against your own flesh.",
+        "Investigate {outbreak} in {location} where {phenomenon} causes {bodily_horror}. {twist} reveals the true source of the infection.",
+        "Perform {medical_procedure} on {patients} while fighting off {threat}. {unique_mechanic} forces you to confront the ethics of survival.",
+        "Uncover the secrets of {experiment} where test subjects {horrifying_outcome}. {revelation} will make you question what it means to be human."
+      ],
+      "body_horror_examples": [
+        "skin that sloughs off like wet paper, revealing something beneath that shouldn't be seen",
+        "bones that reshape themselves into impossible geometries, creating new appendages",
+        "organs that develop independent consciousness and try to escape the body",
+        "limbs that elongate and split into new, functional segments",
+        "eyes that melt and reform with new, alien pupils that see different spectra",
+        "muscle tissue that liquefies and reforms into new, unnatural structures",
+        "nervous system that rewires itself, creating new senses that overload the brain"
+      ]
+    }
+  },
+  "assets": {
+    "icons": {
+      "themeIcon": "🧬",
+      "menuIcon": "💉",
+      "loadingIcon": "🩺"
+    },
+    "colors": {
+      "primary": "#3a1a1a",
+      "primary-dark": "#2a0a0a",
+      "secondary": "#5a2a2a",
+      "text-primary": "#ffd1dc",
+      "text-secondary": "#d4a5a5",
+      "accent": "#cc1111",
+      "flesh": "rgba(255, 204, 188, 0.4)",
+      "blood": "rgba(139, 0, 0, 0.6)",
+      "bone": "rgba(245, 245, 220, 0.5)",
+      "viscera": "rgba(139, 69, 19, 0.6)"
+    },
+    "sounds": {
+      "ambient": ["wet_squishing.mp3", "bone_cracking.mp3", "flesh_tearing.mp3"],
+      "ui": ["squelch.wav", "scream_short.wav", "medical_alarm.wav"]
+    }
+  }
+}

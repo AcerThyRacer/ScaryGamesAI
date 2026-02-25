@@ -1,0 +1,254 @@
+{
+  "id": "fantasy",
+  "name": "Fantasy Horror Theme",
+  "description": "Dark fantasy, cursed magic, ancient curses, forbidden knowledge, eldritch beings in medieval settings, the cost of power, the corruption of magic",
+  "lexicon_id": "fantasy",
+  "icon": "🏰",
+  "class": "writing-theme-fantasy",
+  "writing_rules": {
+    "message": "WARNING: This theme explores the dark side of fantasy. Magic has a price, knowledge is dangerous, and power corrupts absolutely.",
+    "technical": {
+      "use_archaic_terminology": 0.85,
+      "avoid_modern_references": 0.95,
+      "magic_corruption_probability": 0.8,
+      "ancient_evil_presence": 0.75,
+      "moral_ambiguity": 0.9
+    },
+    "sentence_structure": {
+      "complexity_normal": 0.6,
+      "complexity_disturbed": 0.75,
+      "complexity_paranoid": 0.85,
+      "fragment_probability": 0.4,
+      "ellipsis_probability": 0.5,
+      "repetition_probability": 0.3,
+      "archaic_phrasing_probability": 0.7,
+      "ritualistic_structure_probability": 0.6
+    },
+    "technical_rules": {
+      "never_cheapen_magic": [
+        "Never make magic look easy or without consequence. Every spell should have a cost.",
+        "Never explain magic completely. Some mysteries should remain.",
+        "Never make ancient evils defeatable by simple means. They should require sacrifice."
+      ],
+      "magic_system": {
+        "cost_priority": 0.95,
+        "corruption_probability": 0.8,
+        "forbidden_knowledge": 0.85,
+        "ritual_complexity": 0.9
+      }
+    },
+    "content_constraints": {
+      "min_magic_detail": 0.85,
+      "min_ancient_evil_presence": 0.75,
+      "max_easy_solutions": 0.1,
+      "min_moral_ambiguity": 0.8,
+      "fantasy_auto_generation": 0.7
+    },
+    "form": {
+      "allow_archaic_phrasing": 0.9,
+      "mandatory_magic_costs": 0.95,
+      "allow_ritual_structures": 0.8,
+      "forbid_modern_conveniences": 0.98
+    }
+  },
+  "vocabulary_subsets": [
+    "nouns_by_theme.fantasy",
+    "nouns_by_theme.occult",
+    "verbs_by_terror.arcane",
+    "verbs_by_terror.corruption",
+    "adjectives.fantasy",
+    "adjectives.ancient",
+    "adjectives.cursed",
+    "nouns.rituals"
+  ],
+  "content": {
+    "greetings": [
+      "The {ancient_evil} stirs in its {resting_place}. The {ritual} must be completed.",
+      "{magic_artifact} calls to you. Its {power} comes with {price}.",
+      "The {kingdom} stands on the brink. {dark_force} gathers beyond the {barrier}.",
+      "They said the {spell} was safe. They lied.",
+      "The {bloodline} carries the curse. You are the last."
+    ],
+    "greetings_internal_monologue": [
+      "{self_question}: Why does the {magic} {burn|ache|whisper} when I {action}?",
+      "{uncertainty}: The {ritual} feels {wrong_adjective}. {self_correction} No, the {ritual} IS {wrong_adjective}.",
+      "{introjection}: {arcane_command}. {resistance} {futile_gesture}.",
+      "{self_observation}: My {body_part} {shows_signs|appears_normal}. {doubt} {self_reassurance}."
+    ],
+    "farewells": [
+      "The {spell} is cast. The {consequence} begins.",
+      "Take the {artifact}. Use it wisely. Or don't. It doesn't care.",
+      "The {barrier} weakens. They will come through soon.",
+      "Your {soul|body|mind} is the price. Was it worth it?",
+      "The {ancient_ones} remember your name now."
+    ],
+    "loading_messages": [
+      "Consulting the {tome} of {forbidden_knowledge}...",
+      "Preparing the {ritual} components...",
+      "Calculating {magic_cost}...",
+      "Summoning {arcane_entity}...",
+      "Translating {ancient_language}..."
+    ],
+    "magic_reports": [
+      "[SPELL LOG {timestamp}]\nCaster: {name}\nSpell: {type}\nComponents: {ingredients}\nCost: {price}\nOutcome: {result}\nNotes: {observation}",
+      "[RITUAL REPORT]\nPurpose: {goal}\nParticipants: {count}\nSacrifices: {offerings}\nSuccess: {percentage}\nUnintended Effects: {consequences}",
+      "[CURSE ASSESSMENT]\nTarget: {victim}\nSource: {origin}\nSymptoms: {effects}\nProgression: {timeline}\nCountermeasures: {attempts}",
+      "[ARTIFACT DESCRIPTION]\nName: {title}\nOrigin: {source}\nPowers: {abilities}\nCurses: {drawbacks}\nCurrent Owner: {possessor}"
+    ],
+    "game_descriptions": {
+      "templates": [
+        "A {adjective} adventure where {magic_system} corrupts all who use it. {player_action} triggers {consequence}.",
+        "The {ancient_evil} stirs. {ritual} must be performed to {goal}. The cost? {price}.",
+        "Wield {forbidden_artifact} with {power}. But {corruption_mechanic} grows with each use.",
+        "A {subgenre} game where {magic} rewrites reality. {player_choice} determines the {outcome}.",
+        "Navigate {cursed_kingdom} where {ancient_law} still holds power. {survival_mechanic} is your only hope."
+      ],
+      "adjectives": [
+        "dark", "cursed", "eldritch",
+        "forbidden", "arcane", "ancient"
+      ],
+      "magic_systems": [
+        "a blood magic that requires increasingly personal sacrifices",
+        "a runic system where each symbol has a hidden cost",
+        "a spellweaving tradition that unravels the caster's mind",
+        "a divine magic that corrupts the faithful",
+        "a necromantic art that animates the dead at the cost of the living"
+      ],
+      "ancient_evils": [
+        "a slumbering god beneath the mountain",
+        "a cursed bloodline that spreads like a plague",
+        "a sentient forest that hungers for souls",
+        "a forgotten deity sealed in a magical artifact",
+        "a race of beings that exist between dimensions"
+      ],
+      "corruption_mechanics": [
+        "your body gradually transforms into something inhuman",
+        "your magic becomes more powerful but less controllable",
+        "your memories fade as your knowledge grows",
+        "your morality erodes with each spell cast",
+        "your reflection begins to move independently"
+      ],
+      "artifacts": [
+        "weapons that whisper secrets to their wielders",
+        "armor that remembers the sins of its previous owners",
+        "jewelry that grants wishes at a terrible cost",
+        "books that rewrite themselves based on the reader",
+        "mirrors that show possible futures"
+      ]
+    },
+    "rules": {
+      "thematic_constraints": {
+        "never_make_magic_free": 0.99,
+        "always_show_consequences": 0.98,
+        "emphasize_moral_ambiguity": 0.95,
+        "avoid_black_and_white_morality": 0.97,
+        "show_the_cost_of_power": 0.99
+      },
+      "example_techniques": {
+        "magic_costs": [
+          "Describe the {physical_cost} of casting {spell}.",
+          "Show how {character} {sacrifices} {valuable_thing} for {power}.",
+          "Create {situation} where {magic} has {unintended_consequence}.",
+          "Note how {artifact} {corrupts} its {user} over time."
+        ],
+        "ancient_evil": [
+          "Describe the {signs} of {ancient_evil}'s return.",
+          "Show how {character} is {tempted} by {forbidden_knowledge}.",
+          "Create {situation} where {ritual} has {hidden_purpose}.",
+          "Note how {ancient_law} {affects} modern {society}."
+        ],
+        "moral_ambiguity": [
+          "Show {character} {making} a {seemingly_good_choice} with {bad_consequence}.",
+          "Create {situation} where {moral_dilemma} has no good outcome.",
+          "Describe how {power} {corrupts} even the {purest_intentions}.",
+          "Show the {gray_area} between {good} and {evil} in {fantasy_context}."
+        ]
+      }
+    },
+    "world_unfolding": {
+      "cursed_locations": {
+        "ancient_temple": {
+          "central_paradox": "The temple was built to contain the evil, but the containment ritual requires the evil to be active. The temple feeds what it was meant to starve.",
+          "untrustworthy_elements": [
+            "murals that change when unobserved",
+            "statues that move when no one is looking",
+            "altars that require fresh blood to remain dormant",
+            "prayers that are answered by the wrong entities",
+            "treasures that vanish when removed from the temple"
+          ]
+        },
+        "cursed_castle": {
+          "central_paradox": "The castle was built with magic to protect its inhabitants, but the magic has developed a mind of its own. It protects the castle, not the people inside.",
+          "untrustworthy_elements": [
+            "doors that lead to different rooms based on the time of day",
+            "windows that show different views depending on who looks through them",
+            "servants who age rapidly while the nobility remains young",
+            "food that tastes delicious but provides no nourishment",
+            "mirrors that show reflections from other timelines"
+          ]
+        }
+      },
+      "revelation_patterns": [
+        "The {spell} isn't {intended_effect} - it's {actual_effect}. The {implication} is {consequence}.",
+        "{Artifact} doesn't {function_as_expected} - it {actual_function}. This suggests {hidden_purpose}.",
+        "The {ritual} wasn't created by {apparent_creator} - it was created by {actual_creator}. The {evidence} was {misinterpreted_as} {incorrect_interpretation}.",
+        "{Character} isn't {mortal} - they're {ancient_being}. But {evidence_of_mortality} complicates this."
+      ]
+    }
+  },
+  "assets": {
+    "icons": {
+      "themeIcon": "🏰",
+      "menuIcon": "⚔️",
+      "loadingIcon": "📜"
+    },
+    "colors": {
+      "primary": "#2a1e18",
+      "primary-dark": "#1a0f0a",
+      "secondary": "#4a382e",
+      "text-primary": "#e8d8c0",
+      "text-secondary": "#b8a999",
+      "accent": "#8b4513",
+      "magic": "rgba(139, 69, 19, 0.3)",
+      "cursed": "rgba(75, 0, 130, 0.2)"
+    },
+    "sounds": {
+      "ambient": ["distant_chanting.mp3", "howling_wind.mp3", "crackling_fire.mp3"],
+      "ui": ["spell_cast.wav", "sword_unsheath.wav", "ancient_gong.wav"]
+    }
+  },
+  "ai_config": {
+    "magic_corruption": {
+      "min_corruption_level": 3,
+      "max_corruption_level": 9,
+      "corruption_types": [
+        "physical", "mental", "spiritual",
+        "moral", "temporal", "dimensional"
+      ],
+      "corruption_probability": 0.75
+    },
+    "ancient_evil": {
+      "min_evil_level": 4,
+      "max_evil_level": 8,
+      "evil_types": [
+        "eldritch", "cursed", "corrupted",
+        "forgotten", "slumbering", "awakening"
+      ],
+      "evil_probability": 0.7
+    }
+  },
+  "integration": {
+    "game_behavior_modifications": {
+      "magic_system": "cost_based",
+      "moral_system": "ambiguity_based",
+      "ancient_evil": "gradual_awakening",
+      "artifact_system": "corruption_based",
+      "player_progression": "sacrifice_based"
+    },
+    "narrative_triggers": [
+      "magic_use", "ritual_performance",
+      "ancient_evil_awakening", "artifact_discovery",
+      "moral_dilemma"
+    ]
+  }
+}

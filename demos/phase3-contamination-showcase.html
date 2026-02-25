@@ -1,0 +1,1418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCAARY GAMES AI - PHASE 3 HORIZON γ DEMONSTRATION</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/game-responsive.css">
+    <script src="https://unpkg.com/three@0.132.2/build/three.min.js"></script>
+    <script src="https://unpkg.com/three@0.132.2/examples/js/controls/OrbitControls.js"></script>
+    <style>
+        :root {
+            --anxiety-color: #ff1e00;
+            --contamination-color: #cc1122;
+            --fear-gradient: linear-gradient(90deg, rgba(204,17,34,0.7) 0%, rgba(131,58,180,0.7) 100%);
+            --volume-dimensions: 64;
+        }
+
+        body {
+            background-color: #000;
+            color: #fff;
+            font-family: 'Courier New', monospace;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+        }
+
+        #container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            display: grid;
+            grid-template-columns: 40px 1fr 250px;
+            grid-template-rows: 60px 1fr 100px;
+            gap: 0;
+        }
+
+        #header {
+            grid-column: 2 / 4;
+            grid-row: 1;
+            border-bottom: 1px solid var(--anxiety-color);
+            padding: 15px 20px;
+            font-size: 1.3rem;
+            letter-spacing: 1px;
+            background: rgba(0,0,0,0.7);
+            display: flex;
+            align-items: center;
+        }
+
+        #visualization {
+            grid-column: 2;
+            grid-row: 2;
+            background: #000;
+            position: relative;
+        }
+
+        #controller-panel {
+            grid-column: 3;
+            grid-row: 2;
+            background: rgba(18,18,18,0.9);
+            border-left: 1px solid var(--anxiety-color);
+            padding: 20px;
+            overflow-y: scroll;
+        }
+
+        #system-status {
+            grid-column: 2 / 4;
+            grid-row: 3;
+            background: rgba(10,10,10,0.85);
+            border-top: 1px solid rgba(204,17,34,0.6);
+            padding: 15px;
+            font-size: 0.9rem;
+            overflow-x: auto;
+        }
+
+        .control-group {
+            margin-bottom: 30px;
+            border-bottom: 1px solid rgba(204,17,34,0.4);
+            padding-bottom: 20px;
+        }
+
+        .control-title {
+            color: var(--anxiety-color);
+            margin-bottom: 10px;
+            font-weight: bold;
+            text-transform: uppercase;
+            border-left: 3px solid var(--anxiety-color);
+            padding-left: 8px;
+        }
+
+        button {
+            background: rgba(204,17,34,0.9);
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            width: 100%;
+            margin: 5px 0;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        button:hover {
+            background: rgba(255, 30, 0, 0.9);
+            transform: scale(1.02);
+        }
+
+        button:active {
+            transform: scale(0.98);
+        }
+
+        input, select {
+            width: 100%;
+            background: rgba(20,20,20,0.8);
+            color: white;
+            border: 1px solid rgba(204,17,34,0.6);
+            padding: 6px;
+            margin: 4px 0;
+        }
+
+        .status-value {
+            color: var(--anxiety-color);
+            font-family: monospace;
+        }
+
+        .contamination-gauge {
+            width: 100%;
+            height: 12px;
+            background: rgba(20,20,20,0.9);
+            border: 1px solid rgba(204,17,34,0.6);
+            margin: 8px 0;
+        }
+
+        .gauge-fill {
+            height: 100%;
+            background: var(--fear-gradient);
+            width: 0%;
+            transition: width 0.8s cubic-bezier(0.75, 0, 0.25, 1);
+        }
+
+        .event-log {
+            background: rgba(10,10,10,0.7);
+            border: 1px solid rgba(204,17,34,0.5);
+            margin-top: 15px;
+            padding: 8px;
+            font-family: monospace;
+            font-size: 0.8rem;
+            height: 200px;
+            overflow-y: scroll;
+        }
+
+        .vector-subtype {
+            font-size: 0.8rem;
+            margin-left: 10px;
+            color: rgba(204,17,34,0.6);
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <div id="header">
+            SCAARY GAMES AI — <span style="color: var(--anxiety-color);">PHASE 3</span> HORIZON γ DEMONSTRATION
+            <span style="margin-left: 20px; opacity: 0.7;">CROSS-TITLE CONTAMINATION ARCHITECTURE LIVE</span>
+        </div>
+
+        <div id="visualization"></div>
+
+        <div id="controller-panel">
+            <div class="control-group">
+                <div class="control-title">SYSTEM CONTROLS</div>
+                <button id="initializeSystem">INITIALIZE γ ARCHITECTURE</button>
+                <button id="simulatePlayerAnxiety" disabled>INJECT PLAYER ANXIETY</button>
+                <button id="triggerContaminationPulse" disabled>ACTIVATE CONTAMINATION PULSE</button>
+                <button id="resetField">RESET 3D FIELD</button>
+            </div>
+
+            <div class="control-group">
+                <div class="control-title">ANXIETY CALIBRATION</div>
+                <input type="range" id="anxietyLevel" min="0" max="10" step="0.1" value="4.5">
+                <div style="display: flex; justify-content: space-between;">
+                    <span style="font-size: 0.8rem; opacity: 0.8;">Anxiety Level</span>
+                    <span class="status-value" id="anxietyValue">4.5</span>
+                </div>
+                <div class="contamination-gauge">
+                    <div class="gauge-fill" id="anxietyGauge"></div>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <div class="control-title">CONTAMINATION VECTORS</div>
+                <select id="vectorSelect">
+                    <option value="theme">[ THEME BOUNDARY ] SEMANTIC SEEPAGE VECTOR</option>
+                    <option value="atmosphere">[ ATMOSPHERE BLEED ] SENSORY INFILTRATION</option>
+                    <option value="entity">[ ENTITY MIGRATION ] CONSCIOUSNESS JUMP</option>
+                    <option value="anomaly">[ ANOMALY BACKWASH ] SYSTEM PROPAGATION</option>
+                    <option value="memetic">[ MEMORY RESIDUE ] MNEMEME INFESTATION</option>
+                    <option value="geo">[ GEOGRAPHIC ] CONTEXTUAL GEOMETRY INVASION</option>
+                </select>
+                <button id="triggerVector">ACTIVATE SELECTED VECTOR</button>
+            </div>
+
+            <div class="control-group">
+                <div class="control-title">CONTAMINATION DEMOGRAPHICS</div>
+                <div>
+                    <div style="display: flex; justify-content: space-between;">
+                        <span>Field Saturation Level:</span>
+                        <span class="status-value" id="saturationLevel">0.0%</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-top: 3px;">
+                        <span>Vector Saturation:</span>
+                        <span class="status-value" id="vectorSaturation">0.0</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-top: 3px;">
+                        <span>Propagation Velocity:</span>
+                        <span class="status-value" id="propagationVelocity">0.0</span>
+                    </div>
+                </div>
+                <div class="contamination-gauge" style="margin-top: 15px;">
+                    <div class="gauge-fill" id="fieldSaturationGauge"></div>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <div class="control-title">SYSTEM DIAGNOSTICS</div>
+                <div class="event-log" id="eventLog">
+                    SYSTEM INITIALIZING — STAND-BY FOR PHASE III ENGAGEMENT...
+                </div>
+            </div>
+        </div>
+
+        <div id="system-status">
+            STATUS: (<span id="systemState">UNINITIALIZED</span>) | FIELD INTEGRITY: <span id="fieldIntegrity">0.00</span> | PHASE COHERENCE: <span id="phaseCoherence">0.00</span> | TRANSFER QUEUES: <span id="transferQueues">0</span> | CONTAMINATION VECTORS ACTIVE: <span id="activeVectors">0</span>
+        </div>
+    </div>
+
+    <script>
+        /**
+         * PHASE III HORIZON γ DEMONSTRATION SYSTEM
+         * Live 3D visualization engine demonstrating cross-game contamination architecture
+         */
+
+        // SYSTEM INTERCONNECTION MATRIX
+        const Phase3System = {
+            fieldEngine: null,
+            nexusEngine: null,
+            mutationEngine: null,
+            eventLog: [],
+            visualization: null,
+            simulationRunning: false,
+            systemTime: 0,
+            systemChanneling: false
+        };
+
+        // VISUALIZATION ARCHITECTURE
+        let scene, camera, renderer, controls;
+        const voxelGrid = [];
+        const vectorLines = [];
+        const animationQueue = [];
+        const gatewayPoints = [];
+
+        // GAME SIMULATION ENVIRONMENTS
+        const gameSimulations = {
+            'backrooms-pacman': {
+                position: { x: 32, y: 48, z: 16 },
+                anxietyEvents: []
+            },
+            'asylum-architect': {
+                position: { x: 16, y: 32, z: 48 },
+                anxietyEvents: []
+            },
+            'the-elevator': {
+                position: { x: 48, y: 16, z: 32 },
+                anxietyEvents: []
+            },
+            'horde': {
+                position: { x: 24, y: 56, z: 8 },
+                anxietyEvents: []
+            }
+        };
+
+        /**
+         * SYSTEM INITIALIZATION
+         */
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeVisualizationEngine();
+            setupUIControls();
+            setupSystemMonitoring();
+            syncUIVisuals();
+
+            setInterval(systemHeartbeat, 80);
+        });
+
+        /**
+         * VISUALIZATION ENGINE INITIALIZATION
+         */
+        function initializeVisualizationEngine() {
+            const vizContainer = document.getElementById('visualization');
+
+            // Scene foundation
+            scene = new THREE.Scene();
+            scene.background = new THREE.Color(0x000000);
+            scene.fog = new THREE.FogExp2(0x000000, 0.05);
+
+            // Camera configuration
+            camera = new THREE.PerspectiveCamera(75, vizContainer.offsetWidth / (window.innerHeight - 160), 0.1, 1000);
+            camera.position.set(40, 40, 80);
+
+            // Renderer setup
+            renderer = new THREE.WebGLRenderer({
+                antialias: true,
+                powerPreference: "high-performance"
+            });
+            renderer.setSize(vizContainer.offsetWidth, vizContainer.offsetHeight);
+            vizContainer.appendChild(renderer.domElement);
+
+            // Controls
+            controls = new THREE.OrbitControls(camera, renderer.domElement);
+            controls.enableDamping = true;
+            controls.dampingFactor = 0.1;
+
+            // Lighting architecture
+            const ambientLight = new THREE.AmbientLight(0x440000, 0.7);
+            scene.add(ambientLight);
+
+            const pointLight = new THREE.PointLight(0x882244, 0.8, 100);
+            pointLight.position.set(40, 40, 40);
+            scene.add(pointLight);
+
+            // Initialize 3D field representation
+            initializeFieldVisualization();
+            initializeGatewayPoints();
+
+            // Start animation cycle
+            animate();
+
+            console.log('Visualization engine operational.');
+        }
+
+        /**
+         * INITIALIZE 3D FIELD VISUALIZATION
+         * 64³ volumetric anxiety matrix
+         */
+        function initializeFieldVisualization() {
+            // Create grid containment box
+            const geometry = new THREE.BoxGeometry(64, 64, 64, 64, 64, 64);
+            const edges = new THREE.EdgesGeometry(geometry);
+            const lineMaterial = new THREE.LineBasicMaterial({
+                color: 0xcc1122,
+                transparent: true,
+                opacity: 0.6
+            });
+
+            const boundaryBox = new THREE.LineSegments(edges, lineMaterial);
+            boundaryBox.position.set(32, 32, 32);
+            scene.add(boundaryBox);
+
+            // Create voxel grid for contamination representation
+            const voxelGeometry = new THREE.BoxGeometry(0.7, 0.7, 0.7);
+            const voxelMaterial = new THREE.MeshPhongMaterial({
+                color: 0xcc1122,
+                emissive: 0x550000,
+                emissiveIntensity: 0.12,
+                transparent: true,
+                opacity: 0.2
+            });
+
+            for (let x = 0; x < 64; x += 3) {
+                voxelGrid[x] = [];
+                for (let y = 0; y < 64; y += 3) {
+                    voxelGrid[x][y] = [];
+                    for (let z = 0; z < 64; z += 3) {
+                        const voxel = new THREE.Mesh(voxelGeometry, voxelMaterial.clone());
+                        voxel.position.set(x + 0.5, y + 0.5, z + 0.5);
+                        voxel.userData = { contamination: 0, originalPosition: { x, y, z } };
+                        voxelGrid[x][y][z] = voxel;
+                        scene.add(voxel);
+                    }
+                }
+            }
+
+            console.log('Field visualization: 64³ matrix established.');
+        }
+
+        /**
+         * INITIALIZE GATEWAY POINTS
+         * Connection nodes between game environments
+         */
+        function initializeGatewayPoints() {
+            Object.keys(gameSimulations).forEach(gameId => {
+                const position = gameSimulations[gameId].position;
+                const spriteMaterial = new THREE.SpriteMaterial({
+                    color: new THREE.Color(0xff1e00),
+                    transparent: true,
+                    opacity: 0.7
+                });
+
+                const sprite = new THREE.Sprite(spriteMaterial);
+                sprite.position.set(position.x + 0.5, position.y + 0.5, position.z + 0.5);
+                sprite.scale.set(4, 4, 4);
+                sprite.userData = { gameId, type: 'gateway' };
+                scene.add(sprite);
+                gatewayPoints.push(sprite);
+
+                // Create display plate
+                const canvas = document.createElement('canvas');
+                canvas.width = 256;
+                canvas.height = 64;
+                const context = canvas.getContext('2d');
+                context.fillStyle = 'rgba(0,0,0,0.8)';
+                context.fillRect(0, 0, canvas.width, canvas.height);
+                context.font = 'Bold 24px Courier New';
+                context.fillStyle = '#ff1e00';
+                context.fillText(gameId.replace('-', ' '), 8, 38);
+
+                const texture = new THREE.CanvasTexture(canvas);
+                const plateMaterial = new THREE.SpriteMaterial({ map: texture });
+                const plateSprite = new THREE.Sprite(plateMaterial);
+                plateSprite.position.set(position.x + 5, position.y - 3, position.z + 2);
+                plateSprite.scale.set(10, 3, 1);
+                scene.add(plateSprite);
+            });
+        }
+
+        /**
+         * ANIMATION LOOP
+         */
+        function animate() {
+            requestAnimationFrame(animate);
+
+            // Process animation queue
+            processAnimationQueue();
+
+            // Update controls and render
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        /**
+         * PROCESS ANIMATION QUEUE
+         * Handles scheduled visual transformations
+         */
+        function processAnimationQueue() {
+            const currentTime = Date.now();
+            while (animationQueue.length > 0 && animationQueue[0].startTime <= currentTime) {
+                const animation = animationQueue.shift();
+                animation.action(animation.deltaTime);
+
+                if (animation.recurrence) {
+                    animation.startTime = currentTime + animation.recurrence;
+                    animationQueue.push(animation);
+                    animationQueue.sort((a, b) => a.startTime - b.startTime);
+                }
+            }
+        }
+
+        /**
+         * UI CONTROL SETUP
+         */
+        function setupUIControls() {
+            document.getElementById('initializeSystem').addEventListener('click', initializeSystemArchitecture);
+            document.getElementById('simulatePlayerAnxiety').addEventListener('click', simulatePlayerAnxiety);
+            document.getElementById('triggerContaminationPulse').addEventListener('click', triggerContaminationPulse);
+            document.getElementById('resetField').addEventListener('click', resetContaminationField);
+            document.getElementById('triggerVector').addEventListener('click', triggerSelectedVector);
+            document.getElementById('anxietyLevel').addEventListener('input', updateAnxietyVisuals);
+
+            // Vector selection change
+            document.getElementById('vectorSelect').addEventListener('change', function() {
+                const selectedVector = this.options[this.selectedIndex].textContent;
+                logSystemEvent(`VECTOR READY: ${selectedVector}`, 'system-notice');
+            });
+        }
+
+        /**
+         * SYSTEM ARCHITECTURE INITIALIZATION
+         */
+        function initializeSystemArchitecture() {
+            if (Phase3System.fieldEngine) {
+                logSystemEvent("SYSTEM ARCHITECTURE ALREADY INITIALIZED — RESET REQUIRED", 'system-warning');
+                return;
+            }
+
+            // Initialize simulation components
+            Phase3System.fieldEngine = {
+                active: true,
+                contaminationGrid: create3DArray(64, 64, 64, 0),
+                contaminationGateways: Object.keys(gameSimulations).reduce((acc, gameId) => {
+                    acc[gameId] = { saturation: 0.45, lastPulse: 0 };
+                    return acc;
+                }, {})
+            };
+
+            Phase3System.nexusEngine = {
+                transferQueues: new Map(),
+                contaminationVectors: [
+                    { name: "THEME BOUNDARY", contaminationDegree: 0.88, fluxIndex: 0.83, active: true },
+                    { name: "ATMOSPHERE BLEED", contaminationDegree: 0.68, fluxIndex: 0.72, active: true },
+                    { name: "ENTITY MIGRATION", contaminationDegree: 0.58, rogueProbability: 0.12, active: true },
+                    { name: "ANOMALY BACKWASH", contaminationDegree: 0.75, fluxIndex: 0.78, active: true },
+                    { name: "MEMORY RESIDUE", contaminationDegree: 0.62, active: true }
+                ],
+                systemPulseActive: false
+            };
+
+            Phase3System.mutationEngine = {
+                globalAnomalyLevel: 0,
+                activeMutations: []
+            };
+
+            Phase3System.simulationRunning = true;
+            Phase3System.systemTime = 0;
+            enableUIControls();
+
+            logSystemEvent("PHASE 3 SYSTEM ARCHITECTURE INITIALIZED — HORIZON γ ONLINE", 'system-success');
+            logSystemEvent("* Σ > THREE-DIMENSIONAL NARRATIVE PERMEABILITY FIELD ESTABLISHED", 'system-success');
+            logSystemEvent("* Σ > CONCURRENT CONTAMINATION VECTOR SCAFFOLDING ACTIVE", 'system-success');
+            logSystemEvent("* Σ > ANXIETY PROPAGATION MEMBRANES ENGAGED", 'system-success');
+            updateSystemStatus();
+        }
+
+        /**
+         * ENABLE UI CONTROLS
+         */
+        function enableUIControls() {
+            document.getElementById('simulatePlayerAnxiety').disabled = false;
+            document.getElementById('triggerContaminationPulse').disabled = false;
+            document.getElementById('initializeSystem').disabled = true;
+            document.getElementById('systemState').textContent = "ACTIVE";
+        }
+
+        /**
+         * SIMULATE PLAYER ANXIETY INJECTION
+         */
+        function simulatePlayerAnxiety() {
+            if (!Phase3System.fieldEngine || !Phase3System.nexusEngine) {
+                logSystemEvent("ERROR: SYSTEM NOT INITIALIZED — CONTACT SUPPORT *γ41*", 'system-error');
+                return;
+            }
+
+            const anxietyLevel = parseFloat(document.getElementById('anxietyLevel').value);
+            const selectedGameKeys = Object.keys(gameSimulations);
+            const selectedGame = selectedGameKeys[Math.floor(Math.random() * selectedGameKeys.length)];
+
+            // Create simulated anxiety signature
+            const anxietySignature = createAnxietySignature(anxietyLevel);
+            gameSimulations[selectedGame].anxietyEvents.push({
+                level: anxietyLevel,
+                signature: anxietySignature,
+                timestamp: Date.now()
+            });
+
+            // Inject into 3D field architecture
+            injectAnxietyFlux(selectedGame, anxietySignature);
+
+            // Register player contamination profile
+            Phase3System.nexusEngine.transferQueues.set(`SIM:${Date.now()}`, {
+                payload: {
+                    playerId: `SIM-PLAYER-${Math.floor(Math.random() * 1000)}`,
+                    sessionId: `SESS-${Math.random().toString(36).substr(2, 6).toUpperCase()}`,
+                    anxietyGrade: anxietyLevel,
+                    narrativeMatrix: {}
+                },
+                sourceContext: { gameId: selectedGame },
+                timestamp: Date.now()
+            });
+
+            // Update visuals
+            updateAnxietyVisuals();
+            visualizeAnxietyInjection(selectedGame, anxietyLevel * 0.1);
+
+            logSystemEvent(`ANXIETY INJECTION ${anxietyLevel.toFixed(1)}/10 in ${selectedGame.replace('-', ' ')} DETECTED [η = ${anxietyLevel * 10}%]`, 'anxiety-injection');
+            updateSystemStatus();
+        }
+
+        /**
+         * TRIGGER CONTAMINATION PULSE
+         */
+        function triggerContaminationPulse() {
+            if (!Phase3System.nexusEngine) {
+                logSystemEvent("PULSE FAILED: NEXUS ENGINE INACTIVE", 'system-error');
+                return;
+            }
+
+            // Activate system pulse emitter
+            Phase3System.nexusEngine.systemPulseActive = true;
+            const pulseResult = executeContaminationPulse();
+
+            logSystemEvent(`GAMMA CONTAMINATION PULSE ACTIVATED — NEXUS LIVE`,
+                          pulseResult.success ? 'system-success' : 'system-warning');
+
+            // Visualize pulse propagation
+            visualizeContaminationPulse(pulseResult);
+
+            updateSystemStatus();
+        }
+
+        /**
+         * EXECUTE CONTAMINATION PULSE
+         */
+        function executeContaminationPulse() {
+            let transfersCompleted = 0;
+            let crossTitleTransfers = 0;
+
+            Phase3System.nexusEngine.transferQueues.forEach((transferQueue, sessionKey) => {
+                const transferInstance = transferQueue;
+                if (transferInstance) {
+                    try {
+                        const contaminationVector = selectOptimalVector(transferInstance.payload.anxietyGrade);
+                        const transferSaturation = transferInstance.payload.anxietyGrade *
+                                                  contaminationVector.contaminationDegree *
+                                                  contaminationVector.fluxIndex;
+
+                        // Update 3D field contamination
+                        propagateContaminationEffect(transferInstance.sourceContext.gameId, transferSaturation);
+                        transfersCompleted++;
+
+                        // Create contagion geometry
+                        createContaminationVectorVisual(
+                            transferInstance.sourceContext.gameId,
+                            "TARGET",
+                            transferSaturation * 0.8,
+                            contaminationVector.name.replace(' ', '_')
+                        );
+
+                        logSystemEvent(`VECTOR ${contaminationVector.name} ACTIVE — TRANSFER SATURATION: ${Math.floor(transferSaturation * 100)}%`,
+                                      `vector-${contaminationVector.name.toLowerCase().replace(' ', '-')}`);
+
+                        if (Math.random() < 0.4) {
+                            crossTitleTransfers++;
+                        }
+
+                    } catch (transferError) {
+                        logSystemEvent(`VECTOR TRANSFER FAILED: ${transferError.message}`, 'system-error');
+                    }
+                }
+            });
+
+            // Remove completed transfers
+            Phase3System.nexusEngine.transferQueues.clear();
+
+            return { success: true,
+                    operations: transfersCompleted,
+                    crossTitle: crossTitleTransfers };
+        }
+
+        /**
+         * SELECT OPTIMAL CONTAMINATION VECTOR
+         */
+        function selectOptimalVector(anxietyGrade) {
+            const activeVectors = Phase3System.nexusEngine.contaminationVectors.filter(v => v.active);
+
+            // Rank vectors by suitability
+            return activeVectors.reduce((selected, vector) =>
+                (vector.contaminationDegree * vector.fluxIndex > (selected.contaminationDegree * selected.fluxIndex)) ?
+                vector : selected
+            );
+        }
+
+        /**
+         * TRIGGER SELECTED VECTOR
+         */
+        function triggerSelectedVector() {
+            const selectedVector = document.getElementById('vectorSelect').value;
+            const vectorMapping = {
+                'theme': "THEME BOUNDARY",
+                'atmosphere': "ATMOSPHERE BLEED",
+                'entity': "ENTITY MIGRATION",
+                'anomaly': "ANOMALY BACKWASH",
+                'memetic': "MEMORY RESIDUE"
+            };
+
+            const vectorName = vectorMapping[selectedVector];
+            const vectorConfig = Phase3System.nexusEngine.contaminationVectors.find(
+                v => v.name === vectorName
+            );
+
+            if (!vectorConfig) {
+                return;
+            }
+
+            // Simulate targeted contamination
+            simulateVectorActivation(vectorConfig);
+        }
+
+        /**
+         * SIMULATE VECTOR ACTIVATION
+         */
+        function simulateVectorActivation(vectorConfig) {
+            const targetGames = Object.keys(gameSimulations);
+            const sourceGame = targetGames[Math.floor(Math.random() * targetGames.length)];
+            const targetGame = targetGames[Math.floor(Math.random() * targetGames.length)];
+
+            const transferSaturation = 0.6 + (Math.random() * 0.3);
+            propagateContaminationEffect(sourceGame, transferSaturation);
+
+            createContaminationVectorVisual(sourceGame, targetGame, transferSaturation, vectorConfig.name);
+
+            logSystemEvent(`⚠️ CONTAMINATION VECTOR [${vectorConfig.name}] ACTIVATED — SATURATION: ${Math.floor(transferSaturation * 100)}%`,
+                          `vector-${vectorConfig.name.toLowerCase().replace(' ', '-')}`);
+        }
+
+        /**
+         * RESET CONTAMINATION FIELD
+         */
+        function resetContaminationField() {
+            Phase3System.fieldEngine.contaminationGrid = create3DArray(64, 64, 64, 0);
+
+            voxelGrid.forEach((xSlice, x) => {
+                xSlice.forEach((ySlice, y) => {
+                    ySlice.forEach((voxel, z) => {
+                        voxel.material.opacity = 0.0;
+                        voxel.material.emissiveIntensity = 0.0;
+                    });
+                });
+            });
+
+            vectorLines.forEach(line => scene.remove(line));
+            vectorLines.splice(0, vectorLines.length);
+
+            logSystemEvent("γ SYSTEM RESET — FIELD CONTAINMENT RE-ENGAGED", 'system-success');
+            updateSystemStatus();
+        }
+
+        /**
+         * CREATE ANXIETY SIGNATURE — Player disturbance vector
+         */
+        function createAnxietySignature(level) {
+            return {
+                totalAnxiety: level * 1.2,
+                cognitiveDissonance: level * 0.6,
+                semanticNoiseRatio: level * 0.25,
+                anomalyDetectionThreshold: 0.35 - (level * 0.02),
+                temporalDistortionIndex: level * 0.15
+            };
+        }
+
+        /**
+         * INJECT ANXIETY FLUX INTO 3D FIELD
+         */
+        function injectAnxietyFlux(gameId, anxietySignature) {
+            const gateway = gameSimulations[gameId];
+            const center = gateway.position;
+            const radius = 3 + (Math.random() * 7) * (anxietySignature.totalAnxiety / 10);
+            const contaminationEffect = anxietySignature.semanticNoiseRatio;
+
+            visualizeFieldDistortion(center, radius, contaminationEffect);
+
+            // Update field contamination
+            for (let x = Math.max(0, center.x - radius); x < Math.min(64, center.x + radius); x++) {
+                for (let y = Math.max(0, center.y - radius); y < Math.min(64, center.y + radius); y++) {
+                    for (let z = Math.max(0, center.z - radius); z < Math.min(64, center.z + radius); z++) {
+                        const distance = Math.sqrt(
+                            Math.pow(x - center.x, 2) +
+                            Math.pow(y - center.y, 2) +
+                            Math.pow(z - center.z, 2)
+                        );
+
+                        if (distance <= radius * Math.random()) {
+                            Phase3System.fieldEngine.contaminationGrid[x][y][z] +=
+                                contaminationEffect * 0.2 * (1 - distance/radius);
+                        }
+                    }
+                }
+            }
+        }
+
+        /**
+         * PROPAGATE CONTAMINATION EFFECT
+         */
+        function propagateContaminationEffect(sourceGame, saturationDegree) {
+            if (!Phase3System.fieldEngine) return;
+
+            // Create ripple propagation visual
+            const sourcePosition = gameSimulations[sourceGame].position;
+            const rippleIntensity = saturationDegree * 0.8;
+
+            addAnimationToQueue({
+                startTime: Date.now() + 100,
+                deltaTime: rippleIntensity,
+                action: (delta) => {
+                    visualizeRipplePropagation(sourcePosition, delta);
+                }
+            });
+        }
+
+        /**
+         * CREATE CONTAMINATION VECTOR VISUALIZATION
+         */
+        function createContaminationVectorVisual(sourceGameId, targetGameId, intensity, vectorType) {
+            const position1 = gameSimulations[sourceGameId].position;
+            const position2 = gameSimulations[targetGameId].position;
+
+            const p1 = new THREE.Vector3(
+                position1.x + 0.5,
+                position1.y + 0.5,
+                position1.z + 0.5
+            );
+
+            const p2 = new THREE.Vector3(
+                position2.x + 0.5,
+                position2.y + 0.5,
+                position2.z + 0.5
+            );
+
+            const geometry = new THREE.BufferGeometry().setFromPoints([p1, p2]);
+            const intensityFactor = 0.2 + intensity * 1.6;
+
+            const material = new THREE.LineBasicMaterial({
+                color: getVectorColor(vectorType),
+                linewidth: 2 * intensityFactor,
+                transparent: true,
+                opacity: 0.4 + (0.6 * intensity)
+            });
+
+            const line = new THREE.Line(geometry, material);
+            line.userData = { vectorType, intensity };
+            scene.add(line);
+            vectorLines.push(line);
+
+            // Create glitch animation
+            addAnimationToQueue({
+                startTime: Date.now() + 300,
+                recurrence: 100,
+                action: (delta) => {
+                    line.material.opacity = 0.8 * Math.sin(Date.now() / 150 + delta) + 0.2;
+                }
+            });
+        }
+
+        /**
+         * VISUALIZE ANXIETY INJECTION
+         */
+        function visualizeAnxietyInjection(gameId, intensityScalar) {
+            const position = gameSimulations[gameId].position;
+            const duration = 1500;
+
+            // Create explosive containment
+            createExplosionVisual(
+                position.x + 0.5,
+                position.y + 0.5,
+                position.z + 0.5,
+                intensityScalar * 8,
+                intensityScalar * 24,
+                duration
+            );
+        }
+
+        /**
+         * CREATE EXPLOSION VISUAL
+         */
+        function createExplosionVisual(x, y, z, size, particleCount, duration) {
+            const particles = [];
+            const particleGeometry = new THREE.SphereGeometry(0.3, 8, 8);
+            const material = new THREE.MeshBasicMaterial({
+                color: 0xcc1122,
+                transparent: true,
+                opacity: 0.6
+            });
+
+            // Create particles
+            for (let i = 0; i < particleCount; i++) {
+                const particle = new THREE.Mesh(particleGeometry, material.clone());
+                particle.position.set(x, y, z);
+                particle.userData = {
+                    velocity: {
+                        x: (Math.random() - 0.5) * 0.4,
+                        y: (Math.random() - 0.2) * 0.3,
+                        z: (Math.random() - 0.5) * 0.4
+                    },
+                    lifespan: duration * (0.7 + Math.random() * 0.3),
+                    creationTime: Date.now()
+                };
+                scene.add(particle);
+                particles.push(particle);
+            }
+
+            // Create containment animation
+            addAnimationToQueue({
+                startTime: Date.now() + 50,
+                recurrence: 50,
+                action: () => {
+                    const currentTime = Date.now();
+                    particles.forEach((particle, index) => {
+                        const age = currentTime - particle.userData.creationTime;
+                        if (age >= particle.userData.lifespan) {
+                            scene.remove(particle);
+                        } else {
+                            particle.position.x += particle.userData.velocity.x;
+                            particle.position.y += particle.userData.velocity.y;
+                            particle.position.z += particle.userData.velocity.z;
+                            particle.material.opacity = 0.7 * (1 - age/particle.userData.lifespan);
+                        }
+                    });
+                }
+            });
+        }
+
+        /**
+         * VISUALIZE FIELD DISTORTION
+         */
+        function visualizeFieldDistortion(center, radius, effectIntensity) {
+            const particles = [];
+            const particleGeometry = new THREE.SphereGeometry(0.2, 6, 6);
+
+            for (let i = 0; i < 40; i++) {
+                const sphereMaterial = new THREE.MeshBasicMaterial({
+                    color: new THREE.Color(
+                        1.0,
+                        0.3 + (0.7 * (1 - effectIntensity)),
+                        0.3 + (0.7 * (1 - effectIntensity))
+                    ),
+                    transparent: true,
+                    opacity: 0.5 + (0.5 * effectIntensity)
+                });
+
+                const particle = new THREE.Mesh(particleGeometry, sphereMaterial);
+                particle.position.set(
+                    center.x + 0.5 + ((Math.random() * radius) - radius/2),
+                    center.y + 0.5 + ((Math.random() * radius) - radius/2),
+                    center.z + 0.5 + ((Math.random() * radius) - radius/2)
+                );
+
+                particle.userData = {
+                    phaseOffset: Math.random() * Math.PI * 2,
+                    oscillationSpeed: 0.05 + Math.random() * 0.02,
+                    oscillationRange: 0.3 + Math.random() * 0.5 * effectIntensity,
+                    dissolveTime: 1800 + (Math.random() * 1200)
+                };
+
+                scene.add(particle);
+                particles.push(particle);
+            }
+
+            // Contamination dissolution
+            setTimeout(() => {
+                particles.forEach(particle => {
+                    addAnimationToQueue({
+                        action: () => {
+                            particle.material.opacity -= 0.002;
+                            if (particle.material.opacity <= 0.01) {
+                                scene.remove(particle);
+                            }
+                        },
+                        recurrence: 50
+                    });
+                });
+            }, 1500);
+
+            // Continuous oscillation animation
+            particles.forEach(particle => {
+                addAnimationToQueue({
+                    recurrence: 60,
+                    action: () => {
+                        particle.position.y += Math.sin(
+                            Date.now() / 200 + particle.userData.phaseOffset
+                        ) * particle.userData.oscillationSpeed;
+                    }
+                });
+            });
+        }
+
+        /**
+         * VISUALIZE RIPPLE PROPAGATION
+         */
+        function visualizeRipplePropagation(source, intensity) {
+            const rippleOrigin = new THREE.Vector3(
+                source.x + 0.5,
+                source.y + 0.5,
+                source.z + 0.5
+            );
+
+            const rippleDuration = 1500;
+            const rippleStartTime = Date.now();
+
+            addAnimationToQueue({
+                startTime: Date.now(),
+                recurrence: 60,
+                action: () => {
+                    const elapsed = Date.now() - rippleStartTime;
+                    if (elapsed >= rippleDuration) return false;
+
+                    const progress = elapsed / rippleDuration;
+                    const rippleRadius = 12 * Math.sin(progress * Math.PI * 1.5);
+                    const decayStart = 0.5 + (0.5 * (1 - intensity));
+
+                    if (progress >= decayStart) {
+                        const decayProgress = (progress - decayStart) / (1 - decayStart);
+                        return 1 - decayProgress * decayProgress;
+                    }
+
+                    const segments = 32;
+                    const geometry = new THREE.BufferGeometry();
+                    const positions = [];
+                    const colors = [];
+
+                    for (let i = 0; i <= segments; i++) {
+                        const theta = (i / segments) * Math.PI * 2;
+
+                        const x = rippleRadius * Math.cos(theta);
+                        const y = 0;
+                        const z = rippleRadius * Math.sin(theta);
+
+                        positions.push(rippleOrigin.x + x, rippleOrigin.y, rippleOrigin.z + z);
+                        positions.push(rippleOrigin.x + x, rippleOrigin.y + 2, rippleOrigin.z + z);
+
+                        const colorIntensity = 0.1 + (0.9 * intensity);
+                        colors.push(
+                            1.0 * colorIntensity, 0.5, 0.5 * colorIntensity,
+                            1.0 * colorIntensity, 0.5, 0.5 * colorIntensity
+                        );
+                    }
+
+                    geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+                    geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+
+                    const lineMaterial = new THREE.LineBasicMaterial({
+                        vertexColors: true,
+                        transparent: true,
+                        opacity: 1.0 - progress
+                    });
+
+                    const rippleLine = new THREE.LineSegments(geometry, lineMaterial);
+                    scene.add(rippleLine);
+
+                    // Schedule removal
+                    setTimeout(() => scene.remove(rippleLine), 80);
+
+                    return true;
+                }
+            });
+        }
+
+        /**
+         * VISUALIZE CONTAMINATION PULSE
+         */
+        function visualizeContaminationPulse(pulseResult) {
+            // Create volumetric pulse through the field structure
+            const centerX = 32, centerY = 32, centerZ = 32;
+            const pulseRadius = 28;
+
+            // Create expanding pulse visual
+            addAnimationToQueue({
+                startTime: Date.now(),
+                duration: 1800,
+                action: (progressFraction) => {
+                    const currentRadius = pulseRadius * progressFraction;
+
+                    for (let x = 0; x < 64; x += 4) {
+                        for (let y = 0; y < 64; y += 4) {
+                            for (let z = 0; z < 64; z += 4) {
+                                const distance = Math.sqrt(
+                                    Math.pow(x - centerX, 2) +
+                                    Math.pow(y - centerY, 2) +
+                                    Math.pow(z - centerZ, 2)
+                                );
+
+                                if (distance >= currentRadius - 2 && distance <= currentRadius + 2) {
+                                    try {
+                                        const voxel = voxelGrid[x][y][z];
+                                        if (voxel) {
+                                            voxel.material.opacity = 0.3 * (1 - Math.min(1, progressFraction * 2));
+                                            voxel.material.emissiveIntensity = 0.2 * (1 - progressFraction);
+                                        }
+                                    } catch (e) {
+                                        // void on boundary errors
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            // Follow-up saturation visualization
+            for (let x = 0; x < 64; x += 3) {
+                for (let y = 0; y < 64; y += 3) {
+                    for (let z = 0; z < 64; z += 3) {
+                        const contaminationValue = Phase3System.fieldEngine.contaminationGrid[x][y][z] || 0;
+                        if (contaminationValue > 0.05) {
+                            setTimeout(() => {
+                                const voxel = voxelGrid[x][y][z];
+                                if (voxel) {
+                                    voxel.material.opacity = 0.4 + Math.min(0.6, contaminationValue * 2);
+                                    voxel.material.emissiveIntensity = 0.1 + Math.min(0.3, contaminationValue);
+                                }
+                            }, 50 + Math.random() * 100);
+                        }
+                    }
+                }
+            }
+        }
+
+        /**
+         * UPDATE ANXIETY VISUALS
+         */
+        function updateAnxietyVisuals() {
+            const anxietyLevel = parseFloat(document.getElementById('anxietyLevel').value);
+            document.getElementById('anxietyValue').textContent = anxietyLevel.toFixed(1);
+
+            const gaugeFill = document.getElementById('anxietyGauge');
+            gaugeFill.style.width = `${anxietyLevel * 10}%`;
+
+            // Update gauge color based on anxiety level
+            if (anxietyLevel < 3) {
+                gaugeFill.style.background = 'linear-gradient(90deg, #cc1122, #aa3344)';
+            } else if (anxietyLevel < 7) {
+                gaugeFill.style.background = 'linear-gradient(90deg, #aa3344, #885577)';
+            } else {
+                gaugeFill.style.background = 'linear-gradient(90deg, #885577, #cc1122)';
+            }
+        }
+
+        /**
+         * UPDATE SYSTEM STATUS
+         */
+        function updateSystemStatus() {
+            if (!Phase3System.fieldEngine) {
+                document.getElementById('systemState').textContent = "OFFLINE";
+                document.getElementById('fieldIntegrity').textContent = "0.00";
+                return;
+            }
+
+            // Calculate meta-status metrics
+            const fieldIntegrity = calculateFieldIntegrity();
+            const contaminationSaturation = fieldIntegrity.contaminationDensity * 100;
+
+            // Update UI references
+            document.getElementById('systemState').textContent = Phase3System.simulationRunning ? "ACTIVE" : "STANDBY";
+            document.getElementById('fieldIntegrity').textContent = fieldIntegrity.integrityIndex.toFixed(2);
+            document.getElementById('phaseCoherence').textContent = fieldIntegrity.phaseCoherence.toFixed(2);
+            document.getElementById('transferQueues').textContent = Phase3System.nexusEngine.transferQueues.size;
+            document.getElementById('saturationLevel').textContent = `${contaminationSaturation.toFixed(1)}%`;
+
+            // Update field saturation gauge
+            const fieldSaturationGauge = document.getElementById('fieldSaturationGauge');
+            fieldSaturationGauge.style.width = `${Math.min(100, contaminationSaturation * 0.8)}%`;
+            fieldSaturationGauge.style.background = contaminationSaturation < 60 ?
+                'linear-gradient(90deg, rgba(204,17,34,0.8), rgba(170,51,68,0.8))' :
+                'linear-gradient(90deg, rgba(255,30,0,0.9), rgba(170,51,68,0.6))';
+
+            // Update cross-title vector counter
+            document.getElementById('activeVectors').textContent = vectorLines.length;
+
+            document.getElementById('vectorSaturation').textContent =
+                Phase3System.nexusEngine.transferQueues.size > 0 ?
+                Math.floor(
+                    Math.min(1, Array.from(Phase3System.nexusEngine.transferQueues.values())
+                    .reduce((sum, q) => sum + q.payload.anxietyGrade, 0) / Phase3System.nexusEngine.transferQueues.size)
+                    * 100
+                ) + '%' : '0%';
+
+            document.getElementById('propagationVelocity').textContent =
+                Phase3System.fieldEngine ? (fieldIntegrity.contaminationVelocity * 100).toFixed(1) : '0.0';
+        }
+
+        /**
+         * CALCULATE FIELD INTEGRITY METRICS
+         */
+        function calculateFieldIntegrity() {
+            if (!Phase3System.fieldEngine) return { integrityIndex: 0, phaseCoherence: 0, contaminationDensity: 0 };
+
+            // Contamination density sampling
+            let totalContamination = 0;
+            let sampledPoints = 0;
+
+            for (let x = 4; x <= 58; x += 8) {
+                for (let y = 4; y <= 58; y += 8) {
+                    for (let z = 4; z <= 58; z += 8) {
+                        totalContamination += Phase3System.fieldEngine.contaminationGrid[x][y][z] || 0;
+                        sampledPoints++;
+                    }
+                }
+            }
+
+            const contaminationDensity = sampledPoints > 0 ? totalContamination / sampledPoints : 0;
+
+            // Calculate integrity indices
+            const integrityIndex = 1.0 - (contaminationDensity * 0.4);
+            const phaseCoherence = 1.0 - (contaminationDensity * 0.3);
+
+            // Calculate contamination propagation velocity
+            const velocityFactor = Math.abs(contaminationDensity - (Phase3System.lastContaminationDensity || 0)) * 4;
+
+            // Update integrity reference point
+            Phase3System.lastContaminationDensity = contaminationDensity;
+
+            return {
+                integrityIndex: Math.max(0, integrityIndex),
+                phaseCoherence: Math.max(0, phaseCoherence),
+                contaminationDensity: contaminationDensity,
+                contaminationVelocity: velocityFactor
+            };
+        }
+
+        /**
+         * SYSTEM HEARTBEAT
+         * Core synchronization pulse
+         */
+        function systemHeartbeat() {
+            if (!Phase3System.fieldEngine || !Phase3System.simulationRunning) return;
+
+            Phase3System.systemTime += 0.08;
+
+            // Update visualization
+            updateVisualFieldRepresentation();
+
+            // Monitor field state
+            updateDiagnosticMetrics();
+
+            // Update UI status
+            updateSystemStatus();
+        }
+
+        /**
+         * UPDATE VISUAL FIELD REPRESENTATION
+         */
+        function updateVisualFieldRepresentation() {
+            if (!voxelGrid || !Phase3System.fieldEngine) return;
+
+            const currentTime = Date.now();
+            let animationChanges = 0;
+
+            const voxelUpdateQueue = [];
+
+            function queueVoxelUpdate(x, y, z, newOpacity, newEmissive) {
+                voxelUpdateQueue.push(() => {
+                    try {
+                        const voxel = voxelGrid[x][y][z];
+                        if (voxel) {
+                            voxel.material.opacity = newOpacity;
+                            voxel.material.emissiveIntensity = newEmissive;
+                        }
+                    } catch (e) {
+                        // Cross-boundary errors containment
+                    }
+                });
+            }
+
+            // Update visor grid based on field contamination
+            for (let x = 0; x < 64; x += 2) {
+                for (let y = 0; y < 64; y += 2) {
+                    for (let z = 0; z < 64; z += 2) {
+                        const contaminationValue = Phase3System.fieldEngine.contaminationGrid[x][y][z] || 0;
+                        if (contaminationValue > 0.1) {
+                            const baseOpacity = 0.2 + (contaminationValue * 1.5);
+                            const baseEmissive = 0.02 + (contaminationValue * 0.4);
+
+                            // Add stochastic breathing
+                            const timeFactor = Math.sin(Phase3System.systemTime + x * 0.2 + z * 0.3);
+                            const modulation = 0.75 + 0.25 * timeFactor;
+                            const modulatedOpacity = baseOpacity * modulation;
+                            const modulatedEmissive = baseEmissive * modulation;
+
+                            // Geometry ripple distortion
+                            const distanceFromCenter = Math.sqrt(
+                                Math.pow(x - 32, 2) +
+                                Math.pow(y - 32, 2) +
+                                Math.pow(z - 32, 2)
+                            );
+
+                            const rippleEffect = 0.2 * Math.sin(
+                                Phase3System.systemTime * 0.8 + distanceFromCenter * 0.1
+                            );
+
+                            queueVoxelUpdate(
+                                x, y, z,
+                                Math.min(1.0, modulatedOpacity + rippleEffect),
+                                Math.min(0.6, modulatedEmissive + rippleEffect * 0.3)
+                            );
+
+                            animationChanges++;
+                        }
+                    }
+                }
+            }
+
+            // Execute updates with staggered timing for performance
+            while (voxelUpdateQueue.length > 0) {
+                setTimeout(voxelUpdateQueue.shift(), (Math.random() * 8) * voxelUpdateQueue.length);
+            }
+        }
+
+        /**
+         * UPDATE DIAGNOSTIC METRICS
+         */
+        function updateDiagnosticMetrics() {
+            if (!Phase3System.fieldEngine) return;
+
+            // Field saturation decay
+            for (let x = 0; x < 64; x++) {
+                for (let y = 0; y < 64; y++) {
+                    for (let z = 0; z < 64; z++) {
+                        if (Phase3System.fieldEngine.contaminationGrid[x][y][z] > 0) {
+                            Phase3System.fieldEngine.contaminationGrid[x][y][z] *= 0.995; // 0.5% decay/reduction
+                            if (Phase3System.fieldEngine.contaminationGrid[x][y][z] < 0.001) {
+                                Phase3System.fieldEngine.contaminationGrid[x][y][z] = 0.0;
+                            }
+                        }
+                    }
+                }
+            }
+
+            updateSystemStatus();
+        }
+
+        /**
+         * ADD ANIMATION TO QUEUE
+         */
+        function addAnimationToQueue(animation) {
+            if (!animation.startTime) animation.startTime = Date.now();
+
+            animationQueue.push(animation);
+            animationQueue.sort((a, b) => a.startTime - b.startTime);
+        }
+
+        /**
+         * LOG SYSTEM EVENTS
+         */
+        function logSystemEvent(message, messageClass) {
+            const eventLog = document.getElementById('eventLog');
+            const newEntry = document.createElement('div');
+            newEntry.className = messageClass || '';
+            newEntry.textContent = message;
+
+            Phase3System.eventLog.unshift({ message, timestamp: Date.now() });
+            if (Phase3System.eventLog.length > 200) Phase3System.eventLog.pop();
+
+            if (eventLog.childNodes.length > 0) {
+                eventLog.insertBefore(newEntry, eventLog.childNodes[0]);
+                if (eventLog.childNodes.length > 8) {
+                    eventLog.removeChild(eventLog.lastChild);
+                }
+            } else {
+                eventLog.appendChild(newEntry);
+            }
+
+            // Auto-scroll if at top
+            if (eventLog.scrollTop < 20) {
+                eventLog.scrollTop = 0;
+            }
+        }
+
+        /**
+         * SETUP SYSTEM MONITORING
+         */
+        function setupSystemMonitoring() {
+            // Heartbeat monitoring
+            setInterval(diagnosticHeartbeat, 3000);
+        }
+
+        /**
+         * DIAGNOSTIC HEARTBEAT SYNC
+         */
+        function diagnosticHeartbeat() {
+            if (Phase3System.fieldEngine) {
+                // Field integrity monitoring
+                const integrity = calculateFieldIntegrity();
+                if (integrity.integrityIndex < 0.4) {
+                    logSystemEvent(`⚠️ FIELD INTEGRITY VIOLATION ${integrity.integrityIndex.toFixed(2)} — CONTAINMENT LEAK DETECTED`, 'system-error');
+                }
+
+                // Diagnostic report
+                if (Math.random() < 0.08) {
+                    const diagnosticMessage = `DIAGNOSTIC PULSE [T+${Phase3System.systemTime.toFixed(1)}s] SATURATION=${(integrity.contaminationDensity * 100).toFixed(1)}% PHASE_COHERENCE=${integrity.phaseCoherence.toFixed(2)}`;
+                    logSystemEvent(diagnosticMessage, integrity.phaseCoherence > 0.8 ? 'diagnostic-ok' : 'diagnostic-warning');
+                }
+            }
+        }
+
+        /**
+         * SYNC UI VISUALS
+         * System configuration synchronization
+         */
+        function syncUIVisuals() {
+            // Anxiety range (comment for static declaration)
+            updateAnxietyVisuals();
+        }
+
+        /**
+         * UTILITY: CREATE 3D ARRAY
+         */
+        function create3DArray(width, height, depth, initialValue) {
+            const array = [];
+            for (let x = 0; x < width; x++) {
+                array[x] = [];
+                for (let y = 0; y < height; y++) {
+                    array[x][y] = [];
+                    for (let z = 0; z < depth; z++) {
+                        array[x][y][z] = typeof initialValue === 'function' ? initialValue(x, y, z) : initialValue;
+                    }
+                }
+            }
+            return array;
+        }
+
+        /**
+         * VECTOR TYPE MAPPING TABLE
+         */
+        function getVectorColor(vectorType) {
+            const mapping = {
+                THEME_BOUNDARY: 0x994466,
+                ATMOSPHERE_BLEED: 0xcc6677,
+                ENTITY_MIGRATION: 0xff8855,
+                ANOMALY_BACKWASH: 0x6688cc,
+                MEMORY_RESIDUE: 0x8866bb
+            };
+            return mapping[vectorType.replace(/[\s_-]/g, '_')] || 0xcc1122;
+        }
+
+        // System-ready notification
+        window.addEventListener('load', () => {
+            logSystemEvent("[SYSTEM READY] HORIZON γ DEMONSTRATION PLATFORM ONLINE — AWAITING OPERATOR", 'system-notice');
+        });
+    </script>
+</body>
+</html>

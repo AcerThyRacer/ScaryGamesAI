@@ -1,0 +1,244 @@
+{
+  "id": "gore",
+  "name": "Gore Horror Theme",
+  "description": "Extreme violence, visceral horror, body horror, graphic descriptions, sensory overload, the physicality of fear and pain",
+  "lexicon_id": "gore",
+  "icon": "🩸",
+  "class": "writing-theme-gore",
+  "writing_rules": {
+    "message": "WARNING: This theme contains graphic descriptions of violence and bodily harm. Use with caution.",
+    "technical": {
+      "use_explicit_terminology": 0.95,
+      "avoid_euphemisms": 0.98,
+      "sensory_detail_priority": ["tactile", "olfactory", "visual", "auditory"],
+      "body_horror_probability": 0.85,
+      "violence_escalation": 0.9
+    },
+    "sentence_structure": {
+      "complexity_normal": 0.6,
+      "complexity_disturbed": 0.75,
+      "complexity_paranoid": 0.85,
+      "fragment_probability": 0.5,
+      "ellipsis_probability": 0.3,
+      "repetition_probability": 0.4,
+      "sensory_detail_probability": 0.9,
+      "bodily_focus_probability": 0.8
+    },
+    "technical_rules": {
+      "never_soften_impact": [
+        "Never use euphemisms for bodily harm. If something is severed, say it is severed.",
+        "Never imply violence - describe it in visceral detail.",
+        "Never sanitize the aftermath. Blood doesn't 'pool' - it 'congeals in thick, glistening clots'."
+      ],
+      "sensory_priority": {
+        "tactile": 0.95,
+        "olfactory": 0.9,
+        "visual": 0.85,
+        "auditory": 0.8,
+        "gustatory": 0.7
+      }
+    },
+    "content_constraints": {
+      "min_violence_detail": 0.85,
+      "min_bodily_focus": 0.8,
+      "max_abstraction": 0.1,
+      "min_sensory_detail": 0.9,
+      "body_horror_auto_generation": 0.75
+    },
+    "form": {
+      "avoid_ellipsis_for_violence": "Ellipsis suggests hesitation or uncertainty. Violence should be described with clinical precision.",
+      "mandatory_sensory_anchoring": 1,
+      "allow_graphic_imagery": 1,
+      "forbid_abstraction_for_bodily_functions": 0.95
+    }
+  },
+  "vocabulary_subsets": [
+    "nouns_by_theme.gore",
+    "nouns_by_theme.bodily",
+    "verbs_by_terror.violent",
+    "verbs_by_terror.painful",
+    "adjectives.gore",
+    "adjectives.sensory",
+    "adjectives.texture",
+    "nouns.fluids"
+  ],
+  "content": {
+    "greetings": [
+      "The air reeks of {fluid} and {decaying_matter}. Your {body_part} twitches in anticipation.",
+      "{sensory_observation} fills the space. You know what comes next.",
+      "Something {adjective} has been here recently. The {evidence} is still {state}.",
+      "Your {body_part} remembers this place. The {sensation} is unmistakable.",
+      "The {surface} is {adjective} with {substance}. It hasn't {dried_action} yet."
+    ],
+    "greetings_internal_monologue": [
+      "{self_description}: {body_part} {aches|throbs|burns}. {self_question} What did I {do|touch|ingest}?",
+      "{mandatory_consideration}: {body_part} feels {wrong_adjective}. {self_correction} No, {body_part} IS {wrong_adjective}.",
+      "{introjection}: {pain_description}. {resistance} {futile_gesture}.",
+      "{self_observation}: {body_part} {appears_normal|shows_signs}. {doubt} {self_reassurance}."
+    ],
+    "farewells": [
+      "The {substance} will {dry|congeal|coagulate} soon. You should leave before it {attracts_attention}.",
+      "{body_part} will need {medical_attention|amputation|replacement}. {urgency_statement}.",
+      "Don't look back. The {remains} are still {active|reacting|processing}.",
+      "Your {clothing} is {ruined|compromised|contaminated}. {consequence_statement}.",
+      "The {scent|stain|memory} will linger. {duration_statement}."
+    ],
+    "loading_messages": [
+      "Calculating {bodily_response} to {stimulus}...",
+      "Rendering {graphic_detail} in {sensory_modality}...",
+      "Simulating {bodily_process} at {precision_level} precision...",
+      "Compiling {violent_act} with {realism_level} fidelity...",
+      "Processing {sensory_input} through {nervous_system_pathway}..."
+    ],
+    "injury_reports": [
+      "[MEDICAL LOG {timestamp}]\nPatient presents with {injury_description}. {bodily_response} observed. {prognosis}.",
+      "[DAMAGE ASSESSMENT]\n{body_part}: {damage_level} ({specific_damage}). {functional_impact}. {treatment_recommendation}.",
+      "[AUTOPSY NOTE]\n{body_part} shows {pathological_findings}. Cause of {event}: {mechanism}. {unusual_observation}.",
+      "[FIELD REPORT]\nSubject {identifier} found with {injury}. {environmental_evidence} suggests {cause}. {recovery_status}."
+    ],
+    "game_descriptions": {
+      "templates": [
+        "A {adjective} experience where {bodily_function} becomes the primary gameplay mechanic. {violent_act} triggers {consequence}.",
+        "{player_body_part} is the weapon. {violent_act} releases {substance}, which {interacts_with_environment}.",
+        "Survive by {bodily_action}. Each {game_event} causes {bodily_response}. {win_condition}.",
+        "The {enemy} doesn't just kill you - it {transforms_you}. {body_horror_mechanic} evolves based on {player_action}.",
+        "A {subgenre} game where {bodily_system} fails progressively. {symptom} leads to {consequence}, which {escalates}."
+      ],
+      "adjectives": [
+        "visceral", "sensory-intensive", "bodily-focused",
+        "graphic", "unflinching", "clinical", "forensic"
+      ],
+      "violent_acts": [
+        "dismemberment", "evisceration", "degloving",
+        "impalement", "crushing", "laceration", "contusion"
+      ],
+      "bodily_responses": [
+        "hemorrhage", "inflammation", "necrosis",
+        "edema", "spasm", "rupture", "prolapse"
+      ],
+      "enemies": [
+        "entities that dissolve into your bloodstream",
+        "creatures that wear your skin as camouflage",
+        "pathogens that rewrite your cellular structure",
+        "machines that harvest your organs with surgical precision",
+        "beings that exist within your nervous system"
+      ],
+      "body_horror_mechanics": [
+        "your skeleton gradually petrifies",
+        "your skin develops independent sensory perception",
+        "your organs migrate to new locations",
+        "your blood develops consciousness",
+        "your nervous system becomes external"
+      ]
+    },
+    "rules": {
+      "thematic_constraints": {
+        "never_glorify_violence": 0.99,
+        "always_show_consequences": 0.98,
+        "emphasize_sensory_experience": 0.95,
+        "avoid_romanticizing_pain": 0.97,
+        "show_physical_reality": 0.99
+      },
+      "example_techniques": {
+        "sensory_anchoring": [
+          "Describe the {texture} of {substance} on {surface}.",
+          "Note the {scent} that lingers after {event}.",
+          "Record the {sound} of {bodily_process} in {environment}.",
+          "Observe how {substance} {behaves} under {conditions}."
+        ],
+        "bodily_focus": [
+          "Track the {path} of {substance} through {bodily_system}.",
+          "Document how {body_part} {responds} to {stimulus}.",
+          "Note the {sequence} of {bodily_response} after {event}.",
+          "Observe the {interaction} between {body_part} and {external_entity}."
+        ],
+        "violence_escalation": [
+          "{Initial_injury} leads to {secondary_effect}, which {tertiary_consequence}.",
+          "{Violent_act} causes {immediate_damage}, followed by {delayed_complication}.",
+          "{External_force} results in {primary_injury}, which {progresses_to} {secondary_condition}."
+        ]
+      }
+    },
+    "world_unfolding": {
+      "medical_facilities": {
+        "abandoned_clinic": {
+          "central_paradox": "The clinic was designed to heal, but the equipment now facilitates transformation. Each machine hums with purpose, but the purpose has changed.",
+          "untrustworthy_elements": [
+            "surgical tools arranged in ritualistic patterns",
+            "patient records describe procedures that don't exist in medical literature",
+            "the autoclave contains items that shouldn't require sterilization",
+            "IV bags contain fluids that move against gravity",
+            "the operating table has restraints for limbs that humans don't possess"
+          ]
+        },
+        "field_hospital": {
+          "central_paradox": "The hospital was meant to be temporary, but it has become permanent. The wounded don't die - they change. The staff don't leave - they evolve.",
+          "untrustworthy_elements": [
+            "triage tags change color based on patient prognosis, but the prognosis is always wrong",
+            "the blood supply never depletes, but the blood properties change over time",
+            "surgical gloves tear when exposed to certain tissues",
+            "the PA system broadcasts patient vital signs that don't match any known medical condition",
+            "the morgue drawer labels update automatically with causes of death that defy pathology"
+          ]
+        }
+      },
+      "revelation_patterns": [
+        "The {substance} isn't {expected_substance} - it's {actual_substance}. The {implication} is {consequence}.",
+        "{Body_part} doesn't {function_as_expected} - it {actual_function}. This explains {previously_unexplained_phenomenon}.",
+        "The {violent_act} wasn't {apparent_cause} - it was {actual_cause}. The {evidence} was {misinterpreted_as} {incorrect_interpretation}.",
+        "{Sensory_experience} isn't {normal_sensation} - it's {pathological_sensation}. The {body_part} is {actual_condition}."
+      ]
+    }
+  },
+  "assets": {
+    "icons": {
+      "themeIcon": "🩸",
+      "menuIcon": "🔪",
+      "loadingIcon": "💉"
+    },
+    "colors": {
+      "primary": "#6b0f1a",
+      "primary-dark": "#4a0404",
+      "secondary": "#8b1538",
+      "text-primary": "#ffd1dc",
+      "text-secondary": "#d47a8a",
+      "accent": "#ff0000",
+      "blood": "rgba(139, 0, 0, 0.7)",
+      "flesh": "rgba(255, 204, 188, 0.3)"
+    },
+    "sounds": {
+      "ambient": ["wet_squishing.mp3", "bone_cracking.mp3", "liquid_dripping.mp3"],
+      "ui": ["scalpel_slice.wav", "bone_snap.wav", "squelching.wav"]
+    }
+  },
+  "ai_config": {
+    "violence_escalation": {
+      "min_violence_level": 3,
+      "max_violence_level": 9,
+      "escalation_probability": 0.7,
+      "deescalation_probability": 0.1
+    },
+    "body_horror_generation": {
+      "min_transformation_level": 2,
+      "max_transformation_level": 8,
+      "transformation_types": [
+        "structural", "functional", "compositional",
+        "dimensional", "temporal", "cognitive"
+      ],
+      "transformation_probability": 0.65
+    }
+  },
+  "integration": {
+    "game_behavior_modifications": {
+      "damage_system": "realistic_bodily_response",
+      "healing_system": "pathological_transformation",
+      "environment_interaction": "sensory_feedback_priority",
+      "enemy_behavior": "bodily_manipulation_focus",
+      "player_movement": "injury_impact_realism"
+    },
+    "narrative_triggers": [
+      "bodily_damage", "sensory_overload", "medical_intervention",
+      "environmental_contamination", "biological_transformation"
+    ]
+  }
+}

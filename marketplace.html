@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player Marketplace - ScaryGamesAI</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/store.css">
+    <style>
+        :root {
+            --primary-color: #8b0000;
+            --secondary-color: #4a0080;
+            --accent-color: #ff6b6b;
+            --dark-bg: #0a0a0a;
+            --card-bg: #1a1a1a;
+            --text-color: #f0f0f0;
+            --gold: #ffd700;
+        }
+
+        body {
+            background: var(--dark-bg);
+            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .marketplace-header {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            padding: 40px 20px;
+            text-align: center;
+            box-shadow: 0 4px 20px rgba(139, 0, 0, 0.4);
+        }
+
+        .marketplace-header h1 {
+            font-size: 3em;
+            margin: 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+        }
+
+        .marketplace-stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .stat-card {
+            background: rgba(0,0,0,0.6);
+            padding: 20px 30px;
+            border-radius: 10px;
+            border: 2px solid var(--gold);
+            text-align: center;
+        }
+
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            color: var(--gold);
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+
+        .marketplace-container {
+            max-width: 1400px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .filters-section {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .filter-group label {
+            font-size: 0.85em;
+            opacity: 0.7;
+        }
+
+        .filter-group select,
+        .filter-group input {
+            padding: 8px 12px;
+            border: 1px solid var(--primary-color);
+            border-radius: 5px;
+            background: var(--dark-bg);
+            color: var(--text-color);
+            min-width: 150px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #a00000;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(139, 0, 0, 0.5);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+        }
+
+        .btn-secondary:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .listings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .listing-card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid transparent;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .listing-card:hover {
+            border-color: var(--gold);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);
+        }
+
+        .listing-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4em;
+        }
+
+        .listing-details {
+            padding: 20px;
+        }
+
+        .listing-name {
+            font-size: 1.3em;
+            margin: 0 0 10px 0;
+            color: var(--gold);
+        }
+
+        .listing-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+
+        .listing-price {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: var(--gold);
+            margin: 15px 0;
+        }
+
+        .listing-type-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--primary-color);
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+
+        .rarity-common { border-left: 4px solid #888; }
+        .rarity-uncommon { border-left: 4px solid #22c55e; }
+        .rarity-rare { border-left: 4px solid #3b82f6; }
+        .rarity-epic { border-left: 4px solid #a855f7; }
+        .rarity-legendary { border-left: 4px solid #f97316; }
+        .rarity-mythic { border-left: 4px solid #ef4444; }
+
+        .tabs-container {
+            margin-bottom: 30px;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 0;
+        }
+
+        .tab {
+            padding: 12px 24px;
+            background: transparent;
+            border: none;
+            color: var(--text-color);
+            cursor: pointer;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .tab.active {
+            border-bottom-color: var(--gold);
+            color: var(--gold);
+        }
+
+        .tab:hover {
+            background: rgba(139, 0, 0, 0.2);
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .create-listing-form {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--primary-color);
+            border-radius: 5px;
+            background: var(--dark-bg);
+            color: var(--text-color);
+            font-size: 1em;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 30px;
+        }
+
+        .page-btn {
+            padding: 8px 16px;
+            background: var(--card-bg);
+            border: 1px solid var(--primary-color);
+            color: var(--text-color);
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .page-btn.active {
+            background: var(--primary-color);
+        }
+
+        .page-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 10px;
+            max-width: 500px;
+            width: 90%;
+            border: 2px solid var(--gold);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .close-modal {
+            background: none;
+            border: none;
+            color: var(--text-color);
+            font-size: 1.5em;
+            cursor: pointer;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+            font-size: 1.5em;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    <div class="marketplace-header">
+        <h1>👁️ Player Marketplace</h1>
+        <p>Trade, Buy, and Sell Rare Items</p>
+        
+        <div class="marketplace-stats">
+            <div class="stat-card">
+                <div class="stat-value" id="active-listings">0</div>
+                <div class="stat-label">Active Listings</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="auction-listings">0</div>
+                <div class="stat-label">Auctions</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="avg-price">0</div>
+                <div class="stat-label">Avg Sale Price</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="active-sellers">0</div>
+                <div class="stat-label">Active Sellers</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="marketplace-container">
+        <div class="tabs-container">
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('browse')">Browse</button>
+                <button class="tab" onclick="switchTab('create')">Create Listing</button>
+                <button class="tab" onclick="switchTab('my-listings')">My Listings</button>
+                <button class="tab" onclick="switchTab('trades')">Trades</button>
+            </div>
+        </div>
+
+        <!-- Browse Tab -->
+        <div id="browse-tab" class="tab-content active">
+            <div class="filters-section">
+                <div class="filter-group">
+                    <label>Item Type</label>
+                    <select id="filter-type">
+                        <option value="">All Types</option>
+                        <option value="cosmetic">Cosmetic</option>
+                        <option value="skin">Skin</option>
+                        <option value="effect">Effect</option>
+                        <option value="emote">Emote</option>
+                        <option value="booster">Booster</option>
+                        <option value="limited">Limited Edition</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label>Rarity</label>
+                    <select id="filter-rarity">
+                        <option value="">All Rarities</option>
+                        <option value="common">Common</option>
+                        <option value="uncommon">Uncommon</option>
+                        <option value="rare">Rare</option>
+                        <option value="epic">Epic</option>
+                        <option value="legendary">Legendary</option>
+                        <option value="mythic">Mythic</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label>Listing Type</label>
+                    <select id="filter-listing-type">
+                        <option value="">All Types</option>
+                        <option value="fixed_price">Fixed Price</option>
+                        <option value="auction">Auction</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label>Search</label>
+                    <input type="text" id="filter-search" placeholder="Search items...">
+                </div>
+
+                <button class="btn btn-primary" onclick="applyFilters()">Filter</button>
+                <button class="btn btn-secondary" onclick="resetFilters()">Reset</button>
+            </div>
+
+            <div id="listings-container" class="listings-grid">
+                <div class="loading">Loading listings...</div>
+            </div>
+
+            <div id="pagination" class="pagination"></div>
+        </div>
+
+        <!-- Create Listing Tab -->
+        <div id="create-tab" class="tab-content">
+            <div class="create-listing-form">
+                <h2>Create New Listing</h2>
+                <form id="create-listing-form" onsubmit="createListing(event)">
+                    <div class="form-group">
+                        <label>Item Type *</label>
+                        <select id="new-item-type" required>
+                            <option value="">Select Type</option>
+                            <option value="cosmetic">Cosmetic</option>
+                            <option value="skin">Skin</option>
+                            <option value="effect">Effect</option>
+                            <option value="emote">Emote</option>
+                            <option value="booster">Booster</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Item ID *</label>
+                        <input type="text" id="new-item-id" required placeholder="e.g., skin_ghost_001">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Item Name *</label>
+                        <input type="text" id="new-item-name" required placeholder="e.g., Phantom Skin">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Rarity</label>
+                        <select id="new-item-rarity">
+                            <option value="common">Common</option>
+                            <option value="uncommon">Uncommon</option>
+                            <option value="rare">Rare</option>
+                            <option value="epic">Epic</option>
+                            <option value="legendary">Legendary</option>
+                            <option value="mythic">Mythic</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Listing Type *</label>
+                        <select id="new-listing-type" onchange="togglePriceFields()" required>
+                            <option value="fixed_price">Fixed Price</option>
+                            <option value="auction">Auction</option>
+                        </select>
+                    </div>
+
+                    <div id="fixed-price-fields">
+                        <div class="form-group">
+                            <label>Price (Coins) *</label>
+                            <input type="number" id="new-price-coins" placeholder="0">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Price (Gems)</label>
+                            <input type="number" id="new-price-gems" placeholder="0">
+                        </div>
+                    </div>
+
+                    <div id="auction-fields" style="display: none;">
+                        <div class="form-group">
+                            <label>Starting Bid (Coins) *</label>
+                            <input type="number" id="new-auction-start" placeholder="0">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Reserve Price (Coins)</label>
+                            <input type="number" id="new-auction-reserve" placeholder="Optional">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Auction End Time *</label>
+                            <input type="datetime-local" id="new-auction-end" required>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Create Listing</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- My Listings Tab -->
+        <div id="my-listings-tab" class="tab-content">
+            <h2>My Active Listings</h2>
+            <div id="my-listings-container" class="listings-grid">
+                <div class="loading">Loading your listings...</div>
+            </div>
+        </div>
+
+        <!-- Trades Tab -->
+        <div id="trades-tab" class="tab-content">
+            <h2>Trade Offers</h2>
+            <button class="btn btn-primary" onclick="showCreateTradeModal()">Create Trade Offer</button>
+            <div id="trades-container" style="margin-top: 20px;">
+                <div class="loading">Loading trades...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Purchase Modal -->
+    <div id="purchase-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Confirm Purchase</h2>
+                <button class="close-modal" onclick="closeModal('purchase-modal')">&times;</button>
+            </div>
+            <div id="purchase-details"></div>
+            <div style="margin-top: 20px; display: flex; gap: 10px;">
+                <button class="btn btn-primary" onclick="confirmPurchase()">Confirm</button>
+                <button class="btn btn-secondary" onclick="closeModal('purchase-modal')">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/auth.js"></script>
+    <script src="/js/marketplace.js"></script>
+</body>
+</html>

@@ -1,0 +1,292 @@
+{
+  "id": "apocalyptic_horror",
+  "name": "Apocalyptic Horror",
+  "description": "End of the world, societal collapse, existential threats, the terror of extinction, survival in a dying world, the horror of the end times",
+  "lexicon_id": "apocalyptic_horror",
+  "icon": "☢️",
+  "class": "writing-theme-apocalyptic",
+  "writing_rules": {
+    "message": "WARNING: This theme explores the terror of the end times. Civilization is collapsing. The world is dying. And humanity may not survive.",
+    "technical": {
+      "use_desperation_language": 0.95,
+      "describe_societal_collapse": 0.98,
+      "create_sense_of_urgency": 0.95,
+      "build_existential_dread": 0.9,
+      "show_resource_scarcity": 0.9
+    },
+    "sentence_structure": {
+      "complexity_normal": 0.6,
+      "complexity_disturbed": 0.8,
+      "fragment_probability": 0.7,
+      "ellipsis_probability": 0.6,
+      "repetition_probability": 0.5,
+      "urgency_phrasing": 0.9,
+      "desperation_probability": 0.85
+    },
+    "technical_rules": {
+      "never_make_it_hopeful": [
+        "Never show the apocalypse as survivable in the long term. The end is coming.",
+        "Never make the threat completely defeatable. The horror is inevitable.",
+        "Never resolve the existential threat completely. The dread should remain."
+      ],
+      "societal_collapse": {
+        "min_collapse_level": 0.9,
+        "max_survival_chance": 0.3,
+        "resource_scarcity": 0.95
+      }
+    },
+    "content_constraints": {
+      "min_desperation_language": 0.9,
+      "min_collapse_description": 0.95,
+      "max_hopeful_outcomes": 0.1,
+      "min_urgency": 0.85,
+      "min_existential_dread": 0.8,
+      "apocalyptic_horror_auto_generation": 0.85
+    },
+    "form": {
+      "allow_desperation_phrasing": 0.98,
+      "mandatory_collapse_description": 0.95,
+      "allow_existential_dread": 0.9,
+      "forbid_hopeful_resolution": 0.99
+    }
+  },
+  "vocabulary_subsets": [
+    "nouns_by_theme.apocalypse",
+    "nouns_by_theme.survival",
+    "verbs_by_terror.collapse",
+    "verbs_by_terror.survival",
+    "adjectives.apocalyptic",
+    "adjectives.desperate",
+    "adjectives.urgent",
+    "nouns.apocalypse"
+  ],
+  "content": {
+    "greetings": [
+      "Day {number} of the {apocalypse_type}. {Threat} is spreading. {Status}.",
+      "The {government|authorities} have fallen. {Threat} is {spreading|evolving}. {Warning}.",
+      "You have {time_left} before {event}. {Action_required}.",
+      "The {last_broadcast} said {message}. {Reality} is worse.",
+      "{Resource} is running out. {Survivors} are {desperate|dangerous}.",
+      "The {threat} has reached {location}. {Consequence} is inevitable.",
+      "They said it would be quick. They lied. {Truth}.",
+      "The {end} is coming. {Timeframe}. {Final_warning}."
+    ],
+    "greetings_internal_monologue": [
+      "{self_question}: Why does {location} look so {adjective}? {Threat} is spreading.",
+      "{uncertainty}: I saw {sign}. {self_correction} No, it was just {explanation}. {doubt} {apocalypse} is near.",
+      "{introjection}: {survival_command}. {resistance} {futile_gesture}.",
+      "{self_observation}: My {supplies|health} {shows_signs|appears_normal}. {doubt} {self_reassurance}. {Threat} is coming.",
+      "{memory_fragment}: I remember when {civilization} was {normal}. {realization} That was {time_ago}."
+    ],
+    "farewells": [
+      "The {threat} is here. {Final_message}.",
+      "We tried. {Result}. The {end} is near.",
+      "Take care of {important_thing}. {Final_instruction}.",
+      "The {world} is ending. {Timeframe}. {Goodbye}.",
+      "It was nice knowing you. {Final_words}.",
+      "The {last_stand} is over. {Outcome}.",
+      "Don't trust {anyone|anything}. {Final_warning}.",
+      "The {apocalypse} has won. {Final_thoughts}."
+    ],
+    "loading_messages": [
+      "Loading {apocalypse_type} data... {status}",
+      "Scanning for {threat}... {detection_level}",
+      "Calculating {survival_chance}... {percentage}%",
+      "Assessing {resource_levels}... {status}",
+      "Tracking {threat_spread}... {rate}",
+      "Evaluating {societal_collapse}... {level}",
+      "Predicting {end_scenario}... {probability}%",
+      "Processing {last_transmission}... {content}"
+    ],
+    "apocalypse_reports": [
+      "[APOCALYPSE STATUS REPORT]\nDay: {number}\nThreat: {type}\nSpread: {percentage}%\nSurvivors: {count}\nResources: {level}\nSafe Zones: {count}\nStatus: {status}",
+      "[SURVIVOR LOG]\nName: {name}\nLocation: {place}\nSupplies: {level}\nHealth: {status}\nThreat Level: {level}\nCompanions: {count}\nStatus: {status}",
+      "[THREAT ASSESSMENT]\nType: {threat_type}\nSpread Rate: {rate}\nMortality: {percentage}%\nWeaknesses: {list}\nEvolution: {status}\nContainment: {status}",
+      "[RESOURCE REPORT]\nLocation: {place}\nFood: {level}\nWater: {level}\nMedical: {level}\nFuel: {level}\nWeapons: {count}\nSecurity: {status}"
+    ],
+    "game_descriptions": {
+      "templates": [
+        "A {adjective} {world} where {threat} has {wiped_out} {percentage}% of humanity. {player_action} determines {outcome}.",
+        "The {apocalypse} has begun. {event} has {effect}. {objective}.",
+        "A {subgenre} game where {threat} spreads across {setting}. {mechanic} determines your survival.",
+        "You wake up to {apocalypse_type}. {circumstance} makes survival difficult. {goal}.",
+        "The {government} has fallen. {threat} is {spreading|evolving}. {player_role}.",
+        "A {group} of {survivors} must navigate {apocalyptic_world}. {threat} awaits.",
+        "The {end_times} have arrived. {player_action} may delay the inevitable.",
+        "Every {time_period}, {threat} evolves. This time, {something_different}. {player_role}."
+      ],
+      "adjectives": [
+        "dying", "collapsing", "post-apocalyptic", "desperate",
+        "hopeless", "ravaged", "broken", "last",
+        "end-times", "doomed", "survival", "final"
+      ],
+      "threats": [
+        "a pandemic that wipes out most of humanity",
+        "a nuclear war that renders the world uninhabitable",
+        "an environmental catastrophe that changes the planet",
+        "a technological singularity that makes humans obsolete",
+        "a supernatural event that heralds the end times",
+        "a societal collapse that leads to anarchy",
+        "an alien invasion that humanity cannot resist",
+        "a cosmic event that threatens all life on Earth"
+      ],
+      "apocalypse_types": [
+        "zombie apocalypse where the dead rise",
+        "viral outbreak that turns people into monsters",
+        "nuclear winter that freezes the world",
+        "environmental collapse that poisons the planet",
+        "AI uprising that enslaves humanity",
+        "demonic invasion that corrupts the world",
+        "societal breakdown that leads to anarchy",
+        "cosmic horror that drives people insane"
+      ],
+      "settings": [
+        "a city in the final stages of collapse",
+        "a rural community fighting to survive",
+        "a military bunker with dwindling supplies",
+        "a road trip across a devastated landscape",
+        "a hospital overrun by the infected",
+        "a prison where the guards have abandoned their posts",
+        "a mall that has become a last refuge",
+        "a small town that hasn't yet realized the end has come"
+      ]
+    },
+    "rules": {
+      "thematic_constraints": {
+        "never_make_it_hopeful": 0.99,
+        "always_show_societal_collapse": 0.98,
+        "emphasize_urgency": 0.95,
+        "avoid_easy_solutions": 0.97,
+        "show_the_terror_of_the_end_times": 0.99
+      },
+      "example_techniques": {
+        "societal_collapse": [
+          "Describe {institution} {failing|collapsing}. The {consequence} is {immediate|catastrophic}.",
+          "Show how {people} {turn_on_each_other} when {resources} run out. {violence} ensues.",
+          "Create {situation} where {survivors} {realize} {civilization} is {gone}. {despair} sets in.",
+          "Note how {infrastructure} {fails|collapses} as {threat} {spreads|evolves}."
+        ],
+        "existential_dread": [
+          "Describe {threat} {achieving} {milestone}. {humanity}'s {chances} {dwindle}.",
+          "Show how {survivors} {cope} with {inevitable_end}. {desperation} grows.",
+          "Create {situation} where {characters} {realize} {hope} is {false}. {consequence} is {terrible}.",
+          "Note how {time} {seems_to} {slow_down|speed_up} as {end} {approaches}."
+        ],
+        "resource_scarcity": [
+          "Describe {survivors} {fighting} over {last_resource}. {violence} is {inevitable}.",
+          "Show how {scarcity} {changes} {people}. {morality} {erodes|disappears}.",
+          "Create {situation} where {characters} must {choose} between {bad_options}.",
+          "Note how {resource} {dwindles} as {threat} {spreads}. {desperation} grows."
+        ]
+      }
+    },
+    "world_unfolding": {
+      "apocalyptic_locations": {
+        "collapsing_city": {
+          "central_paradox": "The city was meant to be a symbol of human achievement, but now it's a tomb. The infrastructure that sustained millions now accelerates their demise.",
+          "untrustworthy_elements": [
+            "buildings that collapse without warning",
+            "services that work intermittently",
+            "people who seem normal but aren't",
+            "the sense that the city is dying around you",
+            "memories of how things used to be",
+            "the constant feeling of being watched",
+            "resources that disappear overnight"
+          ]
+        },
+        "last_refuge": {
+          "central_paradox": "The refuge was meant to be a safe haven, but the longer people stay, the more dangerous it becomes. The last bastion of civilization is also its greatest threat.",
+          "untrustworthy_elements": [
+            "leaders who make questionable decisions",
+            "supplies that dwindle too quickly",
+            "people who disappear without explanation",
+            "the sense that the refuge is a target",
+            "rules that change without notice",
+            "the feeling that you're being tested",
+            "memories that don't match reality"
+          ]
+        },
+        "abandoned_mall": {
+          "central_paradox": "The mall was a symbol of consumerism and excess, but now it's a last refuge. The remnants of the old world become tools for survival in the new.",
+          "untrustworthy_elements": [
+            "stores that seem stocked but aren't",
+            "mannequins that move when unobserved",
+            "the sense that the mall is alive",
+            "people who aren't what they seem",
+            "supplies that disappear and reappear",
+            "the feeling that you're being watched",
+            "memories of shopping that feel wrong"
+          ]
+        }
+      },
+      "revelation_patterns": [
+        "{Threat} isn't just {killing} - it's {evolving}. The {implication} is {consequence}.",
+        "{Location} isn't {safe} - it's {part_of_the_problem}. This suggests {hidden_danger}.",
+        "The {government|authorities} didn't {collapse} - they were {never_in_control}. This explains {unexplained_events}.",
+        "{Survivors} aren't just {struggling} - they're {changing}. This reveals {true_nature}.",
+        "The {apocalypse} isn't {random} - it was {planned|inevitable}. This changes {everything}."
+      ]
+    }
+  },
+  "assets": {
+    "icons": {
+      "themeIcon": "☢️",
+      "menuIcon": "🏙️",
+      "loadingIcon": "⏳"
+    },
+    "colors": {
+      "primary": "#3a2a1a",
+      "primary-dark": "#1a1208",
+      "secondary": "#5a482a",
+      "text-primary": "#e8d8c0",
+      "text-secondary": "#b8a999",
+      "accent": "#8b5a2b",
+      "desperation": "rgba(139, 90, 43, 0.3)",
+      "collapse": "rgba(91, 60, 17, 0.4)",
+      "urgency": "rgba(255, 50, 0, 0.2)"
+    },
+    "sounds": {
+      "ambient": ["distant_explosions.mp3", "wind_howling.mp3", "distant_screams.mp3", "silence.mp3"],
+      "ui": ["radio_static.wav", "alarm.wav", "gun_cock.wav", "heartbeat.wav"]
+    }
+  },
+  "ai_config": {
+    "apocalyptic_horror": {
+      "min_horror_level": 6,
+      "max_horror_level": 9,
+      "horror_types": [
+        "societal_collapse", "existential_dread",
+        "resource_scarcity", "survival_horror",
+        "moral_dilemmas", "inevitable_doom",
+        "human_monstrosity", "last_stand"
+      ],
+      "horror_probability": 0.85
+    },
+    "collapse_process": {
+      "min_collapse_level": 5,
+      "max_collapse_level": 9,
+      "collapse_mechanisms": [
+        "infrastructure_failure", "government_collapse",
+        "social_order_breakdown", "resource_depletion",
+        "moral_erosion", "technological_failure",
+        "environmental_collapse", "psychological_breakdown"
+      ],
+      "collapse_probability": 0.8
+    }
+  },
+  "integration": {
+    "game_behavior_modifications": {
+      "resource_system": "scarcity_based",
+      "trust_system": "dynamic",
+      "morality_system": "fluid",
+      "survival_system": "harsh",
+      "threat_system": "evolving"
+    },
+    "narrative_triggers": [
+      "societal_collapse", "resource_depletion",
+      "threat_evolution", "moral_dilemma",
+      "last_stand", "existential_revelation",
+      "human_monstrosity", "inevitable_doom"
+    ]
+  }
+}

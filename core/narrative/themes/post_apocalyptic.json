@@ -1,0 +1,254 @@
+{
+  "id": "post_apocalyptic",
+  "name": "Post-Apocalyptic Horror Theme",
+  "description": "Survival in a ruined world, the collapse of civilization, scavenging in the wasteland, mutated creatures, desperate survivors, the struggle to maintain humanity",
+  "lexicon_id": "post_apocalyptic",
+  "icon": "☢️",
+  "class": "writing-theme-post-apocalyptic",
+  "writing_rules": {
+    "message": "WARNING: This theme explores the aftermath of civilization's collapse. The world you knew is gone. What remains may be worse.",
+    "technical": {
+      "use_harsh_realism": 0.9,
+      "avoid_romanticizing_survival": 0.95,
+      "scarcity_probability": 0.85,
+      "moral_decay": 0.8,
+      "environmental_decay": 0.9
+    },
+    "sentence_structure": {
+      "complexity_normal": 0.4,
+      "complexity_disturbed": 0.6,
+      "complexity_paranoid": 0.75,
+      "fragment_probability": 0.7,
+      "ellipsis_probability": 0.6,
+      "repetition_probability": 0.5,
+      "scarcity_focus_probability": 0.8,
+      "survival_detail_probability": 0.9
+    },
+    "technical_rules": {
+      "never_glorify_the_apocalypse": [
+        "Never romanticize the end of the world. Show the suffering, the loss, the desperation.",
+        "Never make survival look easy. Every resource should be hard-won.",
+        "Never sanitize the aftermath. Show the decay, the rot, the failure of systems."
+      ],
+      "survival_reality": {
+        "scarcity_priority": 0.95,
+        "moral_compromises": 0.85,
+        "environmental_hazards": 0.9,
+        "social_collapse": 0.8
+      }
+    },
+    "content_constraints": {
+      "min_scarcity_detail": 0.85,
+      "min_survival_challenges": 0.8,
+      "max_hopeful_outcomes": 0.3,
+      "min_moral_ambiguity": 0.75,
+      "apocalyptic_auto_generation": 0.7
+    },
+    "form": {
+      "allow_harsh_truths": 1,
+      "mandatory_scarcity_description": 0.9,
+      "allow_moral_decay": 0.85,
+      "forbid_optimistic_endings": 0.95
+    }
+  },
+  "vocabulary_subsets": [
+    "nouns_by_theme.post_apocalyptic",
+    "nouns_by_theme.ruin",
+    "verbs_by_terror.survival",
+    "verbs_by_terror.desperation",
+    "adjectives.post_apocalyptic",
+    "adjectives.decay",
+    "adjectives.harsh",
+    "nouns.scavenging"
+  ],
+  "content": {
+    "greetings": [
+      "The world ended {time_ago}. You're still here.",
+      "{scarcity_statement}. Choose wisely.",
+      "The {landmark} is gone. What's left {function} now.",
+      "They said it would be quick. They lied.",
+      "The {radiation|plague|war} changed everything. You changed too."
+    ],
+    "greetings_internal_monologue": [
+      "{self_question}: How long since I {action}? {self_answer} Too long.",
+      "{uncertainty}: {resource} is {running_low|contaminated|gone}. {self_correction} No, {resource} IS {state}.",
+      "{introjection}: {survival_command}. {resistance} {futile_gesture}.",
+      "{self_observation}: {body_part} {shows_signs|appears_stable}. {doubt} {self_reassurance}."
+    ],
+    "farewells": [
+      "The {wasteland} doesn't care if you live or die.",
+      "Take what you need. Leave what you can't carry.",
+      "The {mutants|raiders|radiation} will find you eventually.",
+      "Your {supplies} won't last forever. Neither will you.",
+      "Remember {civilization}. It's gone now."
+    ],
+    "loading_messages": [
+      "Calculating {radiation_levels}...",
+      "Scanning for {hostile_entities}...",
+      "Assessing {resource_availability}...",
+      "Simulating {survival_scenario}...",
+      "Generating {wasteland_environment}..."
+    ],
+    "survival_reports": [
+      "[SURVIVAL LOG {timestamp}]\nLocation: {place}\nSupplies: {inventory}\nThreats: {dangers}\nAllies: {companions}\nNotes: {observation}",
+      "[SCAVENGING REPORT]\nArea: {location}\nResources Found: {items}\nHazards Encountered: {threats}\nCondition: {state}\nRecommendation: {advice}",
+      "[WOUND ASSESSMENT]\nInjury: {type}\nSeverity: {level}\nTreatment: {action}\nPrognosis: {outcome}\nSupplies Used: {resources}",
+      "[ENCOUNTER LOG]\nEntity: {type}\nBehavior: {action}\nOutcome: {result}\nLessons Learned: {insight}"
+    ],
+    "game_descriptions": {
+      "templates": [
+        "A {adjective} survival experience in {wasteland_type}. {scarcity_statement} forces {moral_choice}.",
+        "Scavenge {ruined_location} for {vital_resource}. Avoid {threats} while {survival_action}.",
+        "The {apocalypse_type} changed everything. Now {mutated_creature} hunts the survivors. {player_objective}.",
+        "A {subgenre} game where {civilization_collapse} created {new_threat}. {survival_mechanic} determines your fate.",
+        "Navigate {hazardous_environment} where {environmental_danger} and {human_threat} compete for dominance."
+      ],
+      "adjectives": [
+        "harsh", "brutal", "desolate",
+        "ruined", "toxic", "lawless"
+      ],
+      "wasteland_types": [
+        "a nuclear wasteland where the air burns your lungs",
+        "a plague-ravaged city where the dead outnumber the living",
+        "a flooded metropolis where mutated creatures rule the depths",
+        "a scorched desert where water is more valuable than gold",
+        "a frozen tundra where hypothermia is a constant threat"
+      ],
+      "scarcity_statements": [
+        "food is measured in calories, water in sips",
+        "ammunition is more valuable than gold",
+        "medicine is a luxury few can afford",
+        "trust is the rarest commodity of all",
+        "hope is a liability"
+      ],
+      "threats": [
+        "raiders who see you as either prey or recruit",
+        "mutated creatures that evolved beyond natural law",
+        "radiation zones that rewrite your DNA",
+        "plagues that turn your body against itself",
+        "AI that sees humans as a failed experiment"
+      ],
+      "survival_mechanics": [
+        "your body gradually succumbs to radiation poisoning",
+        "your moral choices determine your humanity",
+        "your supplies degrade over time, forcing constant scavenging",
+        "your allies may betray you when resources run low",
+        "your environment becomes increasingly hostile"
+      ]
+    },
+    "rules": {
+      "thematic_constraints": {
+        "never_romanticize_collapse": 0.99,
+        "always_show_consequences": 0.98,
+        "emphasize_scarcity": 0.95,
+        "avoid_heroic_narratives": 0.97,
+        "show_moral_decay": 0.9
+      },
+      "example_techniques": {
+        "scarcity_focus": [
+          "Describe the {resource} in terms of its remaining quantity and condition.",
+          "Note how {character} {ration|hoard|trade} {resource}.",
+          "Show the {consequences} of {resource_shortage}.",
+          "Create {situation} where {character} must choose between {need} and {other_need}."
+        ],
+        "environmental_decay": [
+          "Describe how {structure} has {deteriorated} over time.",
+          "Note the {evidence} of {past_civilization} in the {current_state}.",
+          "Show how {natural_force} has {transformed} the {environment}.",
+          "Create {situation} where {environmental_hazard} threatens {character}."
+        ],
+        "moral_decay": [
+          "Show {character} {compromising} their {principles} for {survival}.",
+          "Create {situation} where {moral_choice} has {unintended_consequence}.",
+          "Describe how {group} {justifies} {unethical_action}.",
+          "Show the {progression} of {character}'s {moral_decline}."
+        ]
+      }
+    },
+    "world_unfolding": {
+      "ruined_locations": {
+        "abandoned_city": {
+          "central_paradox": "The city was built to last, but nature always finds a way. The buildings stand, but they're no longer human spaces.",
+          "untrustworthy_elements": [
+            "street signs that point to locations that no longer exist",
+            "buildings that appear intact from a distance but are hollow shells up close",
+            "vehicles that still have power but no drivers",
+            "advertisements that promise a world that ended years ago",
+            "animals that have evolved to hunt humans"
+          ]
+        },
+        "collapsed_shelter": {
+          "central_paradox": "The shelter was meant to protect, but it became a tomb. The survivors who sought safety found only slow death.",
+          "untrustworthy_elements": [
+            "supplies that were supposed to last decades but are nearly gone",
+            "air filtration systems that now spread contamination",
+            "communication devices that only receive static and screams",
+            "maps that show a world that no longer exists",
+            "generators that run on something other than fuel"
+          ]
+        }
+      },
+      "revelation_patterns": [
+        "The {resource} isn't {expected_type} - it's {actual_type}. The {implication} is {consequence}.",
+        "{Structure} doesn't {function_as_expected} - it {actual_function}. This explains {previously_unexplained_phenomenon}.",
+        "The {apocalypse} wasn't caused by {apparent_cause} - it was caused by {actual_cause}. The {evidence} was {misinterpreted_as} {incorrect_interpretation}.",
+        "{Character} isn't {human} - they're {mutated|infected|transformed}. But {evidence_of_humanity} complicates this."
+      ]
+    }
+  },
+  "assets": {
+    "icons": {
+      "themeIcon": "☢️",
+      "menuIcon": "🏚️",
+      "loadingIcon": "⚠️"
+    },
+    "colors": {
+      "primary": "#5a4d41",
+      "primary-dark": "#3a2d24",
+      "secondary": "#7a6b5e",
+      "text-primary": "#e8d8c0",
+      "text-secondary": "#b8a999",
+      "accent": "#d45500",
+      "ruin": "rgba(139, 69, 19, 0.3)",
+      "toxic": "rgba(143, 188, 143, 0.2)"
+    },
+    "sounds": {
+      "ambient": ["distant_gunfire.mp3", "howling_wind.mp3", "dripping_water.mp3"],
+      "ui": ["geiger_counter_click.wav", "metal_scraping.wav", "distant_scream.wav"]
+    }
+  },
+  "ai_config": {
+    "scarcity_simulation": {
+      "min_scarcity_level": 4,
+      "max_scarcity_level": 9,
+      "resource_types": [
+        "food", "water", "medicine",
+        "ammunition", "fuel", "tools"
+      ],
+      "scarcity_probability": 0.8
+    },
+    "moral_decay": {
+      "min_decay_level": 3,
+      "max_decay_level": 8,
+      "decay_mechanisms": [
+        "survival_necessity", "group_pressure",
+        "resource_scarcity", "environmental_stress"
+      ],
+      "decay_probability": 0.75
+    }
+  },
+  "integration": {
+    "game_behavior_modifications": {
+      "resource_system": "scarcity_based",
+      "moral_system": "choice_impact",
+      "environment_system": "decay_simulation",
+      "enemy_system": "evolving_threats",
+      "player_health": "gradual_decline"
+    },
+    "narrative_triggers": [
+      "resource_shortage", "moral_dilemma",
+      "environmental_hazard", "enemy_encounter",
+      "survivor_interaction"
+    ]
+  }
+}

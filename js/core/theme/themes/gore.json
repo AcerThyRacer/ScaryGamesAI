@@ -1,0 +1,120 @@
+{
+    "id": "gore",
+    "name": "Gore & Brutality",
+    "description": "A visceral theme that focuses on graphic violence, body horror, and the raw physicality of fear. Perfect for slasher games and survival horror.",
+
+    // UI Theme Settings (extends existing theme system)
+    "ui": {
+        "themeClass": "theme-gore",
+        "colors": {
+            "primary": "#1a0a0a",
+            "secondary": "#2e1a1a",
+            "accent": "#8b0000",
+            "textPrimary": "#ff9999",
+            "textSecondary": "#cc6666",
+            "textMuted": "#884444",
+            "borderDark": "rgba(139, 0, 0, 0.4)",
+            "borderGlow": "rgba(139, 0, 0, 0.3)"
+        },
+        "fonts": {
+            "main": "'Cormorant Garamond', serif",
+            "heading": "'Cormorant Garamond', serif",
+            "monospace": "'Source Code Pro', monospace"
+        }
+    },
+
+    // Writing Style Settings
+    "writing": {
+        "tone": "graphic, visceral, intense, brutal, unflinching",
+        "vocabulary": {
+            "positive": ["blood", "guts", "flesh", "bone", "blade", "pain", "scream", "agony", "torture", "carnage", "slaughter", "mutilation"],
+            "negative": ["gentle", "kind", "soft", "healing", "comfort", "safe", "clean", "sterile"],
+            "intensifiers": ["bloody", "gory", "brutal", "savage", "vicious", "merciless", "ruthless", "unrelenting"],
+            "descriptors": ["blood-soaked", "gore-splattered", "flesh-rending", "bone-crushing", "soul-shattering", "pain-wracked"]
+        },
+        "sentenceStructure": {
+            "minWords": 5,
+            "maxWords": 15,
+            "complexity": 0.5,
+            "ellipsisProbability": 0.2,
+            "fragmentProbability": 0.5
+        },
+        "goreTechniques": {
+            "graphicDescription": 0.8,
+            "bodyHorror": 0.7,
+            "painEmphasis": 0.6,
+            "shockValue": 0.5,
+            "sensoryOverload": 0.4
+        }
+    },
+
+    // Theme-specific content
+    "content": {
+        "greetings": [
+            "The bloodbath awaits...",
+            "Fresh meat has arrived.",
+            "Your screams will be music to my ears.",
+            "The slaughter begins now.",
+            "Welcome to the abattoir."
+        ],
+        "farewells": [
+            "Your blood will fertilize the soil.",
+            "Enjoy the afterlife... if you make it.",
+            "The next victim awaits.",
+            "Your screams echo in the void.",
+            "Until we meet again... in hell."
+        ],
+        "loadingMessages": [
+            "Sharpening the blades...",
+            "Preparing the torture devices...",
+            "The blood never dries...",
+            "Your flesh hungers for pain...",
+            "The screams grow louder...",
+            "Something wet drips from the ceiling...",
+            "The stench of death fills the air...",
+            "Your body tenses in anticipation..."
+        ],
+        "gameDescriptions": {
+            "template": "A {adjective} experience that will leave you {state}. {setup}",
+            "adjectives": ["bloody", "brutal", "savage", "vicious", "merciless", "ruthless", "unrelenting", "sadistic"],
+            "verbs": ["covered in gore", "screaming in agony", "begging for mercy", "traumatized", "scarred for life"],
+            "state": ["bloodied", "broken", "shaking", "horrified", "nauseated"],
+            "setups": [
+                "The killer has your scent, and escape is impossible.",
+                "Your flesh is the canvas, and pain is the medium.",
+                "Every shadow hides a blade waiting to taste your blood.",
+                "The screams of previous victims echo through the halls... and now it's your turn.",
+                "There is no escape. There is only pain."
+            ]
+        }
+    },
+
+    // Theme-specific assets
+    "assets": {
+        "backgrounds": ["gore-bg-1.jpg", "gore-bg-2.jpg", "gore-bg-3.jpg"],
+        "icons": {
+            "themeIcon": "🔪",
+            "loadingIcon": "💉"
+        },
+        "sounds": {
+            "ambient": ["gore-ambient-1.mp3", "gore-ambient-2.mp3"],
+            "effects": ["scream-1.mp3", "blade-1.mp3", "squish-1.mp3", "bone-crack-1.mp3", "gurgle-1.mp3"]
+        }
+    },
+
+    // Game-specific adaptations
+    "gameAdaptations": {
+        "blood-tetris": {
+            "npcDialogueStyle": "sadistic killer taunting victim",
+            "environmentDescriptions": "blood-splattered rooms, torture chambers, slaughterhouse"
+        },
+        "zombie-horde": {
+            "npcDialogueStyle": "desperate survivor in panic",
+            "environmentDescriptions": "corpses everywhere, blood trails, gore-covered streets"
+        },
+        "cursed-depths": {
+            "npcDialogueStyle": "eldritch horror with a taste for flesh",
+            "environmentDescriptions": "living meat walls, bone corridors, flesh-eating abyss"
+        }
+    }
+}

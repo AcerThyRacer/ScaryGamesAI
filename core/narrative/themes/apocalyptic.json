@@ -1,0 +1,159 @@
+{
+  "id": "apocalyptic",
+  "name": "Apocalyptic Horror Theme",
+  "description": "The end of the world, catastrophic events, survival in the face of global annihilation - the terror of impending doom.",
+  "lexicon_id": "apocalyptic",
+  "icon": "☠️",
+  "class": "writing-theme-apocalyptic",
+  "writing_rules": {
+    "message": "WARNING: This theme explores the terror of the end of the world. The old order is crumbling, and what comes next may be far worse than the death of civilization. Survival is not guaranteed, and hope is a luxury few can afford.",
+    "technical": {
+      "use_survival_terminology": 0.8,
+      "use_desperation_language": 0.7,
+      "describe_societal_collapse": 0.85,
+      "use_resource_scarcity": 0.75,
+      "describe_mutations": 0.7
+    },
+    "sentence_structure": {
+      "complexity_normal": 0.65,
+      "fragment_probability": 0.55,
+      "ellipsis_probability": 0.45,
+      "use_survival_terminology": 0.8,
+      "use_desperation_language": 0.7,
+      "use_unfinished_thoughts": 0.6
+    },
+    "content_constraints": {
+      "allow_survival_scenes": 0.95,
+      "allow_societal_collapse": 0.9,
+      "allow_post_apocalyptic_mutations": 0.8,
+      "allow_resource_scarcity": 0.85,
+      "allow_moral_dilemmas": 0.8
+    }
+  },
+  "vocabulary_subsets": [
+    "nouns_by_theme.apocalyptic",
+    "nouns_by_theme.survival",
+    "verbs_by_terror.desperation",
+    "adjectives.ruined",
+    "adjectives.desperate"
+  ],
+  "content": {
+    "greetings": [
+      "The {location} stands {ruined} against the {sky}, its {feature} {decayed} from years of {neglect}.",
+      "A {scent} hangs in the air, the unmistakable {smell} of {decay} and {desperation}.",
+      "The remains of {civilization} {litter} the {ground}, {evidence} of the {catastrophe} that changed everything."
+    ],
+    "demands": [
+      "We need to find {resource} before {threat} finds us.",
+      "Don't waste {precious_resource}. We might not find more.",
+      "Trust no one out here. {warning}."
+    ],
+    "farewells": [
+      "If we don't meet again, remember: {final_advice}.",
+      "The {radiation|plague|mutagens} are getting worse. I don't think I'll last much longer.",
+      "Take this {item}. It might help you {survive|escape|find_safety}."
+    ],
+    "loading_messages": [
+      "Scanning {area} for {resource}... {result} found.",
+      "Checking {radiation|toxic|contamination} levels... {danger_level} detected.",
+      "Searching for {survivors|threats}... {result} located.",
+      "Assessing {shelter|location} safety... {risk_level} determined."
+    ],
+    "narrative_fragments": [
+      "The {object} is {adjective} with {substance}, a reminder of the {catastrophe} that changed everything.",
+      "{character} checks their {equipment}, ensuring they have enough {resource} to make it through another day.",
+      "A {sound} echoes across the {landscape}, too {adjective} to be natural. Something is out there.",
+      "The {landmark} stands {ruined}, a {symbol} of the world that was and the horrors that came after.",
+      "{character} finds a {child's_toy} in the {ruins}, its {condition} suggesting it was {abandoned} in a hurry."
+    ],
+    "location_descriptions": {
+      "generic_location": [
+        "The {location} stands {ruined} against the {sky}, its {feature} {decayed} from years of {neglect}.",
+        "A {scent} hangs in the air, the unmistakable {smell} of {decay} and {desperation}.",
+        "The remains of {civilization} {litter} the {ground}, {evidence} of the {catastrophe} that changed everything."
+      ],
+      "city": [
+        "The skyline is a {jagged} silhouette of {ruined} buildings, their {windows} like {empty_eyes} staring into the {void}.",
+        "Something {moves} in the {ruins}, its {form} too {unnatural} to be {human}.",
+        "The {street} is {blocked} by {debris}, forcing {character} to {detour} through {dangerous_area}."
+      ],
+      "wasteland": [
+        "The {landscape} stretches endlessly, a {monochrome} expanse of {ruin} and {desolation}.",
+        "A {structure} stands in the {distance}, too {intact} to be {abandoned}, too {wrong} to be {safe}.",
+        "The {ground} is {littered} with {debris}, each piece telling a story of the {world_that_was}."
+      ]
+    },
+    "character_dialog": {
+      "reassurance": [
+        "It's just the {innocuous_explanation}. Happens all the time out here.",
+        "Don't worry about the {disturbing_thing}. We've seen worse.",
+        "You'll get used to the {unpleasant_thing}. Everyone does eventually."
+      ],
+      "doubt": [
+        "Something's not right. {observation} doesn't match what I remember.",
+        "This can't be natural. {phenomenon} shouldn't work like that.",
+        "I don't like this. {suspicious_detail} feels {adjective}."
+      ],
+      "realization": [
+        "Oh no... {terrible_truth}. That explains the {evidence}.",
+        "I think I understand now. {revelation}. We have to {action}.",
+        "The {threat} isn't just {normal_state}. It's {horrifying_state}."
+      ],
+      "denial": [
+        "This can't be happening. {reality_denial}. It's not possible.",
+        "There has to be an explanation. {attempted_explanation}.",
+        "No, no, no. {repetition} This isn't real."
+      ],
+      "survival": [
+        "We need to find {resource} before {threat} finds us.",
+        "Don't waste {precious_resource}. We might not find more.",
+        "Trust no one out here. {warning}.",
+        "The {radiation|plague|mutagens} are getting worse. We need to find {shelter} soon.",
+        "That {item} could mean the difference between {life_and_death}. We have to {action}."
+      ]
+    },
+    "game_descriptions": {
+      "templates": [
+        "Survive in {ruined_location} where {threat} hunts the weak. {mechanic} forces you to scavenge for resources while avoiding the new predators.",
+        "Escape from {dangerous_place} as {catastrophe} approaches. {gameplay_feature} tests your ability to make hard choices about who to save.",
+        "Investigate {mystery} in {location} where {phenomenon} causes {horrifying_effect}. {twist} reveals what really caused the apocalypse.",
+        "Scavenge in {ruined_city} where {faction} controls the last {resource}. {unique_mechanic} forces you to decide who to trust in a world with no rules.",
+        "Navigate {wasteland} to reach {safe_zone} before {doom} catches you. {revelation} will challenge your will to survive in a world that wants you dead."
+      ],
+      "apocalyptic_elements": [
+        "a safe zone that isn't as safe as it seems",
+        "a radio signal that might be a trap or a genuine call for help",
+        "a vehicle that barely runs but is your only hope of escape",
+        "a map that may be outdated but is your only guide",
+        "a group of survivors with their own agenda",
+        "a resource that's more valuable than gold in the wasteland",
+        "a mutation that might be a curse or a blessing",
+        "a rumor about a place that might offer safety or certain doom",
+        "a person who might be immune to the catastrophe or the source of it",
+        "a choice between saving yourself or helping others"
+      ]
+    }
+  },
+  "assets": {
+    "icons": {
+      "themeIcon": "☠️",
+      "menuIcon": "🌍",
+      "loadingIcon": "⚠️"
+    },
+    "colors": {
+      "primary": "#2a2a1a",
+      "primary-dark": "#1a1a0a",
+      "secondary": "#3a3a2a",
+      "text-primary": "#e8d8c0",
+      "text-secondary": "#b8a999",
+      "accent": "#d45500",
+      "fire": "rgba(212, 85, 0, 0.4)",
+      "ash": "rgba(100, 100, 100, 0.5)",
+      "blood": "rgba(139, 0, 0, 0.3)"
+    },
+    "sounds": {
+      "ambient": ["distant_explosions.mp3", "howling_wind.mp3", "distant_screams.mp3"],
+      "ui": ["radio_static.wav", "metal_creaking.wav", "distant_gunshot.wav"]
+    }
+  }
+}

@@ -1,0 +1,121 @@
+{
+    "id": "fantasy",
+    "name": "Fantasy Adventure",
+    "description": "A magical theme filled with epic quests, mythical creatures, ancient prophecies, and heroic adventures in a world of wonder and danger.",
+
+    // UI Theme Settings (extends existing theme system)
+    "ui": {
+        "themeClass": "theme-fantasy",
+        "colors": {
+            "primary": "#0a1a2a",
+            "secondary": "#1a2a3a",
+            "accent": "#4a6b8a",
+            "textPrimary": "#d0e0f0",
+            "textSecondary": "#a0b0c0",
+            "textMuted": "#667788",
+            "borderDark": "rgba(74, 107, 138, 0.3)",
+            "borderGlow": "rgba(74, 107, 138, 0.2)"
+        },
+        "fonts": {
+            "main": "'Cormorant Garamond', serif",
+            "heading": "'Cormorant Garamond', serif",
+            "monospace": "'Source Code Pro', monospace"
+        }
+    },
+
+    // Writing Style Settings
+    "writing": {
+        "tone": "epic, heroic, magical, adventurous, mysterious",
+        "vocabulary": {
+            "positive": ["hero", "quest", "magic", "sword", "spell", "dragon", "castle", "kingdom", "prophecy", "artifact", "treasure", "legend"],
+            "negative": ["mundane", "ordinary", "boring", "safe", "predictable", "common"],
+            "intensifiers": ["mighty", "legendary", "ancient", "powerful", "mystical", "epic", "glorious", "terrible"],
+            "descriptors": ["magical", "heroic", "ancient", "mystical", "epic", "legendary", "enchanted"]
+        },
+        "sentenceStructure": {
+            "minWords": 8,
+            "maxWords": 22,
+            "complexity": 0.7,
+            "ellipsisProbability": 0.2,
+            "fragmentProbability": 0.2
+        },
+        "fantasyTechniques": {
+            "epicDescriptions": 0.6,
+            "mythicalReferences": 0.5,
+            "heroicLanguage": 0.7,
+            "magicalElements": 0.6,
+            "ancientLore": 0.5
+        }
+    },
+
+    // Theme-specific content
+    "content": {
+        "greetings": [
+            "Welcome, brave adventurer!",
+            "The realm awaits your heroism...",
+            "A new quest begins...",
+            "The forces of darkness gather... will you stand against them?",
+            "Legends are made in times like these..."
+        ],
+        "farewells": [
+            "May the gods guide your path...",
+            "Until our blades cross again...",
+            "The realm will remember your deeds...",
+            "Go forth, hero...",
+            "May your sword stay sharp and your magic strong..."
+        ],
+        "loadingMessages": [
+            "Summoning the ancient powers...",
+            "The dragons stir in their slumber...",
+            "Your quest awaits...",
+            "The magic gathers around you...",
+            "A prophecy unfolds...",
+            "The kingdom's fate hangs in the balance...",
+            "Your legend grows...",
+            "The enchanted artifacts hum with power..."
+        ],
+        "gameDescriptions": {
+            "template": "An {adjective} quest to {verb} the {noun} and {outcome}. {setup}",
+            "adjectives": ["epic", "legendary", "heroic", "magical", "ancient", "mystical", "dangerous", "glorious"],
+            "verbs": ["reclaim", "defeat", "find", "uncover", "restore", "destroy", "protect", "conquer"],
+            "nouns": ["lost artifact", "ancient prophecy", "dark lord", "legendary sword", "enchanted kingdom", "forgotten magic", "mythical creature"],
+            "outcome": ["save the kingdom", "restore the balance", "fulfill the prophecy", "claim your destiny", "become a legend"],
+            "setups": [
+                "The dark forces gather, and only a true hero can stand against them.",
+                "An ancient prophecy speaks of your coming... but time is running out.",
+                "The kingdom lies in ruins, and the key to its restoration is hidden in the depths of danger.",
+                "A legendary artifact has been stolen, and its power could doom us all.",
+                "The dragons awaken, and their wrath threatens to consume the land."
+            ]
+        }
+    },
+
+    // Theme-specific assets
+    "assets": {
+        "backgrounds": ["fantasy-bg-1.jpg", "fantasy-bg-2.jpg", "fantasy-bg-3.jpg"],
+        "icons": {
+            "themeIcon": "⚔️",
+            "loadingIcon": "🔮"
+        },
+        "sounds": {
+            "ambient": ["fantasy-ambient-1.mp3", "fantasy-ambient-2.mp3"],
+            "effects": ["magic-1.mp3", "sword-1.mp3", "dragon-roar-1.mp3", "spell-cast-1.mp3", "heroic-fanfare-1.mp3"]
+        }
+    },
+
+    // Game-specific adaptations
+    "gameAdaptations": {
+        "cursed-depths": {
+            "npcDialogueStyle": "wise old mage with ancient knowledge",
+            "environmentDescriptions": "enchanted dungeons, magical forests, ancient ruins"
+        },
+        "ritual-circle": {
+            "npcDialogueStyle": "dark sorcerer seeking forbidden power",
+            "environmentDescriptions": "ritual sites, magical circles, enchanted libraries"
+        },
+        "shadow-crawler": {
+            "npcDialogueStyle": "stealthy rogue with a mysterious past",
+            "environmentDescriptions": "shadowy alleys, thieves' guilds, hidden temples"
+        }
+    }
+}

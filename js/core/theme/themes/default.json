@@ -1,0 +1,112 @@
+{
+    "id": "default",
+    "name": "Default Theme",
+    "description": "The standard theme with a clean, neutral design that serves as a baseline for all other themes.",
+
+    // UI Theme Settings (extends existing theme system)
+    "ui": {
+        "themeClass": "theme-default",
+        "colors": {
+            "primary": "#1a1a1a",
+            "secondary": "#2a2a2a",
+            "accent": "#cc1122",
+            "textPrimary": "#f1f1f1",
+            "textSecondary": "#a0a0a0",
+            "textMuted": "#666666",
+            "borderDark": "rgba(204, 17, 34, 0.3)",
+            "borderGlow": "rgba(204, 17, 34, 0.2)"
+        },
+        "fonts": {
+            "main": "'Inter', sans-serif",
+            "heading": "'Inter', sans-serif",
+            "monospace": "'Source Code Pro', monospace"
+        }
+    },
+
+    // Writing Style Settings
+    "writing": {
+        "tone": "neutral, clear, engaging, professional",
+        "vocabulary": {
+            "positive": ["game", "play", "challenge", "adventure", "experience", "fun", "exciting", "thrilling", "engaging", "immersive"],
+            "negative": ["boring", "tedious", "frustrating", "difficult", "confusing", "unclear"],
+            "intensifiers": ["very", "extremely", "highly", "incredibly", "amazingly", "exceptionally"],
+            "descriptors": ["exciting", "challenging", "engaging", "immersive", "thrilling", "fun"]
+        },
+        "sentenceStructure": {
+            "minWords": 6,
+            "maxWords": 18,
+            "complexity": 0.5,
+            "ellipsisProbability": 0.1,
+            "fragmentProbability": 0.1
+        },
+        "defaultTechniques": {
+            "clarity": 0.8,
+            "engagement": 0.6,
+            "professionalism": 0.7,
+            "neutralTone": 0.9
+        }
+    },
+
+    // Theme-specific content
+    "content": {
+        "greetings": [
+            "Welcome to ScaryGamesAI!",
+            "Ready for some fun?",
+            "Let's get started!",
+            "Welcome back!",
+            "The games await you..."
+        ],
+        "farewells": [
+            "Thanks for playing!",
+            "See you next time!",
+            "Until we meet again...",
+            "Game over... for now.",
+            "Come back soon!"
+        ],
+        "loadingMessages": [
+            "Loading your adventure...",
+            "Preparing the games...",
+            "Almost there...",
+            "The fun is about to begin...",
+            "Setting up your experience...",
+            "Just a moment...",
+            "Your game awaits...",
+            "Ready in just a second..."
+        ],
+        "gameDescriptions": {
+            "template": "An {adjective} {genre} game that will {verb} your {noun}. {setup}",
+            "adjectives": ["exciting", "challenging", "engaging", "thrilling", "fun", "immersive", "unique", "innovative"],
+            "verbs": ["test", "challenge", "push", "engage", "immerse", "entertain", "thrill"],
+            "nouns": ["skills", "reflexes", "strategy", "imagination", "courage", "wits"],
+            "genre": ["horror", "adventure", "puzzle", "action", "strategy", "arcade"],
+            "setups": [
+                "Can you overcome the challenges that await?",
+                "The stakes are high, and the rewards are greater.",
+                "Every decision counts in this thrilling experience.",
+                "Are you ready to test your limits?",
+                "This game will keep you on the edge of your seat."
+            ]
+        }
+    },
+
+    // Theme-specific assets
+    "assets": {
+        "backgrounds": ["default-bg-1.jpg", "default-bg-2.jpg", "default-bg-3.jpg"],
+        "icons": {
+            "themeIcon": "🎮",
+            "loadingIcon": "⏳"
+        },
+        "sounds": {
+            "ambient": ["default-ambient-1.mp3", "default-ambient-2.mp3"],
+            "effects": ["click-1.mp3", "hover-1.mp3", "success-1.mp3", "failure-1.mp3"]
+        }
+    },
+
+    // Game-specific adaptations
+    "gameAdaptations": {
+        "all": {
+            "npcDialogueStyle": "neutral and clear",
+            "environmentDescriptions": "accurate and descriptive"
+        }
+    }
+}

@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Total Zombies: Rome - Enhanced Engine</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            overflow: hidden;
+            background: #0a0a00;
+            font-family: 'Inter', sans-serif;
+        }
+        
+        #game-canvas {
+            display: block;
+            width: 100vw;
+            height: 100vh;
+        }
+        
+        #ui-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+        
+        #hud {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #fff;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            pointer-events: auto;
+        }
+        
+        #hud h3 {
+            margin-bottom: 10px;
+            color: #ff6600;
+            font-size: 16px;
+        }
+        
+        .stat-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            font-size: 13px;
+        }
+        
+        .stat-label {
+            color: #aaa;
+        }
+        
+        .stat-value {
+            color: #fff;
+            font-weight: bold;
+        }
+        
+        #controls {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            color: #fff;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            pointer-events: auto;
+        }
+        
+        #controls h4 {
+            margin-bottom: 10px;
+            color: #ff6600;
+            font-size: 14px;
+        }
+        
+        .control-item {
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+        
+        .key {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 2px 6px;
+            border-radius: 4px;
+            margin-right: 5px;
+        }
+        
+        #start-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            pointer-events: auto;
+            z-index: 1000;
+        }
+        
+        #start-screen h1 {
+            color: #ff6600;
+            font-size: 48px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(255, 102, 0, 0.5);
+        }
+        
+        #start-screen p {
+            color: #ccc;
+            font-size: 18px;
+            margin-bottom: 30px;
+            max-width: 600px;
+            text-align: center;
+        }
+        
+        .btn {
+            background: linear-gradient(135deg, #ff6600, #cc4400);
+            color: #fff;
+            border: none;
+            padding: 15px 40px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(255, 102, 0, 0.6);
+        }
+        
+        #wave-info {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: #fff;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        #wave-info h3 {
+            color: #ff6600;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        
+        .wave-stat {
+            font-size: 13px;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="game-canvas"></canvas>
+    
+    <div id="ui-overlay">
+        <div id="hud">
+            <h3>🎮 Engine Stats</h3>
+            <div class="stat-row">
+                <span class="stat-label">Entities:</span>
+                <span class="stat-value" id="stat-entities">0</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Zombies:</span>
+                <span class="stat-value" id="stat-zombies">0</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">FPS:</span>
+                <span class="stat-value" id="stat-fps">0</span>
+            </div>
+            <div class="stat-row">
+                <span class="stat-label">Quality:</span>
+                <span class="stat-value" id="stat-quality">Auto</span>
+            </div>
+        </div>
+        
+        <div id="wave-info">
+            <h3>🧟 Wave Info</h3>
+            <div class="wave-stat">
+                <span class="stat-label">Wave:</span>
+                <span class="stat-value" id="wave-number">0</span>
+            </div>
+            <div class="wave-stat">
+                <span class="stat-label">Alive:</span>
+                <span class="stat-value" id="zombies-alive">0</span>
+            </div>
+        </div>
+        
+        <div id="controls">
+            <h4>🎮 Controls</h4>
+            <div class="control-item">
+                <span class="key">W</span><span class="key">A</span><span class="key">S</span><span class="key">D</span> Move Camera
+            </div>
+            <div class="control-item">
+                <span class="key">Space</span> Start Next Wave
+            </div>
+            <div class="control-item">
+                <span class="key">P</span> Pause/Resume
+            </div>
+            <div class="control-item">
+                <span class="key">1-5</span> Spawn Zombies
+            </div>
+        </div>
+    </div>
+    
+    <div id="start-screen">
+        <h1>🏛️ Total Zombies: Rome</h1>
+        <p>Enhanced Engine - Phase 1 & 2 Complete<br>
+        ECS Architecture + Advanced Zombie AI<br>
+        Support for 2000+ zombies at 60 FPS</p>
+        <button class="btn" id="start-btn">Start Engine</button>
+    </div>
+    
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/SSAOPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+    
+    <!-- ECS Core -->
+    <script src="core/ECS/EntityManager.js"></script>
+    <script src="core/ECS/Systems.js"></script>
+    
+    <!-- Rendering -->
+    <script src="core/rendering/AdvancedRenderer.js"></script>
+    
+    <!-- AI -->
+    <script src="core/ai/ZombieSwarmAI.js"></script>
+    <script src="core/ai/ZombieTypes.js"></script>
+    
+    <!-- Main Engine -->
+    <script src="enhanced-engine.js"></script>
+    
+    <script>
+        // UI Updates
+        const startBtn = document.getElementById('start-btn');
+        const startScreen = document.getElementById('start-screen');
+        
+        startBtn.addEventListener('click', () => {
+            startScreen.style.display = 'none';
+            
+            if (window.gameEngine) {
+                window.gameEngine.start();
+                window.gameEngine.setupCameraControl();
+                
+                // Start wave 1
+                setTimeout(() => {
+                    window.gameEngine.startWave(1);
+                }, 2000);
+            }
+        });
+        
+        // Keyboard controls
+        window.addEventListener('keydown', (e) => {
+            if (!window.gameEngine || !window.gameEngine.gameState.isRunning) return;
+            
+            switch(e.code) {
+                case 'Space':
+                    const currentWave = window.gameEngine.gameState.currentWave;
+                    window.gameEngine.startWave(currentWave + 1);
+                    break;
+                    
+                case 'KeyP':
+                    if (window.gameEngine.gameState.isPaused) {
+                        window.gameEngine.resume();
+                    } else {
+                        window.gameEngine.pause();
+                    }
+                    break;
+                    
+                case 'Digit1':
+                case 'Digit2':
+                case 'Digit3':
+                case 'Digit4':
+                case 'Digit5':
+                    const waveNum = parseInt(e.code.replace('Digit', ''));
+                    window.gameEngine.startWave(waveNum);
+                    break;
+            }
+        });
+        
+        // Update HUD
+        function updateHUD() {
+            if (!window.gameEngine) return;
+            
+            const stats = window.gameEngine.getStats();
+            
+            document.getElementById('stat-entities').textContent = stats.entities.active;
+            document.getElementById('stat-zombies').textContent = stats.entities.byComponent.get('zombieAI') || 0;
+            document.getElementById('stat-fps').textContent = Math.round(1000 / (window.gameEngine.clock.getElapsedTime() * 1000 / window.gameEngine.clock.getFrame()));
+            document.getElementById('stat-quality').textContent = stats.performance.currentQuality;
+            
+            document.getElementById('wave-number').textContent = stats.gameState.currentWave;
+            document.getElementById('zombies-alive').textContent = stats.entities.byComponent.get('zombieAI') || 0;
+            
+            requestAnimationFrame(updateHUD);
+        }
+        
+        updateHUD();
+        
+        console.log('🎮 Enhanced Engine UI ready');
+    </script>
+</body>
+</html>

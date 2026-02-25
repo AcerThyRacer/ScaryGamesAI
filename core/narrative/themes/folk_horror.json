@@ -1,0 +1,150 @@
+{
+  "id": "folk_horror",
+  "name": "Folk Horror Theme",
+  "description": "Ancient rituals, rural isolation, pagan traditions, the terror of the old ways and forgotten knowledge.",
+  "lexicon_id": "folk_horror",
+  "icon": "🌾",
+  "class": "writing-theme-folk-horror",
+  "writing_rules": {
+    "message": "WARNING: This theme explores the terror of ancient traditions, rural isolation, and forgotten knowledge. The old ways are not dead - they sleep, and they are hungry.",
+    "technical": {
+      "use_archaic_language": 0.6,
+      "use_regional_dialect": 0.5,
+      "use_ritual_structure": 0.7,
+      "avoid_modern_terminology": 0.4
+    },
+    "sentence_structure": {
+      "complexity_normal": 0.7,
+      "fragment_probability": 0.4,
+      "ellipsis_probability": 0.3,
+      "use_archaic_phrasing": 0.6,
+      "use_colloquialisms": 0.5
+    },
+    "content_constraints": {
+      "allow_ritual_descriptions": 0.9,
+      "allow_pagan_imagery": 0.85,
+      "allow_rural_isolation": 0.8,
+      "allow_forgotten_knowledge": 0.8
+    }
+  },
+  "vocabulary_subsets": [
+    "nouns_by_theme.folk",
+    "nouns_by_theme.ritual",
+    "verbs_by_terror.ancient",
+    "adjectives.old",
+    "adjectives.eerie"
+  ],
+  "content": {
+    "greetings": [
+      "The {village} sleeps under the {moon_phase} moon, its {cottages} dark and {silent} save for the occasional {sound}.",
+      "Something {moves} in the {distance}, too {large|unnatural} to be {animal}, its {form} barely visible in the {moonlight}.",
+      "The {elders} gather at the {ritual_site}, their {faces} hidden by {masks} that haven't been used in generations."
+    ],
+    "demands": [
+      "The {ritual} must be completed before {time}. The {old_ones} demand their {sacrifice}.",
+      "We must {action} before the {omen} appears. It's the only way to {prevent} the {doom}.",
+      "The {offering} must be made at {sacred_place}. The {old_gods} are {hungry|angry}."
+    ],
+    "farewells": [
+      "The {village} will remember you... if there's anyone left to remember.",
+      "When the {ritual} is complete, none will remain who knew your name.",
+      "The {old_ones} do not care for your {farewells}. They care only for {sacrifice}."
+    ],
+    "loading_messages": [
+      "Consulting the {ancient_texts}... {forbidden_knowledge} found.",
+      "Reading the {omens}... {disturbing_portent} detected.",
+      "Preparing the {ritual_components}... {unexpected_obstacle} encountered.",
+      "Communing with the {old_ones}... {response} received."
+    ],
+    "narrative_fragments": [
+      "The {villagers} gather at the {ritual_site}, their {faces} hidden by {masks} that haven't been used in generations.",
+      "{character} finds a {book|scroll} written in a {language} that hasn't been spoken in centuries, its {pages} filled with {warnings}.",
+      "A {sound} echoes through the {location}, the {chanting|drumming} of something that shouldn't be {alive}.",
+      "The {standing_stones} {glow} faintly under the {moonlight}, their {shadows} moving independently of their {sources}."
+    ],
+    "location_descriptions": {
+      "generic_location": [
+        "The {location} {looms|stands} against the {landscape}, its {feature} worn by {time} and {neglect}.",
+        "A {scent} hangs in the air, the unmistakable {smell} of {old_wood} and {something_older}.",
+        "The {ground} is {marked} with {symbol}, their meaning lost to all but the {oldest_residents}."
+      ],
+      "village": [
+        "The village {sleeps} under a {pale} moon, its {cottages} dark and {silent} except for the occasional {sound}.",
+        "Something {moves} in the {distance}, too {large|unnatural} to be {animal}, its {form} barely visible in the {moonlight}.",
+        "The {church|standing_stones} {dominates} the skyline, its {shadow} stretching across the {landscape} like a {warning}."
+      ],
+      "forest": [
+        "The trees of the {forest} {twist} into {unnatural_shapes}, their {bark} carved with {symbol} that hurt the eyes to look upon.",
+        "A {fog|mist} clings to the ground, {behavior} in ways that suggest {intelligence|purpose}.",
+        "The {path} through the forest {shifts|changes} when no one is looking, leading travelers to {fate}."
+      ]
+    },
+    "character_dialog": {
+      "reassurance": [
+        "It's just the {innocuous_explanation}, my {relation}. The old stories aren't real.",
+        "Don't worry about the {disturbing_thing}. It's probably just {rational_explanation}.",
+        "The {ritual} is just for show. It doesn't really {action}."
+      ],
+      "doubt": [
+        "Did you hear that? Sounded like {sound}, but that can't be right.",
+        "This place gives me the {feeling}. Like we shouldn't be here.",
+        "I don't like this. The {locals} are hiding something about the {place}."
+      ],
+      "realization": [
+        "Oh God... the {ritual} is real. And we're part of it.",
+        "I think I understand now. {revelation}. The {old_ones} are still here.",
+        "The {symbol} isn't just decoration. It's a {warning|warding}."
+      ],
+      "denial": [
+        "This can't be happening. {reality_denial}. The old ways are dead.",
+        "There has to be an explanation. {attempted_explanation}.",
+        "No, no, no. {repetition} This isn't real."
+      ],
+      "ritual": [
+        "{incantation} By the power of the {old_gods}, I call upon thee to {action}!",
+        "The {sacrifice} must be made. The {harvest|hunt|year} depends on it.",
+        "Beware the {time|place|person}. When the {conditions} are met, the {old_ones} will {action}."
+      ]
+    },
+    "game_descriptions": {
+      "templates": [
+        "Explore {rural_location} where {ancient_force} lingers, bound by {old_tradition}. {mechanic} reveals the true nature of the curse.",
+        "Uncover the secrets of {village} where {phenomenon} defies explanation. {twist} reveals the dark history behind the rituals.",
+        "Survive the night in {forest} where {supernatural_entity} hunts according to {ancient_rules}. {gameplay_feature} tests your knowledge of folklore.",
+        "Investigate {disturbing_event} in {rural_community} where {revelation} will challenge your understanding of history. {unique_mechanic} forces you to participate in the old ways.",
+        "Escape from {cursed_place} before {ritual} is completed. {revelation} will make you question what you thought you knew about tradition."
+      ],
+      "folk_elements": [
+        "a standing stone that whispers when the wind blows just right",
+        "a harvest festival that happens every seven years, whether the crops are ready or not",
+        "a village where everyone shares the same dream on the same night",
+        "a path that only appears at midnight and leads to a place that shouldn't exist",
+        "a child's game that adults refuse to play, for reasons they won't explain",
+        "a well that gives water that tastes different depending on who drinks it",
+        "a local legend that starts coming true when outsiders arrive"
+      ]
+    }
+  },
+  "assets": {
+    "icons": {
+      "themeIcon": "🌾",
+      "menuIcon": "🔥",
+      "loadingIcon": "🕯️"
+    },
+    "colors": {
+      "primary": "#3a2a1a",
+      "primary-dark": "#1a0f0a",
+      "secondary": "#5a4a3a",
+      "text-primary": "#e8d8c0",
+      "text-secondary": "#b8a999",
+      "accent": "#8b4513",
+      "earth": "rgba(139, 69, 19, 0.3)",
+      "blood": "rgba(139, 0, 0, 0.4)",
+      "ritual": "rgba(200, 100, 50, 0.2)"
+    },
+    "sounds": {
+      "ambient": ["crickets_at_night.mp3", "distant_chanting.mp3", "howling_wind.mp3"],
+      "ui": ["ritual_drum.wav", "old_bell.wav", "whispering_voices.wav"]
+    }
+  }
+}

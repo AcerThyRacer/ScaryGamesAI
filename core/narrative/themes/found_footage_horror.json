@@ -1,0 +1,292 @@
+{
+  "id": "found_footage_horror",
+  "name": "Found Footage Horror",
+  "description": "Documentary-style horror, first-person perspective, realism, the terror of authenticity, lost recordings, the horror of what was captured",
+  "lexicon_id": "found_footage_horror",
+  "icon": "📹",
+  "class": "writing-theme-found-footage",
+  "writing_rules": {
+    "message": "WARNING: This theme explores the terror of authenticity. What you're about to see is real. The camera doesn't lie. Or does it?",
+    "technical": {
+      "use_imperfect_filming": 0.95,
+      "create_realism": 0.98,
+      "build_suspense_through_limitations": 0.95,
+      "use_diegetic_sound": 0.9,
+      "create_authenticity": 0.99
+    },
+    "sentence_structure": {
+      "complexity_normal": 0.5,
+      "complexity_disturbed": 0.8,
+      "fragment_probability": 0.7,
+      "ellipsis_probability": 0.6,
+      "repetition_probability": 0.5,
+      "natural_speech_probability": 0.9,
+      "camera_limitation_probability": 0.85
+    },
+    "technical_rules": {
+      "never_break_the_illusion": [
+        "Never show more than what the camera would realistically capture.",
+        "Never use non-diegetic sound or music. All audio must come from within the scene.",
+        "Never show events that couldn't be captured by the camera's perspective."
+      ],
+      "camera_limitations": {
+        "min_imperfection_level": 0.9,
+        "max_realism_level": 0.98,
+        "authenticity_probability": 0.95
+      }
+    },
+    "content_constraints": {
+      "min_camera_imperfections": 0.9,
+      "min_realism": 0.95,
+      "max_non_diegetic_elements": 0.05,
+      "min_suspense_through_limitations": 0.85,
+      "min_authenticity": 0.95,
+      "found_footage_horror_auto_generation": 0.85
+    },
+    "form": {
+      "allow_camera_imperfections": 0.98,
+      "mandatory_realism": 0.95,
+      "allow_off_screen_horror": 0.99,
+      "forbid_non_diegetic_elements": 0.99
+    }
+  },
+  "vocabulary_subsets": [
+    "nouns_by_theme.filmmaking",
+    "nouns_by_theme.technology",
+    "verbs_by_terror.documenting",
+    "verbs_by_terror.discovering",
+    "adjectives.realistic",
+    "adjectives.imperfect",
+    "adjectives.tense",
+    "nouns.found_footage"
+  ],
+  "content": {
+    "greetings": [
+      "[CAMERA STARTS] {timestamp} - {location} - {filmmaker} here. We're about to {action}.",
+      "{static} The camera flickers. {sound} in the distance. {filmmaker}: {reaction}.",
+      "[AUDIO ONLY] {timestamp} - {filmmaker} whispering: {dialogue}. {sound} gets louder.",
+      "{shaky_footage} {filmmaker}: {statement}. {sound} interrupts.",
+      "[MISSING FOOTAGE] {timestamp} - {duration} of footage lost. {filmmaker}: {explanation}.",
+      "{night_vision} {filmmaker}: {observation}. {something_moves} in the darkness.",
+      "[CAMERA DROPPED] {timestamp} - {filmmaker}: {exclamation}. {sound} approaches.",
+      "{grainy_footage} {filmmaker}: {question}. {response} from off-camera."
+    ],
+    "greetings_internal_monologue": [
+      "{self_question}: Why does the {camera|audio} {behavior} so {adjective}?",
+      "{uncertainty}: I heard {sound}. {self_correction} No, it was just {false_explanation}. {doubt} {something_is_wrong}.",
+      "{introjection}: {filmmaker_command}. {resistance} {futile_gesture}.",
+      "{self_observation}: The {camera|audio} {shows_signs|appears_normal}. {doubt} {self_reassurance}. {something_is_watching}.",
+      "{memory_fragment}: I remember when {equipment} worked properly. {realization} That was {time_ago}."
+    ],
+    "farewells": [
+      "[CAMERA DIES] {timestamp} - {filmmaker}: {final_words}. {sound} fades to static.",
+      "{static} {filmmaker}'s voice: {final_message}. The camera stops.",
+      "[AUDIO CUTS OUT] {timestamp} - Last words: {final_words}. {sound} continues.",
+      "{shaky_footage} {filmmaker}: {final_statement}. {something_approaches}. [END]",
+      "The {camera|recorder} is damaged. {filmmaker}: {final_words}. {sound} is the last thing heard.",
+      "[MISSING FOOTAGE] {timestamp} - {duration} lost. Last known location: {location}.",
+      "{filmmaker}: {final_words}. {sound} drowns out everything. [RECORDING ENDS]",
+      "The {equipment} fails. {filmmaker}: {final_words}. {static} takes over."
+    ],
+    "loading_messages": [
+      "Loading {footage_type}... {status}",
+      "Recovering {damaged_footage}... {progress}",
+      "Analyzing {audio_track}... {anomalies} detected",
+      "Stabilizing {shaky_footage}... {success_rate}%",
+      "Enhancing {low_light_footage}... {visibility}%",
+      "Decrypting {corrupted_data}... {recovery}%",
+      "Synchronizing {audio_video}... {alignment}%",
+      "Processing {metadata}... {details} extracted"
+    ],
+    "footage_reports": [
+      "[FOOTAGE ANALYSIS REPORT]\nSource: {source}\nDate: {date}\nLocation: {location}\nDuration: {length}\nCondition: {condition}\nAnomalies: {count}\nNotable Events: {events}\nStatus: {status}",
+      "[AUDIO ANALYSIS]\nSource: {recording}\nDate: {date}\nBackground Noise: {noise_level}\nAnomalous Sounds: {sounds}\nVoice Analysis: {results}\nHidden Messages: {count}\nStatus: {status}",
+      "[MISSING FOOTAGE REPORT]\nSource: {source}\nTime Period: {start} to {end}\nDuration: {length}\nPossible Cause: {theory}\nLast Known Event: {event}\nStatus: {status}",
+      "[INVESTIGATOR NOTES]\nFootage: {source}\nInvestigator: {name}\nFindings: {details}\nTheories: {theories}\nRecommendations: {actions}\nPersonal Notes: {notes}"
+    ],
+    "game_descriptions": {
+      "templates": [
+        "A {adjective} {footage_type} discovered in {location}. {event} was captured on camera. {objective}.",
+        "The {recording} shows {filmmakers} investigating {phenomenon}. {something_goes_wrong}. {consequence}.",
+        "A {subgenre} game where you experience {footage} in real-time. {mechanic} determines your survival.",
+        "You've found {lost_footage}. {event} is more terrifying than anyone imagined. {goal}.",
+        "The {camera} never lies. But {filmmaker} did. {revelation} changes everything.",
+        "A {group} of {filmmakers} document {phenomenon}. The {footage} reveals {truth}. {objective}.",
+        "The {recording} is damaged. {event} must be reconstructed. {consequence} awaits.",
+        "Every {time_period}, {phenomenon} returns. This time, {filmmaker} captured it on camera."
+      ],
+      "adjectives": [
+        "lost", "damaged", "recovered", "classified",
+        "cursed", "haunted", "authentic", "unexplained",
+        "terrifying", "real", "unedited", "raw"
+      ],
+      "footage_types": [
+        "lost documentary footage",
+        "security camera recordings",
+        "home videos with disturbing content",
+        "police body cam footage",
+        "news reports that were never aired",
+        "found audio recordings",
+        "damaged cell phone videos",
+        "classified military footage"
+      ],
+      "filmmakers": [
+        "a documentary crew investigating the paranormal",
+        "a group of friends filming their vacation",
+        "a news team covering a strange event",
+        "a family documenting their move to a new home",
+        "a paranormal investigation team",
+        "a police officer responding to a call",
+        "a scientist studying an unusual phenomenon",
+        "a journalist researching a conspiracy"
+      ],
+      "phenomena": [
+        "a haunting that was captured on camera",
+        "a creature that shouldn't exist",
+        "an event that defies the laws of physics",
+        "a conspiracy that goes deeper than anyone imagined",
+        "a ritual that went horribly wrong",
+        "a disappearance that was caught on film",
+        "a transformation that was too fast to see clearly",
+        "a voice from beyond the grave"
+      ]
+    },
+    "rules": {
+      "thematic_constraints": {
+        "never_break_the_illusion": 0.99,
+        "always_show_camera_limitations": 0.98,
+        "emphasize_realism": 0.95,
+        "avoid_non_diegetic_elements": 0.99,
+        "show_the_terror_of_authenticity": 0.99
+      },
+      "example_techniques": {
+        "camera_limitations": [
+          "Describe {event} as seen through {camera_limitation}. The {horror} is {implied|suggested}.",
+          "Show how {filmmaker} {struggles} with {equipment}. The {horror} happens {off_screen|partially_obscured}.",
+          "Create {situation} where {camera} {fails|malfunctions} at a crucial moment.",
+          "Note how {audio|video} {distorts|degrades} when {horror} is near."
+        ],
+        "off_screen_horror": [
+          "Describe {sound} coming from {off_screen}. {filmmaker} {reacts} but can't see the source.",
+          "Show {filmmaker} {looking} at {something_off_screen}. The {camera} doesn't show what they see.",
+          "Create {situation} where {horror} is {implied} through {sound|reaction} but never shown.",
+          "Note how {filmmaker} {behavior} changes when {something} is {off_screen}."
+        ],
+        "authenticity_building": [
+          "Describe {footage} with {imperfections} that suggest authenticity. The {grain|static|shakiness} is intentional.",
+          "Show {filmmaker} {making_mistakes|struggling} with {equipment}. The {realism} sells the horror.",
+          "Create {situation} where {footage} {cuts_out|degrades} at crucial moments.",
+          "Note how {audio|video} {quality} changes based on {circumstances}."
+        ]
+      }
+    },
+    "world_unfolding": {
+      "found_footage_locations": {
+        "abandoned_house": {
+          "central_paradox": "The house appears normal in the footage, but the events captured defy explanation. The camera doesn't lie, but reality does.",
+          "untrustworthy_elements": [
+            "footage that changes when rewatched",
+            "events that happen off-camera",
+            "sounds that aren't captured on audio",
+            "objects that move between shots",
+            "timestamps that don't match",
+            "the sense that the camera is being watched",
+            "memories of the footage that change"
+          ]
+        },
+        "haunted_asylum": {
+          "central_paradox": "The asylum was meant to heal, but the footage shows something else entirely. The camera captures what the human eye cannot see.",
+          "untrustworthy_elements": [
+            "patient records that change in the footage",
+            "doors that lead to different rooms in different shots",
+            "sounds of suffering with no visible source",
+            "shadows that move against the light",
+            "the smell described but not captured",
+            "whispers that only some can hear",
+            "the feeling that the camera sees more than the filmmaker"
+          ]
+        },
+        "cursed_camp": {
+          "central_paradox": "The camp appears idyllic in the footage, but the events captured suggest something far more sinister. The more you watch, the less you understand.",
+          "untrustworthy_elements": [
+            "campers who behave differently in different shots",
+            "paths that lead in circles in the footage",
+            "cabins that appear different at night",
+            "the sense of being watched from the woods",
+            "equipment that fails at crucial moments",
+            "memories that don't match the footage",
+            "the feeling that something is editing the footage"
+          ]
+        }
+      },
+      "revelation_patterns": [
+        "The {footage} isn't just {recording} - it's {evidence} of {phenomenon}. The {implication} is {consequence}.",
+        "{Filmmaker} wasn't just {documenting} - they were {part_of} {event}. This suggests {hidden_purpose}.",
+        "The {camera} didn't just {capture} {event} - it {caused|influenced} it. The {evidence} was {misinterpreted}.",
+        "{Event} wasn't {random} - it was {staged|manipulated}. This explains {unexplained_elements}.",
+        "The {footage} doesn't show {what_we_think} - it shows {something_else}. This changes {everything}."
+      ]
+    }
+  },
+  "assets": {
+    "icons": {
+      "themeIcon": "📹",
+      "menuIcon": "🎞️",
+      "loadingIcon": "🔍"
+    },
+    "colors": {
+      "primary": "#1a1a1a",
+      "primary-dark": "#0a0a0a",
+      "secondary": "#2a2a2a",
+      "text-primary": "#e0e0e0",
+      "text-secondary": "#a0a0a0",
+      "accent": "#ff0000",
+      "static": "rgba(255, 255, 255, 0.2)",
+      "grain": "rgba(0, 0, 0, 0.3)",
+      "night_vision": "rgba(0, 255, 0, 0.15)"
+    },
+    "sounds": {
+      "ambient": ["camera_static.mp3", "distant_voices.mp3", "equipment_malfunction.mp3", "breathing_heavy.mp3"],
+      "ui": ["camera_click.wav", "static_burst.wav", "tape_rewind.wav", "equipment_beep.wav"]
+    }
+  },
+  "ai_config": {
+    "found_footage_horror": {
+      "min_horror_level": 4,
+      "max_horror_level": 8,
+      "horror_types": [
+        "off_screen_horror", "camera_limitations",
+        "authenticity_terror", "implied_horror",
+        "documentary_horror", "reality_distortion",
+        "psychological_horror", "supernatural_manifestation"
+      ],
+      "horror_probability": 0.8
+    },
+    "camera_realism": {
+      "min_realism_level": 5,
+      "max_realism_level": 9,
+      "realism_mechanisms": [
+        "camera_imperfections", "audio_distortion",
+        "off_screen_events", "equipment_failure",
+        "natural_dialogue", "realistic_reactions",
+        "footage_degradation", "authenticity_cues"
+      ],
+      "realism_probability": 0.9
+    }
+  },
+  "integration": {
+    "game_behavior_modifications": {
+      "perception_system": "limited_by_camera",
+      "audio_system": "diegetic_only",
+      "reality_system": "camera_dependent",
+      "time_system": "footage_based",
+      "knowledge_system": "limited_by_perspective"
+    },
+    "narrative_triggers": [
+      "camera_activation", "footage_discovery",
+      "equipment_failure", "off_screen_event",
+      "authenticity_cue", "perspective_shift",
+      "footage_degradation", "reality_distortion"
+    ]
+  }
+}

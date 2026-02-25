@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Theme Writing Manager - Phase 1 Demo</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: var(--bg-primary, #1a1a1a);
+            color: var(--text-primary, #f1f1f1);
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .demo-container {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 30px;
+            margin: 20px 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        h1, h2, h3 {
+            color: var(--accent, #cc1122);
+        }
+
+        .theme-selector-container {
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .demo-section {
+            margin: 30px 0;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .demo-output {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 4px solid var(--accent, #cc1122);
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+
+        .game-card {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            margin: 20px 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            gap: 20px;
+        }
+
+        .game-card img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .game-info {
+            flex: 1;
+        }
+
+        .game-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            color: var(--text-primary, #f1f1f1);
+        }
+
+        .game-desc {
+            color: var(--text-secondary, #a0a0a0);
+            margin-bottom: 15px;
+        }
+
+        .game-meta {
+            display: flex;
+            gap: 15px;
+            font-size: 14px;
+            color: var(--text-muted, #666666);
+        }
+
+        .btn {
+            background: var(--accent, #cc1122);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+
+        .btn:hover {
+            background: rgba(204, 17, 34, 0.8);
+        }
+
+        .vocabulary-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .vocabulary-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .theme-icon {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .test-results {
+            margin: 30px 0;
+        }
+
+        .test-pass {
+            color: #4CAF50;
+        }
+
+        .test-fail {
+            color: #F44336;
+        }
+    </style>
+</head>
+<body>
+    <h1>Theme Writing Manager - Phase 1 Demo</h1>
+
+    <div class="demo-container">
+        <p>This demo showcases the Phase 1 implementation of the dynamic theming system for creative writing improvements. The system supports real-time theme switching with theme-specific writing styles, vocabulary, and content generation.</p>
+    </div>
+
+    <div class="theme-selector-container">
+        <h2>Theme Selector</h2>
+        <p>Select a theme to see the dynamic writing system in action:</p>
+        <div id="theme-selector"></div>
+    </div>
+
+    <div class="demo-section">
+        <h2>Current Theme Information</h2>
+        <div id="current-theme-info">
+            <p>Loading theme information...</p>
+        </div>
+    </div>
+
+    <div class="demo-section">
+        <h2>Theme Content Generation</h2>
+        <div class="demo-output" id="generated-content">
+            Loading content...
+        </div>
+
+        <button class="btn" id="generate-btn">Generate New Content</button>
+    </div>
+
+    <div class="demo-section">
+        <h2>Game Descriptions</h2>
+        <p>Theme-adapted game descriptions for different games:</p>
+
+        <div class="game-card">
+            <img src="assets/og-game-fallback.svg" alt="Caribbean Conquest">
+            <div class="game-info">
+                <div class="game-title">Caribbean Conquest</div>
+                <div class="game-desc" id="game-desc-caribbean">Loading game description...</div>
+                <div class="game-meta">
+                    <span>🏴‍☠️ Pirate Adventure</span>
+                    <span>⭐ 4.8</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-card">
+            <img src="assets/og-game-fallback.svg" alt="Haunted Asylum">
+            <div class="game-info">
+                <div class="game-title">Haunted Asylum</div>
+                <div class="game-desc" id="game-desc-asylum">Loading game description...</div>
+                <div class="game-meta">
+                    <span>👻 Supernatural Horror</span>
+                    <span>⭐ 4.9</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-card">
+            <img src="assets/og-game-fallback.svg" alt="Blood Tetris">
+            <div class="game-info">
+                <div class="game-title">Blood Tetris</div>
+                <div class="game-desc" id="game-desc-tetris">Loading game description...</div>
+                <div class="game-meta">
+                    <span>🔪 Gore Horror</span>
+                    <span>⭐ 4.5</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="demo-section">
+        <h2>Theme Vocabulary</h2>
+        <p>The current theme's vocabulary that influences writing style:</p>
+
+        <h3>Positive Vocabulary</h3>
+        <div class="vocabulary-list" id="positive-vocab">
+            Loading vocabulary...
+        </div>
+
+        <h3>Negative Vocabulary</h3>
+        <div class="vocabulary-list" id="negative-vocab">
+            Loading vocabulary...
+        </div>
+
+        <h3>Intensifiers</h3>
+        <div class="vocabulary-list" id="intensifiers-vocab">
+            Loading vocabulary...
+        </div>
+    </div>
+
+    <div class="demo-section">
+        <h2>Theme Writing Settings</h2>
+        <div class="demo-output" id="writing-settings">
+            Loading writing settings...
+        </div>
+    </div>
+
+    <div class="demo-section test-results">
+        <h2>Phase 1 Verification Tests</h2>
+        <p>Running automated tests to verify Phase 1 implementation:</p>
+        <div id="test-results">
+            <p>Running tests...</p>
+        </div>
+    </div>
+
+    <script src="js/theme-system.js"></script>
+    <script src="js/theme-writing-manager.js"></script>
+    <script src="test-theme-writing.js"></script>
+    <script>
+        // Wait for ThemeWritingManager to initialize
+        async function waitForThemeManager() {
+            return new Promise(resolve => {
+                const checkInterval = setInterval(() => {
+                    if (window.ThemeWritingManager && window.ThemeWritingManager.isInitialized) {
+                        clearInterval(checkInterval);
+                        resolve(window.ThemeWritingManager);
+                    }
+                }, 100);
+            });
+        }
+
+        // Update demo content based on current theme
+        async function updateDemoContent() {
+            const themeManager = await waitForThemeManager();
+            const themeConfig = themeManager.getCurrentThemeConfig();
+
+            // Update current theme info
+            const themeInfo = document.getElementById('current-theme-info');
+            themeInfo.innerHTML = `
+                <h3>${themeConfig.name} <span class="theme-icon">${themeConfig.assets?.icons?.themeIcon || '🎭'}</span></h3>
+                <p><strong>Theme ID:</strong> ${themeConfig.id}</p>
+                <p><strong>Description:</strong> ${themeConfig.description}</p>
+                <p><strong>Writing Tone:</strong> ${themeConfig.writing?.tone || 'N/A'}</p>
+            `;
+
+            // Update generated content
+            const generatedContent = document.getElementById('generated-content');
+            generatedContent.innerHTML = `
+Theme Content Generation Examples:
+---------------------------------
+Greeting: "${themeManager.getGreeting()}"
+Farewell: "${themeManager.getFarewell()}"
+Loading Message: "${themeManager.getLoadingMessage()}"
+Game Description: "${themeManager.generateGameDescription()}"
+
+Game-Specific Descriptions:
+- Caribbean Conquest: "${themeManager.generateGameDescription('caribbean-conquest')}"
+- Haunted Asylum: "${themeManager.generateGameDescription('haunted-asylum')}"
+- Blood Tetris: "${themeManager.generateGameDescription('blood-tetris')}"
+            `;
+
+            // Update game descriptions
+            document.getElementById('game-desc-caribbean').textContent =
+                themeManager.generateGameDescription('caribbean-conquest');
+
+            document.getElementById('game-desc-asylum').textContent =
+                themeManager.generateGameDescription('haunted-asylum');
+
+            document.getElementById('game-desc-tetris').textContent =
+                themeManager.generateGameDescription('blood-tetris');
+
+            // Update vocabulary
+            function createVocabList(vocabArray) {
+                if (!vocabArray || vocabArray.length === 0) {
+                    return '<p>No vocabulary defined for this category.</p>';
+                }
+                return vocabArray.map(word =>
+                    `<div class="vocabulary-item">${word}</div>`
+                ).join('');
+            }
+
+            document.getElementById('positive-vocab').innerHTML =
+                createVocabList(themeManager.getVocabulary('positive'));
+
+            document.getElementById('negative-vocab').innerHTML =
+                createVocabList(themeManager.getVocabulary('negative'));
+
+            document.getElementById('intensifiers-vocab').innerHTML =
+                createVocabList(themeManager.getVocabulary('intensifiers'));
+
+            // Update writing settings
+            const writingSettings = document.getElementById('writing-settings');
+            writingSettings.innerHTML = `
+Writing Settings for ${themeConfig.name} Theme:
+---------------------------------------------
+Tone: ${themeConfig.writing?.tone || 'N/A'}
+
+Sentence Structure:
+- Word count: ${themeConfig.writing?.sentenceStructure?.minWords || 6} to ${themeConfig.writing?.sentenceStructure?.maxWords || 18} words
+- Complexity: ${themeConfig.writing?.sentenceStructure?.complexity || 0.5}
+- Ellipsis probability: ${themeConfig.writing?.sentenceStructure?.ellipsisProbability || 0.1}
+- Fragment probability: ${themeConfig.writing?.sentenceStructure?.fragmentProbability || 0.1}
+
+Theme-Specific Techniques:
+${Object.entries(themeConfig.writing || {})
+    .filter(([key]) => key.endsWith('Techniques'))
+    .map(([key, techniques]) => {
+        return `- ${key.replace('Techniques', '')}: ` +
+               Object.entries(techniques || {})
+                   .map(([name, value]) => `${name} (${value})`)
+                   .join(', ');
+    })
+    .join('\n')}
+            `;
+        }
+
+        // Run tests and display results
+        async function runTests() {
+            const themeManager = await waitForThemeManager();
+            const tester = new ThemeWritingManagerTest();
+            const testResults = await tester.runAllTests();
+
+            // Display test results
+            const testResultsContainer = document.getElementById('test-results');
+            if (testResults) {
+                testResultsContainer.innerHTML = `
+                    <p class="test-pass">✅ All Phase 1 tests passed successfully!</p>
+                    <p>The Theme Writing Manager is working correctly and meets all Phase 1 requirements.</p>
+                `;
+            } else {
+                testResultsContainer.innerHTML = `
+                    <p class="test-fail">❌ Some tests failed. Check console for details.</p>
+                `;
+            }
+        }
+
+        // Initialize demo
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Create theme selector
+            const themeSelector = ThemeSystem.createThemeSelector();
+            document.getElementById('theme-selector').appendChild(themeSelector);
+
+            // Set up generate button
+            document.getElementById('generate-btn').addEventListener('click', updateDemoContent);
+
+            // Initial update
+            await updateDemoContent();
+
+            // Run tests
+            await runTests();
+
+            // Listen for theme changes
+            window.ThemeWritingManager.addThemeChangeListener(() => {
+                updateDemoContent();
+            });
+        });
+    </script>
+</body>
+</html>
+<task_progress>
+- [x] Analyze project structure to identify relevant roadmap files
+- [x] Read and understand the 5-phase creative writing improvement roadmap
+- [x] Identify Phase 1 requirements for creative writing improvements
+- [x] Create theme configuration files for Phase 1
+- [x] Implement ThemeWritingManager class
+- [x] Integrate with existing theme system
+- [x] Verify Phase 1 implementation is complete
+</task_progress>
+</write_to_file>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Battle Pass - ScaryGamesAI</title>
+    <link rel="stylesheet" href="../../css/battle-pass-ui.css">
+</head>
+<body>
+    <div class="battlepass-container" id="battlepass-screen">
+        <!-- Header -->
+        <div class="bp-header">
+            <div class="bp-season-info">
+                <h1 id="season-name">Season Name</h1>
+                <p id="season-theme">Theme</p>
+                <div class="bp-season-timer">
+                    <span>Ends in:</span>
+                    <span id="season-countdown">00d 00h 00m</span>
+                </div>
+            </div>
+            <button class="bp-close" onclick="BattlePassUI.close()">×</button>
+        </div>
+
+        <!-- Premium Upgrade Banner -->
+        <div class="bp-premium-banner" id="premium-banner">
+            <div class="bp-premium-content">
+                <h3>👑 Upgrade to Premium</h3>
+                <p>Unlock 100+ exclusive rewards!</p>
+            </div>
+            <button class="bp-btn bp-btn-premium" onclick="BattlePassUI.upgradeToPremium()">Upgrade Now</button>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="bp-progress-section">
+            <div class="bp-tier-info">
+                <span class="bp-current-tier">Tier <span id="current-tier">1</span></span>
+                <span class="bp-xp-progress">
+                    <span id="current-xp">0</span> / <span id="xp-to-next">1000</span> XP
+                </span>
+            </div>
+            <div class="bp-progress-bar">
+                <div class="bp-progress-fill" id="xp-progress-fill" style="width: 0%"></div>
+            </div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="bp-tabs">
+            <button class="bp-tab active" data-tab="rewards">Rewards</button>
+            <button class="bp-tab" data-tab="challenges">Challenges</button>
+            <button class="bp-tab" data-tab="overview">Overview</button>
+        </div>
+
+        <!-- Rewards Tab -->
+        <div class="bp-content bp-content-active" id="tab-rewards">
+            <div class="bp-tracks">
+                <!-- Free Track -->
+                <div class="bp-track bp-track-free">
+                    <h3>Free Track</h3>
+                    <div class="bp-rewards-grid" id="free-rewards"></div>
+                </div>
+
+                <!-- Premium Track -->
+                <div class="bp-track bp-track-premium">
+                    <h3>Premium Track</h3>
+                    <div class="bp-rewards-grid" id="premium-rewards"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Challenges Tab -->
+        <div class="bp-content" id="tab-challenges">
+            <div class="bp-challenges-section">
+                <h3>Daily Challenges</h3>
+                <div class="bp-challenges-list" id="daily-challenges"></div>
+
+                <h3>Weekly Challenges</h3>
+                <div class="bp-challenges-list" id="weekly-challenges"></div>
+
+                <h3>Seasonal Challenges</h3>
+                <div class="bp-challenges-list" id="seasonal-challenges"></div>
+            </div>
+        </div>
+
+        <!-- Overview Tab -->
+        <div class="bp-content" id="tab-overview">
+            <div class="bp-overview-grid">
+                <div class="bp-stat-card">
+                    <div class="bp-stat-value" id="stat-total-xp">0</div>
+                    <div class="bp-stat-label">Total XP Earned</div>
+                </div>
+                <div class="bp-stat-card">
+                    <div class="bp-stat-value" id="stat-challenges-completed">0</div>
+                    <div class="bp-stat-label">Challenges Completed</div>
+                </div>
+                <div class="bp-stat-card">
+                    <div class="bp-stat-value" id="stat-rewards-claimed">0</div>
+                    <div class="bp-stat-label">Rewards Claimed</div>
+                </div>
+                <div class="bp-stat-card">
+                    <div class="bp-stat-value" id="stat-days-remaining">0</div>
+                    <div class="bp-stat-label">Days Remaining</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="BattlePassSystem.js"></script>
+    <script src="RewardManager.js"></script>
+    <script src="battle-pass-ui.js"></script>
+</body>
+</html>

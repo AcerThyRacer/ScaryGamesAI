@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hellaphobia - Level Editor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1a1a2a;
+            color: #e0e0e0;
+            overflow: hidden;
+        }
+
+        .editor-container {
+            display: grid;
+            grid-template-columns: 300px 1fr 350px;
+            grid-template-rows: 60px 1fr 200px;
+            height: 100vh;
+            gap: 2px;
+            background: #2a2a4a;
+        }
+
+        /* Header */
+        .editor-header {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, #2a2a4a, #1a1a3a);
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 2px solid #4a4a6a;
+        }
+
+        .editor-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .editor-toolbar {
+            display: flex;
+            gap: 10px;
+        }
+
+        .toolbar-btn {
+            padding: 8px 16px;
+            background: #4a4a6a;
+            border: none;
+            color: #fff;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .toolbar-btn:hover {
+            background: #5a5a7a;
+        }
+
+        .toolbar-btn.primary {
+            background: #6a4a8a;
+        }
+
+        .toolbar-btn.primary:hover {
+            background: #7a5a9a;
+        }
+
+        .toolbar-btn.danger {
+            background: #8a4a4a;
+        }
+
+        .toolbar-btn.danger:hover {
+            background: #9a5a5a;
+        }
+
+        /* Left Panel - Asset Browser */
+        .asset-browser {
+            background: #1a1a2a;
+            border-right: 2px solid #4a4a6a;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        .panel-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #4a4a6a;
+        }
+
+        .asset-category {
+            margin-bottom: 20px;
+        }
+
+        .asset-category-title {
+            font-size: 14px;
+            color: #a0a0a0;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .asset-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 8px;
+        }
+
+        .asset-item {
+            background: #2a2a4a;
+            border: 1px solid #4a4a6a;
+            border-radius: 4px;
+            padding: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        .asset-item:hover {
+            background: #3a3a5a;
+            border-color: #6a4a8a;
+        }
+
+        .asset-item.selected {
+            border-color: #6a4a8a;
+            background: #4a3a5a;
+        }
+
+        .asset-icon {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .asset-name {
+            font-size: 11px;
+            color: #e0e0e0;
+        }
+
+        /* Center - Viewport */
+        .viewport-container {
+            background: #0a0a1a;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .viewport-canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        .viewport-overlay {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        .viewport-controls {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            display: flex;
+            gap: 5px;
+        }
+
+        .viewport-control-btn {
+            width: 40px;
+            height: 40px;
+            background: rgba(74, 74, 106, 0.8);
+            border: 1px solid #4a4a6a;
+            color: #fff;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .viewport-control-btn:hover {
+            background: rgba(90, 90, 122, 0.8);
+        }
+
+        /* Right Panel - Properties */
+        .properties-panel {
+            background: #1a1a2a;
+            border-left: 2px solid #4a4a6a;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        .property-group {
+            margin-bottom: 20px;
+            background: #2a2a4a;
+            border: 1px solid #4a4a6a;
+            border-radius: 4px;
+            padding: 15px;
+        }
+
+        .property-group-title {
+            font-size: 14px;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .property-item {
+            margin-bottom: 12px;
+        }
+
+        .property-label {
+            font-size: 12px;
+            color: #a0a0a0;
+            margin-bottom: 5px;
+        }
+
+        .property-input {
+            width: 100%;
+            padding: 6px;
+            background: #1a1a2a;
+            border: 1px solid #4a4a6a;
+            color: #fff;
+            border-radius: 3px;
+            font-size: 13px;
+        }
+
+        .property-input:focus {
+            outline: none;
+            border-color: #6a4a8a;
+        }
+
+        .property-slider {
+            width: 100%;
+            height: 6px;
+            background: #1a1a2a;
+            border-radius: 3px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .property-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #6a4a8a;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        .property-checkbox {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            cursor: pointer;
+        }
+
+        .property-checkbox input[type="checkbox"] {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        /* Bottom Panel - Event Editor */
+        .event-editor {
+            grid-column: 1 / -1;
+            background: #1a1a2a;
+            border-top: 2px solid #4a4a6a;
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 2px;
+        }
+
+        .event-panel {
+            background: #2a2a4a;
+            padding: 10px;
+            overflow-y: auto;
+        }
+
+        .event-list {
+            list-style: none;
+        }
+
+        .event-item {
+            background: #1a1a2a;
+            border: 1px solid #4a4a6a;
+            border-radius: 4px;
+            padding: 10px;
+            margin-bottom: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .event-item:hover {
+            background: #3a3a5a;
+        }
+
+        .event-item.selected {
+            border-color: #6a4a8a;
+            background: #4a3a5a;
+        }
+
+        .event-item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+        }
+
+        .event-item-title {
+            font-size: 13px;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .event-item-type {
+            font-size: 11px;
+            color: #6a4a8a;
+            background: rgba(106, 74, 138, 0.2);
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+
+        .event-item-description {
+            font-size: 11px;
+            color: #a0a0a0;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: #2a2a4a;
+            border: 2px solid #4a4a6a;
+            border-radius: 8px;
+            padding: 20px;
+            min-width: 400px;
+            max-width: 600px;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Context Menu */
+        .context-menu {
+            display: none;
+            position: absolute;
+            background: #2a2a4a;
+            border: 1px solid #4a4a6a;
+            border-radius: 4px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            z-index: 10001;
+            min-width: 150px;
+        }
+
+        .context-menu.active {
+            display: block;
+        }
+
+        .context-menu-item {
+            padding: 8px 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .context-menu-item:hover {
+            background: #4a4a6a;
+        }
+
+        .context-menu-separator {
+            height: 1px;
+            background: #4a4a6a;
+            margin: 4px 0;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1a1a2a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #4a4a6a;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #5a5a7a;
+        }
+
+        /* Status Bar */
+        .status-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #1a1a2a;
+            border-top: 1px solid #4a4a6a;
+            padding: 5px 10px;
+            font-size: 11px;
+            color: #808080;
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+    <div class="editor-container">
+        <!-- Header -->
+        <div class="editor-header">
+            <div class="editor-title">🎮 Hellaphobia Level Editor</div>
+            <div class="editor-toolbar">
+                <button class="toolbar-btn" onclick="LevelEditor.newLevel()">New</button>
+                <button class="toolbar-btn" onclick="LevelEditor.openLevel()">Open</button>
+                <button class="toolbar-btn" onclick="LevelEditor.saveLevel()">Save</button>
+                <button class="toolbar-btn primary" onclick="LevelEditor.testLevel()">Playtest</button>
+                <button class="toolbar-btn" onclick="LevelEditor.exportLevel()">Export</button>
+                <button class="toolbar-btn danger" onclick="LevelEditor.closeEditor()">Close</button>
+            </div>
+        </div>
+
+        <!-- Left Panel - Asset Browser -->
+        <div class="asset-browser">
+            <div class="panel-title">Assets</div>
+            
+            <div class="asset-category">
+                <div class="asset-category-title">Rooms</div>
+                <div class="asset-grid">
+                    <div class="asset-item" data-type="room" data-id="corridor_straight">
+                        <div class="asset-icon">➡️</div>
+                        <div class="asset-name">Straight Corridor</div>
+                    </div>
+                    <div class="asset-item" data-type="room" data-id="corridor_corner">
+                        <div class="asset-icon">↘️</div>
+                        <div class="asset-name">Corner</div>
+                    </div>
+                    <div class="asset-item" data-type="room" data-id="room_small">
+                        <div class="asset-icon">⬜</div>
+                        <div class="asset-name">Small Room</div>
+                    </div>
+                    <div class="asset-item" data-type="room" data-id="room_large">
+                        <div class="asset-icon">⬛</div>
+                        <div class="asset-name">Large Room</div>
+                    </div>
+                    <div class="asset-item" data-type="room" data-id="room_boss">
+                        <div class="asset-icon">💀</div>
+                        <div class="asset-name">Boss Arena</div>
+                    </div>
+                    <div class="asset-item" data-type="room" data-id="stairs">
+                        <div class="asset-icon">🪜</div>
+                        <div class="asset-name">Stairs</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="asset-category">
+                <div class="asset-category-title">Enemies</div>
+                <div class="asset-grid">
+                    <div class="asset-item" data-type="enemy" data-id="basic_enemy">
+                        <div class="asset-icon">👤</div>
+                        <div class="asset-name">Basic Enemy</div>
+                    </div>
+                    <div class="asset-item" data-type="enemy" data-id="fast_enemy">
+                        <div class="asset-icon">🏃</div>
+                        <div class="asset-name">Fast Enemy</div>
+                    </div>
+                    <div class="asset-item" data-type="enemy" data-id="tank_enemy">
+                        <div class="asset-icon">🛡️</div>
+                        <div class="asset-name">Tank Enemy</div>
+                    </div>
+                    <div class="asset-item" data-type="enemy" data-id="ranged_enemy">
+                        <div class="asset-icon">🏹</div>
+                        <div class="asset-name">Ranged Enemy</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="asset-category">
+                <div class="asset-category-title">Items</div>
+                <div class="asset-grid">
+                    <div class="asset-item" data-type="item" data-id="health_potion">
+                        <div class="asset-icon">🧪</div>
+                        <div class="asset-name">Health Potion</div>
+                    </div>
+                    <div class="asset-item" data-type="item" data-id="sanity_boost">
+                        <div class="asset-icon">🔮</div>
+                        <div class="asset-name">Sanity Boost</div>
+                    </div>
+                    <div class="asset-item" data-type="item" data-id="key">
+                        <div class="asset-icon">🗝️</div>
+                        <div class="asset-name">Key</div>
+                    </div>
+                    <div class="asset-item" data-type="item" data-id="weapon">
+                        <div class="asset-icon">⚔️</div>
+                        <div class="asset-name">Weapon</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="asset-category">
+                <div class="asset-category-title">Triggers</div>
+                <div class="asset-grid">
+                    <div class="asset-item" data-type="trigger" data-id="spawn_trigger">
+                        <div class="asset-icon">📍</div>
+                        <div class="asset-name">Spawn Trigger</div>
+                    </div>
+                    <div class="asset-item" data-type="trigger" data-id="door_trigger">
+                        <div class="asset-icon">🚪</div>
+                        <div class="asset-name">Door Trigger</div>
+                    </div>
+                    <div class="asset-item" data-type="trigger" data-id="cutscene_trigger">
+                        <div class="asset-icon">🎬</div>
+                        <div class="asset-name">Cutscene</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Center - Viewport -->
+        <div class="viewport-container">
+            <canvas id="editor-canvas" class="viewport-canvas"></canvas>
+            
+            <div class="viewport-overlay">
+                <div>FPS: <span id="fps-counter">60</span></div>
+                <div>Grid: <span id="grid-size">32x32</span></div>
+                <div>Objects: <span id="object-count">0</span></div>
+                <div>Zoom: <span id="zoom-level">100%</span></div>
+            </div>
+
+            <div class="viewport-controls">
+                <button class="viewport-control-btn" onclick="LevelEditor.setViewportZoom(0.5)">➖</button>
+                <button class="viewport-control-btn" onclick="LevelEditor.resetViewport()">⊡</button>
+                <button class="viewport-control-btn" onclick="LevelEditor.setViewportZoom(2.0)">➕</button>
+            </div>
+
+            <div class="status-bar">
+                <div id="status-message">Ready</div>
+                <div id="cursor-position">X: 0, Y: 0</div>
+            </div>
+        </div>
+
+        <!-- Right Panel - Properties -->
+        <div class="properties-panel">
+            <div class="panel-title">Properties</div>
+            
+            <div id="properties-content">
+                <div style="color: #808080; text-align: center; padding: 20px;">
+                    Select an object to view its properties
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Panel - Event Editor -->
+        <div class="event-editor">
+            <div class="event-panel">
+                <div class="panel-title">Events</div>
+                <ul class="event-list" id="event-list">
+                    <li class="event-item">
+                        <div class="event-item-header">
+                            <div class="event-item-title">Player Enters Room</div>
+                            <div class="event-item-type">Trigger</div>
+                        </div>
+                        <div class="event-item-description">Spawn 3 enemies when player enters</div>
+                    </li>
+                </ul>
+                <button class="toolbar-btn primary" style="width: 100%; margin-top: 10px;" onclick="LevelEditor.addEvent()">+ Add Event</button>
+            </div>
+
+            <div class="event-panel">
+                <div class="panel-title">Conditions</div>
+                <ul class="event-list" id="condition-list">
+                    <li class="event-item">
+                        <div class="event-item-header">
+                            <div class="event-item-title">Has Key Item</div>
+                            <div class="event-item-type">Condition</div>
+                        </div>
+                        <div class="event-item-description">Player must have ancient_key</div>
+                    </li>
+                </ul>
+                <button class="toolbar-btn primary" style="width: 100%; margin-top: 10px;" onclick="LevelEditor.addCondition()">+ Add Condition</button>
+            </div>
+
+            <div class="event-panel">
+                <div class="panel-title">Actions</div>
+                <ul class="event-list" id="action-list">
+                    <li class="event-item">
+                        <div class="event-item-header">
+                            <div class="event-item-title">Spawn Entity</div>
+                            <div class="event-item-type">Action</div>
+                        </div>
+                        <div class="event-item-description">Spawn enemy at (100, 200)</div>
+                    </li>
+                </ul>
+                <button class="toolbar-btn primary" style="width: 100%; margin-top: 10px;" onclick="LevelEditor.addAction()">+ Add Action</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Context Menu -->
+    <div id="context-menu" class="context-menu">
+        <div class="context-menu-item" onclick="LevelEditor.contextAction('copy')">Copy</div>
+        <div class="context-menu-item" onclick="LevelEditor.contextAction('paste')">Paste</div>
+        <div class="context-menu-item" onclick="LevelEditor.contextAction('duplicate')">Duplicate</div>
+        <div class="context-menu-separator"></div>
+        <div class="context-menu-item" onclick="LevelEditor.contextAction('delete')">Delete</div>
+        <div class="context-menu-separator"></div>
+        <div class="context-menu-item" onclick="LevelEditor.contextAction('properties')">Properties</div>
+    </div>
+
+    <!-- Modal Template -->
+    <div id="modal-template" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modal-title">Modal Title</h3>
+                <button class="modal-close" onclick="LevelEditor.closeModal()">×</button>
+            </div>
+            <div id="modal-body"></div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="../../core/procedural/WaveFunctionCollapse.js"></script>
+    <script src="phase15-mod-support.js"></script>
+    <script src="mod-editor.js"></script>
+</body>
+</html>

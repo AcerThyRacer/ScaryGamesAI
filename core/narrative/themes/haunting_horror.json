@@ -1,0 +1,289 @@
+{
+  "id": "haunting_horror",
+  "name": "Haunting Horror",
+  "description": "Ghosts, spirits, residual energy, unfinished business, the past refusing to stay dead, places that remember",
+  "lexicon_id": "haunting_horror",
+  "icon": "👻",
+  "class": "writing-theme-haunting",
+  "writing_rules": {
+    "message": "WARNING: This theme explores the terror of places that remember. The dead do not always rest quietly. Some memories are too strong to fade.",
+    "technical": {
+      "use_ambiguous_manifestations": 0.9,
+      "avoid_definitive_explanations": 0.95,
+      "temporal_displacement": 0.85,
+      "emotional_resonance": 0.9,
+      "residual_energy": 0.8
+    },
+    "sentence_structure": {
+      "complexity_normal": 0.5,
+      "complexity_disturbed": 0.8,
+      "fragment_probability": 0.6,
+      "ellipsis_probability": 0.7,
+      "repetition_probability": 0.5,
+      "ambiguity_probability": 0.85,
+      "temporal_confusion": 0.7
+    },
+    "technical_rules": {
+      "never_explain_ghosts": [
+        "Never provide definitive explanations for hauntings. The mystery is the terror.",
+        "Never confirm whether ghosts are real or psychological manifestations. Leave room for doubt.",
+        "Never resolve the haunting completely. Some questions should remain unanswered."
+      ],
+      "temporal_displacement": {
+        "min_temporal_confusion": 0.8,
+        "max_emotional_resonance": 0.9,
+        "residual_energy_frequency": 0.75
+      }
+    },
+    "content_constraints": {
+      "min_ambiguity": 0.85,
+      "min_temporal_confusion": 0.75,
+      "max_definitive_explanations": 0.1,
+      "min_emotional_resonance": 0.8,
+      "min_residual_energy": 0.7,
+      "haunting_horror_auto_generation": 0.8
+    },
+    "form": {
+      "allow_ambiguous_manifestations": 0.95,
+      "mandatory_temporal_confusion": 0.7,
+      "allow_residual_energy": 0.85,
+      "forbid_definitive_resolution": 0.98
+    }
+  },
+  "vocabulary_subsets": [
+    "nouns_by_theme.supernatural",
+    "nouns_by_theme.occult",
+    "verbs_by_terror.haunting",
+    "verbs_by_terror.possession",
+    "adjectives.supernatural",
+    "adjectives.ethereal",
+    "adjectives.uncanny",
+    "nouns.haunting"
+  ],
+  "content": {
+    "greetings": [
+      "The {location} remembers. {Entity} is still here.",
+      "You shouldn't have come back. {Spirit} never left.",
+      "The {object} is in the wrong place. It wasn't there {time_ago}.",
+      "You feel {emotion} when you enter {room}. It wasn't always this way.",
+      "The {past_event} never really ended. You can still hear {sound}.",
+      "They say the {location} is haunted. They're right.",
+      "The {spirit} is watching you. It always has been.",
+      "You've been here before. But {contradiction}."
+    ],
+    "greetings_internal_monologue": [
+      "{self_question}: Why does {location} feel so {adjective}? I've never been here before... have I?",
+      "{uncertainty}: The {object} {behavior} when I {action}. {self_correction} No, it's always {behavior}.",
+      "{introjection}: {spirit_command}. {resistance} {futile_gesture}.",
+      "{self_observation}: My {body_part} {shows_signs|appears_normal}. {doubt} {self_reassurance}. {Spirit} is near.",
+      "{memory_fragment}: I remember {past_event}. But {contradiction}."
+    ],
+    "farewells": [
+      "The {location} will remember you. {Spirit} will be waiting.",
+      "Don't look back. {Entity} is still watching.",
+      "The {past_event} isn't over. It never will be.",
+      "You can leave, but {spirit} will follow.",
+      "The {haunting} continues. You were just part of it.",
+      "Some doors should stay closed. You've opened one.",
+      "The {memory} will stay with you. It always does.",
+      "You think you're leaving. But {revelation}."
+    ],
+    "loading_messages": [
+      "Loading {location} memories... {status}",
+      "Scanning for residual energy... {intensity} detected",
+      "Accessing {time_period} records... {anomalies} found",
+      "Tuning into {frequency}... {spirit} present",
+      "Analyzing emotional resonance... {level} detected",
+      "Reconstructing {past_event}... {accuracy}% complete",
+      "Detecting temporal anomalies... {count} found",
+      "Connecting to {spirit}... {response_time}"
+    ],
+    "haunting_reports": [
+      "[HAUNTING REPORT #{report_id}]\nLocation: {location}\nFirst Reported: {date}\nManifestations: {phenomena}\nEmotional Resonance: {level}\nTemporal Anomalies: {count}\nPossible Cause: {theory}\nStatus: {status}",
+      "[PARANORMAL INVESTIGATION]\nTeam: {team_name}\nLocation: {location}\nEquipment Used: {equipment}\nFindings: {evidence}\nEMF Readings: {readings}\nEVP Captured: {count}\nRecommendations: {actions}",
+      "[RESIDUAL ENERGY ANALYSIS]\nLocation: {location}\nEvent: {past_event}\nIntensity: {level}\nFrequency: {occurrence}\nEmotional Signature: {emotions}\nPossible Triggers: {triggers}",
+      "[GHOST SIGHTING REPORT]\nWitness: {name}\nLocation: {location}\nDescription: {appearance}\nBehavior: {actions}\nDuration: {time}\nEmotional Impact: {effect}\nFollow-up: {status}"
+    ],
+    "game_descriptions": {
+      "templates": [
+        "A {adjective} {location} where the {past_event} never ended. {player_action} awakens {spirit}.",
+        "The {building} is haunted by {entity}. {manifestation} occurs when {condition}. {objective}.",
+        "A {subgenre} game where {residual_energy} replays the {tragedy}. {mechanic} determines your fate.",
+        "The {location} remembers {past_event}. {player_action} triggers {consequence}.",
+        "Every {time_period}, the {haunting} repeats. This time, {something_different}. {player_role}.",
+        "The {spirit} is trapped in {location}. {player_action} reveals {truth}.",
+        "The {past} and {present} are blurring. {player_action} accelerates the {merging}.",
+        "The {location} is a nexus of {paranormal_activity}. {player_action} attracts {attention}."
+      ],
+      "adjectives": [
+        "haunted", "cursed", "forgotten", "abandoned", "eerie",
+        "unsettling", "wrong", "oppressive", "suffocating", "wrong"
+      ],
+      "locations": [
+        "house where a family was murdered",
+        "hospital where patients died in agony",
+        "school where children disappeared",
+        "hotel with a dark past",
+        "prison where executions took place",
+        "theater where an actor died on stage",
+        "church where a massacre occurred",
+        "asylum where patients were experimented on"
+      ],
+      "entities": [
+        "a spirit with unfinished business",
+        "a ghost reliving its final moments",
+        "a residual energy imprint of a traumatic event",
+        "a poltergeist fueled by negative emotions",
+        "a demonic entity posing as a ghost",
+        "a collective consciousness of past victims",
+        "a guardian spirit protecting a secret",
+        "a time-displaced entity from another era"
+      ],
+      "manifestations": [
+        "objects moving on their own",
+        "cold spots in specific areas",
+        "disembodied voices and whispers",
+        "shadow figures seen in peripheral vision",
+        "doors opening and closing by themselves",
+        "apparitions appearing briefly",
+        "electronic devices malfunctioning",
+        "feelings of being watched or touched"
+      ]
+    },
+    "rules": {
+      "thematic_constraints": {
+        "never_explain_hauntings": 0.99,
+        "always_show_temporal_confusion": 0.95,
+        "emphasize_emotional_resonance": 0.98,
+        "avoid_definitive_resolutions": 0.97,
+        "show_the_terror_of_memory": 0.99
+      },
+      "example_techniques": {
+        "temporal_confusion": [
+          "Describe {event} as if it's happening now, then reveal it happened {time_ago}.",
+          "Show {character} experiencing {past_event} as if it's the present.",
+          "Create {situation} where {time_periods} overlap or merge.",
+          "Note how {object} appears {different_state} at different times."
+        ],
+        "emotional_resonance": [
+          "Describe how {location} makes {character} feel {emotion} without obvious cause.",
+          "Show how {past_event} still affects {present_situation}.",
+          "Create {situation} where {emotion} lingers long after the event.",
+          "Note how {character} reacts to {stimulus} with {unexpected_intensity}."
+        ],
+        "ambiguous_manifestations": [
+          "Describe {phenomenon} that could be {natural_explanation} or {supernatural_explanation}.",
+          "Show {character} experiencing {event} that may or may not be real.",
+          "Create {situation} where {evidence} is {ambiguous|contradictory}.",
+          "Note how {manifestation} {behavior} in ways that defy {natural_laws|logic}."
+        ]
+      }
+    },
+    "world_unfolding": {
+      "haunting_locations": {
+        "murder_house": {
+          "central_paradox": "The house appears normal, but the violence that occurred there has left an indelible mark. The past and present coexist uneasily.",
+          "untrustworthy_elements": [
+            "bloodstains that reappear after cleaning",
+            "rooms that feel colder than others for no reason",
+            "objects that move when unobserved",
+            "voices that whisper when alone",
+            "reflections that don't match reality",
+            "memories that surface unexpectedly",
+            "the sense of being watched from empty rooms"
+          ]
+        },
+        "abandoned_asylum": {
+          "central_paradox": "The asylum was meant to heal, but the suffering that occurred within its walls has created a nexus of negative energy. The building itself seems alive with pain.",
+          "untrustworthy_elements": [
+            "patient records that change when unobserved",
+            "doors that lead to different rooms",
+            "sounds of suffering with no source",
+            "shadows that move against the light",
+            "the smell of antiseptic that lingers",
+            "whispers in languages no one understands",
+            "the feeling of being restrained when free"
+          ]
+        },
+        "cursed_theater": {
+          "central_paradox": "The theater was built for entertainment, but the tragedies that occurred on its stage have turned it into a place of horror. The show must go on... forever.",
+          "untrustworthy_elements": [
+            "props that move between scenes",
+            "applause heard when the theater is empty",
+            "actors who appear in reflections but not in person",
+            "scripts that change overnight",
+            "the smell of greasepaint and blood",
+            "voices that whisper lines from unwritten plays",
+            "the sense of being on stage when you're not"
+          ]
+        }
+      },
+      "revelation_patterns": [
+        "The {haunting} isn't just {spirit} - it's {residual_energy} from {past_event}. The {implication} is {consequence}.",
+        "{Location} doesn't just {contain} {spirit} - it {amplifies} them. This suggests {hidden_purpose}.",
+        "The {manifestation} wasn't {random} - it was triggered by {player_action}. The {spirit} is {reacting} to you specifically.",
+        "{Entity} isn't just {ghost} - it's {something_else}. But {evidence_of_ghost} complicates this understanding.",
+        "The {haunting} doesn't follow {normal_rules} - it operates on {different_principles}. This explains {unexplained_phenomena}."
+      ]
+    }
+  },
+  "assets": {
+    "icons": {
+      "themeIcon": "👻",
+      "menuIcon": "🏚️",
+      "loadingIcon": "🔍"
+    },
+    "colors": {
+      "primary": "#2a2a3a",
+      "primary-dark": "#12121a",
+      "secondary": "#3a3a5a",
+      "text-primary": "#d0d0e0",
+      "text-secondary": "#9a9ac6",
+      "accent": "#7a7aff",
+      "ethereal": "rgba(122, 122, 255, 0.2)",
+      "memory": "rgba(200, 200, 255, 0.15)",
+      "residual": "rgba(150, 150, 200, 0.3)"
+    },
+    "sounds": {
+      "ambient": ["distant_whispers.mp3", "creaking_floors.mp3", "echoing_voices.mp3", "subtle_footsteps.mp3"],
+      "ui": ["ghostly_whisper.wav", "door_creak.wav", "floorboard_crack.wav", "distant_applause.wav"]
+    }
+  },
+  "ai_config": {
+    "temporal_horror": {
+      "min_horror_level": 4,
+      "max_horror_level": 8,
+      "horror_types": [
+        "temporal_confusion", "emotional_resonance",
+        "ambiguous_manifestations", "residual_energy",
+        "psychological_haunting", "demonic_possession"
+      ],
+      "horror_probability": 0.8
+    },
+    "emotional_resonance": {
+      "min_resonance_level": 3,
+      "max_resonance_level": 9,
+      "resonance_mechanisms": [
+        "emotional_contagion", "memory_imprinting",
+        "psychological_projection", "empathetic_connection",
+        "trauma_reliving", "guilt_manifestation"
+      ],
+      "resonance_probability": 0.85
+    }
+  },
+  "integration": {
+    "game_behavior_modifications": {
+      "perception_system": "unreliable",
+      "time_system": "non_linear",
+      "memory_system": "flawed",
+      "emotion_system": "amplified",
+      "reality_system": "fluid"
+    },
+    "narrative_triggers": [
+      "location_entry", "object_interaction",
+      "emotional_resonance", "temporal_anomaly",
+      "spirit_manifestation", "memory_trigger",
+      "residual_energy_activation", "psychic_imprint"
+    ]
+  }
+}

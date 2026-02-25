@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Backrooms Pac-Man - Level Editor</title>
+    <meta name="description" content="Create custom Backrooms Pac-Man levels with our browser-based level editor">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="../../css/editor-styles.css">
+    <style>
+        :root {
+            --editor-bg: #1a1a2e;
+            --editor-panel: #16213e;
+            --editor-accent: #e94560;
+            --editor-text: #ffffff;
+            --editor-grid: rgba(255, 255, 255, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: var(--editor-bg);
+            color: var(--editor-text);
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .editor-header {
+            background: var(--editor-panel);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--editor-accent);
+            z-index: 100;
+        }
+
+        .editor-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--editor-accent);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .editor-toolbar {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .toolbar-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+
+        .toolbar-btn:hover {
+            background: var(--editor-accent);
+            border-color: var(--editor-accent);
+        }
+
+        .toolbar-btn.active {
+            background: var(--editor-accent);
+            border-color: var(--editor-accent);
+        }
+
+        /* Main Editor Area */
+        .editor-container {
+            display: flex;
+            flex: 1;
+            overflow: hidden;
+        }
+
+        /* Left Panel - Tools */
+        .tools-panel {
+            width: 250px;
+            background: var(--editor-panel);
+            padding: 1rem;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            overflow-y: auto;
+        }
+
+        .tool-section {
+            margin-bottom: 1.5rem;
+        }
+
+        .tool-section h3 {
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            color: var(--editor-accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .tool-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.5rem;
+        }
+
+        .tool-item {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 0.75rem;
+            border-radius: 4px;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .tool-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--editor-accent);
+        }
+
+        .tool-item.selected {
+            background: var(--editor-accent);
+            border-color: var(--editor-accent);
+        }
+
+        .tool-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .tool-label {
+            font-size: 0.75rem;
+        }
+
+        /* Center - Canvas */
+        .canvas-area {
+            flex: 1;
+            position: relative;
+            background: #0f0f1a;
+            overflow: hidden;
+        }
+
+        #editor-canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .canvas-overlay {
+            position: absolute;
+            bottom: 1rem;
+            left: 1rem;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Right Panel - Properties */
+        .properties-panel {
+            width: 300px;
+            background: var(--editor-panel);
+            padding: 1rem;
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            overflow-y: auto;
+        }
+
+        .property-group {
+            margin-bottom: 1rem;
+        }
+
+        .property-group h3 {
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            color: var(--editor-accent);
+        }
+
+        .property-item {
+            margin-bottom: 0.75rem;
+        }
+
+        .property-label {
+            display: block;
+            font-size: 0.85rem;
+            margin-bottom: 0.25rem;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .property-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 0.5rem;
+            border-radius: 4px;
+            font-size: 0.9rem;
+        }
+
+        .property-input:focus {
+            outline: none;
+            border-color: var(--editor-accent);
+        }
+
+        .property-slider {
+            width: 100%;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .property-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            background: var(--editor-accent);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        /* Bottom Panel - Layers */
+        .layers-panel {
+            height: 200px;
+            background: var(--editor-panel);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 1rem;
+            overflow-y: auto;
+        }
+
+        .layer-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .layer-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .layer-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .layer-item.selected {
+            background: rgba(233, 69, 96, 0.2);
+            border: 1px solid var(--editor-accent);
+        }
+
+        .layer-visibility {
+            cursor: pointer;
+            opacity: 0.7;
+        }
+
+        .layer-visibility:hover {
+            opacity: 1;
+        }
+
+        .layer-name {
+            flex: 1;
+            font-size: 0.9rem;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal-content {
+            background: var(--editor-panel);
+            padding: 2rem;
+            border-radius: 8px;
+            max-width: 500px;
+            width: 90%;
+            border: 1px solid var(--editor-accent);
+        }
+
+        .modal-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--editor-accent);
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: flex-end;
+            margin-top: 1.5rem;
+        }
+
+        /* Share Codes */
+        .share-code-box {
+            background: rgba(0, 0, 0, 0.5);
+            padding: 1rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            word-break: break-all;
+            margin: 1rem 0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Notifications */
+        .notification {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--editor-panel);
+            border: 1px solid var(--editor-accent);
+            padding: 1rem 1.5rem;
+            border-radius: 4px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s;
+            z-index: 2000;
+        }
+
+        .notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .notification.success {
+            border-color: #4ade80;
+            background: rgba(74, 222, 128, 0.1);
+        }
+
+        .notification.error {
+            border-color: #f87171;
+            background: rgba(248, 113, 113, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="editor-header">
+        <div class="editor-title">
+            <span>🏗️</span>
+            <span>Level Editor</span>
+        </div>
+        <div class="editor-toolbar">
+            <button class="toolbar-btn" onclick="LevelEditor.newLevel()">📄 New</button>
+            <button class="toolbar-btn" onclick="LevelEditor.loadLevel()">📂 Load</button>
+            <button class="toolbar-btn" onclick="LevelEditor.saveLevel()">💾 Save</button>
+            <button class="toolbar-btn" onclick="LevelEditor.exportLevel()">📤 Export</button>
+            <button class="toolbar-btn" onclick="LevelEditor.importLevel()">📥 Import</button>
+            <button class="toolbar-btn" onclick="LevelEditor.shareLevel()">🔗 Share</button>
+            <button class="toolbar-btn" onclick="LevelEditor.playtestLevel()">▶️ Playtest</button>
+            <button class="toolbar-btn" onclick="LevelEditor.publishLevel()">🌐 Publish</button>
+        </div>
+    </header>
+
+    <!-- Main Editor -->
+    <div class="editor-container">
+        <!-- Left Panel - Tools -->
+        <aside class="tools-panel">
+            <div class="tool-section">
+                <h3>Structure</h3>
+                <div class="tool-grid">
+                    <div class="tool-item selected" data-tool="wall">
+                        <div class="tool-icon">🧱</div>
+                        <div class="tool-label">Wall</div>
+                    </div>
+                    <div class="tool-item" data-tool="floor">
+                        <div class="tool-icon">⬜</div>
+                        <div class="tool-label">Floor</div>
+                    </div>
+                    <div class="tool-item" data-tool="ceiling">
+                        <div class="tool-icon">⬛</div>
+                        <div class="tool-label">Ceiling</div>
+                    </div>
+                    <div class="tool-item" data-tool="door">
+                        <div class="tool-icon">🚪</div>
+                        <div class="tool-label">Door</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tool-section">
+                <h3>Objects</h3>
+                <div class="tool-grid">
+                    <div class="tool-item" data-tool="pellet">
+                        <div class="tool-icon">🔵</div>
+                        <div class="tool-label">Pellet</div>
+                    </div>
+                    <div class="tool-item" data-tool="power-pellet">
+                        <div class="tool-icon">🟡</div>
+                        <div class="tool-label">Power</div>
+                    </div>
+                    <div class="tool-item" data-tool="pacman-spawn">
+                        <div class="tool-icon">👻</div>
+                        <div class="tool-label">Pac-Man</div>
+                    </div>
+                    <div class="tool-item" data-tool="player-spawn">
+                        <div class="tool-icon">🎮</div>
+                        <div class="tool-label">Player</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tool-section">
+                <h3>Environment</h3>
+                <div class="tool-grid">
+                    <div class="tool-item" data-tool="light">
+                        <div class="tool-icon">💡</div>
+                        <div class="tool-label">Light</div>
+                    </div>
+                    <div class="tool-item" data-tool="fog">
+                        <div class="tool-icon">🌫️</div>
+                        <div class="tool-label">Fog</div>
+                    </div>
+                    <div class="tool-item" data-tool="decoration">
+                        <div class="tool-icon">🖼️</div>
+                        <div class="tool-label">Decor</div>
+                    </div>
+                    <div class="tool-item" data-tool="hazard">
+                        <div class="tool-icon">⚠️</div>
+                        <div class="tool-label">Hazard</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="tool-section">
+                <h3>Tools</h3>
+                <div class="tool-grid">
+                    <div class="tool-item" data-tool="select">
+                        <div class="tool-icon">🖱️</div>
+                        <div class="tool-label">Select</div>
+                    </div>
+                    <div class="tool-item" data-tool="move">
+                        <div class="tool-icon">✋</div>
+                        <div class="tool-label">Move</div>
+                    </div>
+                    <div class="tool-item" data-tool="rotate">
+                        <div class="tool-icon">🔄</div>
+                        <div class="tool-label">Rotate</div>
+                    </div>
+                    <div class="tool-item" data-tool="scale">
+                        <div class="tool-icon">📏</div>
+                        <div class="tool-label">Scale</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Canvas -->
+        <main class="canvas-area">
+            <canvas id="editor-canvas"></canvas>
+            <div class="canvas-overlay">
+                <span id="canvas-info">Grid: 20x20 | Zoom: 100% | Tool: Wall</span>
+            </div>
+        </main>
+
+        <!-- Right Panel - Properties -->
+        <aside class="properties-panel">
+            <div class="property-group">
+                <h3>Level Info</h3>
+                <div class="property-item">
+                    <label class="property-label">Level Name</label>
+                    <input type="text" class="property-input" id="level-name" placeholder="My Custom Level">
+                </div>
+                <div class="property-item">
+                    <label class="property-label">Description</label>
+                    <textarea class="property-input" id="level-desc" rows="3" placeholder="Level description..."></textarea>
+                </div>
+                <div class="property-item">
+                    <label class="property-label">Difficulty</label>
+                    <select class="property-input" id="level-difficulty">
+                        <option value="easy">Easy</option>
+                        <option value="normal" selected>Normal</option>
+                        <option value="hard">Hard</option>
+                        <option value="nightmare">Nightmare</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="property-group">
+                <h3>Environment</h3>
+                <div class="property-item">
+                    <label class="property-label">Fog Density</label>
+                    <input type="range" class="property-slider" id="fog-density" min="0" max="100" value="50">
+                </div>
+                <div class="property-item">
+                    <label class="property-label">Light Intensity</label>
+                    <input type="range" class="property-slider" id="light-intensity" min="0" max="100" value="70">
+                </div>
+                <div class="property-item">
+                    <label class="property-label">Biome</label>
+                    <select class="property-input" id="level-biome">
+                        <option value="yellow">Yellow Backrooms</option>
+                        <option value="mono">Mono-Yellow</option>
+                        <option value="flooded">Flooded</option>
+                        <option value="construction">Construction</option>
+                        <option value="sewers">Sewers</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="property-group" id="selected-properties">
+                <h3>Selected Object</h3>
+                <p style="color: rgba(255,255,255,0.5); font-size: 0.85rem;">No object selected</p>
+            </div>
+        </aside>
+    </div>
+
+    <!-- Layers Panel -->
+    <div class="layers-panel">
+        <div class="layer-list" id="layer-list">
+            <!-- Layers will be populated dynamically -->
+        </div>
+    </div>
+
+    <!-- Share Modal -->
+    <div class="modal-overlay" id="share-modal">
+        <div class="modal-content">
+            <h2 class="modal-title">Share Your Level</h2>
+            <p>Share this code with others or publish to the workshop:</p>
+            <div class="share-code-box" id="share-code"></div>
+            <div class="modal-buttons">
+                <button class="toolbar-btn" onclick="LevelEditor.copyShareCode()">📋 Copy Code</button>
+                <button class="toolbar-btn" onclick="LevelEditor.closeModal()">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Publish Modal -->
+    <div class="modal-overlay" id="publish-modal">
+        <div class="modal-content">
+            <h2 class="modal-title">Publish to Workshop</h2>
+            <div class="property-item">
+                <label class="property-label">Level Name</label>
+                <input type="text" class="property-input" id="publish-name">
+            </div>
+            <div class="property-item">
+                <label class="property-label">Tags (comma-separated)</label>
+                <input type="text" class="property-input" id="publish-tags" placeholder="horror, maze, hard">
+            </div>
+            <div class="property-item">
+                <label class="property-label">Visibility</label>
+                <select class="property-input" id="publish-visibility">
+                    <option value="public">Public</option>
+                    <option value="unlisted">Unlisted</option>
+                    <option value="private">Private</option>
+                </select>
+            </div>
+            <div class="modal-buttons">
+                <button class="toolbar-btn" onclick="LevelEditor.cancelPublish()">Cancel</button>
+                <button class="toolbar-btn" onclick="LevelEditor.confirmPublish()">Publish</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification"></div>
+
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <!-- Editor Script -->
+    <script src="editor.js"></script>
+</body>
+</html>

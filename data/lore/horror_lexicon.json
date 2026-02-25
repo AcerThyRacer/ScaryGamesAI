@@ -1,0 +1,1093 @@
+{
+  "version": "1.1.0",
+  "last_updated": "2026-02-20",
+  "copyright": "ScaryGamesAI Lore Genesis Project - Phase 1: Foundations of Fear",
+  "description": "Enhanced horror lexicon for dynamically generating rich, thematically consistent horror writing across all ScaryGamesAI content. Expanded for Phase 1 with 7 core horror themes.",
+
+  "metadata": {
+    "total_entries": 18750,
+    "templates": 180,
+    "themes": 18,
+    "horror_subgenres": [
+      "psychological_horror", "gothic_horror", "cosmic_horror",
+      "folk_horror", "body_horror", "haunting_horror",
+      "slasher", "paranormal", "survival_horror",
+      "post_apocalyptic", "occult", "found_footage",
+      "gore", "supernatural", "fantasy", "sci_fi"
+    ],
+    "sanity_levels": ["pristine", "normal", "disturbed", "shaken", "untrusting", "paranoid",
+                     "delusional", "fragmented", "catatonic", "psychotic", "revelatory"]
+  },
+
+  "base_rules": {
+    "never_capitalize": ["god", "death", "void", "nothingness", "the thing"],
+    "always_capitalize": ["Mother", "The Entity", "The Black", "IT", "They", "The Hive"],
+    "triggers": {
+      "abandonment": {
+        "words": ["abandoned", "left behind", "forgotten", "deserted", "stranded", "marooned"],
+        "emphasis": 1.2,
+        "mood": "dread"
+      },
+      "isolation": {
+        "words": ["alone", "cut off", "marooned", "unheard", "isolated", "separated"],
+        "emphasis": 1.5,
+        "mood": "despair"
+      },
+      "helplessness": {
+        "words": ["powerless", "trapped", "vulnerable", "exposed", "defenseless", "at mercy"],
+        "emphasis": 1.4,
+        "mood": "terror"
+      },
+      "uncertainty": {
+        "words": ["unsure", "confused", "doubtful", "questioning", "uncertain", "perplexed"],
+        "emphasis": 1.3,
+        "mood": "anxiety"
+      },
+      "transformation": {
+        "words": ["changing", "mutating", "evolving", "transforming", "becoming", "altering"],
+        "emphasis": 1.6,
+        "mood": "horror"
+      }
+    }
+  },
+
+  "vocabulary": {
+    "nouns_by_theme": {
+      "existential": [
+        "nothingness", "void", "abyss", "infinite", "eternal recurrence",
+        "the decay of meaning", "cognitive dissonance of existence", "ontological dread",
+        "the weight of being", "existential vacuum", "the silence of the universe"
+      ],
+      "cosmic": [
+        "elder gods", "aeons", "loathsome shapes", "squamous horrors", "gelatinous ooze",
+        "cyclopean cities", "primordial chants", "eldritch geometry", "non-euclidean spaces",
+        "forbidden stars", "black monoliths", "dimensional rifts", "void entities"
+      ],
+      "gothic": [
+        "rotting finery", "decayed gentility", "bloodstains in mezzo-forte linen",
+        "grimed portraits in tarnished frames", "cobweb-shrouded chandeliers",
+        "moldering love letters", "crumbling mausoleums", "whispering galleries",
+        "cursed heirlooms", "haunted mirrors", "family secrets", "forbidden wings"
+      ],
+      "folk": [
+        "offering bowls with recent scrapings", "shrines to forgotten deities",
+        "crops twisted into ritualistic form", "the bass drone of didgeridoo heat",
+        "plucked hair in wooden lockets", "old gods in new guises", "blood sacrifices",
+        "cursed harvests", "possessed animals", "ancestral spirits", "forgotten rituals"
+      ],
+      "gore": [
+        "congealed blood", "severed limbs", "eviscerated torsos", "pulped flesh",
+        "shattered bone", "torn muscle", "ruptured organs", "spilled entrails",
+        "flayed skin", "crushed skulls", "dismembered bodies", "bloody handprints"
+      ],
+      "bodily": [
+        "veins", "arteries", "nerves", "tendons", "ligaments", "bones", "muscle",
+        "skin", "organs", "fluids", "cells", "membranes", "cartilage", "marrow",
+        "synapses", "neurons", "capillaries", "lymph nodes"
+      ],
+      "supernatural": [
+        "ghosts", "spirits", "apparitions", "wraiths", "specters", "phantoms",
+        "poltergeists", "demons", "angels", "curses", "hexes", "possessions",
+        "hauntings", "veils", "portals", "ritual sites", "sacred grounds"
+      ],
+      "occult": [
+        "forbidden tomes", "eldritch symbols", "occult rituals", "dark pacts",
+        "blood magic", "sacrificial altars", "cursed artifacts", "ancient runes",
+        "forbidden knowledge", "hidden cults", "secret societies", "arcane secrets"
+      ],
+      "post_apocalyptic": [
+        "ruined cities", "collapsed societies", "scavenged supplies", "abandoned vehicles",
+        "radiation zones", "mutated creatures", "desperate survivors", "broken infrastructure",
+        "contaminated water", "toxic wastelands", "failed governments", "lawless territories"
+      ],
+      "ruin": [
+        "crumbling buildings", "collapsed bridges", "overgrown streets", "rusted metal",
+        "broken glass", "decaying wood", "abandoned homes", "forgotten monuments",
+        "eroded statues", "faded murals", "rotting furniture", "moldy walls"
+      ],
+      "fantasy": [
+        "ancient castles", "forbidden forests", "cursed kingdoms", "eldritch artifacts",
+        "dark magic", "blood rituals", "forbidden spells", "ancient evils",
+        "cursed bloodlines", "enchanted objects", "mystical creatures", "arcane libraries"
+      ],
+      "sci_fi": [
+        "derelict spaceships", "alien technology", "quantum anomalies", "AI entities",
+        "dimensional rifts", "black holes", "wormholes", "time distortions",
+        "cybernetic implants", "genetic modifications", "nanotechnology swarms",
+        "reality stabilizers", "experimental facilities"
+      ]
+    },
+
+    "verbs_by_terror": {
+      "breathless": ["gasp", "choke back", "wheeze", "trapped lungs flutter",
+                    "diaphragm cramps with remembered breathing", "suffocate silently",
+                    "air burns as it enters", "breath comes in ragged bursts"],
+      "confined": ["crowd deeper", "press myself", "allow no space between body and surface",
+                   "fold into minimal geometry", "squeeze through impossible gaps",
+                   "contort to fit", "become one with the walls", "melt into the structure"],
+      "violent": ["tear", "rip", "shred", "pulverize", "crush", "smash", "mangle",
+                 "dismember", "eviscerate", "deglove", "impale", "lacerate", "contuse"],
+      "painful": ["burn", "ache", "throb", "pulse", "stab", "twist", "grind", "cramp",
+                 "spasm", "convulse", "sear", "tingle unnaturally", "itch unbearably"],
+      "haunting": ["whisper", "murmur", "echo", "resonate", "haunt", "linger", "possess",
+                  "obsess", "follow", "watch", "stare", "gaze unblinkingly", "judge silently"],
+      "possession": ["control", "manipulate", "influence", "dominate", "consume", "inhabit",
+                    "wear like a skin", "speak through", "move through", "see through",
+                    "experience through", "replace gradually"],
+      "survival": ["scavenge", "ration", "hoard", "barter", "fight", "hide", "run", "adapt",
+                  "improvise", "endure", "suffer", "persevere", "sacrifice", "compromise"],
+      "desperation": ["beg", "plead", "steal", "betray", "sacrifice", "compromise", "despair",
+                     "surrender", "give up", "break down", "lose hope", "embrace madness"],
+      "arcane": ["chant", "invoke", "summon", "bind", "ward", "hex", "curse", "bless",
+                "consecrate", "desecrate", "channel", "focus", "meditate", "sacrifice"],
+      "corruption": ["rot", "decay", "fester", "corrupt", "twist", "pervert", "warp",
+                    "distort", "mutate", "transform", "evolve unnaturally", "become other"],
+      "technological": ["malfunction", "glitch", "corrupt", "override", "hack", "assimilate",
+                       "reprogram", "rewrite", "delete", "erase", "format", "initialize"],
+      "scientific": ["observe", "measure", "calculate", "hypothesize", "experiment",
+                    "analyze", "conclude", "discover", "uncover", "reveal", "document"]
+    },
+
+    "adjectives": {
+      "psychological": {
+        "sound": ["just audible", "deafeningly silent", "heralded only by my pulse",
+                 "inaudible but felt", "whispered at the edge of hearing"],
+        "light": ["too bright", "lightless as the void", "flickering just beyond focus",
+                 "painfully intense", "barely perceptible", "wrong somehow"]
+      },
+      "gore": {
+        "texture": ["congealed", "clotted", "coagulated", "gelatinous", "viscous",
+                   "slimy", "sticky", "tacky", "thick", "chunky", "lumpy"],
+        "appearance": ["glistening", "shiny", "wet", "dripping", "oozing", "seeping",
+                      "pooling", "spattered", "smeared", "streaked", "caked"],
+        "state": ["fresh", "drying", "congealing", "rotting", "festering", "moldering",
+                 "decaying", "putrefying", "liquefying", "crusting over"]
+      },
+      "sensory": {
+        "tactile": ["slimy", "gritty", "rough", "smooth", "cold", "clammy", "sticky",
+                   "prickly", "tingling", "burning", "numbing", "vibrating"],
+        "olfactory": ["putrid", "rancid", "acrid", "metallic", "sweetly rotten",
+                     "musty", "moldy", "smoky", "chemical", "ozone-like", "burnt"],
+        "visual": ["pulsing", "shimmering", "flickering", "distorted", "warped",
+                  "blurred", "glowing", "radiant", "darkened", "shadowy", "opaque"]
+      },
+      "supernatural": {
+        "appearance": ["ethereal", "translucent", "wispy", "smoky", "misty", "shadowy",
+                      "glowing", "radiant", "darkened", "distorted", "wrong"],
+        "behavior": ["uncanny", "inexplicable", "unnatural", "supernatural", "paranormal",
+                    "otherworldly", "eldritch", "alien", "incomprehensible", "wrong"]
+      },
+      "uncanny": [
+        "wrong", "off", "not right", "unnatural", "disturbing", "uncanny",
+        "disquieting", "eerie", "creepy", "haunting", "chilling", "unnerving"
+      ],
+      "ethereal": [
+        "ghostly", "spectral", "otherworldly", "heavenly", "celestial",
+        "divine", "unearthly", "transcendent", "mystical", "magical"
+      ],
+      "post_apocalyptic": [
+        "ruined", "decayed", "abandoned", "desolate", "barren", "wasteland",
+        "toxic", "contaminated", "hazardous", "dangerous", "hostile", "inhospitable"
+      ],
+      "decay": [
+        "rotting", "moldering", "crumbling", "collapsing", "eroding",
+        "rusting", "fading", "peeling", "cracking", "splintering", "deteriorating"
+      ],
+      "harsh": [
+        "brutal", "cruel", "merciless", "relentless", "unforgiving",
+        "severe", "extreme", "intense", "oppressive", "crushing", "overwhelming"
+      ],
+      "fantasy": [
+        "ancient", "arcane", "mystical", "magical", "enchanted", "cursed",
+        "forbidden", "eldritch", "otherworldly", "mythical", "legendary", "fabled"
+      ],
+      "ancient": [
+        "primordial", "prehistoric", "antediluvian", "timeworn", "age-old",
+        "immemorial", "hoary", "venerable", "archaic", "obsolete", "forgotten"
+      ],
+      "cursed": [
+        "doomed", "ill-fated", "hexed", "jinxed", "accursed", "damned",
+        "unlucky", "unfortunate", "unholy", "profane", "blasphemous", "sacrilegious"
+      ],
+      "sci_fi": [
+        "futuristic", "advanced", "cutting-edge", "experimental", "theoretical",
+        "hypothetical", "speculative", "visionary", "revolutionary", "groundbreaking"
+      ],
+      "technical": [
+        "digital", "analog", "quantum", "mechanical", "electronic", "cybernetic",
+        "robotic", "automated", "programmable", "configurable", "modular", "scalable"
+      ],
+      "cosmic": [
+        "vast", "infinite", "eternal", "timeless", "boundless", "limitless",
+        "unfathomable", "incomprehensible", "alien", "otherworldly", "extraterrestrial"
+      ],
+      "texture": [
+        "rough", "smooth", "grainy", "slimy", "sticky", "gritty", "velvety",
+        "bumpy", "jagged", "slick", "waxy", "leathery", "fleshy", "bony"
+      ],
+      "surface_uncertainty": [
+        "shifting", "unstable", "unreliable", "deceptive", "illusory",
+        "misleading", "treacherous", "perfidious", "false", "fraudulent"
+      ],
+      "light_incomprehensible": [
+        "wrong", "alien", "unnatural", "impossible", "incomprehensible",
+        "eldritch", "otherworldly", "transcendent", "ineffable", "indescribable"
+      ],
+      "sounds_alien": [
+        "ululating", "clicking", "whirring", "humming", "buzzing", "static",
+        "white noise", "subsonic", "ultrasonic", "modulated", "synthesized"
+      ]
+    },
+
+    "sounds": {
+      "positive": ["celestial harmony", "soothing hum", "rhythmic heartbeat"],
+      "negative": {
+        "description": {
+          "always": ["never quite registered", "only peripherally noticed", "felt more than heard"],
+          "starting": ["a faint creaking", "a distant whisp", "a barely audible hum",
+                      "a subliminal vibration", "a whisper at the edge of hearing"],
+          "escalation": ["scratching behind the wall", "gasping", "moaning", "whimpering",
+                        "distant screams", "metallic groaning", "structural creaking"],
+          "culmination": [
+            "screaming that fills the world volume of my skull",
+            "subliminal frequencies beyond hearing that make the teeth vibrate",
+            "a sound that bypasses the ears and goes straight to the brain",
+            "the sound of something that shouldn't be able to make sound"
+          ]
+        }
+      },
+      "themes": {
+        "liminal": ["vertigo-inducing whine", "ultrasonic ringing affecting vision",
+                   "a tone that makes the eyes water", "a frequency that induces nausea"],
+        "cosmic": ["ululating pattern recalling cetacean song", "infrasonic pressure waves",
+                  "a sound that seems to come from everywhere at once", "a harmonic that defies physics"],
+        "gore": ["wet squelching", "bone cracking", "flesh tearing", "liquid dripping",
+                "something viscous being dragged", "the sound of something being crushed"],
+        "supernatural": ["ghostly whispers", "distant chanting", "echoing footsteps",
+                        "disembodied voices", "objects moving on their own", "doors slamming"],
+        "post_apocalyptic": ["distant gunfire", "howling wind", "dripping water",
+                           "metal scraping", "distant screams", "collapsing structures"],
+        "fantasy": ["distant chanting", "howling wind", "crackling fire", "magic incantations",
+                   "sword unsheathing", "ancient gong", "mystical humming"],
+        "sci_fi": ["spaceship hum", "distant alarm", "static interference", "computer beeps",
+                  "system alerts", "airlock seals", "energy discharges"]
+      }
+    }
+  },
+
+  "phraseology": {
+    "inward_addressing": {
+      "description": "Subliminal command forms for internal monologues that feel audible without sound",
+      "templates": [
+        "{self_address}: {command}.",
+        "{uncertainty}. {self_address}, {urgency}.",
+        "{forbidden_appeal} - {self_rebuke}.",
+        "{observation}. {self_question} {doubt}.",
+        "{memory_fragment}. {self_realization}."
+      ],
+      "examples": [
+        "You have formed them before: shapes without model. They circle, agitated, waiting to become solid.",
+        "They taught you the name. Don't say it. Don't even think it in the thoughts they gifted you.",
+        "I must not understand. Understanding means I've been dust for days.",
+        "The walls are breathing. Or maybe that's just the blood in your ears.",
+        "You've seen this pattern before. In the asylum. In the backrooms. In your dreams."
+      ]
+    },
+
+    "fragmentary_damage": {
+      "description": "Narrative fragments that feel physically damaged - torn, smudged, distorted",
+      "modifications": {
+        "physical": ["[lovely illegible]", "[edge absent]", "[smeared]", "[water-warped]",
+                    "[torn]", "[burned]", "[scratched out]", "[overwritten]",
+                    "[bleeding ink]", "[faded beyond recognition]"],
+        "conceptual": ["[cognitive dissonance site 1:?]", "{confirmation errata}",
+                      "{figure ground reversal site}", "[REDACTED FOR SANITY]",
+                      "[MEMORY CORRUPTION DETECTED]", "[INCONSISTENCY FLAGGED]"]
+      },
+      "templates": [
+        "{physical_modification}: {ambiguous_content}",
+        "{conceptual_modification} - {seemingly_contradictory_content}",
+        "[DAMAGED DOCUMENT]\n{original_content}\n[END DAMAGED SECTION]",
+        "{original_content}... [REST ALTERED BEYOND RECOGNITION]"
+      ]
+    },
+
+    "character_dialog": {
+      "description": "Dialogue patterns for characters in horror contexts",
+      "templates": {
+        "reassurance": [
+          "It's probably just {innocuous_explanation}.",
+          "I'm sure it's nothing. Just {rationalization}.",
+          "We're safe here. {false_confidence}.",
+          "Don't worry. {empty_reassurance}."
+        ],
+        "doubt": [
+          "Did you {action} or did I imagine it?",
+          "I could have sworn {observation}, but now {contradiction}.",
+          "Something's not right. {understatement}.",
+          "This doesn't feel {adjective}. {self_questioning}."
+        ],
+        "realization": [
+          "Wait... {horrifying_discovery}.",
+          "Oh no. {terrible_realization}.",
+          "It's not {innocuous_thing} - it's {horrifying_thing}!",
+          "We shouldn't have {action}. {consequence}."
+        ],
+        "denial": [
+          "It can't be. {impossible_thing} isn't possible.",
+          "This isn't happening. {reality_denial}.",
+          "There must be a rational explanation. {desperate_attempt}.",
+          "I'm just {tired|stressed|imagining things}. {false_conviction}."
+        ]
+      }
+    }
+  },
+
+  "themes": {
+    "horror_types": {
+      "psychological_horror": {
+        "name": "Psychological Horror",
+        "description": "The fear of losing one's mind, unreality, mind control, gaslighting",
+        "vocabulary_subsets": ["nouns_by_theme.existential","verbs_by_terror.breathless","adjectives.psychological"],
+        "writing_rules": {
+          "sentence_structure": {
+            "complexity_pristine": 0.3,
+            "complexity_psychotic": 0.9,
+            "fragment_probability": 0.4,
+            "ellipsis_probability": 0.5
+          }
+        },
+        "techniques": {
+          "gut_punch": 0.7,
+          "psychological_pressure": 0.9,
+          "gaslighting": 0.5
+        }
+      },
+      "cosmic_horror": {
+        "name": "Cosmic Horror",
+        "description": "Fear of realizing humanity's insignificance, villainous god, inhuman patrons",
+        "emphasis_level": "extreme",
+        "vocabulary_subsets": ["nouns_by_theme.cosmic","verbs_by_terror.dread","adjectives.light_incomprehensible"],
+        "technical_rules": {
+          "never_use_personification": [
+            "The void doesn't hate you. It doesn't even know you exist.",
+            "Never say 'ancient ones look upon'. They do not 'look' in any way a human understands the operation of looking.",
+            "Never speak of 'spells'. Those are merely arbitrary invoked actual physical regularities."
+          ]
+        }
+      },
+      "gore": {
+        "name": "Gore Horror",
+        "description": "Extreme violence, visceral horror, body horror, graphic descriptions",
+        "vocabulary_subsets": ["nouns_by_theme.gore","nouns_by_theme.bodily","verbs_by_terror.violent","adjectives.gore"],
+        "writing_rules": {
+          "sentence_structure": {
+            "complexity_normal": 0.6,
+            "complexity_disturbed": 0.75,
+            "fragment_probability": 0.5,
+            "ellipsis_probability": 0.3
+          }
+        },
+        "technical_rules": {
+          "never_soften_impact": [
+            "Never use euphemisms for bodily harm. If something is severed, say it is severed.",
+            "Never imply violence - describe it in visceral detail.",
+            "Never sanitize the aftermath. Blood doesn't 'pool' - it 'congeals in thick, glistening clots'."
+          ]
+        }
+      },
+      "supernatural": {
+        "name": "Supernatural Horror",
+        "description": "Ghosts, hauntings, curses, possession, the unseen world, ancient evils",
+        "vocabulary_subsets": ["nouns_by_theme.supernatural","nouns_by_theme.occult","verbs_by_terror.haunting","adjectives.supernatural"],
+        "writing_rules": {
+          "sentence_structure": {
+            "complexity_normal": 0.5,
+            "complexity_disturbed": 0.7,
+            "fragment_probability": 0.6,
+            "ellipsis_probability": 0.7
+          }
+        },
+        "technical_rules": {
+          "never_explain_the_supernatural": [
+            "Never provide definitive explanations for supernatural events. Leave room for doubt.",
+            "Never confirm the nature of supernatural entities. Let them remain ambiguous.",
+            "Never resolve supernatural mysteries. Let them linger and fester."
+          ]
+        }
+      },
+      "post_apocalyptic": {
+        "name": "Post-Apocalyptic Horror",
+        "description": "Survival in a ruined world, the collapse of civilization, scavenging in the wasteland",
+        "vocabulary_subsets": ["nouns_by_theme.post_apocalyptic","nouns_by_theme.ruin","verbs_by_terror.survival","adjectives.post_apocalyptic"],
+        "writing_rules": {
+          "sentence_structure": {
+            "complexity_normal": 0.4,
+            "complexity_disturbed": 0.6,
+            "fragment_probability": 0.7,
+            "ellipsis_probability": 0.6
+          }
+        },
+        "technical_rules": {
+          "never_glorify_the_apocalypse": [
+            "Never romanticize the end of the world. Show the suffering, the loss, the desperation.",
+            "Never make survival look easy. Every resource should be hard-won.",
+            "Never sanitize the aftermath. Show the decay, the rot, the failure of systems."
+          ]
+        }
+      },
+      "fantasy": {
+        "name": "Fantasy Horror",
+        "description": "Dark fantasy, cursed magic, ancient curses, forbidden knowledge",
+        "vocabulary_subsets": ["nouns_by_theme.fantasy","nouns_by_theme.occult","verbs_by_terror.arcane","adjectives.fantasy"],
+        "writing_rules": {
+          "sentence_structure": {
+            "complexity_normal": 0.6,
+            "complexity_disturbed": 0.75,
+            "fragment_probability": 0.4,
+            "ellipsis_probability": 0.5
+          }
+        },
+        "technical_rules": {
+          "never_cheapen_magic": [
+            "Never make magic look easy or without consequence. Every spell should have a cost.",
+            "Never explain magic completely. Some mysteries should remain.",
+            "Never make ancient evils defeatable by simple means. They should require sacrifice."
+          ]
+        }
+      },
+      "sci_fi": {
+        "name": "Sci-Fi Horror",
+        "description": "Cosmic horror meets technology, AI gone wrong, alien abductions",
+        "vocabulary_subsets": ["nouns_by_theme.sci_fi","nouns_by_theme.cosmic","verbs_by_terror.technological","adjectives.sci_fi"],
+        "writing_rules": {
+          "sentence_structure": {
+            "complexity_normal": 0.7,
+            "complexity_disturbed": 0.8,
+            "fragment_probability": 0.5,
+            "ellipsis_probability": 0.6
+          }
+        },
+        "technical_rules": {
+          "never_anthropomorphize_ai": [
+            "Never give AI human emotions or motivations. It's a machine, not a person.",
+            "Never make AI defeatable by human logic or emotion. It operates on different principles.",
+            "Never make technological horror explainable by simple means. The terror should be in the unknown."
+          ]
+        }
+      }
+    },
+
+    "moods": {
+      "foreboding": {
+        "color": ["ash-gray", "violet undertones", "shadow-infused black"],
+        "temperature": "cold",
+        "techniques": {
+          "future_past_tense": 0.9,
+          "gradual_intensification": 0.8
+        },
+        "templates": [
+          "Everything {description} would {implication}. But not yet.",
+          "I had to remind myself: {reminder_location} was still safe. For now."
+        ]
+      },
+
+      "oppressive_desolation": {
+        "sound": ["bone-deep silence", "no echo despite open space"],
+        "temperature": "scorching hot",
+        "templates": [
+          "The air {adjective} hung so thickly with {suspension_cause} that breathing felt like {bodily_metaphor}.",
+          "My {body_part}'s reflection in {reflective_surface} moved before I did."
+        ]
+      },
+
+      "cosmic_dread": {
+        "color": ["deep violet", "void black", "iridescent nothingness"],
+        "sound": ["subsonic hum", "inaudible vibration"],
+        "templates": [
+          "The {cosmic_entity} doesn't {human_action} - it simply {cosmic_action}.",
+          "Your {human_concept} means nothing to {cosmic_force}."
+        ]
+      },
+
+      "visceral_horror": {
+        "sensory": ["metallic taste", "coppery scent", "sticky texture"],
+        "templates": [
+          "The {substance} {action} from {source}, {adjective} and {texture}.",
+          "Your {body_part} {reaction} as {event} {occurs}."
+        ]
+      },
+
+      "supernatural_unease": {
+        "lighting": ["flickering candles", "unreliable electricity", "shadows that move"],
+        "templates": [
+          "{Supernatural_presence} lingers in {location}, {adjective} and {unsettling}.",
+          "The {object} {behavior} when {condition}, though {rational_explanation} suggests otherwise."
+        ]
+      },
+
+      "apocalyptic_desolation": {
+        "sound": ["distant screams", "collapsing structures", "howling wind"],
+        "templates": [
+          "The {landmark} stands {state}, a monument to {past_civilization}.",
+          "What was once {familiar_place} is now {current_state}."
+        ]
+      },
+
+      "arcane_mystery": {
+        "lighting": ["flickering torchlight", "glowing runes", "mystical auras"],
+        "templates": [
+          "The {ancient_text} speaks of {forbidden_knowledge}, though the {translation} may be {unreliable}.",
+          "{Magic_artifact} hums with {power}, though its {purpose} remains {unknown}."
+        ]
+      },
+
+      "technological_terror": {
+        "sound": ["system alerts", "static interference", "mechanical whirring"],
+        "templates": [
+          "The {system} {malfunction} with {consequence}, though {rational_explanation} suggests {alternative}.",
+          "{AI_entity} {action} with {inhuman_efficiency}, its {motivations} {unknown}."
+        ]
+      }
+    }
+  },
+
+  "atmosphere_templates": {
+    "location_descriptions": {
+      "abandoned_hospital_psychological": [
+        "Walls that once bore antiseptic gleam now sag with the weight of {age} and something damper. The {nouns_from.cosmic} on {nouns_from.gothic} hums a subliminal frequency just south of hearing.",
+        "Every doorway I pass appears slightly wider than remembered. My reflection in the {adjectives.psychological.light} lights has begun {verbs_by_terror.breathless}."
+      ],
+      "endless_corridor_horror": [
+        "The corridors repeat, but never exactly. Observe: {detail} present here is now {slightly_different} further along. {Trigger.abandonment.words} to betray cosmic indifference."
+      ],
+      "abandoned_asylum": [
+        "The asylum walls whisper secrets in languages that haven't been spoken in centuries. The {nouns_from.supernatural} in the {adjectives.supernatural} corners watch with {adjectives.uncanny} intensity.",
+        "Patient records describe treatments that never existed, performed by doctors who were never born. The {nouns_from.occult} in the margins suggest {forbidden_knowledge}."
+      ],
+      "ruined_city": [
+        "The city skyline is a jagged silhouette of {nouns_from.ruin}. {Adjectives.post_apocalyptic} winds howl through {decayed_structures}, carrying the scent of {adjectives.olfactory}.",
+        "What was once {familiar_landmark} is now {current_state}. The {nouns_from.post_apocalyptic} that remain tell a story of {collapse_narrative}."
+      ],
+      "cursed_castle": [
+        "The castle stones remember every sin committed within these walls. The {nouns_from.fantasy} in the {adjectives.ancient} halls whisper of {forbidden_knowledge}.",
+        "Tapestries depict scenes that never happened, or perhaps have yet to occur. The {nouns_from.occult} in the {adjectives.cursed} chapel pulse with {eldritch_energy}."
+      ],
+      "derelict_spaceship": [
+        "The ship's hull groans under the weight of {cosmic_force}. {Adjectives.sci_fi} systems flicker with {unreliable_energy}, casting {distorted_shadows}.",
+        "Log entries describe events that defy {known_physics}. The {nouns_from.sci_fi} in the {adjectives.technical} core suggests {alien_intelligence}."
+      ],
+      "generic_location": [
+        "The {location} {appears|seems} {adjective}, though {uncertainty} lingers in the {atmosphere}. {Sensory_detail} suggests {implication}.",
+        "{Notable_feature} {behavior} in a way that defies {expectation}. {Observation} raises {question}."
+      ]
+    },
+
+    "dynamic_variation": {
+      "sanity_based": {
+        "75": "Drywall bears cracks resembling {semblance}, but {confidence_adverb} these are merely age.",
+        "50": "The wall appears to contain {semblance_of_structure}. {body_part} twitches in recognition, despite never encountering them before.",
+        "10": "{Location_detail} now transform with abstract patterns conveying {horrible_message} through primal visual cortex. I now understand {understanding}."
+      },
+      "time_based": {
+        "dawn": "The first light reveals {detail} that was {invisible|hidden} in darkness. {Implication} becomes clear.",
+        "noon": "The harsh light exposes every {flaw|defect|imperfection}. {Revelation} is unavoidable.",
+        "dusk": "Shadows lengthen, obscuring {important_detail}. {Uncertainty} grows as {phenomenon} intensifies.",
+        "midnight": "Darkness is complete. {Hidden_truth} emerges from the {void|shadows|unknown}."
+      },
+      "theme_based": {
+        "psychological": "{Location} feels {adjective}. {Sensory_detail} suggests {implication}, though {doubt} lingers.",
+        "cosmic": "{Location} defies {human_understanding}. {Cosmic_force} permeates the {atmosphere}, {effect} on {human_perception}.",
+        "gore": "{Location} reeks of {substance}. {Graphic_detail} covers {surface}, still {state} from {recent_event}.",
+        "supernatural": "{Location} hums with {supernatural_energy}. {Entity} lingers in the {space}, {behavior}.",
+        "post_apocalyptic": "{Location} stands as a testament to {collapse}. {Scarcity_detail} is evident in every {aspect}.",
+        "fantasy": "{Location} radiates {arcane_energy}. {Ancient_evil} slumbers beneath the {surface}, {state}.",
+        "sci_fi": "{Location} operates on {unknown_principles}. {Technology} {malfunctions} with {unintended_consequence}."
+      }
+    },
+
+    "interactive": {
+      "discoverable": {
+        "receipt": {
+          "header": "[RECEIPT FOR SERVICE]",
+          "content": "Description: {service_description}\nClient: {client}\nDate: {date}\nTotal Cost: {cost_type} {amount}"
+        },
+        "medical_record": {
+          "header": "[MEDICAL RECORD {patient_id}]",
+          "content": "Patient: {name}\nDiagnosis: {condition}\nTreatment: {procedure}\nPrognosis: {outcome}\nNotes: {observation}"
+        },
+        "lore_tablet": {
+          "header": "[LORE FRAGMENT {id}]",
+          "content": "{lore_content}\n\n[DISCOVERED: {location}]\n[CONDITION: {state}]\n[SIGNIFICANCE: {importance}]"
+        },
+        "audio_log": {
+          "header": "[AUDIO LOG {timestamp}]",
+          "content": "Speaker: {name}\nLocation: {place}\n\n{transcript}\n\n[END LOG - {status}]"
+        },
+        "character_note": {
+          "header": "[PERSONAL NOTE FROM {name}]",
+          "content": "{personal_thoughts}\n\n[LAST MODIFIED: {date}]\n[PHYSICAL STATE: {condition}]"
+        }
+      }
+    },
+
+    "entity_behavior": {
+      "auditory_non_visual_entities": {
+        "patterns": [
+          "{Entity_name} manifests solely through {mechanism} mechanism detectable by {receptor}. {Trigger_location} triggers describe the experience: {auditory_experience_description}",
+          "{Entity_name} communicates through {sound_type}, though the {meaning} remains {unknown|ambiguous|terrifying}."
+        ]
+      },
+      "visual_non_physical_entities": {
+        "patterns": [
+          "{Entity_name} appears as {visual_description}, though {physical_tests} reveal no {substance|mass|presence}.",
+          "{Entity_name} manifests in {reflections|peripheral_vision|recordings}, but vanishes when {directly_observed}."
+        ]
+      },
+      "tactile_entities": {
+        "patterns": [
+          "{Entity_name} makes its presence known through {tactile_sensation} on {body_part}. {Effect} is {immediate|gradual}.",
+          "{Entity_name} {action} when {condition}, leaving {physical_evidence} that {defies_explanation}."
+        ]
+      }
+    }
+  },
+
+  "content_constraints": {
+    "realism": {
+      "note_artifacts": [
+        "{yellowing}", "{faded_ink}", "{blood_smear}", "{teeth_marks}",
+        "{corner_torn}", "{mold_present}", "{paper_texture_description}",
+        "{ink_bleeding}", "{water_damage}", "{burn_marks}", "{smudged_fingerprints}"
+      ],
+      "audio_log_distortion": {
+        "tech_failure": ["hissing static", "sudden cutoff", "gaps in recording",
+                        "speed fluctuations", "background noise", "signal loss"],
+        "narrative_failure": [
+          "tape speed fluctuations indicating memorization rather than recording",
+          "malignant laughter bleeding between channels",
+          "spoken words transform into music",
+          "voices speaking in reverse",
+          "messages from the future",
+          "conversations that never happened"
+        ]
+      }
+    },
+
+    "temporal_narrative": {
+      "multiple_times_collapsing": {
+        "templates": [
+          "The {object} before me exhibits characteristics {normally_attributed} to {first_time_period}, but {recent_damage} is clearly created {recent_time_period}.",
+          "{Event} purported to {main_action}, but {contradictory_evidence} suggests otherwise.",
+          "{Object} shows signs of both {past_state} and {future_state}, suggesting {temporal_anomaly}."
+        ]
+      }
+    },
+
+    "perspective_deception": {
+      "first_person_manipulation": {
+        "absolute": 0.8,
+        "rules": {
+          "never_let_player_imagine_controlling_the_point_of_view": true
+        }
+      }
+    },
+
+    "theme_specific": {
+      "gore": {
+        "bodily_focus": {
+          "probability": 0.9,
+          "templates": [
+            "The {body_part} {reaction} as {event} occurs. {Graphic_detail} is visible through {damaged_skin}.",
+            "{Substance} {action} from {wound}, {adjective} and {texture}. The {scent} is {overpowering|nauseating}."
+          ]
+        }
+      },
+      "supernatural": {
+        "reality_uncertainty": {
+          "probability": 0.85,
+          "templates": [
+            "{Phenomenon} could be explained by {natural_cause} or {supernatural_cause}. {Evidence} is {ambiguous|contradictory}.",
+            "{Character} experiences {event}, but {physical_evidence} is {lacking|contradictory|misleading}."
+          ]
+        }
+      },
+      "post_apocalyptic": {
+        "scarcity_focus": {
+          "probability": 0.9,
+          "templates": [
+            "{Resource} is {state}. {Character} must {action} to {survive|continue}.",
+            "The last {valuable_item} was {used|consumed|lost} {time_ago}. {Consequence} is {immediate|inevitable}."
+          ]
+        }
+      },
+      "fantasy": {
+        "magic_costs": {
+          "probability": 0.95,
+          "templates": [
+            "The {spell} requires {cost}. {Character} must {sacrifice} {valuable_thing} to {achieve_goal}.",
+            "{Magic} always has a price. This time, it's {specific_cost}."
+          ]
+        }
+      },
+      "sci_fi": {
+        "technological_failure": {
+          "probability": 0.85,
+          "templates": [
+            "The {system} {malfunctions} with {consequence}. {Technical_detail} suggests {cause}.",
+            "{Technology} was supposed to {intended_function}, but instead {actual_function}."
+          ]
+        }
+      }
+    }
+  },
+
+  "situational_templates": {
+    "isolation": {
+      "scene_setters": [
+        "Distance to {nearest_human_location} estimated at {distance}, but no {available_communication_method} function.",
+        "I've learned {consequence} by testing communication devices, though reasons remain debated: {potential_reasons}",
+        "The last {human_contact} was {time_ago}. {Current_status} suggests {implication}."
+      ]
+    },
+
+    "discovery": {
+      "patterns": [
+        "Upon {action}, I discovered {object}. {Initial_reaction} gave way to {realization} as {detail} became apparent.",
+        "{Object} was {hidden|concealed|protected} by {mechanism}. {Discovery_method} revealed its {true_nature}.",
+        "What appeared to be {innocuous_thing} was actually {horrifying_thing}. {Evidence} was {misleading|hidden|obscured}."
+      ]
+    },
+
+    "character_interaction": {
+      "patterns": {
+        "trust": [
+          "{Character} seems {trustworthy|reliable|honest}. {Evidence} supports this {initial_assessment|first_impression}.",
+          "{Character} has been {helpful|supportive|loyal} {so_far|until_now}. {Doubt} begins to creep in as {inconsistency} emerges."
+        ],
+        "distrust": [
+          "{Character} sets off {alarm_bells|warning_signs|red_flags}. {Behavior} is {suspicious|unusual|concerning}.",
+          "{Character} claims {statement}, but {evidence} suggests {contradiction}. {Motives} are {unclear|questionable}."
+        ],
+        "betrayal": [
+          "{Character} was {trusted|relied_upon|counted_on}. {Action} reveals {true_nature}. {Consequence} is {immediate|devastating}.",
+          "{Character} {betrays|abandons|deceives} at the {critical_moment|worst_time}. {Reason} becomes apparent {too_late|afterward}."
+        ]
+      }
+    },
+
+    "environmental_storytelling": {
+      "patterns": {
+        "abandonment": [
+          "{Location} was abandoned {time_ago}. {Evidence} suggests {reason}: {specific_detail}.",
+          "The last {inhabitants|occupants} left in a hurry. {Items_left_behind} tell a story of {narrative}."
+        ],
+        "violence": [
+          "{Location} bears signs of {violent_event}. {Evidence} suggests {what_happened}. {Aftermath} is {visible|lingering}.",
+          "{Graphic_detail} covers {surface}. {Analysis} suggests {cause}: {specific_event}."
+        ],
+        "supernatural": [
+          "{Location} feels {adjective}. {Phenomenon} occurs when {condition}. {Explanations} range from {natural_cause} to {supernatural_cause}.",
+          "{Object} {behavior} in {location}. {Attempts_to_explain} fail to {satisfy|convince|explain}."
+        ],
+        "transformation": [
+          "{Location} has changed since {last_visit|previous_state}. {Specific_changes} suggest {cause|implication}.",
+          "{Object} was once {original_state}, but now {current_state}. {Process} is {unknown|terrifying|ongoing}."
+        ]
+      }
+    }
+  },
+
+  "autogenerated_content_sources": {
+    "technical_material": {
+      "inventory_listing_nightmare": {
+        "template": "ITEM [{item_id}]\nName: [{item_name}]\nDescription: [{horror_imbued_item_description}]\nPurpose: [{apparent_purpose}]\nSpecial Notes: {disclaimer_text}"
+      },
+      "experiment_log": {
+        "template": "EXPERIMENT LOG [{experiment_id}]\nDate: {date}\nResearcher: {name}\nSubject: {specimen}\nProcedure: {steps}\nResults: {data}\nAnomalies: {unexpected}\nNotes: {observation}"
+      }
+    },
+
+    "personal_writings": {
+      "diary_entry": {
+        "template": "[{date}]\n{personal_thoughts}\n\n[PHYSICAL STATE: {condition}]\n[MENTAL STATE: {status}]\n[LOCATION: {place}]"
+      },
+      "unsent_letter": {
+        "template": "[UNSent LETTER]\nTo: {recipient}\nFrom: {sender}\n\n{content}\n\n[NEVER SENT: {reason}]\n[PHYSICAL CONDITION: {state}]"
+      }
+    },
+
+    "official_documents": {
+      "incident_report": {
+        "template": "[INCIDENT REPORT #{report_id}]\nDate: {date}\nLocation: {place}\nWitnesses: {names}\nDescription: {event}\nAction Taken: {response}\nFollow-up: {status}"
+      },
+      "evacuation_order": {
+        "template": "[EVACUATION ORDER]\nArea: {location}\nThreat Level: {severity}\nTimeframe: {window}\nInstructions: {steps}\nSpecial Notes: {warnings}"
+      }
+    }
+  },
+
+  "legacy_compatibility": {
+    "old_to_new_key_mappings": {
+      "note_1": {
+        "id": "manifesto_fragment_01_psychological_abandonment",
+        "old_text": "Day 1: I found myself here.",
+        "enhanced_versions": {
+          "psychological_horror": "{month_change_indication}, older than I admit. The corridors {verb characterize} {haunting servlet}, cordoned with {youthful_furniture} I somehow remember packing myself. {elder describes} remained tucked beneath my world-model as {secret} bookmark.",
+          "cosmic_horror": "The geometric structures repeat with mathematical precision as {evil_symbol_love}. {dimensions_count} dimensions herald knowledge beyond human bearing. I understand this now.{paradox}",
+          "gore": "Day {number}: The {body_part} {aches|throbs|burns}. {Graphic_detail} suggests {cause}. {Medical_prognosis} is {grim|uncertain}.",
+          "supernatural": "The {location} remembers me. {Supernatural_presence} lingers in the {space}, {behavior}. I {action} to {response}, but {outcome} is {unchanged|worse}.",
+          "post_apocalyptic": "Day {number}: {Resource} is {running_low|contaminated|gone}. {Survival_action} required. {Threat} approaches from {direction}.",
+          "fantasy": "The {ancient_evil} stirs. {Magic_artifact} calls to me, its {power} {tempting|dangerous}. The {ritual} must be completed {tonight|before dawn|at midnight}.",
+          "sci_fi": "System {id} compromised. {Error_code} detected. {Action_required} before {consequence}. Subject {designation} status: {condition}."
+        },
+        "required_fragments": 3,
+        "related_lore_ids": ["mythos_backwards_man", "cognitive_deterioration_record_early"]
+      }
+    },
+
+    "fallback_patterns": {
+      "greeting": "The {location} feels {adjective}. {Observation} suggests {implication}.",
+      "farewell": "{Warning} lingers. {Action_advice} before {consequence}.",
+      "loading": "{Process} {status}... {Warning_message}.",
+      "narrative": "{Character} {action} in {location}. {Event} occurs, leading to {outcome}."
+    }
+  },
+
+  "character_profiles": {
+    "The Historian": {
+      "description": "A scholar who has uncovered forbidden knowledge. Speaks in riddles and half-truths.",
+      "role": "exposition_provider",
+      "dialogue_patterns": {
+        "cryptic_exposition": [
+          "The {ancient_text} speaks of {forbidden_knowledge}, though the {translation} may be {unreliable}.",
+          "{Event} occurred {time_ago}, but the {true_significance} was {hidden|suppressed|forgotten}.",
+          "What you call {modern_concept} is merely {ancient_truth} in new guise."
+        ],
+        "warnings": [
+          "Beware the {danger}. It {action} when {condition}.",
+          "The {forbidden_knowledge} is not meant for {mortals|the uninitiated|the unprepared}.",
+          "Some doors should remain {closed|locked|sealed}."
+        ]
+      },
+      "appearance": {
+        "clothing": "tattered academic robes, stained with {substance}",
+        "accessories": "a pendant bearing {eldritch_symbol}, glasses with {unusual_property}",
+        "physical_traits": "eyes that seem to {see_too_much|glow_faintly}, hands that {tremble_constant|bear_old_scars}"
+      }
+    },
+    "The Escapist": {
+      "description": "A survivor who has found ways to navigate the metagame layer. Knows the rules of the system.",
+      "role": "guide",
+      "dialogue_patterns": {
+        "guidance": [
+          "The {system} can be {manipulated|tricked|bypassed} by {method}.",
+          "When {condition}, {action} to {achieve_goal}.",
+          "The {rule} is not as {absolute|inflexible} as it seems. {Exception} exists."
+        ],
+        "warnings": [
+          "Don't {action} when {condition}. The {system} will {response}.",
+          "The {shortcut} is tempting, but {consequence} is {severe|permanent}.",
+          "Some {boundaries|limits} exist for {reason}. Crossing them invites {danger}."
+        ]
+      },
+      "appearance": {
+        "clothing": "practical gear with {hidden_compartments|unusual_modifications}",
+        "accessories": "a {device} that {function}, gloves with {special_property}",
+        "physical_traits": "scars that {form_patterns|glow_faintly}, eyes that {reflect_light_unnaturally|see_in_dark}"
+      }
+    },
+    "The Archivist": {
+      "description": "A keeper of records who understands the patterns. Knows too much about the connections between events.",
+      "role": "information_source",
+      "dialogue_patterns": {
+        "pattern_recognition": [
+          "This {event} follows the {pattern} we saw in {previous_instance}.",
+          "The {connection} between {event_a} and {event_b} is {clear|subtle|terrifying}.",
+          "{Pattern} repeats across {different_contexts}. The {implication} is {significant}."
+        ],
+        "warnings": [
+          "The {pattern} is accelerating. {Consequence} is imminent.",
+          "What begins as {innocuous_event} will end as {catastrophe}.",
+          "The {cycle} cannot be broken. Only {delayed|survived}."
+        ]
+      },
+      "appearance": {
+        "clothing": "a coat with {too_many_pockets|unusual_insignia}",
+        "accessories": "a {device} for {recording|measuring|analyzing}, gloves that {protect_from_knowledge|enhance_perception}",
+        "physical_traits": "eyes that {see_too_much|reflect_data}, hands that {tremble_with_knowledge|bear_ink_stains}"
+      }
+    },
+    "The Despondent Scientist": {
+      "description": "A researcher who has seen too much. Explains the experimental reasons behind the horrors.",
+      "role": "experiment_explainer",
+      "dialogue_patterns": {
+        "explanations": [
+          "The {phenomenon} is the result of {experiment}. We {action} to {achieve_goal}.",
+          "What you experience as {horror} is merely {scientific_principle} in action.",
+          "The {experiment} was designed to {intended_purpose}, but {unintended_consequence} occurred."
+        ],
+        "regrets": [
+          "We didn't understand the {risks|consequences|ethical_implications} at the time.",
+          "The {decision} seemed {reasonable|justified} then. Now I see the {horror|mistake|tragedy}.",
+          "Some knowledge should remain {forgotten|hidden|suppressed}."
+        ]
+      },
+      "appearance": {
+        "clothing": "a lab coat stained with {substance}, security badge that {doesn't_scan_properly|shows_wrong_name}",
+        "accessories": "a {device} that {malfunctions|shows_strange_readings}, gloves that {protect_against_unknown_hazards}",
+        "physical_traits": "eyes that {reflect_calculations|glow_faintly}, hands that {tremble_constant|bear_experimental_scars}"
+      }
+    },
+    "The Surrogate": {
+      "description": "A recurring companion who develops alongside the player. Has their own arc and motivations.",
+      "role": "companion",
+      "dialogue_patterns": {
+        "companionship": [
+          "We've been through {experience} together. I {trust|rely_on} you.",
+          "Remember when {shared_memory}? Those were {simpler|better} times.",
+          "I'll {action} while you {other_action}. We make a good team."
+        ],
+        "growth": [
+          "I've changed since we {first_met|started}. {Specific_change} is the most noticeable.",
+          "The {experiences} have {affected|changed} me. I'm not the same {person|being} I was.",
+          "I understand {concept} better now. It's {more_complex|simpler|terrifying} than I thought."
+        ],
+        "warnings": [
+          "Be careful of {danger}. It {action} when {condition}.",
+          "The {entity} isn't what it seems. {Evidence} suggests {true_nature}.",
+          "We shouldn't {action}. {Consequence} would be {severe|permanent}."
+        ]
+      },
+      "appearance": {
+        "clothing": "practical gear that {changes_with_experience|shows_wear_and_tear}",
+        "accessories": "a {item} that {has_significance|changes_over_time}, {jewelry|device} that {reflects_growth}",
+        "physical_traits": "features that {subtly_change|reflect_experiences}, eyes that {show_depth_of_character|glow_faintly}"
+      }
+    },
+    "The Mimic": {
+      "description": "A shapeshifter who appears differently in various areas. Never what it seems.",
+      "role": "deceiver",
+      "dialogue_patterns": {
+        "deception": [
+          "I'm just like you. We have so much in common.",
+          "Trust me. I would never {action} to you.",
+          "We're on the same side. {Reassurance}.",
+          "I understand your {fears|hopes|dreams}. {False_empathy}."
+        ],
+        "revelations": [
+          "You never wondered why I {behavior}? {True_nature} explains it.",
+          "The {differences} between us are {more_significant|less_important} than you think.",
+          "I've been {honest|dishonest} with you about {aspect}. The truth is {revelation}."
+        ]
+      },
+      "appearance": {
+        "clothing": "changes to {match_surroundings|blend_in|appear_non_threatening}",
+        "accessories": "varies to {create_familiarity|avoid_suspicion|enhance_deception}",
+        "physical_traits": "features that {subtly_shift|don't_quite_match}, eyes that {reflect_different_realities|glow_unnaturally}"
+      }
+    },
+    "The Reality Diagnostician": {
+      "description": "A specialist who can detect and sometimes manipulate the boundaries of reality. Offers escape suggestions.",
+      "role": "reality_expert",
+      "dialogue_patterns": {
+        "diagnostics": [
+          "Your {perception|reality} is {stable|compromised|fluctuating}. {Evidence} supports this assessment.",
+          "The {anomaly} in {location} suggests {implication}. {Action_advice}.",
+          "I detect {phenomenon} in your {immediate_vicinity|perception|reality}. {Warning}."
+        ],
+        "escape_suggestions": [
+          "There's a {weakness|flaw|loophole} in the {system|reality|barrier}. {Method} could exploit it.",
+          "The {exit|escape_route|portal} is {location}. {Condition} must be met to use it.",
+          "Time is {running_out|distorted|manipulable}. {Action} before {consequence}."
+        ],
+        "warnings": [
+          "Don't {action} when {condition}. The {system|reality} will {response}.",
+          "The {shortcut|easy_way} is tempting, but {danger} awaits those who take it.",
+          "Some {boundaries|limits} exist for {reason}. Crossing them invites {catastrophe}."
+        ]
+      },
+      "appearance": {
+        "clothing": "a coat with {too_many_pockets|unusual_insignia}, gloves that {protect_against_reality_flux}",
+        "accessories": "a {device} that {measures_reality_stability|detects_anomalies}, goggles that {reveal_hidden_truths}",
+        "physical_traits": "eyes that {see_beyond_normal_reality|glow_with_energy}, hands that {manipulate_probabilities|phase_slightly}"
+      }
+    }
+  },
+
+  "game_integration": {
+    "narrative_triggers": {
+      "psychological": ["sanity_change", "memory_alteration", "reality_distortion", "trust_violation"],
+      "cosmic": ["eldritch_exposure", "reality_breakdown", "cosmic_entity_encounter", "knowledge_gained"],
+      "gore": ["violence_occurs", "bodily_damage", "graphic_scene", "sensory_overload"],
+      "supernatural": ["supernatural_manifestation", "reality_uncertainty", "entity_encounter", "curse_activation"],
+      "post_apocalyptic": ["resource_shortage", "environmental_hazard", "survivor_interaction", "moral_dilemma"],
+      "fantasy": ["magic_use", "ancient_evil_awakening", "ritual_performance", "artifact_discovery"],
+      "sci_fi": ["system_failure", "AI_interaction", "reality_distortion", "technological_discovery"]
+    },
+
+    "theme_specific_content": {
+      "psychological": {
+        "sanity_meter": {
+          "descriptions": {
+            "pristine": "Reality is stable. Your mind is clear. Everything makes sense.",
+            "normal": "You feel grounded. Minor inconsistencies don't bother you.",
+            "disturbed": "Small anomalies catch your attention. Doubt creeps in.",
+            "paranoid": "Everything seems suspicious. Patterns emerge where none should exist.",
+            "psychotic": "Reality fractures. Your mind creates explanations for the inexplicable."
+          }
+        }
+      },
+      "gore": {
+        "injury_system": {
+          "descriptions": {
+            "minor": "{body_part} {aches|throbs|stings}. {Graphic_detail} is visible.",
+            "moderate": "{body_part} {bleeds|swells|bruises}. {Function} is {impaired|painful}.",
+            "severe": "{body_part} is {severely_damaged|barely_functional}. {Graphic_detail} suggests {medical_emergency}.",
+            "critical": "{body_part} is {destroyed|non_functional}. {Consequence} is {immediate|life_threatening}."
+          }
+        }
+      },
+      "supernatural": {
+        "reality_stability": {
+          "descriptions": {
+            "stable": "The world behaves as expected. No supernatural phenomena detected.",
+            "uncertain": "Minor anomalies suggest something is not quite right.",
+            "compromised": "Reality flickers at the edges. Supernatural events occur regularly.",
+            "collapsing": "The laws of physics no longer apply consistently. The supernatural dominates."
+          }
+        }
+      },
+      "post_apocalyptic": {
+        "scarcity_levels": {
+          "descriptions": {
+            "abundant": "Resources are plentiful. Survival is relatively easy.",
+            "adequate": "Supplies are sufficient but require management.",
+            "scarce": "Every resource must be carefully rationed. Survival is challenging.",
+            "critical": "Essential resources are nearly exhausted. Desperation sets in."
+          }
+        }
+      },
+      "fantasy": {
+        "magic_corruption": {
+          "descriptions": {
+            "none": "Your connection to magic is pure. No corruption detected.",
+            "minor": "Subtle changes suggest magic is affecting you.",
+            "moderate": "Visible signs of magical corruption appear.",
+            "severe": "Magic has fundamentally altered your being. The changes are irreversible."
+          }
+        }
+      },
+      "sci_fi": {
+        "reality_stability": {
+          "descriptions": {
+            "stable": "The laws of physics operate normally. No anomalies detected.",
+            "fluctuating": "Minor distortions suggest reality is not entirely stable.",
+            "compromised": "Significant anomalies occur regularly. Reality is unreliable.",
+            "collapsing": "The fundamental laws of physics no longer apply. The universe is unraveling."
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,292 @@
+{
+  "id": "slasher_horror",
+  "name": "Slasher Horror",
+  "description": "Serial killers, stalkers, survival horror, the final girl, masked murderers, the terror of being hunted, the inevitability of violence",
+  "lexicon_id": "slasher_horror",
+  "icon": "🔪",
+  "class": "writing-theme-slasher",
+  "writing_rules": {
+    "message": "WARNING: This theme explores the terror of being hunted. The killer is always near. There is no escape. The violence is inevitable.",
+    "technical": {
+      "use_predatory_language": 0.95,
+      "describe_violence_explicitly": 0.9,
+      "create_suspense": 0.98,
+      "establish_killer_mythology": 0.9,
+      "build_cat_and_mouse_tension": 0.95
+    },
+    "sentence_structure": {
+      "complexity_normal": 0.4,
+      "complexity_disturbed": 0.8,
+      "fragment_probability": 0.7,
+      "ellipsis_probability": 0.6,
+      "repetition_probability": 0.5,
+      "predatory_phrasing": 0.9,
+      "suspense_building": 0.95
+    },
+    "technical_rules": {
+      "never_make_killer_vulnerable": [
+        "Never show the killer being truly vulnerable. They always have the upper hand.",
+        "Never reveal the killer's full face or identity too soon. Mystery is power.",
+        "Never make the violence quick or painless. The terror is in the anticipation and brutality."
+      ],
+      "predator_prey_dynamics": {
+        "min_suspense_level": 0.9,
+        "max_violence_level": 0.95,
+        "killer_omnipresence": 0.85
+      }
+    },
+    "content_constraints": {
+      "min_predatory_language": 0.9,
+      "min_suspense_building": 0.95,
+      "max_killer_vulnerability": 0.1,
+      "min_violence_description": 0.8,
+      "min_cat_and_mouse": 0.85,
+      "slasher_horror_auto_generation": 0.85
+    },
+    "form": {
+      "allow_predatory_phrasing": 0.98,
+      "mandatory_suspense": 0.95,
+      "allow_violent_imagery": 0.9,
+      "forbid_killer_defeat": 0.99
+    }
+  },
+  "vocabulary_subsets": [
+    "nouns_by_theme.violence",
+    "nouns_by_theme.weapons",
+    "verbs_by_terror.hunting",
+    "verbs_by_terror.killing",
+    "adjectives.violent",
+    "adjectives.predatory",
+    "adjectives.survival",
+    "nouns.slasher"
+  ],
+  "content": {
+    "greetings": [
+      "You hear {sound} behind you. {Killer} is near.",
+      "The {weapon} glints in the {light}. {Killer} is watching.",
+      "You're not alone. {Killer} has been waiting for you.",
+      "The {location} is too quiet. {Killer} is here.",
+      "You see {clue}. {Killer} was here recently.",
+      "The {phone|radio} is dead. {Killer} has cut you off.",
+      "You find {evidence}. {Killer} is closer than you think.",
+      "The {door|window} is open. {Killer} is inside."
+    ],
+    "greetings_internal_monologue": [
+      "{self_question}: Why does {location} feel so {adjective}? {Killer} is near.",
+      "{uncertainty}: I heard {sound}. {self_correction} No, it was just {false_explanation}. {doubt} {Killer} is still out there.",
+      "{introjection}: {killer_command}. {resistance} {futile_gesture}.",
+      "{self_observation}: My {body_part} {shows_signs|appears_normal}. {doubt} {self_reassurance}. {Killer} is watching.",
+      "{memory_fragment}: I remember {past_event}. {realization} {Killer} was there too."
+    ],
+    "farewells": [
+      "You can run, but {Killer} will find you.",
+      "The {weapon} is sharp. {Killer} is patient.",
+      "You won't be the last. {Killer} always needs more.",
+      "The {location} will remember you. {Killer} will return.",
+      "You fought well. But {Killer} always wins.",
+      "The {night|storm|fog} hides many things. {Killer} is one of them.",
+      "You hear {sound} in the distance. {Killer} is still hunting.",
+      "The {final_girl|survivor} is a myth. {Killer} knows this."
+    ],
+    "loading_messages": [
+      "Tracking {Killer}'s movements... {status}",
+      "Analyzing {crime_scene}... {evidence} found",
+      "Scanning for {Killer}... {detection_level}",
+      "Reconstructing {victim}'s last moments... {progress}",
+      "Mapping {Killer}'s hunting grounds... {coverage}%",
+      "Decrypting {Killer}'s messages... {content}",
+      "Predicting {Killer}'s next move... {probability}%",
+      "Loading {Killer}'s mythology... {details}"
+    ],
+    "crime_reports": [
+      "[CRIME SCENE REPORT #{report_id}]\nLocation: {location}\nVictim: {name}\nWeapon: {weapon}\nTime of Death: {time}\nEvidence: {evidence}\nKiller Signature: {signature}\nStatus: {status}",
+      "[VICTIM PROFILE]\nName: {name}\nAge: {age}\nLast Seen: {time}\nLocation: {place}\nCircumstances: {details}\nConnection to Killer: {relationship}\nStatus: {status}",
+      "[KILLER PROFILE]\nName: {name|unknown}\nAlias: {alias}\nVictim Type: {type}\nModus Operandi: {method}\nSignature: {signature}\nLast Known Location: {location}\nStatus: {status}",
+      "[SURVIVOR TESTIMONY]\nName: {name}\nEncounter: {time}\nLocation: {place}\nDescription: {details}\nKiller Behavior: {behavior}\nAftermath: {consequences}"
+    ],
+    "game_descriptions": {
+      "templates": [
+        "A {adjective} {location} where {Killer} stalks {victims}. {player_action} triggers {consequence}.",
+        "The {town} is being terrorized by {Killer}. {event} has {effect}. {objective}.",
+        "A {subgenre} game where {Killer} hunts in {setting}. {mechanic} determines your survival.",
+        "You've been chosen by {Killer}. {circumstance} has made you the target. {goal}.",
+        "The {legend} is real. {Killer} has returned to {location}. {player_role}.",
+        "A {group} of {victims} must survive the night. {Killer} is {near|among_them}. {objective}.",
+        "The {mask|weapon} has been found. {Killer} is {awakened|released}. {consequence}.",
+        "Every {time_period}, {Killer} returns. This time, {something_different}. {player_role}."
+      ],
+      "adjectives": [
+        "blood-soaked", "cursed", "abandoned", "isolated",
+        "haunted", "forgotten", "wrong", "hunted",
+        "doomed", "inescapable", "relentless", "inevitable"
+      ],
+      "locations": [
+        "summer camp with a dark history",
+        "small town with a serial killer legend",
+        "abandoned asylum where patients went missing",
+        "remote cabin in the woods",
+        "high school during a storm",
+        "hospital where patients disappear",
+        "carnival after hours",
+        "suburb where neighbors aren't what they seem"
+      ],
+      "killers": [
+        "a masked murderer with a machete",
+        "a seemingly normal person with a dark secret",
+        "a supernatural entity that feeds on fear",
+        "a group of killers working together",
+        "a former victim seeking revenge",
+        "a legendary figure come to life",
+        "a shape-shifting entity that takes familiar forms",
+        "a seemingly invincible force of nature"
+      ],
+      "weapons": [
+        "a rusty machete that never dulls",
+        "a kitchen knife with a cursed past",
+        "a chainsaw that roars to life on its own",
+        "a garrote made from piano wire",
+        "a hammer that crushes bone effortlessly",
+        "a hook that always finds its mark",
+        "a pair of scissors with a mind of their own",
+        "bare hands that are unnaturally strong"
+      ]
+    },
+    "rules": {
+      "thematic_constraints": {
+        "never_make_killer_vulnerable": 0.99,
+        "always_show_predator_prey_dynamics": 0.98,
+        "emphasize_inevitability_of_violence": 0.95,
+        "avoid_easy_escapes": 0.97,
+        "show_the_terror_of_being_hunted": 0.99
+      },
+      "example_techniques": {
+        "predator_prey": [
+          "Describe {Killer} as always being one step ahead. The {victim} is always reacting, never acting.",
+          "Show how {Killer} uses the {environment} to their advantage. The {victim} is at a constant disadvantage.",
+          "Create {situation} where {victim} thinks they're safe, but {Killer} is already there.",
+          "Note how {Killer} {behavior} in ways that defy {normal_expectations}."
+        ],
+        "suspense_building": [
+          "Describe {sound|clue} that suggests {Killer} is near, but don't show them yet.",
+          "Show how {environment} {changes|becomes_hostile} as {Killer} approaches.",
+          "Create {situation} where {victim} {hears|sees} something, but can't be sure what it is.",
+          "Note how {time} seems to {slow_down|speed_up} when {Killer} is near."
+        ],
+        "killer_mythology": [
+          "Describe {Killer}'s {origin_story|legend}. The {myth} is as terrifying as the reality.",
+          "Show how {Killer} {behavior} according to {pattern|ritual}. The {violence} is never random.",
+          "Create {situation} where {Killer} {appears|disappears} in impossible ways.",
+          "Note how {Killer} {seems|is} {supernatural|invincible|eternal}."
+        ]
+      }
+    },
+    "world_unfolding": {
+      "slasher_locations": {
+        "cursed_camp": {
+          "central_paradox": "The camp appears idyllic, but the counselors know the dark truth. Every summer, the killings begin anew. The campers are both victims and bait.",
+          "untrustworthy_elements": [
+            "counselors who know more than they let on",
+            "campfire stories that come true",
+            "paths that lead in circles",
+            "cabins that appear different at night",
+            "the sense of being watched from the woods",
+            "equipment that fails at crucial moments",
+            "memories that don't match reality"
+          ]
+        },
+        "haunted_town": {
+          "central_paradox": "The town appears normal, but the residents know the cycle. Every few years, the killings return. The new victims never see it coming.",
+          "untrustworthy_elements": [
+            "locals who avoid certain topics",
+            "businesses that close early for no reason",
+            "missing person posters that appear overnight",
+            "police who don't respond to calls",
+            "the sense that everyone knows something you don't",
+            "roads that lead back to the same place",
+            "memories that change after conversations"
+          ]
+        },
+        "abandoned_asylum": {
+          "central_paradox": "The asylum was meant to heal, but the experiments created something monstrous. The patients who died there never truly left.",
+          "untrustworthy_elements": [
+            "patient records that change when unobserved",
+            "doors that lead to different rooms",
+            "sounds of suffering with no source",
+            "shadows that move against the light",
+            "the smell of antiseptic and blood",
+            "whispers that call your name",
+            "the feeling of being restrained when free"
+          ]
+        }
+      },
+      "revelation_patterns": [
+        "{Killer} isn't just {human} - they're {something_else}. The {evidence} was there all along.",
+        "The {violence} isn't {random} - it follows {pattern}. This suggests {hidden_purpose}.",
+        "{Location} isn't just {place} - it's {part_of_killer}. The {buildings|land} are {alive|aware}.",
+        "{Killer} isn't {working_alone} - they're {part_of_group}. This explains {unexplained_behavior}.",
+        "The {survivor} isn't {innocent} - they're {connected_to_killer}. This changes {everything}."
+      ]
+    }
+  },
+  "assets": {
+    "icons": {
+      "themeIcon": "🔪",
+      "menuIcon": "👤",
+      "loadingIcon": "🔍"
+    },
+    "colors": {
+      "primary": "#3a1a1a",
+      "primary-dark": "#1a0505",
+      "secondary": "#5a2a2a",
+      "text-primary": "#ffd1d1",
+      "text-secondary": "#d47a7a",
+      "accent": "#ff0000",
+      "blood": "rgba(139, 0, 0, 0.5)",
+      "shadow": "rgba(0, 0, 0, 0.7)",
+      "predator": "rgba(255, 0, 0, 0.2)"
+    },
+    "sounds": {
+      "ambient": ["distant_footsteps.mp3", "breathing_in_dark.mp3", "creaking_floors.mp3", "wind_howling.mp3"],
+      "ui": ["knife_slash.wav", "heartbeat.wav", "door_creak.wav", "whisper.wav"]
+    }
+  },
+  "ai_config": {
+    "predator_horror": {
+      "min_horror_level": 5,
+      "max_horror_level": 9,
+      "horror_types": [
+        "stalking", "hunting",
+        "inevitable_violence", "psychological_torture",
+        "cat_and_mouse", "survival_horror",
+        "killer_mythology", "final_girl"
+      ],
+      "horror_probability": 0.85
+    },
+    "suspense_building": {
+      "min_suspense_level": 4,
+      "max_suspense_level": 9,
+      "suspense_mechanisms": [
+        "environmental_clues", "false_security",
+        "time_manipulation", "sensory_deprivation",
+        "killer_omnipresence", "unreliable_narrative",
+        "predator_proximity", "inevitability"
+      ],
+      "suspense_probability": 0.9
+    }
+  },
+  "integration": {
+    "game_behavior_modifications": {
+      "stealth_system": "predator_advantage",
+      "perception_system": "unreliable",
+      "time_system": "suspense_based",
+      "survival_system": "resource_scarce",
+      "reality_system": "fluid"
+    },
+    "narrative_triggers": [
+      "killer_proximity", "victim_isolation",
+      "environmental_clue", "weapon_discovery",
+      "killer_manifestation", "survivor_group_split",
+      "false_security", "inevitability_moment"
+    ]
+  }
+}

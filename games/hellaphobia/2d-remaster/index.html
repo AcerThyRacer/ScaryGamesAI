@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hellaphobia: 2D Remaster</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        <div id="vhs-overlay"></div>
+        <div id="crt-scanlines"></div>
+        <canvas id="gameCanvas" width="800" height="600"></canvas>
+        <div id="ui-layer">
+            <div id="sanity-meter" class="hidden">
+                <div class="label">SANITY</div>
+                <div class="bar"><div class="fill" id="sanity-fill"></div></div>
+            </div>
+            <div id="inventory-ui" class="hidden">
+                <div class="item">🔋 <span id="batt-count">0</span></div>
+                <div class="item">💊 <span id="pill-count">0</span></div>
+                <div class="item">🗝️ <span id="key-count">0</span></div>
+            </div>
+            <div id="interaction-prompt" class="hidden">Press [E] to Interact</div>
+        </div>
+        <div id="main-menu">
+            <h1>HELLAPHOBIA</h1>
+            <h2>2D REMASTER</h2>
+            <button id="btn-start">ENTER THE DUNGEON</button>
+        </div>
+    </div>
+    
+    <script src="engine.js"></script>
+    <script src="player.js"></script>
+    <script src="level-manager.js"></script>
+    <script src="lighting.js"></script>
+    <script src="sanity.js"></script>
+    <script src="ai.js"></script>
+    <script src="inventory.js"></script>
+    <script src="bosses.js"></script>
+    <script src="audio.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
