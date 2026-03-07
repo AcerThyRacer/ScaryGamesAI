@@ -1,23 +1,45 @@
 /**
- * Renderer Systems Module - Phase 1 + Enhancement
- * Next-generation WebGPU rendering with advanced features
+ * Renderer Systems Module — 2026 Overhaul
+ * Complete next-generation WebGPU rendering stack
  */
 
-// Original Phase 1 systems
+// Core renderers
 export { WebGPURenderer } from './WebGPURenderer2026.js';
-
-// Phase 1 Enhancement systems
 export { WebGPURayTracing } from './WebGPURayTracing.js';
 export { DLSSRenderer } from './DLSSRenderer.js';
+
+// 2026 Path Tracing & GI
+export { PathTracer2026 } from './PathTracer2026.js';
 export { NeuralDenoiser2026 } from './NeuralDenoiser2026.js';
-export { ProceduralMaterialSystem } from './ProceduralMaterials.js';
-export { GPUAnimationSystem } from './GPUAnimationSystem.js';
-export { TessellationEngine2026 } from './TessellationEngine2026.js';
-export { MaterialSystem2026 } from './MaterialSystem2026.js';
 export { RadianceCascades2026 } from './RadianceCascades2026.js';
-export { AreaLightSystem2026 } from './AreaLightSystem2026.js';
+export { EmissivePropagation2026 } from './EmissivePropagation2026.js';
+
+// Materials & Geometry
+export { MaterialSystem2026 } from './MaterialSystem2026.js';
+export { ProceduralMaterialSystem } from './ProceduralMaterials.js';
+export { TessellationEngine2026 } from './TessellationEngine2026.js';
 export { VirtualGeometry2026 } from './VirtualGeometry2026.js';
+
+// Lighting & Atmosphere
+export { AreaLightSystem2026 } from './AreaLightSystem2026.js';
 export { AtmosphericRenderer2026 } from './AtmosphericRenderer2026.js';
+export { HDRPipeline2026 } from './HDRPipeline2026.js';
+export { VolumetricPathTracer2026 } from './VolumetricPathTracer2026.js';
+
+// Animation & Particles
+export { GPUAnimationSystem } from './GPUAnimationSystem.js';
+export { GPUParticleSystem } from './GPUParticleSystem.js';
+
+// Upscaling & Performance
+export { TSR2026 } from './TSR2026.js';
+export { VariableRateShading2026 } from './VariableRateShading2026.js';
+export { RenderGraph2026 } from './RenderGraph2026.js';
+
+// Horror-Specific Effects
+export { PsychologicalHorrorShaders2026 } from './PsychologicalHorrorShaders2026.js';
+export { FourthWallBreaker2026 } from './FourthWallBreaker2026.js';
+export { AudioReactiveVisuals2026 } from './AudioReactiveVisuals2026.js';
+export { HapticVisualFeedback2026 } from './HapticVisualFeedback2026.js';
 
 /**
  * Create a complete enhanced renderer
@@ -88,17 +110,22 @@ export async function createEnhancedRenderer(canvas, options = {}) {
 }
 
 export default {
-  WebGPURenderer,
-  WebGPURayTracing,
-  DLSSRenderer,
-  NeuralDenoiser2026,
-  ProceduralMaterialSystem,
-  GPUAnimationSystem,
-  TessellationEngine2026,
-  MaterialSystem2026,
-  RadianceCascades2026,
-  AreaLightSystem2026,
-  AtmosphericRenderer2026,
-  VirtualGeometry2026,
+  // Core
+  WebGPURenderer, WebGPURayTracing, DLSSRenderer,
+  // 2026 Path Tracing & GI
+  PathTracer2026, NeuralDenoiser2026, RadianceCascades2026, EmissivePropagation2026,
+  // Materials & Geometry
+  MaterialSystem2026, ProceduralMaterialSystem, TessellationEngine2026, VirtualGeometry2026,
+  // Lighting & Atmosphere
+  AreaLightSystem2026, AtmosphericRenderer2026, HDRPipeline2026,
+  VolumetricPathTracer2026,
+  // Animation & Particles
+  GPUAnimationSystem, GPUParticleSystem,
+  // Upscaling & Performance
+  TSR2026, VariableRateShading2026, RenderGraph2026,
+  // Horror Effects
+  PsychologicalHorrorShaders2026, FourthWallBreaker2026,
+  AudioReactiveVisuals2026, HapticVisualFeedback2026,
+  // Factory
   createEnhancedRenderer
 };
