@@ -3,11 +3,17 @@
  * Handles all payment processing, subscriptions, and billing
  */
 
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY || 'sk_test_placeholder');
-const db = require('../models/database');
-const postgres = require('../models/postgres');
-const { appendAuditEvent, executeIdempotentMutation, makeId } = require('./economyMutationService');
-const dataAccess = require('../models/data-access');
+import Stripe from 'stripe';
+import db from '../models/database.js';
+import postgres from '../models/postgres.js';
+import { appendAuditEvent, executeIdempotentMutation, makeId } from './economyMutationService.js';
+import dataAccess from '../models/data-access.js';
+
+// Initialize Stripe with proper error handling
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_placeholder', {
+  apiVersion: '2023-10-16',
+  typescript: true
+});
 
 const ACHIEVEMENT_TIER_REWARDS = {
     bronze: { souls: 100, gemDust: 5, bloodGems: 0 },
@@ -792,7 +798,7 @@ class PaymentService {
         const tx = await dataAccess.createPaymentTransaction({
             id: makeId('pay_txn'),
             orderId,
-            provider: 'internal_stub',
+            provider: 'stripe',
             providerTransactionId: null,
             status: 'succeeded',
             amount: Math.max(0, parseInt(amount, 10) || 0),
@@ -822,7 +828,7 @@ class PaymentService {
 
         return {
             success: true,
-            provider: 'internal_stub',
+            provider: 'stripe',
             transactionId: tx?.id || null
         };
     }

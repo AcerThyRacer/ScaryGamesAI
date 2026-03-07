@@ -1,0 +1,1258 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <title>Paranormal Contractor — Ghost Hunting Business Sim | ScaryGamesAI</title>
+    <meta name="description" content="Run your own paranormal investigation company. Manage employees, equipment, and hunt ghosts across haunted locations. The most realistic ghost hunting business simulation.">
+    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
+    <link rel="canonical" href="https://scarygames.ai/games/paranormal-contractor/">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="ScaryGamesAI">
+    <meta property="og:title" content="Paranormal Contractor — Ghost Hunting Business Sim">
+    <meta property="og:description" content="Run your own paranormal investigation company. Manage employees, equipment, and hunt ghosts across haunted locations.">
+    <meta property="og:url" content="https://scarygames.ai/games/paranormal-contractor/">
+    <meta property="og:image" content="https://scarygames.ai/assets/og-game-fallback.svg?game=paranormal-contractor">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Paranormal Contractor — Ghost Hunting Business Sim">
+    <meta name="twitter:description" content="Run your own paranormal investigation company. Manage employees, equipment, and hunt ghosts across haunted locations.">
+    <meta name="twitter:image" content="https://scarygames.ai/assets/og-game-fallback.svg?game=paranormal-contractor">
+    <link rel="manifest" href="/manifest.json">
+    <script type="application/ld+json">
+        {
+          "@context": "https://schema.org",
+          "@type": "VideoGame",
+          "name": "Paranormal Contractor",
+          "description": "Run your own paranormal investigation company. Manage employees, equipment, and hunt ghosts across haunted locations.",
+          "genre": [
+            "Horror",
+            "Simulation",
+            "Business Management",
+            "Strategy"
+          ],
+          "applicationCategory": "Game",
+          "operatingSystem": "Web Browser",
+          "url": "https://scarygames.ai/games/paranormal-contractor/",
+          "image": [
+            "https://scarygames.ai/assets/og-game-fallback.svg?game=paranormal-contractor"
+          ],
+          "publisher": {
+            "@type": "Organization",
+            "name": "ScaryGamesAI",
+            "url": "https://scarygames.ai/"
+          },
+          "isPartOf": {
+            "@type": "WebSite",
+            "name": "ScaryGamesAI",
+            "url": "https://scarygames.ai/"
+          }
+        }
+    </script>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/game-responsive.css">
+    <link rel="stylesheet" href="/css/mobile-controls.css">
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+            background: #0a0a0f;
+            font-family: 'Inter', sans-serif;
+        }
+
+        #game-canvas {
+            display: block;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        /* Paranormal Contractor Specific Styles */
+        .pc-container {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a0a15 50%, #0f0f1a 100%);
+        }
+
+        .pc-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 24px;
+            background: rgba(0, 0, 0, 0.8);
+            border-bottom: 1px solid rgba(139, 92, 246, 0.3);
+            backdrop-filter: blur(10px);
+        }
+
+        .pc-company-name {
+            font-family: 'Creepster', cursive;
+            font-size: 1.8rem;
+            color: #8b5cf6;
+            text-shadow: 0 0 20px rgba(139, 92, 246, 0.5);
+        }
+
+        .pc-stats-bar {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+        }
+
+        .pc-stat {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: #ddd;
+        }
+
+        .pc-stat-value {
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .pc-funds { color: #22c55e; }
+        .pc-reputation { color: #f59e0b; }
+        .pc-rating { color: #ef4444; }
+
+        .pc-main-content {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        .pc-sidebar {
+            width: 280px;
+            background: rgba(0, 0, 0, 0.6);
+            border-right: 1px solid rgba(139, 92, 246, 0.2);
+            display: flex;
+            flex-direction: column;
+            padding: 16px;
+            gap: 12px;
+            overflow-y: auto;
+        }
+
+        .pc-nav-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 18px;
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 10px;
+            color: #ddd;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.25s;
+            text-align: left;
+        }
+
+        .pc-nav-btn:hover {
+            background: rgba(139, 92, 246, 0.2);
+            border-color: rgba(139, 92, 246, 0.4);
+            transform: translateX(4px);
+        }
+
+        .pc-nav-btn.active {
+            background: rgba(139, 92, 246, 0.3);
+            border-color: #8b5cf6;
+            color: #fff;
+        }
+
+        .pc-nav-icon {
+            font-size: 1.3rem;
+        }
+
+        .pc-view-area {
+            flex: 1;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pc-view {
+            position: absolute;
+            inset: 0;
+            display: none;
+            padding: 24px;
+            overflow-y: auto;
+        }
+
+        .pc-view.active {
+            display: block;
+        }
+
+        /* Office View */
+        .pc-office-view {
+            background: linear-gradient(180deg, rgba(20, 15, 30, 0.9) 0%, rgba(10, 10, 20, 0.95) 100%);
+        }
+
+        .pc-office-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .pc-office-card {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 16px;
+            padding: 20px;
+            transition: all 0.3s;
+        }
+
+        .pc-office-card:hover {
+            border-color: rgba(139, 92, 246, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .pc-office-card h3 {
+            margin: 0 0 16px 0;
+            color: #8b5cf6;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Contract Board */
+        .pc-contracts-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .pc-contract-item {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.25s;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .pc-contract-item:hover {
+            background: rgba(139, 92, 246, 0.1);
+            border-color: rgba(139, 92, 246, 0.3);
+        }
+
+        .pc-contract-item.active-contract {
+            border-color: #22c55e;
+            background: rgba(34, 197, 94, 0.1);
+        }
+
+        .pc-contract-info h4 {
+            margin: 0 0 6px 0;
+            color: #fff;
+            font-size: 1rem;
+        }
+
+        .pc-contract-meta {
+            display: flex;
+            gap: 12px;
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .pc-contract-reward {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #22c55e;
+        }
+
+        .pc-difficulty-dots {
+            display: flex;
+            gap: 2px;
+        }
+
+        .pc-difficulty-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .pc-difficulty-dot.filled {
+            background: #ef4444;
+        }
+
+        /* Equipment View */
+        .pc-equipment-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .pc-equipment-item {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 16px;
+            text-align: center;
+            transition: all 0.25s;
+        }
+
+        .pc-equipment-item:hover {
+            border-color: rgba(139, 92, 246, 0.3);
+        }
+
+        .pc-equipment-item.owned {
+            border-color: #22c55e;
+        }
+
+        .pc-equipment-icon {
+            font-size: 2.5rem;
+            margin-bottom: 8px;
+        }
+
+        .pc-equipment-name {
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .pc-equipment-desc {
+            font-size: 0.8rem;
+            color: #888;
+            margin-bottom: 12px;
+        }
+
+        .pc-equipment-cost {
+            font-size: 1.1rem;
+            color: #22c55e;
+            font-weight: 700;
+        }
+
+        .pc-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s;
+            font-size: 0.9rem;
+        }
+
+        .pc-btn-primary {
+            background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+            color: #fff;
+        }
+
+        .pc-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(139, 92, 246, 0.4);
+        }
+
+        .pc-btn-success {
+            background: linear-gradient(135deg, #22c55e, #16a34a);
+            color: #fff;
+        }
+
+        .pc-btn-danger {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: #fff;
+        }
+
+        /* Ghost Database */
+        .pc-ghost-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 16px;
+        }
+
+        .pc-ghost-card {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 16px;
+            transition: all 0.25s;
+        }
+
+        .pc-ghost-card.discovered {
+            border-color: rgba(139, 92, 246, 0.3);
+        }
+
+        .pc-ghost-card.undiscovered {
+            opacity: 0.6;
+        }
+
+        .pc-ghost-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+        }
+
+        .pc-ghost-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #fff;
+            margin: 0;
+        }
+
+        .pc-ghost-type {
+            font-size: 0.75rem;
+            padding: 4px 8px;
+            background: rgba(139, 92, 246, 0.2);
+            border-radius: 4px;
+            color: #8b5cf6;
+        }
+
+        .pc-danger-level {
+            display: flex;
+            gap: 2px;
+            margin-top: 4px;
+        }
+
+        .pc-danger-bar {
+            width: 20px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 2px;
+        }
+
+        .pc-danger-bar.filled {
+            background: #ef4444;
+        }
+
+        .pc-ghost-evidence {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 12px;
+        }
+
+        .pc-evidence-tag {
+            font-size: 0.7rem;
+            padding: 4px 8px;
+            background: rgba(34, 197, 94, 0.15);
+            border: 1px solid rgba(34, 197, 94, 0.3);
+            border-radius: 4px;
+            color: #22c55e;
+        }
+
+        /* Investigation View */
+        .pc-investigation-view {
+            background: #000;
+            padding: 0;
+            display: flex;
+        }
+
+        #investigation-canvas {
+            flex: 1;
+            background: #050508;
+        }
+
+        .pc-investigation-ui {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+        }
+
+        .pc-investigation-ui > * {
+            pointer-events: auto;
+        }
+
+        .pc-sanity-bar {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 300px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .pc-sanity-label {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .pc-sanity-track {
+            flex: 1;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .pc-sanity-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #22c55e, #eab308, #ef4444);
+            transition: width 0.3s;
+        }
+
+        .pc-sanity-value {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #fff;
+            min-width: 40px;
+            text-align: right;
+        }
+
+        .pc-equipment-slot {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 12px;
+            border-radius: 12px;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+
+        .pc-slot {
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .pc-slot:hover {
+            border-color: rgba(139, 92, 246, 0.5);
+        }
+
+        .pc-slot.active {
+            border-color: #8b5cf6;
+            background: rgba(139, 92, 246, 0.2);
+        }
+
+        .pc-slot-number {
+            position: absolute;
+            top: 2px;
+            left: 4px;
+            font-size: 0.65rem;
+            color: #888;
+        }
+
+        .pc-slot-icon {
+            font-size: 1.5rem;
+        }
+
+        .pc-evidence-panel {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 250px;
+            background: rgba(0, 0, 0, 0.85);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 12px;
+            padding: 16px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .pc-evidence-panel h4 {
+            margin: 0 0 12px 0;
+            color: #8b5cf6;
+            font-size: 0.95rem;
+        }
+
+        .pc-evidence-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 6px;
+            margin-bottom: 6px;
+            font-size: 0.85rem;
+        }
+
+        .pc-evidence-item.new {
+            animation: evidence-pulse 2s ease-in-out;
+        }
+
+        @keyframes evidence-pulse {
+            0%, 100% { background: rgba(255, 255, 255, 0.03); }
+            50% { background: rgba(139, 92, 246, 0.2); }
+        }
+
+        /* Employee Management */
+        .pc-employee-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .pc-employee-card {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .pc-employee-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+        }
+
+        .pc-employee-info {
+            flex: 1;
+        }
+
+        .pc-employee-name {
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 4px;
+        }
+
+        .pc-employee-role {
+            font-size: 0.8rem;
+            color: #8b5cf6;
+            margin-bottom: 8px;
+        }
+
+        .pc-employee-stats {
+            display: flex;
+            gap: 16px;
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        .pc-employee-salary {
+            font-size: 1.1rem;
+            color: #22c55e;
+            font-weight: 700;
+        }
+
+        /* Map View */
+        .pc-map-container {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 20px;
+            height: 100%;
+        }
+
+        .pc-map-area {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 16px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #location-map {
+            width: 100%;
+            height: 100%;
+        }
+
+        .pc-location-info {
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            border-radius: 16px;
+            padding: 20px;
+        }
+
+        .pc-location-types {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .pc-location-type {
+            aspect-ratio: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.75rem;
+            text-align: center;
+            padding: 4px;
+        }
+
+        .pc-location-type:hover {
+            border-color: rgba(139, 92, 246, 0.4);
+            background: rgba(139, 92, 246, 0.1);
+        }
+
+        .pc-location-type.selected {
+            border-color: #8b5cf6;
+            background: rgba(139, 92, 246, 0.2);
+        }
+
+        .pc-location-icon {
+            font-size: 1.5rem;
+            margin-bottom: 4px;
+        }
+
+        /* Evidence Board */
+        .pc-evidence-board {
+            background: rgba(20, 20, 30, 0.9);
+            border: 2px solid rgba(139, 92, 246, 0.3);
+            border-radius: 16px;
+            padding: 24px;
+            min-height: 500px;
+            position: relative;
+        }
+
+        .pc-board-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .pc-board-header h3 {
+            margin: 0;
+            color: #8b5cf6;
+        }
+
+        .pc-clue-nodes {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            position: relative;
+        }
+
+        .pc-clue-node {
+            width: 120px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 2px solid rgba(139, 92, 246, 0.4);
+            border-radius: 12px;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.25s;
+        }
+
+        .pc-clue-node:hover {
+            transform: scale(1.05);
+            border-color: #8b5cf6;
+        }
+
+        .pc-clue-node.connected {
+            border-color: #22c55e;
+        }
+
+        .pc-clue-icon {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        .pc-clue-text {
+            font-size: 0.8rem;
+            color: #ddd;
+        }
+
+        /* Modal */
+        .pc-modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+        }
+
+        .pc-modal-overlay.active {
+            display: flex;
+        }
+
+        .pc-modal {
+            background: linear-gradient(135deg, rgba(20, 20, 35, 0.98), rgba(10, 10, 25, 0.98));
+            border: 1px solid rgba(139, 92, 246, 0.3);
+            border-radius: 20px;
+            padding: 32px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .pc-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .pc-modal-header h2 {
+            margin: 0;
+            color: #fff;
+        }
+
+        .pc-modal-close {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            color: #fff;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        /* Start Screen */
+        .pc-start-screen {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a0a15 50%, #0f0f1a 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            text-align: center;
+            padding: 40px;
+        }
+
+        .pc-start-screen h1 {
+            font-family: 'Creepster', cursive;
+            font-size: 4rem;
+            color: #8b5cf6;
+            text-shadow: 0 0 40px rgba(139, 92, 246, 0.5);
+            margin: 0 0 16px 0;
+        }
+
+        .pc-start-screen .tagline {
+            font-size: 1.2rem;
+            color: #888;
+            margin-bottom: 40px;
+        }
+
+        .pc-game-modes {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .pc-mode-btn {
+            padding: 16px 32px;
+            background: rgba(139, 92, 246, 0.1);
+            border: 2px solid rgba(139, 92, 246, 0.3);
+            border-radius: 12px;
+            color: #ddd;
+            cursor: pointer;
+            transition: all 0.25s;
+            font-size: 1rem;
+        }
+
+        .pc-mode-btn:hover {
+            background: rgba(139, 92, 246, 0.2);
+            border-color: #8b5cf6;
+        }
+
+        .pc-mode-btn.active {
+            background: rgba(139, 92, 246, 0.3);
+            border-color: #8b5cf6;
+            color: #fff;
+        }
+
+        .pc-permadeath-toggle {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 32px;
+            cursor: pointer;
+        }
+
+        .pc-toggle-switch {
+            width: 50px;
+            height: 26px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 13px;
+            position: relative;
+            transition: all 0.25s;
+        }
+
+        .pc-toggle-switch.active {
+            background: #ef4444;
+        }
+
+        .pc-toggle-switch::after {
+            content: '';
+            position: absolute;
+            width: 22px;
+            height: 22px;
+            background: #fff;
+            border-radius: 50%;
+            top: 2px;
+            left: 2px;
+            transition: all 0.25s;
+        }
+
+        .pc-toggle-switch.active::after {
+            left: 26px;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .pc-sidebar {
+                width: 240px;
+            }
+            
+            .pc-map-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .pc-sidebar {
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                width: auto;
+                flex-direction: row;
+                overflow-x: auto;
+                z-index: 100;
+                padding: 8px;
+            }
+            
+            .pc-nav-btn {
+                flex-shrink: 0;
+                padding: 10px 14px;
+            }
+            
+            .pc-nav-btn span:last-child {
+                display: none;
+            }
+            
+            .pc-main-content {
+                padding-bottom: 70px;
+            }
+            
+            .pc-start-screen h1 {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="/css/mobile-enhancements.css" id="mc-enhance-css">
+</head>
+
+<body>
+    <div class="game-page pc-container" id="game-container">
+        <a href="/games.html" class="back-link" id="back-link">← Back to Games</a>
+
+        <!-- Start Screen -->
+        <div class="pc-start-screen" id="start-screen">
+            <h1>👻 Paranormal Contractor</h1>
+            <p class="tagline">Run your own ghost hunting business. Hunt the truth. Survive the night.</p>
+            
+            <div class="pc-game-modes">
+                <button class="pc-mode-btn active" data-mode="career">Career Mode</button>
+                <button class="pc-mode-btn" data-mode="sandbox">Sandbox</button>
+                <button class="pc-mode-btn" data-mode="challenge">Challenge Mode</button>
+            </div>
+            
+            <label class="pc-permadeath-toggle">
+                <div class="pc-toggle-switch" id="permadeath-toggle"></div>
+                <span>☠️ Permadeath Mode</span>
+            </label>
+            
+            <button class="pc-btn pc-btn-primary" id="start-btn" style="font-size: 1.2rem; padding: 16px 48px;">
+                START BUSINESS
+            </button>
+        </div>
+
+        <!-- Main Game UI -->
+        <div class="pc-header" id="game-header" style="display: none;">
+            <div class="pc-company-name" id="company-name-display">Paranormal Solutions Inc.</div>
+            <div class="pc-stats-bar">
+                <div class="pc-stat">
+                    <span>💰</span>
+                    <span class="pc-stat-value pc-funds" id="funds-display">$5,000</span>
+                </div>
+                <div class="pc-stat">
+                    <span>⭐</span>
+                    <span class="pc-stat-value pc-reputation" id="reputation-display">0</span>
+                </div>
+                <div class="pc-stat">
+                    <span>📊</span>
+                    <span class="pc-stat-value pc-rating" id="rating-display">3.0★</span>
+                </div>
+                <div class="pc-stat">
+                    <span>📅</span>
+                    <span class="pc-stat-value" id="day-display">Day 1</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="pc-main-content" id="main-content" style="display: none;">
+            <aside class="pc-sidebar">
+                <button class="pc-nav-btn active" data-view="office">
+                    <span class="pc-nav-icon">🏢</span>
+                    <span>Office</span>
+                </button>
+                <button class="pc-nav-btn" data-view="contracts">
+                    <span class="pc-nav-icon">📋</span>
+                    <span>Contracts</span>
+                </button>
+                <button class="pc-nav-btn" data-view="map">
+                    <span class="pc-nav-icon">🗺️</span>
+                    <span>Map</span>
+                </button>
+                <button class="pc-nav-btn" data-view="equipment">
+                    <span class="pc-nav-icon">🛠️</span>
+                    <span>Equipment</span>
+                </button>
+                <button class="pc-nav-btn" data-view="ghosts">
+                    <span class="pc-nav-icon">👻</span>
+                    <span>Ghost Database</span>
+                </button>
+                <button class="pc-nav-btn" data-view="employees">
+                    <span class="pc-nav-icon">👥</span>
+                    <span>Employees</span>
+                </button>
+                <button class="pc-nav-btn" data-view="evidence">
+                    <span class="pc-nav-icon">📌</span>
+                    <span>Evidence Board</span>
+                </button>
+                <button class="pc-nav-btn pc-btn-danger" id="investigate-btn" style="margin-top: auto;">
+                    <span class="pc-nav-icon">🔦</span>
+                    <span>START INVESTIGATION</span>
+                </button>
+            </aside>
+
+            <div class="pc-view-area">
+                <!-- Office View -->
+                <div class="pc-view pc-office-view active" id="view-office">
+                    <h2 style="margin: 0 0 20px 0; color: #fff;">Office Management</h2>
+                    <div class="pc-office-grid">
+                        <div class="pc-office-card">
+                            <h3>📊 Company Overview</h3>
+                            <div id="company-overview">
+                                <p>Welcome to your new paranormal investigation business!</p>
+                            </div>
+                        </div>
+                        <div class="pc-office-card">
+                            <h3>🏆 Recent Contracts</h3>
+                            <div id="recent-contracts">
+                                <p>No contracts completed yet.</p>
+                            </div>
+                        </div>
+                        <div class="pc-office-card">
+                            <h3>📈 Statistics</h3>
+                            <div id="business-stats">
+                                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;">
+                                    <div>
+                                        <div style="font-size: 0.8rem; color: #888;">Contracts Completed</div>
+                                        <div style="font-size: 1.5rem; color: #22c55e;" id="stat-completed">0</div>
+                                    </div>
+                                    <div>
+                                        <div style="font-size: 0.8rem; color: #888;">Contracts Failed</div>
+                                        <div style="font-size: 1.5rem; color: #ef4444;" id="stat-failed">0</div>
+                                    </div>
+                                    <div>
+                                        <div style="font-size: 0.8rem; color: #888;">Ghosts Identified</div>
+                                        <div style="font-size: 1.5rem; color: #8b5cf6;" id="stat-identified">0</div>
+                                    </div>
+                                    <div>
+                                        <div style="font-size: 0.8rem; color: #888;">Total Earnings</div>
+                                        <div style="font-size: 1.5rem; color: #f59e0b;" id="stat-earnings">$0</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pc-office-card">
+                            <h3>🔧 Office Upgrades</h3>
+                            <div id="office-upgrades">
+                                <p>Upgrade your office to unlock new capabilities.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Contracts View -->
+                <div class="pc-view" id="view-contracts">
+                    <h2 style="margin: 0 0 20px 0; color: #fff;">Available Contracts</h2>
+                    <div class="pc-contracts-list" id="contracts-list">
+                        <!-- Contracts will be populated here -->
+                    </div>
+                </div>
+
+                <!-- Map View -->
+                <div class="pc-view" id="view-map">
+                    <h2 style="margin: 0 0 20px 0; color: #fff;">Location Selection</h2>
+                    <div class="pc-map-container">
+                        <div class="pc-map-area">
+                            <canvas id="location-map"></canvas>
+                        </div>
+                        <div class="pc-location-info">
+                            <h3 style="margin: 0 0 16px 0; color: #8b5cf6;">Location Types</h3>
+                            <div class="pc-location-types" id="location-types">
+                                <!-- Location types will be populated here -->
+                            </div>
+                            <div id="selected-location-info" style="margin-top: 20px; padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.1);">
+                                <p style="color: #888;">Select a location to view details</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Equipment View -->
+                <div class="pc-view" id="view-equipment">
+                    <h2 style="margin: 0 0 20px 0; color: #fff;">Equipment</h2>
+                    <div style="display: flex; gap: 12px; margin-bottom: 20px;">
+                        <button class="pc-btn pc-btn-primary" data-equip-filter="all">All</button>
+                        <button class="pc-btn" data-equip-filter="detection">Detection</button>
+                        <button class="pc-btn" data-equip-filter="documentation">Documentation</button>
+                        <button class="pc-btn" data-equip-filter="protection">Protection</button>
+                        <button class="pc-btn" data-equip-filter="containment">Containment</button>
+                    </div>
+                    <div class="pc-equipment-grid" id="equipment-grid">
+                        <!-- Equipment items will be populated here -->
+                    </div>
+                </div>
+
+                <!-- Ghost Database View -->
+                <div class="pc-view" id="view-ghosts">
+                    <h2 style="margin: 0 0 20px 0; color: #fff;">Ghost Database</h2>
+                    <div style="margin-bottom: 20px;">
+                        <input type="text" placeholder="Search ghosts..." id="ghost-search" 
+                            style="width: 100%; max-width: 400px; padding: 12px 16px; background: rgba(0,0,0,0.5); 
+                                   border: 1px solid rgba(139, 92, 246, 0.3); border-radius: 8px; color: #fff;">
+                    </div>
+                    <div class="pc-ghost-grid" id="ghost-grid">
+                        <!-- Ghost cards will be populated here -->
+                    </div>
+                </div>
+
+                <!-- Employees View -->
+                <div class="pc-view" id="view-employees">
+                    <h2 style="margin: 0 0 20px 0; color: #fff;">Employee Management</h2>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <p style="color: #888;">Manage your team of paranormal investigators</p>
+                        <button class="pc-btn pc-btn-primary" id="hire-employee-btn">+ Hire New Employee</button>
+                    </div>
+                    <div class="pc-employee-list" id="employee-list">
+                        <!-- Employee cards will be populated here -->
+                    </div>
+                </div>
+
+                <!-- Evidence Board View -->
+                <div class="pc-view" id="view-evidence">
+                    <h2 style="margin: 0 0 20px 0; color: #fff;">Evidence Board</h2>
+                    <div class="pc-evidence-board" id="evidence-board">
+                        <div class="pc-board-header">
+                            <h3>Current Investigation Clues</h3>
+                            <button class="pc-btn" id="clear-board-btn">Clear Board</button>
+                        </div>
+                        <div class="pc-clue-nodes" id="clue-nodes">
+                            <p style="color: #888; width: 100%;">Start an investigation to gather clues...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Investigation View (Fullscreen) -->
+                <div class="pc-view pc-investigation-view" id="view-investigation">
+                    <canvas id="investigation-canvas"></canvas>
+                    <div class="pc-investigation-ui">
+                        <div class="pc-sanity-bar">
+                            <span class="pc-sanity-label">🧠 Sanity</span>
+                            <div class="pc-sanity-track">
+                                <div class="pc-sanity-fill" id="sanity-fill" style="width: 100%;"></div>
+                            </div>
+                            <span class="pc-sanity-value" id="sanity-value">100%</span>
+                        </div>
+                        
+                        <div class="pc-evidence-panel">
+                            <h4>Evidence Collected</h4>
+                            <div id="collected-evidence">
+                                <p style="color: #666; font-size: 0.85rem;">No evidence yet...</p>
+                            </div>
+                        </div>
+                        
+                        <div class="pc-equipment-slot" id="equipment-slots">
+                            <!-- Equipment slots will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modals -->
+        <div class="pc-modal-overlay" id="modal-overlay">
+            <div class="pc-modal" id="modal-content">
+                <!-- Modal content will be populated dynamically -->
+            </div>
+        </div>
+
+        <!-- Controls Overlay -->
+        <div class="controls-overlay" id="controls-overlay" style="display:none;">
+            <div class="controls-content">
+                <h2>Controls</h2>
+                <div class="control-item"><span class="control-key">W A S D</span> Move</div>
+                <div class="control-item"><span class="control-key">Mouse</span> Look Around</div>
+                <div class="control-item"><span class="control-key">E</span> Interact / Use Equipment</div>
+                <div class="control-item"><span class="control-key">F</span> Flashlight Toggle</div>
+                <div class="control-item"><span class="control-key">Q</span> Drop Item</div>
+                <div class="control-item"><span class="control-key">Tab</span> Open Journal</div>
+                <div class="control-item"><span class="control-key">Shift</span> Sprint</div>
+                <div class="control-item"><span class="control-key">Ctrl</span> Crouch</div>
+                <div class="control-item"><span class="control-key">ESC</span> Pause Menu</div>
+                <p class="controls-start-hint">Starting investigation...</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="/js/game-utils.js"></script>
+    <script src="/js/state-bus.js"></script>
+    <script src="/js/audio.js"></script>
+    <script src="/js/quality-enhancer.js"></script>
+    <script src="/js/visual-utils.js"></script>
+    <script src="/js/cinematic-overlay.js"></script>
+    <script src="/js/quality-fx.js"></script>
+    <script src="/js/quality-settings.js"></script>
+    <script src="/js/mobile-controls.js"></script>
+    <script src="/js/mobile-game-bindings.js"></script>
+    <script src="/js/mobile-tutorial.js"></script>
+    <script src="/js/mobile-settings.js"></script>
+    <script src="/js/device-testing.js"></script>
+    
+    <!-- Mobile Support -->
+    <script src="/js/mobile-setup.js" id="mobile-setup-js"></script>
+    <script src="/js/mobile-controls.js" id="mc-js"></script>
+    <script src="/js/mobile-game-bindings.js" id="mc-bindings-js"></script>
+    <script src="/js/mobile-universal-init.js" id="mc-init-js"></script>
+    <script src="/js/mobile-patcher.js" id="mc-patcher-js"></script>
+    <!-- End Mobile Support -->
+    
+    <!-- Accessibility, Memory & Performance -->
+    <script src="/js/accessibility-manager.js" id="a11y-js"></script>
+    <script src="/js/memory-manager.js" id="mem-js"></script>
+    <script src="/js/performance-optimizer.js" id="perf-js"></script>
+    <!-- End Core Systems -->
+    
+    <script src="paranormal-contractor.js"></script>
+</body>
+
+</html>

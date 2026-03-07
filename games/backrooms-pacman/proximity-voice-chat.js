@@ -174,8 +174,28 @@ var ProximityVoiceChat = (function() {
      * Update remote player position (for spatial audio)
      */
     function updateRemotePlayerPosition(playerId, position) {
-        // This would integrate with the game's audio listener
-        // For now, placeholder
+        // Update panner position for spatial audio
+        if (state.pannerNodes && state.pannerNodes[playerId]) {
+            var panner = state.pannerNodes[playerId];
+            
+            // Update 3D position
+            if (panner.positionX) {
+                panner.positionX.value = position.x;
+                panner.positionY.value = position.y || 0;
+                panner.positionZ.value = position.z;
+            } else {
+                // Fallback for older browsers
+                panner.setPosition(position.x, position.y || 0, position.z);
+            }
+        }
+        
+        // Update volume based on proximity
+        if (state.gainNodes && state.gainNodes[playerId]) {
+            var distance = state.localPlayer.position.distanceTo(position);
+            var maxDistance = 50;
+            var volume = Math.max(0, 1 - (distance / maxDistance));
+            state.gainNodes[playerId].gain.value = volume;
+        }
     }
 
     /**

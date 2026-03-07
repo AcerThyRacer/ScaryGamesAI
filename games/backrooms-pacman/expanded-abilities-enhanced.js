@@ -258,11 +258,53 @@ var ExpandedAbilities = (function() {
     }
 
     /**
-     * Find nearest Pac-Man
+     * Find nearest Pac-Man (player)
+     * @param {THREE.Vector3} position - Search origin
+     * @param {number} maxDistance - Maximum search distance
+     * @returns {object|null} Nearest player info
      */
-    function findNearestPacman() {
-        // Would search game entities
-        return null; // Placeholder
+    function findNearestPacman(position, maxDistance) {
+        if (!position || !window.player) return null;
+        
+        var playerPos = window.player.position || window.player.mesh?.position;
+        if (!playerPos) return null;
+        
+        var distance = position.distanceTo(playerPos);
+        
+        if (distance <= maxDistance) {
+            return {
+                player: window.player,
+                distance: distance,
+                position: playerPos.clone()
+            };
+        }
+        
+        return null;
+    }
+    
+    /**
+     * Get all abilities
+     * @returns {Array} All available abilities
+     */
+    function getAllAbilities() {
+        return Object.keys(config.abilities).map(function(key) {
+            return {
+                id: key,
+                ...config.abilities[key]
+            };
+        });
+    }
+    
+    /**
+     * Get ability description
+     * @param {string} abilityId - Ability ID
+     * @returns {string} Description
+     */
+    function getAbilityDescription(abilityId) {
+        var ability = config.abilities[abilityId];
+        if (!ability) return 'Unknown ability';
+        
+        return ability.name + ': ' + ability.description;
     }
 
     /**

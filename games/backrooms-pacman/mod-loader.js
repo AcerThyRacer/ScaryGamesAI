@@ -545,12 +545,100 @@ async function executeScript(script, context) {
     }
 
     /**
-     * Extract zip (simplified)
+     * Extract zip file using JSZip library
+     * @param {ArrayBuffer} arrayBuffer - Zip file as ArrayBuffer
+     * @returns {Promise<object>} Extracted mod data
      */
     async function extractZip(arrayBuffer) {
-        // In production, use a library like JSZip
-        // This is a placeholder
-        throw new Error('Zip extraction not implemented');
+        try {
+            // Check if JSZip is available
+            if (typeof JSZip === 'undefined') {
+                console.error('[ModLoader] JSZip not loaded. Include JSZip library.');
+                throw new Error('JSZip library not found');
+            }
+            
+            // Load zip file
+            const zip = await JSZip.loadAsync(arrayBuffer);
+            const modData = {
+                manifest: null,
+                files: {},
+                metadata: {}
+            };
+            
+            // Extract manifest.json first
+            if (zip.file('manifest.json')) {
+                const manifestText = await zip.file('manifest.json').async('text');
+                modData.manifest = JSON.parse(manifestText);
+                modData.metadata.name = modData.manifest.name || 'Unknown Mod';
+                modData.metadata.version = modData.manifest.version || '1.0.0';
+                modData.metadata.author = modData.manifest.author || 'Anonymous';
+            } else {
+                throw new Error('Mod missing manifest.json');
+            }
+            
+            // Extract all other files
+            const filePromises = [];
+            
+            zip.forEach(function(relativePath, zipEntry) {
+                if (relativePath === 'manifest.json') return;
+                
+                const promise = (async () => {
+                    try {
+                        if (zipEntry.dir) {
+                            modData.files[relativePath] = { type: 'directory' };
+                            return;
+                        }
+                        
+                        const ext = relativePath.split('.').pop().toLowerCase();
+                        
+                        if (['png', 'jpg', 'jpeg', 'gif', 'webp'].includes(ext)) {
+                            // Image file - extract as blob
+                            modData.files[relativePath] = {
+                                type: 'image',
+                                data: await zipEntry.async('blob')
+                            };
+                        } else if (['json'].includes(ext)) {
+                            // JSON file - extract as text and parse
+                            const text = await zipEntry.async('text');
+                            modData.files[relativePath] = {
+                                type: 'json',
+                                data: JSON.parse(text)
+                            };
+                        } else if (['js'].includes(ext)) {
+                            // JavaScript file - extract as text
+                            modData.files[relativePath] = {
+                                type: 'script',
+                                data: await zipEntry.async('text')
+                            };
+                        } else if (['wav', 'mp3', 'ogg'].includes(ext)) {
+                            // Audio file - extract as blob
+                            modData.files[relativePath] = {
+                                type: 'audio',
+                                data: await zipEntry.async('blob')
+                            };
+                        } else {
+                            // Other files - extract as text
+                            modData.files[relativePath] = {
+                                type: 'other',
+                                data: await zipEntry.async('text')
+                            };
+                        }
+                    } catch (error) {
+                        console.error('[ModLoader] Failed to extract file:', relativePath, error);
+                    }
+                })();
+                
+                filePromises.push(promise);
+            });
+            
+            await Promise.all(filePromises);
+            
+            console.log('[ModLoader] Extracted mod:', modData.metadata.name);
+            return modData;
+        } catch (error) {
+            console.error('[ModLoader] Zip extraction failed:', error);
+            throw new Error('Invalid mod package: ' + error.message);
+        }
     }
 
     /**

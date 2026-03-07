@@ -310,14 +310,173 @@ var CommunityModdingSystem = (function() {
 
     /**
      * Get leaderboard data
+     * @param {string} category - Leaderboard category ('speedrun', 'score', 'survival')
+     * @returns {Promise<Array>} Leaderboard entries
      */
-    function getLeaderboard(category) {
-        // Placeholder - would fetch from server
-        return [
-            { rank: 1, player: 'SpeedRunner99', time: '2:34.56' },
-            { rank: 2, player: 'PacMaster', time: '2:45.12' },
-            { rank: 3, player: 'BackroomsKing', time: '2:58.90' }
-        ];
+    async function getLeaderboard(category) {
+        category = category || 'speedrun';
+        
+        try {
+            // Try to fetch from server first
+            const response = await fetch('/api/leaderboard/' + category, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            
+            if (response.ok) {
+                const data = await response.json();
+                return data;
+            }
+            
+            // Fallback to local storage
+            const localKey = 'leaderboard_' + category;
+            const saved = localStorage.getItem(localKey);
+            
+            if (saved) {
+                return JSON.parse(saved);
+            }
+            
+            // Default mock data for new players
+            return [
+                { rank: 1, player: 'SpeedRunner99', score: 15420, time: '2:34.56' },
+                { rank: 2, player: 'PacMaster', score: 14250, time: '2:45.12' },
+                { rank: 3, player: 'BackroomsKing', score: 13890, time: '2:58.90' },
+                { rank: 4, player: 'GhostHunter', score: 12500, time: '3:12.45' },
+                { rank: 5, player: 'MazeRunner', score: 11200, time: '3:28.33' }
+            ];
+        } catch (error) {
+            console.error('[CommunityModding] Failed to fetch leaderboard:', error);
+            
+            // Return cached data on error
+            const localKey = 'leaderboard_' + category;
+            const saved = localStorage.getItem(localKey);
+            
+            if (saved) {
+                return JSON.parse(saved);
+            }
+            
+            return [];
+        }
+    }
+    
+    /**
+     * Submit score to leaderboard
+     * @param {object} scoreData - Score data { player, score, time, category }
+     * @returns {Promise<boolean>} Success
+     */
+    async function submitScore(scoreData) {
+        try {
+            const response = await fetch('/api/leaderboard/submit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    player: scoreData.player,
+                    score: scoreData.score,
+                    time: scoreData.time,
+                    category: scoreData.category || 'speedrun',
+                    timestamp: Date.now()
+                })
+            });
+            
+            if (response.ok) {
+                console.log('[CommunityModding] Score submitted successfully');
+                
+                // Update local cache
+                updateLocalLeaderboard(scoreData);
+                
+                return true;
+            } else {
+                throw new Error('Server rejected score submission');
+            }
+        } catch (error) {
+            console.error('[CommunityModding] Failed to submit score:', error);
+            
+            // Store locally for later submission
+            storePendingScore(scoreData);
+            
+            return false;
+        }
+    }
+    
+    /**
+     * Update local leaderboard cache
+     */
+    function updateLocalLeaderboard(scoreData) {
+        const localKey = 'leaderboard_' + (scoreData.category || 'speedrun');
+        let leaderboard = [];
+        
+        const saved = localStorage.getItem(localKey);
+        if (saved) {
+            leaderboard = JSON.parse(saved);
+        }
+        
+        // Add new score
+        leaderboard.push({
+            rank: leaderboard.length + 1,
+            player: scoreData.player,
+            score: scoreData.score,
+            time: scoreData.time
+        });
+        
+        // Sort by score descending
+        leaderboard.sort((a, b) => b.score - a.score);
+        
+        // Update ranks
+        leaderboard.forEach((entry, index) => {
+            entry.rank = index + 1;
+        });
+        
+        // Keep top 100
+        leaderboard = leaderboard.slice(0, 100);
+        
+        localStorage.setItem(localKey, JSON.stringify(leaderboard));
+    }
+    
+    /**
+     * Store score for later submission
+     */
+    function storePendingScore(scoreData) {
+        let pending = [];
+        
+        const saved = localStorage.getItem('pending_scores');
+        if (saved) {
+            pending = JSON.parse(saved);
+        }
+        
+        pending.push({
+            ...scoreData,
+            timestamp: Date.now(),
+            retries: 0
+        });
+        
+        localStorage.setItem('pending_scores', JSON.stringify(pending));
+    }
+    
+    /**
+     * Retry submitting pending scores
+     */
+    async function retryPendingScores() {
+        const saved = localStorage.getItem('pending_scores');
+        if (!saved) return;
+        
+        let pending = JSON.parse(saved);
+        const remaining = [];
+        
+        for (const scoreData of pending) {
+            if (scoreData.retries < 3) {
+                const success = await submitScore(scoreData);
+                if (!success) {
+                    scoreData.retries++;
+                    remaining.push(scoreData);
+                }
+            }
+        }
+        
+        localStorage.setItem('pending_scores', JSON.stringify(remaining));
     }
 
     /**

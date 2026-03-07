@@ -32,7 +32,11 @@
          * Execute node
          */
         execute(agent, dt) {
-            throw new Error('Execute not implemented');
+            // Base implementation: execute first child if exists
+            if (this.children.length > 0) {
+                return this.children[0].execute(agent, dt);
+            }
+            return 'success';
         }
 
         /**

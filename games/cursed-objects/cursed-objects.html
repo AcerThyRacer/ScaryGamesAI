@@ -1,0 +1,1268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cursed Objects - Anthology Horror</title>
+    <link href="https://fonts.googleapis.com/css2?family=Creepster&family=Inter:wght@400;600&family=Special+Elite&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0a0a0f;
+            color: #e0e0e0;
+            font-family: 'Inter', sans-serif;
+            overflow: hidden;
+            user-select: none;
+        }
+
+        /* ========== MAIN MENU ========== */
+        #main-menu {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a0000 50%, #0a0a0f 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        #main-menu.hidden {
+            opacity: 0;
+            transform: scale(1.1);
+            pointer-events: none;
+        }
+
+        .menu-title {
+            font-family: 'Creepster', cursive;
+            font-size: clamp(3rem, 10vw, 6rem);
+            color: #cc1122;
+            text-shadow: 0 0 30px rgba(204, 17, 34, 0.6);
+            margin-bottom: 10px;
+            animation: titlePulse 3s ease-in-out infinite;
+        }
+
+        @keyframes titlePulse {
+            0%, 100% { text-shadow: 0 0 30px rgba(204, 17, 34, 0.6); }
+            50% { text-shadow: 0 0 60px rgba(204, 17, 34, 0.9), 0 0 90px rgba(204, 17, 34, 0.4); }
+        }
+
+        .menu-subtitle {
+            font-family: 'Special Elite', monospace;
+            font-size: 1.1rem;
+            color: #888;
+            letter-spacing: 4px;
+            margin-bottom: 50px;
+            text-transform: uppercase;
+        }
+
+        .menu-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 300px;
+        }
+
+        .menu-btn {
+            padding: 18px 40px;
+            background: linear-gradient(135deg, rgba(204, 17, 34, 0.1), rgba(139, 0, 0, 0.1));
+            border: 2px solid rgba(204, 17, 34, 0.4);
+            border-radius: 8px;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            transform: translateX(-100%);
+            transition: transform 0.5s ease;
+        }
+
+        .menu-btn:hover::before {
+            transform: translateX(100%);
+        }
+
+        .menu-btn:hover {
+            background: linear-gradient(135deg, rgba(204, 17, 34, 0.3), rgba(139, 0, 0, 0.3));
+            border-color: #cc1122;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(204, 17, 34, 0.3);
+        }
+
+        .menu-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            border-color: #444;
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        /* ========== EPISODE SELECT ========== */
+        #episode-select {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(180deg, #0a0a0f 0%, #1a0505 100%);
+            display: none;
+            flex-direction: column;
+            z-index: 99;
+            overflow: hidden;
+        }
+
+        #episode-select.active {
+            display: flex;
+        }
+
+        .ep-header {
+            padding: 30px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(204, 17, 34, 0.2);
+        }
+
+        .ep-title {
+            font-family: 'Creepster', cursive;
+            font-size: 2.5rem;
+            color: #cc1122;
+        }
+
+        .ep-back-btn {
+            padding: 12px 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            color: #fff;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .ep-back-btn:hover {
+            background: rgba(204, 17, 34, 0.2);
+            border-color: #cc1122;
+        }
+
+        .ep-grid {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 25px;
+            padding: 40px;
+            overflow-y: auto;
+        }
+
+        .ep-card {
+            background: linear-gradient(145deg, rgba(20, 20, 30, 0.8), rgba(10, 10, 15, 0.9));
+            border: 2px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ep-card::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, transparent, rgba(204, 17, 34, 0.1));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .ep-card:hover::before {
+            opacity: 1;
+        }
+
+        .ep-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(204, 17, 34, 0.5);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(204, 17, 34, 0.2);
+        }
+
+        .ep-card.locked {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .ep-card.locked:hover {
+            transform: none;
+            border-color: rgba(255, 255, 255, 0.08);
+        }
+
+        .ep-number {
+            font-family: 'Creepster', cursive;
+            font-size: 1.2rem;
+            color: #666;
+            margin-bottom: 10px;
+        }
+
+        .ep-card-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 8px;
+        }
+
+        .ep-object {
+            font-family: 'Special Elite', monospace;
+            font-size: 0.9rem;
+            color: #cc1122;
+            margin-bottom: 12px;
+        }
+
+        .ep-desc {
+            font-size: 0.95rem;
+            color: #999;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .ep-meta {
+            display: flex;
+            gap: 15px;
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        .ep-meta span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .horror-level {
+            display: flex;
+            gap: 3px;
+        }
+
+        .skull-icon {
+            color: #cc1122;
+            opacity: 0.3;
+        }
+
+        .skull-icon.active {
+            opacity: 1;
+        }
+
+        .ep-completed {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 30px;
+            height: 30px;
+            background: #00ff88;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+        }
+
+        /* ========== GAME SCREEN ========== */
+        #game-screen {
+            position: fixed;
+            inset: 0;
+            display: none;
+            background: #000;
+            z-index: 98;
+        }
+
+        #game-screen.active {
+            display: block;
+        }
+
+        #game-canvas {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            cursor: crosshair;
+        }
+
+        /* ========== GAME UI ========== */
+        .game-ui {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 20px;
+        }
+
+        .ui-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .ui-left {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        /* Sanity Meter */
+        .sanity-container {
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 15px 20px;
+            backdrop-filter: blur(10px);
+            pointer-events: auto;
+        }
+
+        .sanity-label {
+            font-size: 0.75rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .sanity-bar-bg {
+            width: 200px;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .sanity-bar-fill {
+            height: 100%;
+            border-radius: 5px;
+            transition: width 0.5s ease, background 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sanity-bar-fill::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            animation: shimmer 2s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .sanity-bar-fill.high { background: linear-gradient(90deg, #00ff88, #00cc6a); }
+        .sanity-bar-fill.medium { background: linear-gradient(90deg, #ffaa00, #ff8800); }
+        .sanity-bar-fill.low { background: linear-gradient(90deg, #ff4444, #cc1122); }
+        .sanity-bar-fill.critical { 
+            background: linear-gradient(90deg, #cc1122, #880000);
+            animation: criticalPulse 0.5s infinite;
+        }
+
+        @keyframes criticalPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+
+        .sanity-value {
+            font-size: 0.9rem;
+            color: #fff;
+            margin-top: 5px;
+            font-weight: 600;
+        }
+
+        /* Episode Progress */
+        .progress-container {
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 15px 20px;
+            backdrop-filter: blur(10px);
+        }
+
+        .progress-label {
+            font-size: 0.75rem;
+            color: #888;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        .progress-bar {
+            display: flex;
+            gap: 5px;
+        }
+
+        .progress-segment {
+            width: 30px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .progress-segment.completed {
+            background: #cc1122;
+            box-shadow: 0 0 10px rgba(204, 17, 34, 0.5);
+        }
+
+        .progress-segment.current {
+            background: #ffaa00;
+            animation: currentPulse 1s infinite;
+        }
+
+        @keyframes currentPulse {
+            0%, 100% { box-shadow: 0 0 5px rgba(255, 170, 0, 0.5); }
+            50% { box-shadow: 0 0 15px rgba(255, 170, 0, 0.8); }
+        }
+
+        /* UI Right - Menu buttons */
+        .ui-right {
+            display: flex;
+            gap: 10px;
+            pointer-events: auto;
+        }
+
+        .ui-btn {
+            width: 45px;
+            height: 45px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+        }
+
+        .ui-btn:hover {
+            background: rgba(204, 17, 34, 0.3);
+            border-color: #cc1122;
+            transform: scale(1.1);
+        }
+
+        /* ========== DIALOGUE BOX ========== */
+        .dialogue-container {
+            position: absolute;
+            bottom: 120px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 90%;
+            max-width: 900px;
+            pointer-events: auto;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .dialogue-container.active {
+            opacity: 1;
+        }
+
+        .dialogue-box {
+            background: linear-gradient(145deg, rgba(10, 10, 15, 0.95), rgba(20, 10, 10, 0.95));
+            border: 2px solid rgba(204, 17, 34, 0.3);
+            border-radius: 16px;
+            padding: 25px 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 40px rgba(204, 17, 34, 0.1);
+            position: relative;
+        }
+
+        .dialogue-speaker {
+            font-family: 'Creepster', cursive;
+            font-size: 1.2rem;
+            color: #cc1122;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .dialogue-text {
+            font-size: 1.1rem;
+            color: #e0e0e0;
+            line-height: 1.7;
+            min-height: 60px;
+        }
+
+        .dialogue-choices {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .dialogue-choice {
+            padding: 12px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 8px;
+            color: #ccc;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+        }
+
+        .dialogue-choice:hover {
+            background: rgba(204, 17, 34, 0.2);
+            border-color: #cc1122;
+            color: #fff;
+            transform: translateX(10px);
+        }
+
+        .dialogue-continue {
+            position: absolute;
+            bottom: 15px;
+            right: 20px;
+            font-size: 0.8rem;
+            color: #666;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 0.5; }
+            50% { opacity: 1; }
+        }
+
+        /* ========== INVENTORY BAR ========== */
+        .inventory-bar {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 15px;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 15px;
+            backdrop-filter: blur(20px);
+            pointer-events: auto;
+        }
+
+        .inventory-slot {
+            width: 70px;
+            height: 70px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .inventory-slot:hover {
+            border-color: rgba(204, 17, 34, 0.5);
+            background: rgba(204, 17, 34, 0.1);
+            transform: scale(1.05);
+        }
+
+        .inventory-slot.selected {
+            border-color: #cc1122;
+            background: rgba(204, 17, 34, 0.2);
+            box-shadow: 0 0 20px rgba(204, 17, 34, 0.4);
+        }
+
+        .inventory-slot.empty {
+            cursor: default;
+        }
+
+        .inventory-slot.empty:hover {
+            border-color: rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.05);
+            transform: none;
+        }
+
+        .item-icon {
+            font-size: 2rem;
+        }
+
+        .item-tooltip {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%) translateY(-10px);
+            background: rgba(0, 0, 0, 0.9);
+            border: 1px solid rgba(204, 17, 34, 0.3);
+            border-radius: 8px;
+            padding: 10px 15px;
+            font-size: 0.85rem;
+            color: #fff;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .inventory-slot:hover .item-tooltip {
+            opacity: 1;
+            transform: translateX(-50%) translateY(-5px);
+        }
+
+        /* ========== ACTION MENU ========== */
+        .action-menu {
+            position: absolute;
+            background: rgba(10, 10, 15, 0.95);
+            border: 1px solid rgba(204, 17, 34, 0.3);
+            border-radius: 12px;
+            padding: 10px;
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            pointer-events: auto;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            min-width: 150px;
+        }
+
+        .action-menu.active {
+            display: flex;
+        }
+
+        .action-btn {
+            padding: 10px 15px;
+            background: transparent;
+            border: none;
+            border-radius: 6px;
+            color: #ccc;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .action-btn:hover {
+            background: rgba(204, 17, 34, 0.2);
+            color: #fff;
+        }
+
+        .action-btn i {
+            font-size: 1.1rem;
+        }
+
+        /* ========== SCENE TRANSITION ========== */
+        .scene-transition {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+
+        .scene-transition.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .transition-effect {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(circle at center, transparent 0%, #000 70%);
+            opacity: 0;
+            transition: opacity 0.8s ease;
+        }
+
+        .transition-effect.active {
+            opacity: 1;
+        }
+
+        /* ========== TEXT OVERLAY ========== */
+        .text-overlay {
+            position: fixed;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 200;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+
+        .text-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .overlay-content {
+            text-align: center;
+            max-width: 800px;
+            padding: 40px;
+        }
+
+        .overlay-title {
+            font-family: 'Creepster', cursive;
+            font-size: 3rem;
+            color: #cc1122;
+            margin-bottom: 20px;
+        }
+
+        .overlay-text {
+            font-size: 1.2rem;
+            color: #ccc;
+            line-height: 1.8;
+            margin-bottom: 30px;
+        }
+
+        .overlay-btn {
+            padding: 15px 40px;
+            background: linear-gradient(135deg, rgba(204, 17, 34, 0.2), rgba(139, 0, 0, 0.2));
+            border: 2px solid rgba(204, 17, 34, 0.4);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .overlay-btn:hover {
+            background: linear-gradient(135deg, rgba(204, 17, 34, 0.4), rgba(139, 0, 0, 0.4));
+            border-color: #cc1122;
+        }
+
+        /* ========== SAVE/LOAD MENU ========== */
+        .save-menu {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 300;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .save-menu.active {
+            display: flex;
+        }
+
+        .save-container {
+            background: linear-gradient(145deg, rgba(20, 20, 30, 0.95), rgba(10, 10, 15, 0.95));
+            border: 2px solid rgba(204, 17, 34, 0.3);
+            border-radius: 20px;
+            padding: 40px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .save-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .save-title {
+            font-family: 'Creepster', cursive;
+            font-size: 2rem;
+            color: #cc1122;
+        }
+
+        .save-close {
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            border-radius: 50%;
+            color: #fff;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .save-close:hover {
+            background: rgba(204, 17, 34, 0.3);
+        }
+
+        .save-slots {
+            display: grid;
+            gap: 15px;
+        }
+
+        .save-slot {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .save-slot:hover {
+            background: rgba(204, 17, 34, 0.1);
+            border-color: rgba(204, 17, 34, 0.3);
+        }
+
+        .save-slot.empty {
+            opacity: 0.6;
+        }
+
+        .save-info {
+            flex: 1;
+        }
+
+        .save-slot-number {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .save-episode {
+            font-size: 1.1rem;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .save-time {
+            font-size: 0.85rem;
+            color: #888;
+        }
+
+        .save-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .save-action-btn {
+            padding: 10px 20px;
+            background: rgba(204, 17, 34, 0.2);
+            border: 1px solid rgba(204, 17, 34, 0.4);
+            border-radius: 6px;
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .save-action-btn:hover {
+            background: rgba(204, 17, 34, 0.4);
+        }
+
+        /* ========== VISUAL DISTORTION EFFECTS ========== */
+        .distortion-layer {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .distortion-layer.active {
+            opacity: 1;
+        }
+
+        .vignette {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at center, transparent 40%, rgba(0, 0, 0, 0.8) 100%);
+        }
+
+        .scanlines {
+            position: absolute;
+            inset: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 0, 0, 0.1) 2px,
+                rgba(0, 0, 0, 0.1) 4px
+            );
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .distortion-layer.active .scanlines {
+            opacity: 0.3;
+        }
+
+        .noise {
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            opacity: 0;
+            animation: noiseAnim 0.2s infinite;
+        }
+
+        @keyframes noiseAnim {
+            0%, 100% { transform: translate(0, 0); }
+            10% { transform: translate(-2%, -2%); }
+            20% { transform: translate(2%, 2%); }
+            30% { transform: translate(-1%, 1%); }
+            40% { transform: translate(1%, -1%); }
+            50% { transform: translate(-2%, 2%); }
+            60% { transform: translate(2%, -2%); }
+            70% { transform: translate(-1%, -1%); }
+            80% { transform: translate(1%, 1%); }
+            90% { transform: translate(-2%, -1%); }
+        }
+
+        .distortion-layer.active .noise {
+            opacity: 0.08;
+        }
+
+        /* ========== NOTIFICATION ========== */
+        .notification {
+            position: fixed;
+            top: 100px;
+            left: 50%;
+            transform: translateX(-50%) translateY(-20px);
+            background: rgba(10, 10, 15, 0.95);
+            border: 1px solid rgba(204, 17, 34, 0.4);
+            border-radius: 12px;
+            padding: 15px 25px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            z-index: 500;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .notification.active {
+            opacity: 1;
+            transform: translateX(-50%) translateY(0);
+        }
+
+        .notification-icon {
+            font-size: 1.5rem;
+        }
+
+        .notification-text {
+            font-size: 1rem;
+            color: #fff;
+        }
+
+        /* ========== ENDING SCREEN ========== */
+        .ending-screen {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            z-index: 1000;
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px;
+        }
+
+        .ending-screen.active {
+            display: flex;
+        }
+
+        .ending-title {
+            font-family: 'Creepster', cursive;
+            font-size: 4rem;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .ending-title.best { color: #00ff88; text-shadow: 0 0 30px rgba(0, 255, 136, 0.5); }
+        .ending-title.good { color: #66aaff; text-shadow: 0 0 30px rgba(102, 170, 255, 0.5); }
+        .ending-title.neutral { color: #ffaa00; text-shadow: 0 0 30px rgba(255, 170, 0, 0.5); }
+        .ending-title.bad { color: #ff4444; text-shadow: 0 0 30px rgba(255, 68, 68, 0.5); }
+        .ending-title.worst { color: #880000; text-shadow: 0 0 30px rgba(136, 0, 0, 0.8); }
+
+        .ending-description {
+            font-size: 1.2rem;
+            color: #ccc;
+            max-width: 700px;
+            text-align: center;
+            line-height: 1.8;
+            margin-bottom: 40px;
+        }
+
+        .ending-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .ending-stat {
+            text-align: center;
+        }
+
+        .ending-stat-value {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #cc1122;
+        }
+
+        .ending-stat-label {
+            font-size: 0.9rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .ending-buttons {
+            display: flex;
+            gap: 20px;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 768px) {
+            .ep-grid {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+
+            .inventory-bar {
+                gap: 8px;
+                padding: 10px;
+            }
+
+            .inventory-slot {
+                width: 55px;
+                height: 55px;
+            }
+
+            .dialogue-container {
+                bottom: 100px;
+            }
+
+            .sanity-container, .progress-container {
+                padding: 10px 15px;
+            }
+
+            .sanity-bar-bg {
+                width: 150px;
+            }
+        }
+
+        /* ========== INTRO SEQUENCE ========== */
+        .intro-sequence {
+            position: fixed;
+            inset: 0;
+            background: #000;
+            z-index: 1001;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .intro-sequence.active {
+            display: flex;
+        }
+
+        .intro-text {
+            font-family: 'Special Elite', monospace;
+            font-size: 1.3rem;
+            color: #cc1122;
+            max-width: 800px;
+            text-align: center;
+            line-height: 2;
+            padding: 40px;
+            opacity: 0;
+            transition: opacity 2s ease;
+        }
+
+        .intro-text.active {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Main Menu -->
+    <div id="main-menu">
+        <h1 class="menu-title">CURSED OBJECTS</h1>
+        <p class="menu-subtitle">An Anthology of Horror</p>
+        <div class="menu-buttons">
+            <button class="menu-btn" id="btn-new-game">New Game</button>
+            <button class="menu-btn" id="btn-continue">Continue</button>
+            <button class="menu-btn" id="btn-episodes">Episode Select</button>
+            <button class="menu-btn" id="btn-load">Load Game</button>
+            <button class="menu-btn" id="btn-settings">Settings</button>
+        </div>
+    </div>
+
+    <!-- Episode Selection -->
+    <div id="episode-select">
+        <div class="ep-header">
+            <h2 class="ep-title">Select Episode</h2>
+            <button class="ep-back-btn" id="btn-ep-back">← Back</button>
+        </div>
+        <div class="ep-grid" id="ep-grid">
+            <!-- Episodes generated by JS -->
+        </div>
+    </div>
+
+    <!-- Game Screen -->
+    <div id="game-screen">
+        <canvas id="game-canvas"></canvas>
+        
+        <!-- Distortion Effects Layer -->
+        <div class="distortion-layer" id="distortion-layer">
+            <div class="vignette"></div>
+            <div class="scanlines"></div>
+            <div class="noise"></div>
+        </div>
+
+        <!-- Game UI -->
+        <div class="game-ui">
+            <div class="ui-top">
+                <div class="ui-left">
+                    <!-- Sanity Meter -->
+                    <div class="sanity-container">
+                        <div class="sanity-label">
+                            <span>🧠</span>
+                            <span>Sanity</span>
+                        </div>
+                        <div class="sanity-bar-bg">
+                            <div class="sanity-bar-fill high" id="sanity-bar" style="width: 100%;"></div>
+                        </div>
+                        <div class="sanity-value" id="sanity-value">100%</div>
+                    </div>
+
+                    <!-- Episode Progress -->
+                    <div class="progress-container">
+                        <div class="progress-label">Episode Progress</div>
+                        <div class="progress-bar" id="progress-bar">
+                            <!-- Progress segments generated by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="ui-right">
+                    <button class="ui-btn" id="btn-pause" title="Pause">⏸</button>
+                    <button class="ui-btn" id="btn-save-menu" title="Save">💾</button>
+                    <button class="ui-btn" id="btn-menu" title="Menu">☰</button>
+                </div>
+            </div>
+
+            <!-- Dialogue Box -->
+            <div class="dialogue-container" id="dialogue-container">
+                <div class="dialogue-box">
+                    <div class="dialogue-speaker" id="dialogue-speaker"></div>
+                    <div class="dialogue-text" id="dialogue-text"></div>
+                    <div class="dialogue-choices" id="dialogue-choices"></div>
+                    <div class="dialogue-continue" id="dialogue-continue">Click to continue →</div>
+                </div>
+            </div>
+
+            <!-- Inventory Bar -->
+            <div class="inventory-bar" id="inventory-bar">
+                <!-- Inventory slots generated by JS -->
+            </div>
+        </div>
+
+        <!-- Action Menu (Context Menu) -->
+        <div class="action-menu" id="action-menu">
+            <button class="action-btn" data-action="examine">👁️ Examine</button>
+            <button class="action-btn" data-action="take">✋ Take</button>
+            <button class="action-btn" data-action="use">⚡ Use</button>
+            <button class="action-btn" data-action="talk">💬 Talk</button>
+        </div>
+    </div>
+
+    <!-- Scene Transition Overlay -->
+    <div class="scene-transition" id="scene-transition">
+        <div class="transition-effect"></div>
+    </div>
+
+    <!-- Text Overlay (for story text) -->
+    <div class="text-overlay" id="text-overlay">
+        <div class="overlay-content">
+            <h2 class="overlay-title" id="overlay-title"></h2>
+            <p class="overlay-text" id="overlay-text"></p>
+            <button class="overlay-btn" id="overlay-btn">Continue</button>
+        </div>
+    </div>
+
+    <!-- Save/Load Menu -->
+    <div class="save-menu" id="save-menu">
+        <div class="save-container">
+            <div class="save-header">
+                <h3 class="save-title" id="save-title">Save Game</h3>
+                <button class="save-close" id="save-close">×</button>
+            </div>
+            <div class="save-slots" id="save-slots">
+                <!-- Save slots generated by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div class="notification" id="notification">
+        <span class="notification-icon" id="notification-icon">📦</span>
+        <span class="notification-text" id="notification-text">Item acquired</span>
+    </div>
+
+    <!-- Ending Screen -->
+    <div class="ending-screen" id="ending-screen">
+        <h2 class="ending-title" id="ending-title">Ending Title</h2>
+        <p class="ending-description" id="ending-description"></p>
+        <div class="ending-stats">
+            <div class="ending-stat">
+                <div class="ending-stat-value" id="end-sanity">0%</div>
+                <div class="ending-stat-label">Sanity</div>
+            </div>
+            <div class="ending-stat">
+                <div class="ending-stat-value" id="end-items">0</div>
+                <div class="ending-stat-label">Items</div>
+            </div>
+            <div class="ending-stat">
+                <div class="ending-stat-value" id="end-time">0:00</div>
+                <div class="ending-stat-label">Time</div>
+            </div>
+        </div>
+        <div class="ending-buttons">
+            <button class="overlay-btn" id="btn-replay">↻ Replay Episode</button>
+            <button class="overlay-btn" id="btn-episodes-end">📺 Episode Select</button>
+            <button class="overlay-btn" id="btn-main-menu">🏠 Main Menu</button>
+        </div>
+    </div>
+
+    <!-- Intro Sequence -->
+    <div class="intro-sequence" id="intro-sequence">
+        <p class="intro-text" id="intro-text"></p>
+    </div>
+
+    <!-- Scripts -->
+    <script src="/js/game-utils.js"></script>
+    <script src="/js/audio.js"></script>
+    <script src="cursed-objects.js"></script>
+</body>
+</html>

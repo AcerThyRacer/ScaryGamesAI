@@ -654,11 +654,223 @@ var MultiplayerNetwork = (function() {
     }
 
     /**
-     * Calculate average latency
+     * Calculate average latency to peers
+     * @returns {number} Average latency in ms
      */
     function calculateLatency() {
-        // Would track round-trip time to peers
-        return 50; // Placeholder
+        if (!state.peerConnections || state.peerConnections.length === 0) {
+            return 0;
+        }
+        
+        var totalLatency = 0;
+        var peerCount = 0;
+        
+        // Calculate average latency across all peers
+        for (var peerId in state.latencies) {
+            if (state.latencies[peerId] && state.latencies[peerId].length > 0) {
+                var peerLatencies = state.latencies[peerId];
+                var avgPeerLatency = peerLatencies.reduce(function(a, b) { return a + b; }, 0) / peerLatencies.length;
+                totalLatency += avgPeerLatency;
+                peerCount++;
+            }
+        }
+        
+        return peerCount > 0 ? Math.round(totalLatency / peerCount) : 50;
+    }
+    
+    /**
+     * Send ping to measure latency
+     */
+    function sendPing(peerId) {
+        if (!state.dataChannels[peerId]) return;
+        
+        var pingData = {
+            type: 'ping',
+            timestamp: Date.now()
+        };
+        
+        try {
+            state.dataChannels[peerId].send(JSON.stringify(pingData));
+        } catch (error) {
+            console.error('[MultiplayerNetwork] Failed to send ping:', error);
+        }
+    }
+    
+    /**
+     * Record latency measurement
+     * @param {string} peerId - Peer ID
+     * @param {number} latency - Measured latency
+     */
+    function recordLatency(peerId, latency) {
+        if (!state.latencies[peerId]) {
+            state.latencies[peerId] = [];
+        }
+        
+        // Keep last 10 measurements
+        state.latencies[peerId].push(latency);
+        if (state.latencies[peerId].length > 10) {
+            state.latencies[peerId].shift();
+        }
+    }
+    
+    /**
+     * Setup WebRTC connection with peer
+     * @param {string} peerId - Peer ID
+     * @param {boolean} isInitiator - True if we're creating the connection
+     */
+    function setupPeerConnection(peerId, isInitiator) {
+        var config = {
+            iceServers: [
+                { urls: 'stun:stun.l.google.com:19302' },
+                { urls: 'stun:stun1.l.google.com:19302' }
+            ]
+        };
+        
+        var peerConnection = new RTCPeerConnection(config);
+        state.peerConnections[peerId] = peerConnection;
+        
+        // Create data channel if initiator
+        if (isInitiator) {
+            var dataChannel = peerConnection.createDataChannel('game', {
+                ordered: false,
+                maxRetransmits: 0
+            });
+            
+            dataChannel.onopen = function() {
+                console.log('[MultiplayerNetwork] Data channel opened to:', peerId);
+                state.dataChannels[peerId] = dataChannel;
+                
+                if (typeof EventBus !== 'undefined') {
+                    EventBus.emit('multiplayer:connected', { peerId: peerId });
+                }
+            };
+            
+            dataChannel.onmessage = function(event) {
+                handleRemoteMessage(peerId, event.data);
+            };
+            
+            state.dataChannels[peerId] = dataChannel;
+        } else {
+            peerConnection.ondatachannel = function(event) {
+                var dataChannel = event.channel;
+                
+                dataChannel.onopen = function() {
+                    console.log('[MultiplayerNetwork] Data channel opened from:', peerId);
+                    state.dataChannels[peerId] = dataChannel;
+                    
+                    if (typeof EventBus !== 'undefined') {
+                        EventBus.emit('multiplayer:connected', { peerId: peerId });
+                    }
+                };
+                
+                dataChannel.onmessage = function(event) {
+                    handleRemoteMessage(peerId, event.data);
+                };
+                
+                state.dataChannels[peerId] = dataChannel;
+            };
+        }
+        
+        // Handle ICE candidates
+        peerConnection.onicecandidate = function(event) {
+            if (event.candidate) {
+                // Send ICE candidate to peer via signaling server
+                if (typeof EventBus !== 'undefined') {
+                    EventBus.emit('multiplayer:ice', {
+                        peerId: peerId,
+                        candidate: event.candidate
+                    });
+                }
+            }
+        };
+        
+        peerConnection.onconnectionstatechange = function() {
+            console.log('[MultiplayerNetwork] Connection state:', peerConnection.connectionState);
+            
+            if (peerConnection.connectionState === 'disconnected' ||
+                peerConnection.connectionState === 'failed') {
+                handlePeerDisconnect(peerId);
+            }
+        };
+        
+        return peerConnection;
+    }
+    
+    /**
+     * Handle remote message from peer
+     * @param {string} peerId - Peer ID
+     * @param {string} data - Message data
+     */
+    function handleRemoteMessage(peerId, data) {
+        try {
+            var message = JSON.parse(data);
+            
+            switch(message.type) {
+                case 'ping':
+                    // Respond with pong
+                    if (state.dataChannels[peerId]) {
+                        state.dataChannels[peerId].send(JSON.stringify({
+                            type: 'pong',
+                            timestamp: message.timestamp
+                        }));
+                    }
+                    break;
+                    
+                case 'pong':
+                    // Calculate latency
+                    var latency = Date.now() - message.timestamp;
+                    recordLatency(peerId, latency);
+                    break;
+                    
+                case 'state':
+                    // Remote player state update
+                    if (state.remotePlayers[peerId]) {
+                        state.remotePlayers[peerId].position = message.position;
+                        state.remotePlayers[peerId].rotation = message.rotation;
+                        state.remotePlayers[peerId].lastUpdate = Date.now();
+                    }
+                    break;
+                    
+                case 'action':
+                    // Remote game action
+                    if (typeof EventBus !== 'undefined') {
+                        EventBus.emit('multiplayer:action', {
+                            peerId: peerId,
+                            action: message.action
+                        });
+                    }
+                    break;
+            }
+        } catch (error) {
+            console.error('[MultiplayerNetwork] Failed to parse message:', error);
+        }
+    }
+    
+    /**
+     * Handle peer disconnect
+     * @param {string} peerId - Peer ID
+     */
+    function handlePeerDisconnect(peerId) {
+        console.log('[MultiplayerNetwork] Peer disconnected:', peerId);
+        
+        // Clean up
+        if (state.dataChannels[peerId]) {
+            state.dataChannels[peerId].close();
+            delete state.dataChannels[peerId];
+        }
+        
+        if (state.peerConnections[peerId]) {
+            state.peerConnections[peerId].close();
+            delete state.peerConnections[peerId];
+        }
+        
+        if (state.remotePlayers[peerId]) {
+            delete state.remotePlayers[peerId];
+        }
+        
+        if (typeof EventBus !== 'undefined') {
+            EventBus.emit('multiplayer:disconnected', { peerId: peerId });
+        }
     }
 
     // Public API

@@ -1,140 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <title>The Dollhouse — ScaryGamesAI</title>
-    <meta name="description" content="Uncover unsettling secrets in a haunted dollhouse filled with interactive horror puzzles.">
-    <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
-    <link rel="canonical" href="https://scarygames.ai/games/dollhouse/">
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="ScaryGamesAI">
-    <meta property="og:title" content="The Dollhouse — ScaryGamesAI">
-    <meta property="og:description" content="Uncover unsettling secrets in a haunted dollhouse filled with interactive horror puzzles.">
-    <meta property="og:url" content="https://scarygames.ai/games/dollhouse/">
-    <meta property="og:image" content="https://scarygames.ai/assets/og-game-fallback.svg?game=dollhouse">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="The Dollhouse — ScaryGamesAI">
-    <meta name="twitter:description" content="Uncover unsettling secrets in a haunted dollhouse filled with interactive horror puzzles.">
-    <meta name="twitter:image" content="https://scarygames.ai/assets/og-game-fallback.svg?game=dollhouse">
-    <link rel="manifest" href="/manifest.json">
-    <script type="application/ld+json">
-        {
-          "@context": "https://schema.org",
-          "@type": "VideoGame",
-          "name": "The Dollhouse",
-          "description": "Uncover unsettling secrets in a haunted dollhouse filled with interactive horror puzzles.",
-          "genre": [
-            "Horror",
-            "Puzzle",
-            "Mystery"
-          ],
-          "applicationCategory": "Game",
-          "operatingSystem": "Web Browser",
-          "url": "https://scarygames.ai/games/dollhouse/",
-          "image": [
-            "https://scarygames.ai/assets/og-game-fallback.svg?game=dollhouse"
-          ],
-          "publisher": {
-            "@type": "Organization",
-            "name": "ScaryGamesAI",
-            "url": "https://scarygames.ai/"
-          },
-          "isPartOf": {
-            "@type": "WebSite",
-            "name": "ScaryGamesAI",
-            "url": "https://scarygames.ai/"
-          }
-        }
-    </script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Dollhouse Ultimate Edition — ScaryGamesAI</title>
     <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="/css/game-responsive.css">
-    <link rel="stylesheet" href="/css/mobile-controls.css">
     <style>
-        body {
-            margin: 0;
-            overflow: hidden;
-            background: #0a0505;
-        }
-
-        #game-canvas {
-            display: block;
-            margin: 0 auto;
-            cursor: pointer;
-        }
+        body { margin: 0; overflow: hidden; background: #0a0505; font-family: Inter, sans-serif; }
+        #game-canvas { display: block; margin: 0 auto; cursor: pointer; }
+        .modal { display:none;position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#1a0a0a;border:2px solid #ffd700;padding:30px;z-index:9999;max-width:600px;max-height:80vh;overflow-y:auto;color:#fff;border-radius:8px; }
+        .modal h2 { color:#ffd700;margin-top:0; }
+        .modal button { margin-top:20px;padding:10px 20px;background:#ffd700;border:none;cursor:pointer;color:#000;border-radius:4px; }
+        .ach-item { padding:10px;margin:10px 0;background:#111;border-left:4px solid #444;border-radius:4px; }
+        .ach-item.unlocked { background:#2a1515;border-left-color:#ffd700; }
     </style>
-    <link rel="stylesheet" href="/css/mobile-enhancements.css" id="mc-enhance-css">
 </head>
-
 <body>
     <div class="game-page">
         <a href="/games.html" class="back-link" id="back-link">← Back to Games</a>
         <div class="start-screen" id="start-screen">
-            <h1>The Dollhouse</h1>
-            <p class="game-desc">Explore 5 rooms of a cursed dollhouse. Find items, solve puzzles, and escape before the
-                dolls come alive.</p>
+            <h1>The Dollhouse <span style="font-size:0.5em;color:#ffd700;">ULTIMATE EDITION</span></h1>
+            <p class="game-desc">Explore 12 rooms, find 30 lore items, survive the doll's AI, and escape!</p>
             <button class="start-btn" id="start-btn">START GAME</button>
+            <div style="margin-top:20px;display:flex;gap:20px;justify-content:center;">
+                <button class="start-btn" id="stats-btn" style="background:#1a0a0a;font-size:0.8em;">📊 Stats</button>
+                <button class="start-btn" id="achievements-btn" style="background:#1a0a0a;font-size:0.8em;">🏆 Achievements</button>
+            </div>
         </div>
         <div class="controls-overlay" id="controls-overlay" style="display:none;">
-            <div class="controls-content">
-                <h2>Controls</h2>
-                <div class="control-item"><span class="control-key">Click</span> Interact / Pick Up</div>
-                <div class="control-item"><span class="control-key">1-5</span> Use Inventory Item</div>
+            <div class="controls-content"><h2>Controls</h2>
+                <div class="control-item"><span class="control-key">Click</span> Interact</div>
+                <div class="control-item"><span class="control-key">1-9</span> Use Item</div>
+                <div class="control-item"><span class="control-key">P</span> Photo Mode</div>
                 <div class="control-item"><span class="control-key">ESC</span> Pause</div>
-                <p class="controls-start-hint">The dolls are watching...</p>
             </div>
         </div>
         <div class="game-container" id="game-container">
-            <canvas id="game-canvas" aria-label="The Dollhouse horror puzzle game canvas - click to interact, drag items, number keys to swap"></canvas>
+            <canvas id="game-canvas"></canvas>
             <div class="game-hud" id="game-hud" style="display:none;">
                 <div class="hud-score" id="hud-room">Room: Foyer</div>
                 <div class="hud-score" id="hud-items">Items: 0</div>
             </div>
         </div>
         <div class="game-end-screen game-over" id="game-over-screen" style="display:none;">
-            <h1>THE DOLLS GOT YOU</h1>
-            <p>You took too long...</p>
+            <h1>THE DOLLS GOT YOU</h1><p>You took too long...</p>
             <button class="play-btn">▶ Try Again</button>
             <a href="/games.html" style="display:block;margin-top:16px;color:#888;">← Back to Games</a>
         </div>
         <div class="game-end-screen game-win" id="game-win-screen" style="display:none;">
-            <h1>YOU ESCAPED!</h1>
-            <p>The dollhouse release you... this time.</p>
+            <h1>YOU ESCAPED!</h1><p>The dollhouse released you... this time.</p>
             <button class="play-btn">▶ Play Again</button>
             <a href="/games.html" style="display:block;margin-top:16px;color:#888;">← Back to Games</a>
         </div>
+        <div id="stats-modal" class="modal"><h2>📊 Statistics</h2><div id="stats-content"></div><button onclick="document.getElementById('stats-modal').style.display='none'">Close</button></div>
+        <div id="achievements-modal" class="modal"><h2>🏆 Achievements</h2><div id="achievements-content"></div><button onclick="document.getElementById('achievements-modal').style.display='none'">Close</button></div>
+        <div id="pause-screen" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);z-index:9998;align-items:center;justify-content:center;flex-direction:column;color:#fff;">
+            <h1 style="color:#ffd700;">PAUSED</h1>
+            <button class="start-btn" id="resume-btn" style="margin:10px;">Resume</button>
+            <button class="start-btn" id="quit-btn" style="margin:10px;background:#1a0a0a;">Quit</button>
+        </div>
     </div>
     <script src="/js/game-utils.js"></script>
-    <script src="/js/state-bus.js"></script>
     <script src="/js/audio.js"></script>
-    <script src="/js/quality-enhancer.js"></script>
-    <script src="/js/visual-utils.js"></script>
-    <script src="/js/cinematic-overlay.js"></script>
     <script src="/js/quality-fx.js"></script>
-    <script src="/js/quality-settings.js"></script>
-    <script src="/js/mobile-controls.js"></script>
-    <script src="/js/mobile-game-bindings.js"></script>
-    <script src="/js/mobile-tutorial.js"></script>
-    <script src="/js/mobile-settings.js"></script>
-    <script src="/js/device-testing.js"></script>
-    
-    <!-- Mobile Support -->
-    <script src="/js/mobile-setup.js" id="mobile-setup-js"></script>
-    <script src="/js/mobile-controls.js" id="mc-js"></script>
-    <script src="/js/mobile-game-bindings.js" id="mc-bindings-js"></script>
-    <script src="/js/mobile-universal-init.js" id="mc-init-js"></script>
-    <script src="/js/mobile-patcher.js" id="mc-patcher-js"></script>
-    <!-- End Mobile Support -->
-    
-    <!-- Accessibility, Memory & Performance -->
-    <script src="/js/accessibility-manager.js" id="a11y-js"></script>
-    <script src="/js/memory-manager.js" id="mem-js"></script>
-    <script src="/js/performance-optimizer.js" id="perf-js"></script>
-    <!-- End Core Systems -->
-    <script src="dollhouse.js"></script>
+    <script src="dollhouse-enhanced.js"></script>
+    <script>
+        document.getElementById('stats-btn')?.addEventListener('click', () => {
+            const stats = JSON.parse(localStorage.getItem('dollhouse_stats') || '{}');
+            document.getElementById('stats-content').innerHTML = `<div style="line-height:2;">
+                <div>Games Played: <strong style="color:#ffd700;">${stats.gamesPlayed||0}</strong></div>
+                <div>Games Won: <strong style="color:#ffd700;">${stats.gamesWon||0}</strong></div>
+                <div>Fastest Escape: <strong style="color:#ffd700;">${stats.fastestEscape===Infinity?'N/A':Math.round(stats.fastestEscape)+'s'}</strong></div>
+                <div>Notes Collected: <strong style="color:#ffd700;">${stats.notesCollected||0}/30</strong></div>
+                <div>Dolls Seen: <strong style="color:#ffd700;">${stats.dollsSeen||0}</strong></div>
+                <div>Photos Taken: <strong style="color:#ffd700;">${stats.photosTaken||0}</strong></div>
+            </div>`;
+            document.getElementById('stats-modal').style.display = 'block';
+        });
+        document.getElementById('achievements-btn')?.addEventListener('click', () => {
+            const achs = [{id:'first_blood',name:'First Sighting',icon:'👁️'},{id:'speed_demon',name:'Speed Demon',icon:'⚡'},{id:'collector',name:'Collector',icon:'📚'},{id:'survivor',name:'Survivor',icon:'💪'},{id:'detective',name:'Detective',icon:'🔍'},{id:'photographer',name:'Photographer',icon:'📷'},{id:'masochist',name:'Masochist',icon:'💀'},{id:'escaped',name:'Escaped',icon:'🚪'}];
+            const unlocked = JSON.parse(localStorage.getItem('dollhouse_achievements') || '{}');
+            document.getElementById('achievements-content').innerHTML = achs.map(a => `<div class="ach-item ${unlocked[a.id]?'unlocked':''}"><span style="font-size:1.5em;">${a.icon}</span> <strong style="color:${unlocked[a.id]?'#ffd700':'#666'};">${a.name}</strong> ${unlocked[a.id]?'<span style="color:#0f0;">✓</span>':'<span style="color:#666;">🔒</span>'}</div>`).join('');
+            document.getElementById('achievements-modal').style.display = 'block';
+        });
+        document.getElementById('resume-btn')?.addEventListener('click', () => { if(typeof togglePause==='function') togglePause(); });
+        document.getElementById('quit-btn')?.addEventListener('click', () => { location.href='/games.html'; });
+    </script>
 </body>
-
 </html>

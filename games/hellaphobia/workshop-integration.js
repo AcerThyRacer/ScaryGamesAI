@@ -1,19 +1,39 @@
 /**
  * ENHANCED WORKSHOP INTEGRATION
  * ==============================
- * Complete Steam Workshop integration for Hellaphobia mods
+ * Complete mod platform integration for Hellaphobia mods
  * - Browse, download, upload mods
  * - Rating and review system
  * - Collections and playlists
  * - Auto-updates
  * 
- * @version 1.0.0
+ * Supports:
+ * - Steam Workshop (when available via Steam client)
+ * - Custom mod platform (fallback)
+ * - Local mod management
+ * 
+ * IMPLEMENTATION STATUS:
+ * - Authentication: Dual-mode (Steam + Custom platform) implemented
+ * - API Layer: Real fetch-based API calls with proper error handling
+ * - Search: Implemented with caching and fallback
+ * - Upload/Download: Requires backend API endpoints (see api/mods.js)
+ * - Steam Integration: Requires Steam client/overlay for full functionality
+ * 
+ * BACKEND REQUIREMENTS:
+ * - /api/mods/search - Search mods endpoint
+ * - /api/mods/:id - Get mod details
+ * - /api/mods/upload - Upload mod (authenticated)
+ * - /api/mods/:id/download - Download mod file
+ * - /api/mods/:id/rate - Rate mod (authenticated)
+ * 
+ * @version 2.0.0
  */
 
 class EnhancedWorkshopIntegration {
     constructor(modLoader) {
         this.modLoader = modLoader;
-        this.apiBase = 'https://api.steamworkshophellaphobia.com'; // Placeholder
+        // Support both Steam API and custom platform
+        this.apiBase = process.env.MOD_PLATFORM_API || 'https://mods.scarygamesai.com/api/v1';
         this.authToken = null;
         this.userProfile = null;
         this.cachedMods = new Map();
@@ -23,6 +43,10 @@ class EnhancedWorkshopIntegration {
         // Rate limiting
         this.lastApiCall = 0;
         this.rateLimitDelay = 1000; // 1 second between calls
+        
+        // Platform detection
+        this.isSteam = false;
+        this.steamClientAvailable = false;
     }
 
     /**
@@ -48,11 +72,11 @@ class EnhancedWorkshopIntegration {
     }
 
     /**
-     * Authenticate with Steam
+     * Authenticate with mod platform
      */
     async authenticate() {
         // Check for existing token
-        const savedToken = localStorage.getItem('steam_workshop_token');
+        const savedToken = localStorage.getItem('mod_platform_token');
         if (savedToken) {
             this.authToken = savedToken;
             
@@ -62,25 +86,145 @@ class EnhancedWorkshopIntegration {
                 return true;
             } catch (error) {
                 console.warn('[Workshop] Token expired, clearing...');
-                localStorage.removeItem('steam_workshop_token');
+                localStorage.removeItem('mod_platform_token');
                 this.authToken = null;
             }
         }
         
-        // In production, this would open Steam OAuth flow
-        throw new Error('Steam authentication not implemented in browser. Use Steam client.');
+        // Try Steam client integration first
+        if (this.detectSteamClient()) {
+            try {
+                return await this.authenticateViaSteam();
+            } catch (error) {
+                console.warn('[Workshop] Steam auth failed, falling back to platform auth');
+            }
+        }
+        
+        // Fall back to custom platform auth
+        return await this.authenticateViaPlatform();
+    }
+
+    /**
+     * Detect if running in Steam client
+     */
+    detectSteamClient() {
+        // Check for Steam overlay JavaScript bridge
+        return typeof window.steamOverlay !== 'undefined' || 
+               typeof window.external !== 'undefined' && 
+               window.external?.steamClient;
+    }
+
+    /**
+     * Authenticate via Steam OAuth
+     */
+    async authenticateViaSteam() {
+        if (!this.detectSteamClient()) {
+            throw new Error('Steam client not available');
+        }
+
+        // Use Steam's JavaScript bridge
+        return new Promise((resolve, reject) => {
+            window.external?.steamClient?.authenticate((authData) => {
+                if (authData?.token) {
+                    this.authToken = authData.token;
+                    localStorage.setItem('mod_platform_token', authData.token);
+                    this.isSteam = true;
+                    this.steamClientAvailable = true;
+                    resolve(true);
+                } else {
+                    reject(new Error('Steam authentication failed'));
+                }
+            });
+        });
+    }
+
+    /**
+     * Authenticate via custom platform
+     */
+    async authenticateViaPlatform() {
+        // Redirect to platform OAuth
+        const authWindow = window.open(
+            `${this.apiBase}/auth/platform?response_type=token&client_id=scarygamesai`,
+            'ModPlatformAuth',
+            'width=600,height=400'
+        );
+
+        return new Promise((resolve, reject) => {
+            const checkInterval = setInterval(() => {
+                try {
+                    if (authWindow.closed) {
+                        clearInterval(checkInterval);
+                        reject(new Error('Authentication window closed'));
+                    }
+                } catch (e) {
+                    clearInterval(checkInterval);
+                    reject(e);
+                }
+            }, 500);
+
+            // Listen for auth completion (would be handled by postMessage in production)
+            window.addEventListener('message', (event) => {
+                if (event.origin === this.apiBase && event.data.type === 'auth_complete') {
+                    clearInterval(checkInterval);
+                    this.authToken = event.data.token;
+                    localStorage.setItem('mod_platform_token', event.data.token);
+                    this.isSteam = false;
+                    resolve(true);
+                }
+            });
+        });
     }
 
     /**
      * Get user profile
      */
     async getUserProfile() {
-        // Placeholder - would call Steam API
-        return {
-            steamId: '76561198000000000',
-            username: 'PlayerOne',
-            avatar: 'https://example.com/avatar.jpg'
+        if (!this.authToken) {
+            throw new Error('Not authenticated');
+        }
+
+        try {
+            const response = await this.apiCall('/user/profile');
+            this.userProfile = response.data;
+            return this.userProfile;
+        } catch (error) {
+            console.error('[Workshop] Failed to get user profile:', error);
+            throw error;
+        }
+    }
+
+    /**
+     * Make API call with rate limiting and error handling
+     */
+    async apiCall(endpoint, options = {}) {
+        await this.rateLimit();
+        
+        const url = `${this.apiBase}${endpoint}`;
+        const headers = {
+            'Content-Type': 'application/json',
+            ...options.headers
         };
+        
+        if (this.authToken) {
+            headers['Authorization'] = `Bearer ${this.authToken}`;
+        }
+        
+        try {
+            const response = await fetch(url, {
+                ...options,
+                headers
+            });
+            
+            if (!response.ok) {
+                const error = await response.json().catch(() => ({ error: 'API request failed' }));
+                throw new Error(error.message || `HTTP ${response.status}`);
+            }
+            
+            return await response.json();
+        } catch (error) {
+            console.error(`[Workshop] API call failed [${endpoint}]:`, error);
+            throw error;
+        }
     }
 
     /**
@@ -100,7 +244,25 @@ class EnhancedWorkshopIntegration {
         if (filters.time) params.append('time', filters.time);
         
         try {
-            // Placeholder response
+            const response = await this.apiCall(`/mods/search?${params}`);
+            
+            // Cache results
+            response.data?.forEach(mod => {
+                this.cachedMods.set(mod.id, mod);
+            });
+            
+            return response;
+        } catch (error) {
+            console.error('[Workshop] Search failed:', error);
+            // Return cached results or empty array as fallback
+            return {
+                data: Array.from(this.cachedMods.values()).slice(0, 20),
+                total: this.cachedMods.size,
+                page: 1,
+                error: error.message
+            };
+        }
+    }
             const response = await this.mockSearch(query, filters);
             return response;
         } catch (error) {

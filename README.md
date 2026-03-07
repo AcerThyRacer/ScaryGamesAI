@@ -1,355 +1,519 @@
-<p align="center">
-  <img src="https://img.shields.io/badge/ScaryGamesAI-Horror%20Gaming-red?style=for-the-badge&logo=ghost&logoColor=white" alt="ScaryGamesAI">
-  <br>
-  <img src="https://img.shields.io/badge/Games-13-orange?style=flat-square" alt="Games">
-  <img src="https://img.shields.io/badge/Engine-Three.js%20%2B%20Canvas-blue?style=flat-square" alt="Engine">
-  <img src="https://img.shields.io/badge/License-GPLv3-blue?style=flat-square" alt="License">
-  <img src="https://img.shields.io/badge/Node.js-18%2B-339933?style=flat-square&logo=node.js" alt="Node.js">
-</p>
+# 🎃 ScaryGamesAI Platform
 
-<h1 align="center">🎃 ScaryGamesAI</h1>
+**AAA Browser-Based Horror Gaming Platform**
 
-<p align="center">
-  <strong>A collection of 13 browser-based horror games — no installs, no frameworks, just pure terror.</strong><br>
-  Built with vanilla JS, Three.js, and Canvas. Runs on a single Node.js server.
-</p>
+[![Version](https://img.shields.io/badge/version-2.0.0-blue.svg)](https://github.com/your-org/scarygamesai)
+[![Node](https://img.shields.io/badge/node-%3E%3D18.0.0-green.svg)](https://nodejs.org/)
+[![License](https://img.shields.io/badge/license-MIT-orange.svg)](LICENSE)
 
 ---
 
-## ⚡ Quick Install & Run
+## 📖 Table of Contents
 
-### One-Liner (Windows PowerShell)
-```powershell
-git clone https://github.com/AcerThyRacer/ScaryGamesAI.git && cd ScaryGamesAI && node server.js
-```
+- [Overview](#overview)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Quick Start](#quick-start)
+- [Installation](#installation)
+- [Project Structure](#project-structure)
+- [API Documentation](#api-documentation)
+- [Development](#development)
+- [Deployment](#deployment)
+- [Testing](#testing)
+- [Contributing](#contributing)
+- [License](#license)
 
-### One-Liner (Linux / macOS)
+---
+
+## 🎮 Overview
+
+ScaryGamesAI is a cutting-edge browser-based horror gaming platform featuring:
+
+- **20+ Horror Games** - From psychological horror to action-packed survival
+- **WebGPU Rendering** - Next-gen graphics with 100k entity support
+- **AI-Directed Horror** - Procedural scare scheduling and tension management
+- **Cross-Platform** - Play on desktop, mobile, or tablet
+- **Mod Support** - Create and share custom content
+- **Multiplayer** - Voice chat, co-op, and competitive modes
+- **Subscription Tiers** - Free to Elite+ with progressive benefits
+
+### 🎯 Key Games
+
+| Game | Genre | Status |
+|------|-------|--------|
+| Backrooms Pac-Man | Survival Horror | ✅ Complete |
+| Hellaphobia | 2D Platformer | ✅ Complete |
+| Cursed Depths | Metroidvania | ✅ Complete |
+| Shadow Crawler 3D | FPS Horror | 🚧 In Progress |
+| The Abyss | Underwater Horror | 🚧 In Progress |
+| Total Zombies Rome | Strategy | ✅ Complete |
+
+---
+
+## ✨ Features
+
+### Core Platform
+
+- **User Authentication** - JWT + OAuth (Google, Discord, Steam)
+- **Subscription System** - 4 tiers with Stripe integration
+- **Cloud Saves** - Cross-device progress synchronization
+- **Achievements** - Global achievement tracking
+- **Battle Pass** - Seasonal progression system
+- **Marketplace** - Player-to-player trading
+- **Leaderboards** - Global rankings
+
+### Engine Features
+
+- **WebGPU Renderer** - 100,000 entities via GPU instancing
+- **Advanced Physics** - Soft body, fluids, cloth, destruction
+- **Ray Tracing** - Real-time ray marching with GI
+- **Procedural Generation** - Wave Function Collapse, neural PCG
+- **AI Systems** - Behavior trees, GOAP, multi-agent coordination
+- **Spatial Audio** - 3D binaural sound with HRTF
+- **Post-Processing** - Sanity-based hallucination effects
+
+### Developer Tools
+
+- **Mod Editor** - In-browser mod creation
+- **Hot Reload** - Real-time code updates
+- **Debug Overlay** - Performance monitoring
+- **Error Tracking** - Sentry integration ready
+
+---
+
+## 🛠️ Tech Stack
+
+### Frontend
+
+- **JavaScript (ES2022)** - Modern ECMAScript
+- **Three.js** - 3D graphics library
+- **WebGPU** - Next-gen GPU API
+- **Web Audio API** - Spatial audio processing
+- **Socket.IO Client** - Real-time communication
+
+### Backend
+
+- **Node.js 18+** - Runtime environment
+- **Express 4.x** - Web framework
+- **PostgreSQL 15** - Primary database
+- **Redis** - Caching and sessions
+- **Stripe** - Payment processing
+
+### DevOps
+
+- **Vite** - Build tool and dev server
+- **Vitest** - Unit testing framework
+- **Playwright** - E2E testing
+- **Docker** - Containerization (optional)
+
+---
+
+## 🚀 Quick Start
+
 ```bash
-git clone https://github.com/AcerThyRacer/ScaryGamesAI.git && cd ScaryGamesAI && node server.js
-```
+# Clone the repository
+git clone https://github.com/your-org/scarygamesai.git
+cd scarygamesai
 
-Then open **http://localhost:9999** in your browser.
+# Install dependencies
+npm install
+
+# Copy environment variables
+cp .env.example .env
+
+# Start development server
+npm run dev
+
+# Open browser
+# Frontend: http://localhost:5173
+# Backend: http://localhost:3001
+```
 
 ---
 
-### Full Install Script — Windows
+## 📦 Installation
 
-Save as `install.ps1` and run with `powershell -ExecutionPolicy Bypass -File install.ps1`:
+### Prerequisites
 
-```powershell
-# ScaryGamesAI Windows Installer
-Write-Host "🎃 Installing ScaryGamesAI..." -ForegroundColor Red
+- **Node.js** >= 18.0.0
+- **npm** >= 9.0.0
+- **PostgreSQL** >= 15 (optional, has JSON fallback)
+- **Redis** >= 6 (optional, has memory fallback)
 
-# Check Node.js
-if (-not (Get-Command node -ErrorAction SilentlyContinue)) {
-    Write-Host "❌ Node.js not found. Install from https://nodejs.org" -ForegroundColor Yellow
-    Start-Process "https://nodejs.org"
-    exit 1
-}
+### Step 1: Clone Repository
 
-# Clone & start
-if (-not (Test-Path "ScaryGamesAI")) {
-    git clone https://github.com/AcerThyRacer/ScaryGamesAI.git
-}
-Set-Location ScaryGamesAI
-Write-Host "🚀 Starting server on http://localhost:9999" -ForegroundColor Green
-Start-Process "http://localhost:9999"
+```bash
+git clone https://github.com/your-org/scarygamesai.git
+cd scarygamesai
+```
+
+### Step 2: Install Dependencies
+
+```bash
+npm install
+```
+
+### Step 3: Configure Environment
+
+```bash
+cp .env.example .env
+```
+
+Edit `.env` and set your API keys:
+
+```env
+# Required for payments
+STRIPE_SECRET_KEY=sk_test_your_key
+STRIPE_WEBHOOK_SECRET=whsec_your_secret
+
+# Required for auth
+JWT_SECRET=your-secret-key
+REFRESH_TOKEN_SECRET=your-refresh-secret
+
+# Optional: Database
+DATABASE_URL=postgresql://user:pass@localhost:5432/scarygamesai
+
+# Optional: Redis
+REDIS_URL=redis://localhost:6379
+```
+
+### Step 4: Initialize Database (Optional)
+
+```bash
+psql -U user -d scarygamesai -f schema.sql
+```
+
+### Step 5: Start Development
+
+```bash
+# Terminal 1: Frontend dev server
+npm run dev
+
+# Terminal 2: Backend API
 node server.js
 ```
 
-### Full Install Script — Linux / macOS
+---
 
-Save as `install.sh` and run with `bash install.sh`:
+## 📁 Project Structure
+
+```
+scarygamesai/
+├── api/                      # Backend API routes
+│   ├── auth.js              # Authentication endpoints
+│   ├── subscriptions.js     # Subscription management
+│   ├── store.js             # In-game store
+│   ├── marketplace.js       # Player marketplace
+│   ├── mods.js              # Mod platform API ⭐ NEW
+│   └── index.js             # Route aggregator
+│
+├── services/                 # Business logic layer
+│   ├── authService.js       # JWT, OAuth, 2FA
+│   ├── paymentService.js    # Stripe integration ⭐ FIXED
+│   ├── cacheService.js      # Redis caching
+│   └── battlePassService.js # Battle pass logic
+│
+├── models/                   # Data access layer
+│   ├── postgres.js          # PostgreSQL client
+│   ├── database.js          # JSON fallback DB
+│   └── data-access.js       # Unified data access
+│
+├── middleware/               # Express middleware
+│   ├── auth.js              # Authentication middleware
+│   ├── rateLimit.js         # Rate limiting
+│   └── apiVersion.js        # API versioning
+│
+├── core/                     # Core engine systems (124 files)
+│   ├── renderer/            # WebGPU/WebGL rendering
+│   ├── audio/               # Audio systems
+│   ├── ai/                  # AI behavior systems
+│   ├── physics/             # Physics engines
+│   ├── procedural/          # Procedural generation
+│   └── utils/               # Core utilities
+│
+├── games/                    # Game directories (20+ games)
+│   ├── backrooms-pacman/
+│   ├── hellaphobia/
+│   ├── cursed-depths/
+│   ├── shadow-crawler-3d/   # 🚧 In Progress
+│   └── ...
+│
+├── js/                       # Frontend JavaScript (129 files)
+│   ├── core/                # Frontend core systems
+│   ├── battle-pass/         # Battle pass UI
+│   ├── auth-state-manager.js
+│   └── subscription-system.js
+│
+├── css/                      # Stylesheets (21 files)
+│   ├── styles.css           # Main styles
+│   ├── components.css       # Component styles
+│   └── mobile-*.css         # Mobile enhancements
+│
+├── scripts/                  # Build & maintenance scripts
+│   ├── setup.js             # Project setup
+│   ├── optimize-assets.js   # Asset optimization
+│   └── check-bundle-budgets.js
+│
+├── server.js                 # Express app entry point ⭐ NEW
+├── schema.sql                # Database schema ⭐ NEW
+├── vite.config.js            # Vite configuration ⭐ TODO
+├── package.json
+└── README.md                 # This file
+```
+
+---
+
+## 📚 API Documentation
+
+### Base URL
+
+```
+Development: http://localhost:3001/api
+Production: https://api.scarygamesai.com/api
+```
+
+### Authentication
+
+Most endpoints require authentication via JWT:
 
 ```bash
-#!/bin/bash
-# ScaryGamesAI Linux/macOS Installer
-echo "🎃 Installing ScaryGamesAI..."
+curl -H "Authorization: Bearer YOUR_JWT_TOKEN" \
+     http://localhost:3001/api/user/profile
+```
 
-# Check Node.js
-if ! command -v node &> /dev/null; then
-    echo "❌ Node.js not found. Installing via nvm..."
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-    export NVM_DIR="$HOME/.nvm"
-    [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
-    nvm install --lts
-fi
+### Key Endpoints
 
-# Clone & start
-if [ ! -d "ScaryGamesAI" ]; then
-    git clone https://github.com/AcerThyRacer/ScaryGamesAI.git
-fi
-cd ScaryGamesAI
-echo "🚀 Starting server on http://localhost:9999"
-xdg-open http://localhost:9999 2>/dev/null || open http://localhost:9999 2>/dev/null &
+#### Authentication
+
+```http
+POST   /api/auth/register          # Register new user
+POST   /api/auth/login             # Login
+POST   /api/auth/refresh           # Refresh token
+POST   /api/auth/logout            # Logout
+GET    /api/auth/google            # Google OAuth
+GET    /api/auth/discord           # Discord OAuth
+GET    /api/auth/steam             # Steam OAuth
+```
+
+#### Subscriptions
+
+```http
+POST   /api/subscriptions/create   # Create checkout session
+GET    /api/subscriptions/status   # Get subscription status
+POST   /api/subscriptions/cancel   # Cancel subscription
+GET    /api/subscriptions/tiers    # List available tiers
+```
+
+#### Mods Platform ⭐ NEW
+
+```http
+GET    /api/mods/search            # Search mods
+GET    /api/mods/:id               # Get mod details
+POST   /api/mods/:id/download      # Download mod (auth required)
+POST   /api/mods/upload            # Upload mod (auth required)
+POST   /api/mods/:id/rate          # Rate mod (auth required)
+GET    /api/mods/user/:userId      # Get user's mods
+```
+
+#### Game Saves
+
+```http
+GET    /api/saves/:gameId          # Get save for game
+POST   /api/saves/:gameId          # Save game
+DELETE /api/saves/:gameId          # Delete save
+```
+
+### Rate Limiting
+
+| Endpoint Tier | Limit | Window |
+|---------------|-------|--------|
+| Global | 1000 req | 1 min |
+| API Default | 240 req | 1 min |
+| API v1 | 180 req | 1 min |
+| API v2 | 300 req | 1 min |
+| Auth | 10 req | 1 min |
+
+---
+
+## 👨‍💻 Development
+
+### Running in Development
+
+```bash
+# Start frontend dev server (Vite)
+npm run dev
+
+# Start backend API
 node server.js
+
+# Run tests
+npm test
+
+# Run E2E tests
+npm run test:e2e
+
+# Lint code
+npm run lint
 ```
 
----
+### Code Style
 
-## 🎮 All 13 Games
+- **JavaScript**: ES2022 with modules
+- **Naming**: camelCase for variables/functions, PascalCase for classes
+- **Files**: Lowercase with hyphens (`my-module.js`)
+- **Comments**: JSDoc for public APIs
 
-### 🟡 Backrooms: Pac-Man
-| | |
-|---|---|
-| **Genre** | 3D First-Person Horror / Survival |
-| **Engine** | Three.js (WebGL) |
-| **Difficulty** | 4 levels — Easy, Normal, Hard, Nightmare |
+### Adding New Games
 
-You're trapped in the infinite backrooms. A nightmarish, eldritch Pac-Man is hunting you through the yellow corridors. Collect all pellets to escape — but don't let it catch you. On harder difficulties, additional hunters spawn mid-game, your sprint has a stamina limit, and Pac-Man gets faster and smarter. Features a minimap, camera shake, blackout events, and jump scare audio.
+1. Create game directory: `games/my-game/`
+2. Add main file: `my-game.html` + `my-game.js`
+3. Register in `js/main.js` game catalog
+4. Add to database if needed
 
----
+### Adding API Routes
 
-### 🩸 Blood Tetris
-| | |
-|---|---|
-| **Genre** | Puzzle / Horror |
-| **Engine** | Canvas 2D |
-| **Difficulty** | Scales with score |
-
-Classic Tetris reimagined with a horror twist. Stack bones, eyeballs, and organs while blood rises from below. Clear lines before the gore overwhelms you. The higher your score, the faster the pieces fall and the more gruesome the visuals become.
+1. Create route file: `api/my-feature.js`
+2. Export Express router
+3. Mount in `api/index.js`
+4. Add rate limiting and auth middleware
 
 ---
 
-### 🏚️ Dollhouse
-| | |
-|---|---|
-| **Genre** | Point-and-Click / Puzzle Horror |
-| **Engine** | Canvas 2D |
-| **Difficulty** | Single |
+## 🚢 Deployment
 
-Explore 5 rooms of a cursed miniature dollhouse. Find items, solve puzzles, and piece together the dark story of what happened to its inhabitants. Escape before the dolls come alive. Atmospheric lighting and creepy sound design.
-
----
-
-### ⚰️ Graveyard Shift
-| | |
-|---|---|
-| **Genre** | Top-Down Survival Horror |
-| **Engine** | Canvas 2D |
-| **Difficulty** | Progressive |
-
-You're the night watchman at a haunted cemetery. Investigate disturbances across the graveyard, avoid the undead that rise from their graves, and survive until dawn. Manage your flashlight battery and sanity as the night grows darker.
-
----
-
-### 🌙 Nightmare Run
-| | |
-|---|---|
-| **Genre** | Endless Runner / Horror |
-| **Engine** | Canvas 2D |
-| **Difficulty** | Scales with distance |
-
-An endless nightmare you can't wake from. Run through twisted, procedurally-generated landscapes while horrific creatures chase you. Dodge obstacles, collect power-ups, and survive as long as possible. The further you run, the more distorted reality becomes.
-
----
-
-### 🔮 Séance
-| | |
-|---|---|
-| **Genre** | Word / Puzzle Horror |
-| **Engine** | Canvas 2D |
-| **Difficulty** | Single |
-
-Use the planchette on a Ouija board to communicate with restless spirits. Spell their names correctly to free them — but be careful. Anger the wrong spirit and the séance takes a terrifying turn. Atmospheric candle lighting and eerie sound effects.
-
----
-
-### 🕷️ Shadow Crawler
-| | |
-|---|---|
-| **Genre** | 2D Dungeon Crawler / Horror |
-| **Engine** | Canvas 2D |
-| **Difficulty** | Progressive |
-
-Your torch is dying. Navigate a procedurally-generated dungeon, collect keys, and find the exit before the shadows consume you. Enemies lurk in the darkness and your light radius shrinks over time. Every step could be your last.
-
----
-
-### 🌊 The Abyss
-| | |
-|---|---|
-| **Genre** | 3D Underwater Horror / Exploration |
-| **Engine** | Three.js (WebGL) + Post-Processing |
-| **Difficulty** | 4 levels |
-
-Dive into the deepest ocean trench. Physics-based swimming with momentum and drag. Ancient anglerfish creatures stalk you with advanced AI — they lure, stalk, hunt, and charge. Collect artifacts, find air pockets to refill oxygen, and navigate procedurally-generated cave systems. Features bioluminescent flora, bloom effects, flare mechanics, a save system, achievements, multiple game modes (Campaign, Endless, Time Attack, Hardcore, Zen), and a full settings menu.
-
----
-
-### 🛗 The Elevator
-| | |
-|---|---|
-| **Genre** | Psychological Horror / Mystery |
-| **Engine** | Canvas 2D |
-| **Difficulty** | Single |
-
-A never-ending elevator. Each floor reveals a new horror. Find Floor 0 to escape — but the elevator has a mind of its own. Strange events, cryptic messages, and unsettling encounters await behind every door. Will you ever reach the ground floor?
-
----
-
-### ⚔️ Total Zombies: Medieval
-| | |
-|---|---|
-| **Genre** | Real-Time Strategy / Tower Defense |
-| **Engine** | Canvas 2D |
-| **Difficulty** | 5 campaign levels |
-
-Command your medieval army through 5 epic battles against the undead zombie horde. Train knights, archers, and siege units. Place formations, upgrade your troops, and hold the line against increasingly powerful waves of the undead. Features a full campaign with unique maps and objectives.
-
----
-
-### 🕸️ Web of Terror
-| | |
-|---|---|
-| **Genre** | 3D First-Person Horror |
-| **Engine** | Three.js (WebGL) |
-| **Difficulty** | Progressive |
-
-Spider-infested mines await. Navigate dark tunnels filled with webs, avoid spider swarms, and find the exit before you're cocooned. First-person perspective with flashlight mechanics, procedural web placement, and increasingly aggressive spider AI.
-
----
-
-### ❄️ Yeti Run
-| | |
-|---|---|
-| **Genre** | 3D Endless Runner / Horror |
-| **Engine** | Three.js (WebGL) |
-| **Difficulty** | Scales with distance |
-
-A massive Yeti is chasing you through a frozen mountain pass. Sprint downhill, dodge trees and boulders, jump over crevasses, and don't look back. The Yeti gets faster the further you run. Features dynamic weather, snow particles, and cinematic chase camera.
-
----
-
-### 🧟 Zombie Horde
-| | |
-|---|---|
-| **Genre** | Top-Down Tower Defense / Survival |
-| **Engine** | Canvas 2D |
-| **Difficulty** | Wave-based |
-
-Waves of undead swarm from all sides. Place turrets and barricades strategically to survive. Upgrade your defenses between rounds, unlock new weapon types, and hold out as long as possible against an ever-growing zombie horde.
-
----
-
-## 🏗️ Project Structure
-
-```
-ScaryGamesAI/
-├── server.js              # Node.js static file server (port 9999)
-├── package.json           # Project config
-├── index.html             # Main homepage
-├── games.html             # Game gallery page
-├── achievements.html      # Global achievements page
-├── leaderboards.html      # Leaderboards page
-├── css/
-│   └── styles.css         # Global styles, themes, effects
-├── js/
-│   ├── main.js            # Homepage scripts
-│   ├── game-utils.js      # Shared game utilities (difficulty, pause, state)
-│   ├── audio.js           # HorrorAudio system (Web Audio API)
-│   ├── achievements.js    # Achievement tracking
-│   ├── leaderboards.js    # Score leaderboards
-│   ├── profiles.js        # Player profiles
-│   ├── daily.js           # Daily challenges
-│   ├── social.js          # Social features
-│   └── customizer.js      # Theme & effects customizer
-├── assets/                # Videos and media
-└── games/
-    ├── backrooms-pacman/  # 3D Pac-Man horror
-    ├── blood-tetris/      # Horror Tetris
-    ├── dollhouse/         # Puzzle horror
-    ├── graveyard-shift/   # Cemetery survival
-    ├── nightmare-run/     # Endless runner
-    ├── seance/            # Ouija board game
-    ├── shadow-crawler/    # Dungeon crawler
-    ├── the-abyss/         # 3D underwater horror
-    ├── the-elevator/      # Psychological horror
-    ├── total-zombies-medieval/  # RTS zombie battles
-    ├── web-of-terror/     # Spider mine horror
-    ├── yeti-run/          # 3D yeti chase
-    └── zombie-horde/      # Tower defense
-```
-
-## 🛠️ Requirements
-
-- **Node.js 18+** (only dependency — zero npm packages needed)
-- Modern browser with **WebGL** support (Chrome, Firefox, Edge, Safari)
-- No build step, no bundler, no framework — just `node server.js`
-
-## 🗄️ Optional PostgreSQL + Redis Foundation (Phase 1.1)
-
-The platform continues to run with the default JSON data layer. PostgreSQL and Redis are additive, optional foundations.
-
-1. Copy [`./.env.example`](.env.example) to `.env`.
-2. Configure PostgreSQL:
-   - Set `DB_PROVIDER=postgres`
-   - Set `DATABASE_URL=postgres://user:pass@host:5432/dbname`
-3. (Optional) Configure Redis:
-   - Set `REDIS_URL=redis://localhost:6379`
-4. Run migrations:
+### Production Build
 
 ```bash
-npm run db:migrate
+# Build frontend
+npm run build
+
+# Start production server
+NODE_ENV=production node server.js
 ```
 
-If PostgreSQL or Redis are unavailable, the app gracefully falls back to JSON storage and in-memory cache.
+### Environment Variables (Production)
 
-## 🔐 Branch Protection and Required Quality Gates (Phase 6)
+```env
+NODE_ENV=production
+PORT=3001
+DATABASE_URL=postgresql://...
+REDIS_URL=redis://...
+STRIPE_SECRET_KEY=sk_live_...
+JWT_SECRET=<strong-random-secret>
+```
 
-Branch protection is enforced through the `quality` GitHub Actions check and CODEOWNERS policy.
+### Docker Deployment (Optional)
 
-- Workflow: [`ci-cd.yml`](.github/workflows/ci-cd.yml)
-- Runbook: [`branch-protection.md`](docs/runbooks/branch-protection.md)
-- Automation script: [`enforce-branch-protection.js`](scripts/enforce-branch-protection.js)
-- Ownership policy: [`CODEOWNERS`](.github/CODEOWNERS)
+```dockerfile
+FROM node:18-alpine
 
-Apply protection via script:
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --production
+
+COPY . .
+EXPOSE 3001
+
+CMD ["node", "server.js"]
+```
 
 ```bash
-GITHUB_TOKEN=ghp_xxx GITHUB_OWNER=your-org-or-user GITHUB_REPO=ScaryGamesAI npm run branch:protect
+docker build -t scarygamesai .
+docker run -p 3001:3001 --env-file .env scarygamesai
 ```
-
-## 📊 Observability + Feature Flags (Phase 6)
-
-- Observability bootstrap: [`observability.js`](services/observability.js)
-- Frontend Sentry loader: [`observability-client.js`](js/observability-client.js)
-- Feature flag API: [`feature-flags.js`](api/feature-flags.js)
-- Observability runbook: [`observability.md`](docs/runbooks/observability.md)
-- Schema migration: [`007_phase6_observability_and_flags.sql`](db/migrations/007_phase6_observability_and_flags.sql)
-
-Run migration and optional JSON backfill:
-
-```bash
-npm run db:migrate
-npm run db:backfill:phase6
-```
-
-Quality and regression-protection entrypoints:
-
-```bash
-npm run ci:guardrails
-npm run ci:quality
-```
-
-`ci:guardrails` runs fast static guard checks (script wiring, CI gates, telemetry hooks), while `ci:quality` runs the full lint/test/build/budget/guardrail chain.
-
-## 🎯 Shared Features
-
-All games share a common infrastructure:
-
-- **4 Difficulty Levels** — Easy 💀, Normal 💀💀, Hard 💀💀💀, Nightmare ☠️
-- **Pause Menu** — ESC to pause with resume/restart/quit
-- **Fullscreen Mode** — One-click fullscreen toggle
-- **HorrorAudio System** — Procedural drones, heartbeat, jump scares via Web Audio API
-- **Theme System** — Multiple scary website themes with live preview
-- **Visual Effects** — Vignettes, blood drips, static, scanlines overlays
-- **Achievements** — Cross-game achievement tracking
-- **Leaderboards** — Local high score tracking
-- **Responsive** — Works on desktop and mobile browsers
 
 ---
 
-<p align="center">
-  <strong>Made with 🩸 by <a href="https://github.com/AcerThyRacer">AcerThyRacer</a></strong>
-</p>
+## 🧪 Testing
+
+### Unit Tests
+
+```bash
+npm test
+```
+
+Example test:
+
+```javascript
+// tests/unit/auth.test.js
+import { describe, it, expect } from 'vitest';
+import { authService } from '../../services/authService.js';
+
+describe('Authentication', () => {
+  it('should generate valid JWT token', async () => {
+    const user = { id: '123', email: 'test@example.com' };
+    const token = await authService.issueToken(user);
+    expect(token).toBeDefined();
+    expect(token.accessToken).toBeDefined();
+  });
+});
+```
+
+### E2E Tests
+
+```bash
+npm run test:e2e
+```
+
+Example test:
+
+```javascript
+// tests/e2e/auth-flow.spec.js
+import { test, expect } from '@playwright/test';
+
+test('user can register and login', async ({ page }) => {
+  await page.goto('http://localhost:5173');
+  await page.click('[data-testid="login-button"]');
+  await page.fill('[name="email"]', 'test@example.com');
+  await page.fill('[name="password"]', 'password123');
+  await page.click('[type="submit"]');
+  await expect(page.locator('[data-testid="user-menu"]')).toBeVisible();
+});
+```
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions! Please follow these steps:
+
+1. **Fork** the repository
+2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
+3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
+4. **Push** to the branch (`git push origin feature/amazing-feature`)
+5. **Open** a Pull Request
+
+### Contribution Guidelines
+
+- Write tests for new features
+- Follow existing code style
+- Update documentation
+- Keep PRs focused and small
+- Be respectful in code reviews
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+---
+
+## 🙏 Acknowledgments
+
+- Three.js team for the amazing 3D library
+- WebGPU working group for next-gen graphics
+- All contributors and the horror gaming community
+
+---
+
+## 📞 Support
+
+- **Documentation**: https://docs.scarygamesai.com
+- **Discord**: https://discord.gg/scarygamesai
+- **Twitter**: @ScaryGamesAI
+- **Email**: support@scarygamesai.com
+
+---
+
+**Made with 👻 by the ScaryGamesAI Team**

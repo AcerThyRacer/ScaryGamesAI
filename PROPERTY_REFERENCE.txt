@@ -1,0 +1,442 @@
+═════════════════════════════════════════════════════════════════════════════════
+BACKROOMS PACMAN - EXACT PROPERTY REFERENCE & METHOD SIGNATURES
+═════════════════════════════════════════════════════════════════════════════════
+
+1. MAIN GAME (backrooms-pacman.js)
+─────────────────────────────────────────────────────────────────────────────────
+Game Objects:
+  let scene, camera, renderer;
+  let pacman = null;
+  let pacmanParts = {};
+  let pellets = [];
+  let totalPellets = 0;
+  let collectedPellets = 0;
+  let extraPacmans = [];
+  let corridorLights = [];
+  let dustParticles = null;
+
+Player State:
+  let playerPos = { x: 0, z: 0 };
+  let yaw = 0, pitch = 0;
+  let playerVelocity = { x: 0, z: 0 };
+  let currentSpeed = 0;
+  let stamina = 100, maxStamina = 100;
+  let visualIntensity = 0;
+
+Game FSM:
+  const GAME_STATE = {
+    MENU, PLAYING, PAUSED, BLACKOUT, DEAD, WIN
+  };
+  let gameState = GAME_STATE.MENU;
+
+Lighting:
+  const MAX_ACTIVE_CORRIDOR_LIGHTS = 6;
+  let lightManagerCooldown = 0;
+
+Post-Processing:
+  let blurTarget, blurScene, blurCamera, blurMaterial;
+  let lastYaw = 0, lastPitch = 0;
+
+Blackout:
+  let blackoutActive = false;
+  let blackoutTimer = 0;
+  let blackoutCooldown = 20;
+  let nextBlackout = 15 + Math.random() * 25;
+
+Key Functions:
+  function isGameRunning()
+  function setGameState(next)
+
+═════════════════════════════════════════════════════════════════════════════════
+
+2. ADVANCED LIGHTING (advanced-lighting.js)
+─────────────────────────────────────────────────────────────────────────────────
+var AdvancedLighting = (function() {
+    var config = {
+        shadowMapSize: 1024,
+        shadowCameraNear: 0.5,
+        shadowCameraFar: 50.0,
+        shadowBias: 0.0001,
+        volumetricEnabled: true,
+        rayMarchSteps: 64,
+        rayMarchMaxDistance: 20.0
+    };
+    
+    var state = {
+        scene: null,
+        renderer: null,
+        camera: null,
+        shadowMap: null,
+        shadowCamera: null,
+        lightShaders: null,
+        volumetricQuad: null,
+        dynamicLights: [],
+        flashlight: null,
+        enabled: true
+    };
+    
+    function init(threeScene, threeRenderer, threeCamera)
+    function loadShaders()
+    function createVolumetricQuad()
+    
+    return { init, ... };
+});
+
+═════════════════════════════════════════════════════════════════════════════════
+
+3. SANITY SYSTEM (sanity-system.js)
+─────────────────────────────────────────────────────────────────────────────────
+var SanitySystem = (function() {
+    var config = {
+        maxSanity: 100,
+        minSanity: 0,
+        baseDrainRate: 0.3,
+        pacmanNearbyDrain: 1.5,
+        blackoutDrain: 2.0,
+        hidingRecovery: 0.8,
+        safeZoneRecovery: 0.5,
+        pelletBonus: 0.2,
+        powerPelletBonus: 5.0,
+        hallucinationThreshold: 40,
+        audioHallucinationThreshold: 30,
+        visualDistortionThreshold: 50
+    };
+    
+    var state = {
+        current: 100,              // ← PRIMARY SANITY VALUE
+        previous: 100,
+        isHallucinating: false,
+        visualDistortion: 0,       // 0-1 intensity
+        audioDistortion: 0,        // 0-1 intensity
+        lastSanityChange: 0
+    };
+    
+    function init(threeScene, threeCamera)
+    function update(deltaTime, playerPos, pacmanPos, isBlackout, isHiding)
+    
+    return { init, update, ... };
+});
+
+Key Access Pattern:
+  SanitySystem.state.current      // Read current sanity (0-100)
+  SanitySystem.state.isHallucinating
+  SanitySystem.state.visualDistortion  // 0-1
+  SanitySystem.state.audioDistortion   // 0-1
+
+═════════════════════════════════════════════════════════════════════════════════
+
+4. WAVE FUNCTION COLLAPSE (wave-function-collapse.js)
+─────────────────────────────────────────────────────────────────────────────────
+var WaveFunctionCollapse = (function() {
+    var config = {
+        gridSize: 20,
+        cellSize: 4,
+        wallHeight: 3.5,
+        tiles: {
+            EMPTY: 0,
+            WALL: 1,
+            PELLET: 2,
+            POWER_PELLET: 3,
+            SAFE_ROOM: 4,
+            TRAP_ROOM: 5,
+            TREASURE_ROOM: 6,
+            BOSS_ROOM: 7,
+            EXIT: 8
+        },
+        adjacencyRules: {},
+        roomTemplates: [],
+        entropy: [],
+        observed: [],
+        superposition: []
+    };
+    
+    var state = {
+        grid: [],
+        collapsed: [],
+        valid: true,
+        seed: Date.now(),
+        currentBiome: 'yellow'
+    };
+    
+    function init(biome)
+    function generateMaze(width, height, options)
+    
+    return { init, generateMaze, ... };
+});
+
+═════════════════════════════════════════════════════════════════════════════════
+
+5. WEBGPU MIGRATION (webgpu-migration.js)
+─────────────────────────────────────────────────────────────────────────────────
+const WebGPUMigration = (function() {
+    let adapter = null;
+    let device = null;
+    let context = null;
+    let isSupported = false;
+    let useWebGPU = false;
+    
+    let computePipelines = new Map();
+    let bindGroups = new Map();
+    let computeBuffers = new Map();
+    
+    const config = {
+        preferWebGPU: true,
+        fallbackToWebGL: true,
+        enableComputeShaders: true,
+        multiGPU: false,
+        debugMode: false
+    };
+    
+    async function init(canvas, options = {})
+    
+    return { init, ... };
+});
+
+Detection Pattern:
+  if (!navigator.gpu) {
+      return { success: false, fallback: 'webgl' };
+  }
+  adapter = await navigator.gpu.requestAdapter({
+      powerPreference: 'high-performance',
+      compatibleSurface: canvas
+  });
+  device = await adapter.requestDevice();
+
+═════════════════════════════════════════════════════════════════════════════════
+
+6. PHASE 1 VISUAL REVOLUTION (phase1-visual-revolution.js)
+─────────────────────────────────────────────────────────────────────────────────
+const RayTracedLighting = {
+    device: null,
+    context: null,
+    pipeline: null,
+    bindGroup: null,
+    
+    lights: [],
+    maxLights: 64,
+    
+    async init(canvas)
+    async createRayTracingPipeline()
+};
+
+Integration:
+  if (!navigator.gpu) {
+      console.warn('Falling back to WebGL');
+      return false;
+  }
+  const canvasFormat = navigator.gpu.getPreferredCanvasFormat();
+  this.context.configure({
+      device: this.device,
+      format: canvasFormat,
+      alphaMode: 'premultiplied'
+  });
+
+═════════════════════════════════════════════════════════════════════════════════
+
+7. DECAY SYSTEM (decay-system.js)
+─────────────────────────────────────────────────────────────────────────────────
+var DecaySystem = (function() {
+    var config = {
+        decayRate: 0.001,
+        maxDecay: 0.8,
+        bloodDecayRate: 0.0005,
+        footprintDecayRate: 0.02,
+        maxBloodSplatters: 100,
+        maxFootprints: 200,
+        enableDecay: true,
+        enableBlood: true,
+        enableFootprints: true
+    };
+    
+    var state = {
+        scene: null,
+        decayLevel: 0,              // 0 to maxDecay (0.8)
+        decayTime: 0,
+        bloodSplatters: [],         // max 100
+        footprints: [],             // max 200
+        wallDecals: [],
+        floorDecals: [],
+        bloodTexture: null,
+        footprintTexture: null,
+        crackTexture: null,
+        enabled: true
+    };
+    
+    function init(threeScene)
+    function createDecalTextures()
+    
+    return { init, ... };
+});
+
+═════════════════════════════════════════════════════════════════════════════════
+
+8. HALLUCINATION SYSTEM (hallucination-system.js)
+─────────────────────────────────────────────────────────────────────────────────
+var HallucinationSystem = (function() {
+    var config = {
+        types: {
+            VISUAL: 'visual',
+            AUDIO: 'audio',
+            PERIPHERAL: 'peripheral',
+            ENVIRONMENTAL: 'environmental'
+        },
+        triggers: {
+            LOW_SANITY: 50,
+            HIGH_STRESS: 70,
+            DARKNESS: 0.3,
+            ENEMY_PROXIMITY: 8,
+            ISOLATION_TIME: 60
+        },
+        baseFrequency: 0.1,
+        sanityMultiplier: 3.0,
+        stressMultiplier: 2.0
+    };
+    
+    var state = {
+        scene: null,
+        camera: null,
+        activeHallucinations: [],
+        hallucinationHistory: [],
+        playerSanity: 100,
+        playerStress: 0,
+        lastHallucinationTime: 0,
+        enabled: true
+    };
+    
+    function init(scene, camera)
+    function update(deltaTime, playerPos, pacmanPos, sanity, stress)
+    
+    return { init, update, ... };
+});
+
+═════════════════════════════════════════════════════════════════════════════════
+
+9. GHOST SYSTEM (ghost-system.js)
+─────────────────────────────────────────────────────────────────────────────────
+var GhostSystem = (function() {
+    var config = {
+        ghostSpeed: 8.0,
+        possessDuration: 5,
+        scareCooldown: 10,
+        maxGhosts: 10
+    };
+    
+    var ghosts = {};              // Dict<playerId, Ghost>
+    var scene = null;
+    var enabled = true;
+    
+    function init(threeScene)
+    function createGhost(playerId, playerData) → Ghost
+    function createGhostMesh(position) → THREE.Group
+    
+    Ghost Structure:
+    {
+        id: 'ghost_' + playerId,
+        originalPlayerId: playerId,
+        position: THREE.Vector3(x, y+1, z),
+        velocity: THREE.Vector3(),
+        mesh: THREE.Group,
+        state: 'idle' | 'chasing' | 'possessing',
+        scareCooldown: 0,
+        possessTarget: null
+    }
+    
+    return { init, createGhost, ... };
+});
+
+═════════════════════════════════════════════════════════════════════════════════
+
+10. ADVANCED AI (phase2-advanced-ai.js)
+─────────────────────────────────────────────────────────────────────────────────
+const NeuralPacmanAI = {
+    weights: {
+        inputToHidden: [],       // 12×24 matrix
+        hiddenToOutput: []       // 24×4 matrix
+    },
+    
+    playerMemory: {
+        positions: [],
+        decisions: [],
+        patterns: {},
+        maxMemory: 1000
+    },
+    
+    personality: {
+        aggression: 0.5,
+        curiosity: 0.5,
+        caution: 0.5,
+        playfulness: 0.3
+    },
+    
+    emotionalState: {
+        excitement: 0,
+        frustration: 0,
+        confidence: 0.5,
+        boredom: 0
+    },
+    
+    init()
+    initializeNetwork()
+};
+
+Neural Network:
+  Input Layer: 12 neurons
+    - Player position (2)
+    - Player velocity (2)
+    - Distance to target (1)
+    - Time (1)
+    - etc.
+  
+  Hidden Layer: 24 neurons
+  Output Layer: 4 neurons (cardinal directions)
+  
+  Weight Init: Xavier/Glorot
+    sqrt(2 / (inputSize + outputSize))
+
+═════════════════════════════════════════════════════════════════════════════════
+
+11. SHADER UNIFORMS & ATTRIBUTES
+─────────────────────────────────────────────────────────────────────────────────
+
+Shadow Map (shadowMap.vert/frag):
+  Uniforms:
+    mat4 modelViewMatrix
+    mat4 projectionMatrix
+    mat4 modelMatrix
+    mat4 lightSpaceMatrix
+    sampler2D baseTexture
+    float alphaTest
+  Attributes:
+    vec3 position
+    vec2 uv
+  Varyings:
+    vec2 vUv
+    vec4 vLightSpacePos
+
+Volumetric Light (volumetricLight.vert/frag):
+  Uniforms:
+    float time
+    vec3 lightColor
+    float lightIntensity
+    vec3 cameraPosition
+    vec3 lightPosition
+    float dustDensity
+  Varyings:
+    vec2 vUv
+    vec3 vWorldPosition
+    vec3 vViewPosition
+
+Wall Distortion (wallDistortion.vert/frag):
+  Uniforms:
+    float time
+    float intensity
+    vec2 pacmanPosition
+    sampler2D baseTexture
+    vec3 bloodColor
+    float bloodIntensity
+  Varyings:
+    vec2 vUv
+    float vDistortion
+    vec3 vWorldPosition
+
+═════════════════════════════════════════════════════════════════════════════════

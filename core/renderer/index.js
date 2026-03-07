@@ -35,11 +35,25 @@ export { TSR2026 } from './TSR2026.js';
 export { VariableRateShading2026 } from './VariableRateShading2026.js';
 export { RenderGraph2026 } from './RenderGraph2026.js';
 
+// GPU Pipeline & Memory
+export { GPUDrivenPipeline2026 } from './GPUDrivenPipeline2026.js';
+export { AsyncComputePipeline2026 } from './AsyncComputePipeline2026.js';
+export { MemoryManager2026 } from './MemoryManager2026.js';
+export { VirtualTexture2026 } from './VirtualTexture2026.js';
+export { MobileWebGPU2026 } from './MobileWebGPU2026.js';
+
 // Horror-Specific Effects
 export { PsychologicalHorrorShaders2026 } from './PsychologicalHorrorShaders2026.js';
 export { FourthWallBreaker2026 } from './FourthWallBreaker2026.js';
 export { AudioReactiveVisuals2026 } from './AudioReactiveVisuals2026.js';
 export { HapticVisualFeedback2026 } from './HapticVisualFeedback2026.js';
+export { BiometricRenderer2026 } from './BiometricRenderer2026.js';
+
+// Mega-Features
+export { HorrorReplaySystem2026 } from './HorrorReplaySystem2026.js';
+export { CrossGameCorruption2026 } from './CrossGameCorruption2026.js';
+export { DynamicDestruction2026 } from './DynamicDestruction2026.js';
+export { ProceduralHorrorArt2026 } from './ProceduralHorrorArt2026.js';
 
 /**
  * Create a complete enhanced renderer
@@ -117,15 +131,20 @@ export default {
   // Materials & Geometry
   MaterialSystem2026, ProceduralMaterialSystem, TessellationEngine2026, VirtualGeometry2026,
   // Lighting & Atmosphere
-  AreaLightSystem2026, AtmosphericRenderer2026, HDRPipeline2026,
-  VolumetricPathTracer2026,
+  AreaLightSystem2026, AtmosphericRenderer2026, HDRPipeline2026, VolumetricPathTracer2026,
   // Animation & Particles
   GPUAnimationSystem, GPUParticleSystem,
   // Upscaling & Performance
   TSR2026, VariableRateShading2026, RenderGraph2026,
+  // GPU Pipeline & Memory
+  GPUDrivenPipeline2026, AsyncComputePipeline2026, MemoryManager2026,
+  VirtualTexture2026, MobileWebGPU2026,
   // Horror Effects
   PsychologicalHorrorShaders2026, FourthWallBreaker2026,
-  AudioReactiveVisuals2026, HapticVisualFeedback2026,
+  AudioReactiveVisuals2026, HapticVisualFeedback2026, BiometricRenderer2026,
+  // Mega-Features
+  HorrorReplaySystem2026, CrossGameCorruption2026, DynamicDestruction2026,
+  ProceduralHorrorArt2026,
   // Factory
   createEnhancedRenderer
 };

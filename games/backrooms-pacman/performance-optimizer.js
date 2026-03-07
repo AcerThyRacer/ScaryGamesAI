@@ -251,12 +251,65 @@ var PerformanceOptimizer = (function() {
     }
 
     /**
-     * Render mesh to texture for billboard
+     * Render mesh to texture for billboard (LOD system)
+     * @param {THREE.Mesh} mesh - Mesh to render
+     * @param {number} size - Texture size (default 256)
+     * @returns {THREE.Sprite} Sprite with rendered texture
      */
-    function renderToTexture(mesh) {
-        // Would render mesh to canvas texture
-        // Placeholder implementation
-        return null;
+    function renderToTexture(mesh, size) {
+        size = size || 256;
+        
+        try {
+            // Create render target
+            var renderTarget = new THREE.WebGLRenderTarget(size, size, {
+                format: THREE.RGBAFormat,
+                type: THREE.UnsignedByteType,
+                minFilter: THREE.LinearFilter,
+                magFilter: THREE.LinearFilter
+            });
+            
+            // Create orthographic camera for billboard rendering
+            var orthoCamera = new THREE.OrthographicCamera(-2, 2, 2, -2, 0, 1000);
+            orthoCamera.position.set(0, 0, 10);
+            orthoCamera.lookAt(0, 0, 0);
+            
+            // Get renderer from global scope or mesh
+            var renderer = window.renderer;
+            if (!renderer) {
+                console.warn('[PerformanceOptimizer] No renderer found for renderToTexture');
+                return null;
+            }
+            
+            // Store current renderer state
+            var currentTarget = renderer.getRenderTarget();
+            
+            // Render mesh to texture
+            renderer.setRenderTarget(renderTarget);
+            renderer.clear();
+            renderer.render(mesh, orthoCamera);
+            renderer.setRenderTarget(currentTarget);
+            
+            // Create sprite material from texture
+            var spriteMaterial = new THREE.SpriteMaterial({
+                map: renderTarget.texture,
+                color: 0xffffff,
+                transparent: true,
+                opacity: 0.9
+            });
+            
+            var sprite = new THREE.Sprite(spriteMaterial);
+            sprite.scale.set(4, 4, 1);
+            
+            // Store render target for cleanup
+            sprite.userData.renderTarget = renderTarget;
+            sprite.userData.type = 'lod_billboard';
+            
+            console.log('[PerformanceOptimizer] Created LOD billboard');
+            return sprite;
+        } catch (error) {
+            console.error('[PerformanceOptimizer] Failed to render to texture:', error);
+            return null;
+        }
     }
 
     /**
@@ -303,15 +356,204 @@ var PerformanceOptimizer = (function() {
 
     /**
      * Enable GPU instancing for repeated objects
+     * @param {THREE.Mesh} mesh - Mesh to instance
+     * @param {number} count - Number of instances
+     * @param {Array} positions - Array of {x, y, z} positions for instances
+     * @returns {THREE.InstancedMesh} Instanced mesh
      */
-    function enableGPUInstancing(mesh) {
-        if (!config.rendering.gpuInstancing) return;
+    function enableGPUInstancing(mesh, count, positions) {
+        if (!config.rendering.gpuInstancing) return mesh;
         
-        // Mark for instancing
-        mesh.userData.instanced = true;
+        try {
+            var geometry = mesh.geometry;
+            var material = mesh.material;
+            
+            // Create InstancedMesh
+            var instancedMesh = new THREE.InstancedMesh(
+                geometry,
+                material,
+                count || 1000
+            );
+            
+            // Copy original mesh properties
+            instancedMesh.position.copy(mesh.position);
+            instancedMesh.rotation.copy(mesh.rotation);
+            instancedMesh.scale.copy(mesh.scale);
+            
+            // Set instance matrices
+            var matrix = new THREE.Matrix4();
+            var quaternion = new THREE.Quaternion();
+            var scale = new THREE.Vector3();
+            
+            mesh.matrixWorld.decompose(position, quaternion, scale);
+            
+            for (var i = 0; i < count; i++) {
+                if (positions && positions[i]) {
+                    // Use provided positions
+                    matrix.setPosition(
+                        positions[i].x || 0,
+                        positions[i].y || 0,
+                        positions[i].z || 0
+                    );
+                } else {
+                    // Default grid placement
+                    matrix.setPosition(
+                        mesh.position.x + (i % 10) * 4,
+                        mesh.position.y,
+                        mesh.position.z + Math.floor(i / 10) * 4
+                    );
+                }
+                
+                instancedMesh.setMatrixAt(i, matrix);
+            }
+            
+            // Mark as instanced
+            instancedMesh.userData.instanced = true;
+            instancedMesh.userData.originalMesh = mesh;
+            instancedMesh.userData.instanceCount = count;
+            
+            console.log('[PerformanceOptimizer] GPU instancing enabled for', count, 'instances');
+            
+            return instancedMesh;
+        } catch (error) {
+            console.error('[PerformanceOptimizer] Failed to enable GPU instancing:', error);
+            return mesh;
+        }
+    }
+    
+    /**
+     * Create instanced pellets for the entire maze
+     * @param {Array} pelletPositions - Array of pellet positions
+     * @param {THREE.Scene} scene - Three.js scene
+     * @returns {THREE.InstancedMesh}
+     */
+    function createInstancedPellets(pelletPositions, scene) {
+        var count = pelletPositions.length;
+        if (count === 0) return null;
         
-        // Would create InstancedMesh instead
-        // This is a placeholder for the full implementation
+        // Create pellet geometry
+        var geometry = new THREE.SphereGeometry(0.3, 8, 8);
+        var material = new THREE.MeshBasicMaterial({ 
+            color: 0xFFFF44,
+            emissive: 0xFFFF44,
+            emissiveIntensity: 0.5
+        });
+        
+        var instancedMesh = new THREE.InstancedMesh(geometry, material, count);
+        
+        var matrix = new THREE.Matrix4();
+        var scale = new THREE.Vector3(1, 1, 1);
+        
+        for (var i = 0; i < count; i++) {
+            var pos = pelletPositions[i];
+            matrix.makeScale(1, 1, 1);
+            matrix.setPosition(pos.x, pos.y || 0.5, pos.z);
+            instancedMesh.setMatrixAt(i, matrix);
+        }
+        
+        instancedMesh.userData.type = 'pellets';
+        instancedMesh.userData.count = count;
+        
+        if (scene) {
+            scene.add(instancedMesh);
+        }
+        
+        console.log('[PerformanceOptimizer] Created', count, 'instanced pellets');
+        return instancedMesh;
+    }
+    
+    /**
+     * Create instanced walls for the maze
+     * @param {Array} wallPositions - Array of wall positions and orientations
+     * @param {THREE.Scene} scene - Three.js scene
+     * @returns {THREE.InstancedMesh}
+     */
+    function createInstancedWalls(wallPositions, scene) {
+        var count = wallPositions.length;
+        if (count === 0) return null;
+        
+        // Create wall geometry
+        var geometry = new THREE.BoxGeometry(4, 3.5, 0.5);
+        var material = new THREE.MeshStandardMaterial({ 
+            color: 0xD4AF37,
+            roughness: 0.7,
+            metalness: 0.3
+        });
+        
+        var instancedMesh = new THREE.InstancedMesh(geometry, material, count);
+        
+        var matrix = new THREE.Matrix4();
+        var quaternion = new THREE.Quaternion();
+        var euler = new THREE.Euler();
+        
+        for (var i = 0; i < count; i++) {
+            var wall = wallPositions[i];
+            
+            // Set position
+            matrix.setPosition(wall.x, wall.y || 1.75, wall.z);
+            
+            // Set rotation if provided
+            if (wall.rotationY !== undefined) {
+                euler.set(0, wall.rotationY, 0);
+                quaternion.setFromEuler(euler);
+                matrix.setRotationFromQuaternion(quaternion);
+            }
+            
+            instancedMesh.setMatrixAt(i, matrix);
+        }
+        
+        instancedMesh.userData.type = 'walls';
+        instancedMesh.userData.count = count;
+        
+        if (scene) {
+            scene.add(instancedMesh);
+        }
+        
+        console.log('[PerformanceOptimizer] Created', count, 'instanced walls');
+        return instancedMesh;
+    }
+    
+    /**
+     * Update instance matrix at index
+     * @param {THREE.InstancedMesh} instancedMesh - Instanced mesh
+     * @param {number} index - Instance index
+     * @param {object} transform - New transform {x, y, z, rotationY, scale}
+     */
+    function updateInstanceMatrix(instancedMesh, index, transform) {
+        if (!instancedMesh || index >= instancedMesh.count) return;
+        
+        var matrix = new THREE.Matrix4();
+        
+        if (transform.scale) {
+            matrix.makeScale(transform.scale, transform.scale, transform.scale);
+        }
+        
+        matrix.setPosition(transform.x, transform.y, transform.z);
+        
+        if (transform.rotationY) {
+            var quaternion = new THREE.Quaternion();
+            var euler = new THREE.Euler(0, transform.rotationY, 0);
+            quaternion.setFromEuler(euler);
+            matrix.setRotationFromQuaternion(quaternion);
+        }
+        
+        instancedMesh.setMatrixAt(index, matrix);
+        instancedMesh.instanceMatrix.needsUpdate = true;
+    }
+    
+    /**
+     * Hide instance at index
+     * @param {THREE.InstancedMesh} instancedMesh - Instanced mesh
+     * @param {number} index - Instance index
+     */
+    function hideInstance(instancedMesh, index) {
+        if (!instancedMesh || index >= instancedMesh.count) return;
+        
+        // Move far away instead of removing
+        var matrix = new THREE.Matrix4();
+        matrix.setPosition(0, -1000, 0);
+        instancedMesh.setMatrixAt(index, matrix);
+        instancedMesh.instanceMatrix.needsUpdate = true;
     }
 
     /**

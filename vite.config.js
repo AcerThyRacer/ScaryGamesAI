@@ -1,160 +1,141 @@
-/**
- * Vite Configuration for ScaryGamesAI Platform
- * Phase 1: Performance & Foundation Excellence
- * 
- * Features:
- * - Code splitting per game
- * - Tree-shaking for Three.js
- * - Dynamic imports
- * - Asset optimization
- */
-
 import { defineConfig } from 'vite';
-import { resolve } from 'path';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
+import { fileURLToPath, URL } from 'url';
+import { visualizer } from 'rollup-plugin-visualizer';
 
+// https://vitejs.dev/config/
 export default defineConfig({
   root: '.',
-  base: '/',
-  
-  build: {
-    // Output directory
-    outDir: 'dist',
-    
-    // Generate sourcemaps for production
-    sourcemap: true,
-    
-    // Minify with esbuild (faster than terser)
-    minify: 'esbuild',
-    
-    // Target modern browsers
-    target: 'es2020',
-    
-    // Rollup options for code splitting
-    rollupOptions: {
-      input: {
-        // Main entry points
-        main: resolve(__dirname, 'index.html'),
-        // Individual games (code-split)
-        hellaphobia: resolve(__dirname, 'games/hellaphobia/hellaphobia.html'),
-        backroomsPacman: resolve(__dirname, 'games/backrooms-pacman/backrooms-pacman.html'),
-        caribbeanConquest: resolve(__dirname, 'games/caribbean-conquest/index.html'),
-        abyss: resolve(__dirname, 'games/the-abyss/the-abyss.html'),
-        subliminalSpaces: resolve(__dirname, 'games/subliminal-spaces/subliminal-spaces.html')
-      },
-      
-      output: {
-        // Split vendor chunks
-        manualChunks: {
-          three: ['three'],
-          threeAddons: ['three/examples/jsm/controls/OrbitControls.js']
-        },
-        
-        // Chunk file naming
-        chunkFileNames: 'assets/js/[name]-[hash].js',
-        entryFileNames: 'assets/js/[name]-[hash].js',
-        assetFileNames: ({ name }) => {
-          if (/\.(png|jpe?g|svg|gif|webp)$/i.test(name ?? '')) {
-            return 'assets/images/[name]-[hash][extname]';
-          }
-          if (/\.css$/i.test(name ?? '')) {
-            return 'assets/css/[name]-[hash][extname]';
-          }
-          return 'assets/[name]-[hash][extname]';
-        }
-      }
-    },
-    
-    // Chunk size warning limit
-    chunkSizeWarningLimit: 500, // KB
-    
-    // Assets inline limit
-    assetsInlineLimit: 4096, // 4KB
-    
-    // Compress with brotli
-    cssCodeSplit: true
-  },
-  
-  optimizeDeps: {
-    // Pre-bundle Three.js
-    include: ['three'],
-    
-    // Exclude large dependencies
-    exclude: ['@ffmpeg/ffmpeg']
-  },
   
   server: {
-    port: 3000,
+    port: 5173,
+    host: true,
     open: true,
-    cors: true,
-    
-    // Proxy API requests
     proxy: {
       '/api': {
-        target: 'http://localhost:9999',
+        target: 'http://localhost:3001',
+        changeOrigin: true,
+        secure: false
+      },
+      '/assets': {
+        target: 'http://localhost:3001',
         changeOrigin: true
       }
     }
   },
   
+  build: {
+    outDir: 'dist',
+    assetsDir: 'assets',
+    sourcemap: process.env.NODE_ENV !== 'production',
+    minify: 'esbuild',
+    target: 'es2022', // Updated to ES2022 for modern browsers
+    cssMinify: 'lightningcss', // 10x faster CSS minification
+    rollupOptions: {
+      input: {
+        main: fileURLToPath(new URL('./index.html', import.meta.url)),
+        games: fileURLToPath(new URL('./games.html', import.meta.url)),
+        achievements: fileURLToPath(new URL('./achievements.html', import.meta.url)),
+        challenges: fileURLToPath(new URL('./challenges.html', import.meta.url)),
+        subscription: fileURLToPath(new URL('./subscription.html', import.meta.url)),
+        store: fileURLToPath(new URL('./store.html', import.meta.url)),
+        marketplace: fileURLToPath(new URL('./marketplace.html', import.meta.url)),
+        leaderboards: fileURLToPath(new URL('./leaderboards.html', import.meta.url)),
+        'custom-games': fileURLToPath(new URL('./custom-games.html', import.meta.url)),
+        'ollama-builder': fileURLToPath(new URL('./ollama-builder.html', import.meta.url))
+      },
+      output: {
+        manualChunks: (id) => {
+          // Vendor chunks for node_modules
+          if (id.includes('node_modules')) {
+            if (id.includes('three')) return 'vendor-three';
+            if (id.includes('socket.io')) return 'vendor-socket';
+            return 'vendor';
+          }
+          // Core engine shared chunk
+          if (id.includes('/core/renderer/') || id.includes('/core/audio/') || id.includes('/core/ai/')) {
+            return 'core-engine';
+          }
+          // Game-specific chunks
+          if (id.includes('/games/')) {
+            const gameName = id.split('/')[2];
+            return `game-${gameName}`;
+          }
+          // Platform systems
+          if (id.includes('/js/')) {
+            return 'platform-systems';
+          }
+        },
+        chunkFileNames: 'assets/js/[name]-[hash].js',
+        entryFileNames: 'assets/js/[name]-[hash].js',
+        assetFileNames: 'assets/[ext]/[name]-[hash].[ext]'
+      }
+    },
+    chunkSizeWarningLimit: 500
+  },
+  
   plugins: [
-    // Copy static assets
     viteStaticCopy({
       targets: [
         {
-          src: 'games/*/assets/**/*',
+          src: 'games/*',
           dest: 'games'
         },
         {
-          src: 'core/**/*.{js,json}',
-          dest: 'core'
+          src: 'assets/*',
+          dest: 'assets'
         },
         {
-          src: 'api/**/*.js',
-          dest: 'api'
+          src: 'css/*',
+          dest: 'css'
         }
       ]
+    }),
+    // Bundle visualization for performance analysis
+    visualizer({
+      open: true,
+      filename: 'dist/stats.html',
+      gzipSize: true,
+      brotliSize: true
     })
   ],
   
-  // Performance optimizations
-  esbuild: {
-    // Drop console in production
-    drop: process.env.NODE_ENV === 'production' ? ['console'] : [],
-    
-    // Legal comments only
-    legalComments: 'external',
-    
-    // Tree shaking
-    treeShaking: true
+  optimizeDeps: {
+    include: ['three', 'socket.io-client'],
+    exclude: ['games']
   },
   
-  // CSS processing
+  esbuild: {
+    drop: process.env.NODE_ENV === 'production' ? ['console', 'debugger'] : [],
+    legalComments: 'none',
+    target: 'es2022'
+  },
+  
   css: {
-    devSourcemap: true,
-    
-    // PostCSS plugins
-    postcss: {
-      plugins: [
-        {
-          postcssPlugin: 'internal:charset-removal',
-          AtRule: {
-            charset: (atRule) => {
-              if (atRule.name === 'charset') {
-                atRule.remove();
-              }
-            }
-          }
-        }
-      ]
+    devSourcemap: true
+  },
+  
+  resolve: {
+    alias: {
+      '@core': fileURLToPath(new URL('./core', import.meta.url)),
+      '@games': fileURLToPath(new URL('./games', import.meta.url)),
+      '@js': fileURLToPath(new URL('./js', import.meta.url)),
+      '@css': fileURLToPath(new URL('./css', import.meta.url)),
+      '@assets': fileURLToPath(new URL('./assets', import.meta.url))
     }
   },
   
-  // Worker configuration
+  define: {
+    'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV || 'development'),
+    'process.env.VERSION': JSON.stringify('2.0.0')
+  },
+  
   worker: {
     format: 'es'
   },
   
-  // Assets
-  assetsInclude: ['**/*.glb', '**/*.gltf', '**/*.hdr', '**/*.exr']
+  preview: {
+    port: 4173,
+    host: true
+  }
 });

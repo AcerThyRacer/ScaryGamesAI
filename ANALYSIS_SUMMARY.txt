@@ -1,0 +1,142 @@
+═══════════════════════════════════════════════════════════════════════════════════════
+BACKROOMS PACMAN - COMPLETE CODE ANALYSIS DELIVERED
+═══════════════════════════════════════════════════════════════════════════════════════
+
+✓ COMPLETED REQUESTS:
+
+1. MAIN GAME FILE - backrooms-pacman.js (100+ lines)
+   ├─ Game objects: scene, camera, renderer, pacman, pellets
+   ├─ Player state: playerPos {x, z}, yaw, pitch, playerVelocity {x, z}
+   ├─ Game FSM: GAME_STATE {MENU, PLAYING, PAUSED, BLACKOUT, DEAD, WIN}
+   ├─ Systems: stamina, blackout, visual intensity, corridor lights (max 6)
+   └─ Functions: isGameRunning(), setGameState(next)
+
+2. ADVANCED LIGHTING (advanced-lighting.js - 80 lines)
+   ├─ Config: shadowMapSize 1024, rayMarchSteps 64, rayMarchMaxDistance 20
+   ├─ State: shadowMap (WebGLRenderTarget), shadowCamera (Orthographic)
+   ├─ Methods: init(), loadShaders(), createVolumetricQuad()
+   └─ Lights: dynamicLights[], flashlight, volumetricQuad
+
+3. SANITY SYSTEM (sanity-system.js - 60 lines)
+   ├─ PRIMARY VALUE: state.current (0-100 scale)
+   ├─ Drain rates: base (0.3), pacman nearby (1.5), blackout (2.0)
+   ├─ Recovery: hiding (0.8), safe zone (0.5)
+   ├─ Thresholds: hallucination (40), audio (30), visual distortion (50)
+   └─ Effects: state.visualDistortion, state.audioDistortion (0-1)
+
+4. WAVE FUNCTION COLLAPSE (wave-function-collapse.js - 60 lines)
+   ├─ Tiles: EMPTY(0), WALL(1), PELLET(2), POWER_PELLET(3), SAFE_ROOM(4), etc.
+   ├─ State: grid[], collapsed[], currentBiome, seed
+   ├─ Algorithm: entropy[], observed[], superposition[]
+   └─ Methods: init(biome), generateMaze(width, height, options)
+
+5. WEBGPU MIGRATION (webgpu-migration.js - 80 lines)
+   ├─ Detection: if (!navigator.gpu) → fallback to WebGL
+   ├─ Setup: adapter, device, context (WebGPU)
+   ├─ Config: preferWebGPU, fallbackToWebGL, enableComputeShaders, multiGPU
+   ├─ Features: shader-f16 for compute, adapter info logging
+   └─ Method: async init(canvas, options)
+
+6. PHASE 1 VISUAL REVOLUTION (phase1-visual-revolution.js - 80 lines)
+   ├─ RayTracedLighting object with WebGPU compute shader
+   ├─ Properties: device, context, pipeline, lights[], maxLights(64)
+   ├─ Integration: WebGPU detection, canvas format configuration
+   ├─ Structs: Light, Triangle, Material, Camera (WGSL)
+   └─ Method: async init(canvas), async createRayTracingPipeline()
+
+7. SHADER FILES (6 files in shaders/ directory)
+   ├─ shadowMap.vert/frag - Dynamic shadow mapping
+   ├─ volumetricLight.vert/frag - God rays & light shafts (Simplex noise)
+   ├─ wallDistortion.vert/frag - Crawling vein patterns (blood color shifts)
+   └─ All 30 lines shown with exact uniforms & varyings
+
+8. DECAY SYSTEM (decay-system.js - 60 lines)
+   ├─ Level: decayLevel (0 to 0.8), decayRate (0.001/sec)
+   ├─ Blood: bloodSplatters[] (max 100), bloodDecayRate (0.0005/sec)
+   ├─ Footprints: footprints[] (max 200), footprintDecayRate (0.02/sec)
+   ├─ Decals: wallDecals[], floorDecals[]
+   ├─ Textures: bloodTexture, footprintTexture, crackTexture (procedural)
+   └─ Method: init(threeScene), createDecalTextures()
+
+9. ENTITY RENDERING (ghost-system.js - 60 lines)
+   ├─ Ghost structure: {id, originalPlayerId, position, velocity, mesh, state}
+   ├─ Ghost states: 'idle', 'chasing', 'possessing'
+   ├─ Ghost properties: scareCooldown, possessTarget
+   ├─ Config: ghostSpeed (8.0), maxGhosts (10)
+   ├─ Ghost mesh: THREE.SphereGeometry(0.6, 16, 16) in THREE.Group
+   └─ Methods: init(scene), createGhost(playerId, data), createGhostMesh(pos)
+
+10. HALLUCINATION SYSTEM (hallucination-system.js - 60 lines)
+    ├─ Types: VISUAL, AUDIO, PERIPHERAL, ENVIRONMENTAL
+    ├─ Triggers: LOW_SANITY(50), HIGH_STRESS(70), DARKNESS(0.3), PROXIMITY(8)
+    ├─ Frequencies: baseFrequency(0.1), sanityMult(3.0), stressMult(2.0)
+    ├─ State: activeHallucinations[], hallucinationHistory[]
+    ├─ Inputs: playerSanity, playerStress
+    └─ Methods: init(scene, camera), update(deltaTime, pos, pacmanPos, sanity, stress)
+
+BONUS: ADVANCED AI (phase2-advanced-ai.js - 60 lines)
+    ├─ Neural network: 12 inputs → 24 hidden → 4 outputs
+    ├─ Weights: inputToHidden[], hiddenToOutput[]
+    ├─ Personality: aggression(0.5), curiosity(0.5), caution(0.5), playfulness(0.3)
+    ├─ Emotions: excitement, frustration, confidence(0.5), boredom
+    ├─ Memory: positions[], decisions[], patterns{}, maxMemory(1000)
+    ├─ Xavier init: sqrt(2 / (inputSize + outputSize))
+    └─ Methods: init(), initializeNetwork(), loadPlayerData()
+
+═══════════════════════════════════════════════════════════════════════════════════════
+
+FILES CREATED FOR YOUR REFERENCE:
+
+1. /home/ace/Downloads/ScaryGamesAI/BACKROOMS_CODE_ANALYSIS.md (32 KB)
+   └─ Full source code excerpts from all 10 files with explanations
+
+2. /home/ace/Downloads/ScaryGamesAI/PROPERTY_REFERENCE.txt (16 KB)
+   └─ Quick reference guide with all exact property names & method signatures
+
+═══════════════════════════════════════════════════════════════════════════════════════
+
+KEY PATTERNS IDENTIFIED:
+
+Closure Module Pattern:
+  var SystemName = (function() {
+      'use strict';
+      var config = { /* constants */ };
+      var state = { /* runtime values */ };
+      function init() { /* ... */ }
+      return { init, update, ... };
+  })();
+
+Game Object Pattern:
+  let scene, camera, renderer;
+  let playerPos = { x: 0, z: 0 };
+  let gameState = GAME_STATE.MENU;
+
+Sanity Access:
+  state.current          // 0-100 scale
+  state.visualDistortion // 0-1 intensity
+  state.isHallucinating  // boolean
+
+WebGPU Fallback:
+  if (!navigator.gpu) return { fallback: 'webgl' };
+  adapter = await navigator.gpu.requestAdapter();
+  device = await adapter.requestDevice();
+
+Entity Structure:
+  { id, position, velocity, mesh, state, properties... }
+
+═══════════════════════════════════════════════════════════════════════════════════════
+
+EXACT PROPERTY COUNTS:
+
+Main Game:         15+ properties + FSM states
+Lighting:          8 config values, 6 state objects
+Sanity:            11 config values, 6 state values
+WFC:               9 tile types, procedural arrays
+WebGPU:            5 GPU objects, 3 pipeline maps
+Phase 1:           64 max lights, ray tracing pipeline
+Decay:             9 config values, 6 state arrays
+Hallucination:     4 types, 5 triggers, 2 multipliers
+Ghost:             6 properties per ghost, 10 max
+AI Neural:         12 inputs, 24 hidden, 4 outputs
+
+═══════════════════════════════════════════════════════════════════════════════════════

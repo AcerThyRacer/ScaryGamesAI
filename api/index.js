@@ -20,6 +20,7 @@ const featureFlagRoutes = require('./feature-flags');
 const dailyActivityRoutes = require('./daily-activity');
 const firstTimeBonusesRoutes = require('./first-time-bonuses');
 const engagementRoutes = require('./engagement');
+const modRoutes = require('./mods');
 
 const dataAccess = require('../models/data-access');
 const cacheService = require('../services/cacheService');
@@ -42,6 +43,7 @@ function mountDomainRoutes(targetRouter) {
     targetRouter.use('/daily-activity', dailyActivityRoutes);
     targetRouter.use('/first-time-bonuses', firstTimeBonusesRoutes);
     targetRouter.use('/engagement', engagementRoutes);
+    targetRouter.use('/mods', modRoutes);
 }
 
 async function safeAppendAuditEvent(payload) {
