@@ -12,7 +12,10 @@ export { DLSSRenderer } from './DLSSRenderer.js';
 export { NeuralDenoiser2026 } from './NeuralDenoiser2026.js';
 export { ProceduralMaterialSystem } from './ProceduralMaterials.js';
 export { GPUAnimationSystem } from './GPUAnimationSystem.js';
+export { TessellationEngine2026 } from './TessellationEngine2026.js';
+export { MaterialSystem2026 } from './MaterialSystem2026.js';
 export { RadianceCascades2026 } from './RadianceCascades2026.js';
+export { AreaLightSystem2026 } from './AreaLightSystem2026.js';
 
 /**
  * Create a complete enhanced renderer
@@ -89,6 +92,9 @@ export default {
   NeuralDenoiser2026,
   ProceduralMaterialSystem,
   GPUAnimationSystem,
+  TessellationEngine2026,
+  MaterialSystem2026,
   RadianceCascades2026,
+  AreaLightSystem2026,
   createEnhancedRenderer
 };
