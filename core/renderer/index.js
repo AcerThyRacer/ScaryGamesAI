@@ -16,6 +16,7 @@ export { TessellationEngine2026 } from './TessellationEngine2026.js';
 export { MaterialSystem2026 } from './MaterialSystem2026.js';
 export { RadianceCascades2026 } from './RadianceCascades2026.js';
 export { AreaLightSystem2026 } from './AreaLightSystem2026.js';
+export { AtmosphericRenderer2026 } from './AtmosphericRenderer2026.js';
 
 /**
  * Create a complete enhanced renderer
@@ -96,5 +97,6 @@ export default {
   MaterialSystem2026,
   RadianceCascades2026,
   AreaLightSystem2026,
+  AtmosphericRenderer2026,
   createEnhancedRenderer
 };
