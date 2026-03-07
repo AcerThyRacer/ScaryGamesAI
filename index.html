@@ -4,8 +4,32 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <!-- CRITICAL RESOURCE PRELOADS (2026 Performance Optimization) -->
+  <!-- Preconnect to external resources -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="dns-prefetch" href="https://scarygames.ai">
+  
+  <!-- Preload critical CSS -->
+  <link rel="preload" href="/css/styles.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <link rel="preload" href="/css/search.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+  <noscript>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/search.css">
+  </noscript>
+  
+  <!-- Preload critical JavaScript -->
+  <link rel="modulepreload" href="/js/main.js">
+  <link rel="modulepreload" href="/js/state-bus.js">
+  
+  <!-- Preload hero image with fetchpriority -->
+  <link rel="preload" href="/assets/hero.avif" as="image" fetchpriority="high" type="image/avif">
+  <link rel="preload" href="/assets/hero.webp" as="image" fetchpriority="high" type="image/webp">
+  
+  <!-- DNS prefetch for CDN resources -->
+  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+  
   <meta name="description" content="ScaryGamesAI — Play terrifying browser horror games. Enter the darkness.">
   <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1">
   <meta property="og:type" content="website">
@@ -27,8 +51,6 @@
  <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
  
  <title>ScaryGamesAI — Enter The Darkness</title>
-  <link rel="stylesheet" href="/css/styles.css">
-  <link rel="stylesheet" href="/css/search.css">
   <script type="application/ld+json">
     {
       "@context": "https://schema.org",
