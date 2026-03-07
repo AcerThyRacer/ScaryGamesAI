@@ -9,8 +9,10 @@ export { WebGPURenderer } from './WebGPURenderer2026.js';
 // Phase 1 Enhancement systems
 export { WebGPURayTracing } from './WebGPURayTracing.js';
 export { DLSSRenderer } from './DLSSRenderer.js';
+export { NeuralDenoiser2026 } from './NeuralDenoiser2026.js';
 export { ProceduralMaterialSystem } from './ProceduralMaterials.js';
 export { GPUAnimationSystem } from './GPUAnimationSystem.js';
+export { RadianceCascades2026 } from './RadianceCascades2026.js';
 
 /**
  * Create a complete enhanced renderer
@@ -84,7 +86,9 @@ export default {
   WebGPURenderer,
   WebGPURayTracing,
   DLSSRenderer,
+  NeuralDenoiser2026,
   ProceduralMaterialSystem,
   GPUAnimationSystem,
+  RadianceCascades2026,
   createEnhancedRenderer
 };
